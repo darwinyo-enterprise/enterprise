@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2918.98 5944.9 29.786 29.786">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #95989a;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="ic_email_black_24px" transform="translate(2918.98 5944.9)">
+    <path id="Path_511" data-name="Path 511" class="cls-1" d="M24.006,3.333H4.149a2.479,2.479,0,0,0-2.47,2.482L1.667,20.709a2.489,2.489,0,0,0,2.482,2.482H24.006a2.489,2.489,0,0,0,2.482-2.482V5.816A2.489,2.489,0,0,0,24.006,3.333Zm0,4.964L14.078,14.5,4.149,8.3V5.816l9.929,6.205,9.929-6.205Z" transform="translate(0.816 1.631)"/>
+    <path id="Path_512" data-name="Path 512" class="cls-2" d="M0,0H29.786V29.786H0Z"/>
+  </g>
+</svg>

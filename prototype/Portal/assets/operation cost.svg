@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2668.203 1964.79 247.648 69.96">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #95989a;
+      }
+
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        font-size: 30px;
+        font-family: Mina-Bold, Mina;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="operation_cost" data-name="operation cost" transform="translate(2198 347)">
+    <path id="Shape_1_copy_9" data-name="Shape 1 copy 9" class="cls-1" d="M13.048,69.911l1.04-51.821C8.525,20.539,4.9,21.751,0,21.836,8.562,16.232,13.115,8.886,17.43,0c3.784,8.956,8.48,16.056,16.554,22.132-5.319-.429-8.515-1.493-14.328-4.071l-1.042,51.9Z" transform="translate(504.187 1687.75) rotate(180)"/>
+    <text id="Operation_Cost-2" data-name="Operation Cost" class="cls-2" transform="translate(514.851 1661.097)"><tspan x="0" y="0">Operation Cost</tspan></text>
+  </g>
+</svg>

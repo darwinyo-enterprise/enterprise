@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="1564 750 154 154">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #95989a;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #f1c817;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_8" data-name="Rectangle 8" class="cls-1" width="154" height="154" transform="translate(1542 938)"/>
+    </clipPath>
+  </defs>
+  <g id="powerbi" class="cls-2" transform="translate(22 -188)">
+    <g id="power-bi" transform="translate(1542 938.005)">
+      <g id="g16" transform="translate(0 80.621)">
+        <path id="path14" class="cls-3" d="M151.58,305.217a9.091,9.091,0,0,1-9.08-9.1V270.478a9.083,9.083,0,1,1,18.166,0v25.637A9.1,9.1,0,0,1,151.58,305.217Z" transform="translate(-142.499 -261.376)"/>
+      </g>
+      <g id="g22" transform="translate(29.228 70.894)">
+        <g id="g20">
+          <path id="path18" class="cls-3" d="M189.539,312.152a9.086,9.086,0,0,1-9.08-9.1V257.844a9.083,9.083,0,1,1,18.166,0v45.208A9.089,9.089,0,0,1,189.539,312.152Z" transform="translate(-180.458 -248.743)"/>
+        </g>
+      </g>
+      <g id="g28" transform="translate(58.464 61.169)">
+        <g id="g26">
+          <path id="path24" class="cls-3" d="M227.509,318.846a9.088,9.088,0,0,1-9.082-9.1V245.215a9.081,9.081,0,1,1,18.163,0v64.531A9.085,9.085,0,0,1,227.509,318.846Z" transform="translate(-218.426 -236.113)"/>
+        </g>
+      </g>
+      <g id="g38" transform="translate(5.568 0)">
+        <g id="g32">
+          <path id="path30" class="cls-3" d="M288.34,195.154,161.565,157.147c-6.222-1.87-11.835,2.01-11.835,7.972v63.428a17.722,17.722,0,0,1,7.03,0V165.119c0-.428,0-1.425,1.547-1.425a4.149,4.149,0,0,1,1.24.2l126.78,38c2.753.825,4.8,3.635,4.8,5.593V288.78c0,.464,0,1.409-1.549,1.409a3.95,3.95,0,0,1-1.238-.2l-29.246-8.75v7.341l27.232,8.169a11.474,11.474,0,0,0,3.252.5,8.247,8.247,0,0,0,8.583-8.468V207.493c0-5.271-4.316-10.692-9.822-12.34Z" transform="translate(-149.73 -156.673)"/>
+        </g>
+        <g id="g36" transform="translate(82.121 51.084)">
+          <path id="path34" class="cls-3" d="M265.463,325.922a9.09,9.09,0,0,1-9.082-9.1v-84.7a9.081,9.081,0,1,1,18.163,0v84.7A9.085,9.085,0,0,1,265.463,325.922Z" transform="translate(-256.381 -223.016)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

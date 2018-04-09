@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2940.203 1964.79 184.338 70">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #95989a;
+      }
+
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        font-size: 30px;
+        font-family: Mina-Bold, Mina;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="downtime" transform="translate(2470 347)">
+    <path id="Shape_1_copy_9" data-name="Shape 1 copy 9" class="cls-1" d="M13.315,69.951,14.377,18.1C8.7,20.551,5,21.763,0,21.848,8.738,16.241,13.384,8.891,17.787,0c3.862,8.962,8.654,16.065,16.893,22.145-5.428-.43-8.69-1.494-14.621-4.073L19,70Z" transform="translate(504.883 1687.79) rotate(180)"/>
+    <text id="Downtime-2" data-name="Downtime" class="cls-2" transform="translate(515.541 1661.106)"><tspan x="0" y="0">Downtime</tspan></text>
+  </g>
+</svg>

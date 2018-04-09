@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2977.615 3319.719 150 150">
+  <defs>
+    <style>
+      .cls-1, .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #95989a;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #dd0031;
+      }
+
+      .cls-4 {
+        fill: #c3002f;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_52" data-name="Rectangle 52" class="cls-1" width="150" height="150"/>
+    </clipPath>
+  </defs>
+  <g id="Angular" class="cls-2" transform="translate(2977.615 3319.719)">
+    <g id="angular-2" data-name="angular" transform="translate(5.175)">
+      <path id="Path_501" data-name="Path 501" class="cls-3" d="M93.75,22.5h0L23.925,47.4l10.65,92.325L93.75,172.5h0l59.175-32.775L163.575,47.4Z" transform="translate(-23.925 -22.5)"/>
+      <path id="Path_502" data-name="Path 502" class="cls-4" d="M93.75,22.5v92.55h0V172.5h0l59.175-32.775L163.575,47.4Z" transform="translate(-23.925 -22.5)"/>
+      <path id="Path_503" data-name="Path 503" class="cls-5" d="M93.75,39.075,50.1,136.95H66.375l8.775-21.9H112.2l8.775,21.9H137.25L93.75,39.075ZM106.5,101.55H81L93.75,70.875Z" transform="translate(-23.925 -22.5)"/>
+    </g>
+  </g>
+</svg>

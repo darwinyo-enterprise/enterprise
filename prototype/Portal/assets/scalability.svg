@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2457.203 1964.79 186.648 69.96">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #95989a;
+      }
+
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        font-size: 30px;
+        font-family: Mina-Bold, Mina;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="scalability" transform="translate(1987 347)">
+    <path id="Shape_1_copy_9" data-name="Shape 1 copy 9" class="cls-1" d="M67.414,317.618l1.04-51.821c-5.563,2.449-9.184,3.66-14.088,3.745,8.562-5.6,13.115-12.95,17.43-21.836,3.784,8.956,8.48,16.056,16.554,22.132-5.319-.429-8.515-1.493-14.328-4.071l-1.042,51.9Z" transform="translate(415.837 1370.083)"/>
+    <text id="Scalability-2" data-name="Scalability" class="cls-2" transform="translate(514.851 1661.097)"><tspan x="0" y="0">Scalability</tspan></text>
+  </g>
+</svg>
