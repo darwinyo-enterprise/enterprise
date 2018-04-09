@@ -91,6 +91,13 @@
       "tags": []
     },
     {
+      "name": "enterprise.material-ui",
+      "root": "libs/enterprise.material-ui/src",
+      "test": "../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "$workspaceRoot",
       "root": ".",
       "appRoot": ""
