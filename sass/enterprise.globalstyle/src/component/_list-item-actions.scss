@@ -1,0 +1,67 @@
+////
+/// @author Darwin Yo
+////
+
+%item-grid-placeholder{
+    @include display-grid;
+    @include grid-template-col(3fr 1fr 1fr);
+}
+%item-placeholder{
+    box-sizing: border-box;
+    padding-right: 2rem;
+}
+%list-item-placeholder{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+%font-default-placeholder{
+    font-family: $primary-font-family !important;
+    font-size: $font-size-sm;
+}
+/// List Item Action used in management modules
+.list-item-actions{
+    @extend %list-item-placeholder;
+    &__item{
+        @extend %item-placeholder;
+        &__grid{
+            @extend %item-grid-placeholder;
+        }
+        &__nested-list{
+            &__grid{
+                @extend %item-grid-placeholder;
+            }
+            width: 100%;
+            box-sizing: border-box;
+            padding-left: 1.5rem;
+        }
+        &__name{
+            @include grid-child(1,2,1,1);
+            display: flex;
+            align-items: center;
+        }
+        &__edit{
+            @include grid-child(2,3,1,1);
+            &>button{
+                @extend %font-default-placeholder;
+                color: $secondary-color;
+            }
+        }
+        &__delete{
+            @include grid-child(3,4,1,1);
+            &>button{
+                @extend %font-default-placeholder;
+                color: $alert-color;
+            }
+        }
+    }
+    &--category{
+        @extend %list-item-placeholder;
+        &__left{
+            @extend %item-placeholder;
+        }
+        &__right{
+            @extend %item-placeholder;
+        }
+    }
+}
