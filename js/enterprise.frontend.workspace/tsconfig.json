@@ -16,8 +16,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@enterprise.frontend.workspace/*": [
+      "@enterprise/*": [
         "libs/*"
+      ],
+      "@enterprise/material/*":[
+        "libs/material/*"
       ]
     }
   },

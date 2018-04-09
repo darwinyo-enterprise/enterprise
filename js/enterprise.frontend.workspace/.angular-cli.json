@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@nrwl/schematics/src/schema.json",
   "project": {
     "name": "enterprise.frontend.workspace",
-    "npmScope": "enterprise.frontend.workspace",
+    "npmScope": "enterprise",
     "latestMigration": "20180313-add-tags"
   },
   "e2e": {
@@ -91,9 +91,16 @@
       "tags": []
     },
     {
-      "name": "enterprise.material-ui",
-      "root": "libs/enterprise.material-ui/src",
-      "test": "../../../test.js",
+      "name": "material/file-upload",
+      "root": "libs/material/file-upload/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
+      "name": "material/navbar",
+      "root": "libs/material/navbar/src",
+      "test": "../../../../test.js",
       "appRoot": "",
       "tags": []
     },
@@ -107,7 +114,7 @@
     "schematics": {
       "collection": "@nrwl/schematics"
     },
-    "styleExt": "css",
+    "styleExt": "scss",
     "component": {}
   },
   "warnings": {
