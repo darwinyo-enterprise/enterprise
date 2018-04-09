@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  catalogapi:
+    image: catalogapi
+    build:
+      context: .
+      dockerfile: Catalog,API/Dockerfile
