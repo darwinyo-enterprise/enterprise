@@ -3,10 +3,12 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
+import { FileUploadModule } from '@enterprise/material/file-upload';
 
 @NgModule({
   imports: [
     BrowserModule,
+    FileUploadModule,
     NxModule.forRoot(),
     RouterModule.forRoot([], { initialNavigation: 'enabled' })
   ],

@@ -105,6 +105,13 @@
       "tags": []
     },
     {
+      "name": "material/search-box",
+      "root": "libs/material/search-box/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "$workspaceRoot",
       "root": ".",
       "appRoot": ""
