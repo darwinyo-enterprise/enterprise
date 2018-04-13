@@ -5,12 +5,7 @@ import { CategoryModule } from '../category/category.module';
 import { ManufacturerModule } from '../manufacturer/manufacturer.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ProductModule,
-    CategoryModule,
-    ManufacturerModule
-  ],
+  imports: [CommonModule, ProductModule, CategoryModule, ManufacturerModule],
   declarations: []
 })
-export class CatalogModule { }
+export class CatalogModule {}

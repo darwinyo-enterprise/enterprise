@@ -5,9 +5,11 @@ import { ListManufacturerComponent } from './list-manufacturer/list-manufacturer
 import { EditManufacturerComponent } from '../manufacturer/edit-manufacturer/edit-manufacturer.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [AddManufacturerComponent, ListManufacturerComponent, EditManufacturerComponent]
+  imports: [CommonModule],
+  declarations: [
+    AddManufacturerComponent,
+    ListManufacturerComponent,
+    EditManufacturerComponent
+  ]
 })
-export class ManufacturerModule { }
+export class ManufacturerModule {}

@@ -91,6 +91,13 @@
       "tags": []
     },
     {
+      "name": "material/core",
+      "root": "libs/material/core/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "material/file-upload",
       "root": "libs/material/file-upload/src",
       "test": "../../../../test.js",

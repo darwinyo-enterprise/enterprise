@@ -6,12 +6,13 @@ describe('ListManufacturerComponent', () => {
   let component: ListManufacturerComponent;
   let fixture: ComponentFixture<ListManufacturerComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ListManufacturerComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ListManufacturerComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ListManufacturerComponent);

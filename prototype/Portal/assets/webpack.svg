@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2797.789 3486.417 150 150">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #95989a;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        fill: #8ed6fb;
+      }
+
+      .cls-5 {
+        fill: #1c78c0;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_56" data-name="Rectangle 56" class="cls-1" width="150" height="150"/>
+    </clipPath>
+  </defs>
+  <g id="webpack" class="cls-2" transform="translate(2797.789 3486.417)">
+    <g id="webpack-icon" transform="translate(8.712)">
+      <path id="Path_505" data-name="Path 505" class="cls-3" d="M75,0l66.288,37.5v75L75,150,8.712,112.5v-75Z" transform="translate(-8.712)"/>
+      <path id="Path_506" data-name="Path 506" class="cls-4" d="M129.45,109.912,77.188,139.475V116.45L109.75,98.537Zm3.575-3.238V44.85L113.9,55.887V95.625l19.125,11.05ZM20.337,109.912,72.6,139.475V116.45L40.037,98.537l-19.7,11.375Zm-3.575-3.238V44.85L35.887,55.887V95.625l-19.125,11.05ZM19,40.85,72.6,10.525V32.787L38.263,51.675l-.263.15Zm111.788,0-53.6-30.325V32.787l34.338,18.888.262.15Z" transform="translate(-8.712)"/>
+      <path id="Path_507" data-name="Path 507" class="cls-5" d="M72.6,111.213,40.475,93.55v-35L72.6,77.1v34.113m4.588,0L109.313,93.55v-35L77.188,77.1v34.113M42.65,54.5,74.9,36.763,107.15,54.5,74.9,73.125,42.65,54.5" transform="translate(-8.712)"/>
+    </g>
+  </g>
+</svg>

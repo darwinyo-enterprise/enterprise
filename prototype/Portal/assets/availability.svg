@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2233.203 1964.79 200.553 70">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #95989a;
+      }
+
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        font-size: 30px;
+        font-family: Mina-Bold, Mina;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g id="availability" transform="translate(1763 347)">
+    <path id="Shape_1_copy_9" data-name="Shape 1 copy 9" class="cls-1" d="M68.153,317.658l1.1-51.85c-5.879,2.45-9.7,3.663-14.886,3.747,9.047-5.607,13.858-12.957,18.417-21.848,4,8.962,8.96,16.065,17.491,22.145-5.62-.43-9-1.494-15.139-4.073l-1.1,51.928Z" transform="translate(415.837 1370.083)"/>
+    <text id="Availability-2" data-name="Availability" class="cls-2" transform="translate(516.756 1661.106)"><tspan x="0" y="0">Availability</tspan></text>
+  </g>
+</svg>

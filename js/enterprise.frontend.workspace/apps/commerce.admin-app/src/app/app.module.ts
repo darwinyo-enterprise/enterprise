@@ -4,10 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 import { FileUploadModule } from '@enterprise/material/file-upload';
+import { CoreModule } from '@enterprise/material/core';
 
 @NgModule({
   imports: [
     BrowserModule,
+    CoreModule,
     FileUploadModule,
     NxModule.forRoot(),
     RouterModule.forRoot([], { initialNavigation: 'enabled' })
@@ -15,4 +17,4 @@ import { FileUploadModule } from '@enterprise/material/file-upload';
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

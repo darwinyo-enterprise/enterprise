@@ -1,0 +1,20 @@
+{
+  "name": "enterprise.globalstyle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "sass-true": "^3.1.0",
+    "sassdoc": "^2.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node ./tests/test_sass.js",
+    "doc":"sassdoc src\\**\\*.scss -c sassdoc-config.yaml"
+  },
+  "author": "Darwin Yo",
+  "license": "ISC"
+}
