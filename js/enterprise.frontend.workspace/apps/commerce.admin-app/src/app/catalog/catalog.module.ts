@@ -6,6 +6,7 @@ import { ManufacturerModule } from '../manufacturer/manufacturer.module';
 
 @NgModule({
   imports: [CommonModule, ProductModule, CategoryModule, ManufacturerModule],
-  declarations: []
+  declarations: [],
+  exports: [ProductModule, CategoryModule, ManufacturerModule]
 })
 export class CatalogModule {}

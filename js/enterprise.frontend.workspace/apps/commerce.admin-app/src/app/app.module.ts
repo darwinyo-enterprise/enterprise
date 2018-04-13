@@ -4,17 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 import { FileUploadModule } from '@enterprise/material/file-upload';
-import { CoreModule } from '@enterprise/material/core';
+
+import { CatalogModule } from './catalog/catalog.module';
 
 @NgModule({
   imports: [
     BrowserModule,
-    CoreModule,
     FileUploadModule,
+    CatalogModule,
     NxModule.forRoot(),
     RouterModule.forRoot([], { initialNavigation: 'enabled' })
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

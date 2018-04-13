@@ -1,3 +1,21 @@
-<p>
-  list-manufacturer works!
-</p>
+<mat-card class="form-card">
+  <div class="form-card__title">
+    List Manufacturer
+  </div>
+  <div class="form-card__content">
+    <div class="list-item-actions">
+      <div class="list-item-actions__item" *ngFor="">
+        <div class="list-item-actions__item__grid">
+          <div class="list-item-actions__item__name">{{manufacturerName}}</div>
+          <div class="list-item-actions__item__edit">
+            <button mat-button>Edit</button>
+          </div>
+          <div class="list-item-actions__item__delete">
+            <button mat-button>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-card__footer"></div>
+</mat-card>

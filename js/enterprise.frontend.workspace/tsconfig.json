@@ -19,6 +19,9 @@
       "@enterprise/*": [
         "libs/*"
       ],
+      "@enterprise/commerce/*": [
+        "libs/commerce/*"
+      ],
       "@enterprise/material/*":[
         "libs/material/*"
       ]
