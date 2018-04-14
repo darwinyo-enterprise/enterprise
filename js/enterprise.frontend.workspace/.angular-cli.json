@@ -91,9 +91,23 @@
       "tags": []
     },
     {
+      "name": "commerce/core",
+      "root": "libs/commerce/core/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "commerce/manufacturer-lib",
       "root": "libs/commerce/manufacturer-lib/src",
       "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
+      "name": "core",
+      "root": "libs/core/src",
+      "test": "../../../test.js",
       "appRoot": "",
       "tags": []
     },

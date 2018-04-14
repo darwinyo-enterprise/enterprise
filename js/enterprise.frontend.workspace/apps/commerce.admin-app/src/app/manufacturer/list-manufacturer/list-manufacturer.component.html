@@ -4,14 +4,14 @@
   </div>
   <div class="form-card__content">
     <div class="list-item-actions">
-      <div class="list-item-actions__item" *ngFor="">
+      <div class="list-item-actions__item" *ngFor="let manufacturer of manufacturers$ | async">
         <div class="list-item-actions__item__grid">
-          <div class="list-item-actions__item__name">{{manufacturerName}}</div>
+          <div class="list-item-actions__item__name">{{manufacturer.name}}</div>
           <div class="list-item-actions__item__edit">
-            <button mat-button>Edit</button>
+            <button mat-button (click)="onEdit(manufacturer.id)">Edit</button>
           </div>
           <div class="list-item-actions__item__delete">
-            <button mat-button>Delete</button>
+            <button mat-button (click)="onDelete(manufacturer.id)">Delete</button>
           </div>
         </div>
       </div>

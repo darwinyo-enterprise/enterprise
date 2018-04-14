@@ -5,9 +5,10 @@ import { SharedModule } from '@enterprise/shared';
 import { AddManufacturerComponent } from './add-manufacturer/add-manufacturer.component';
 import { ListManufacturerComponent } from './list-manufacturer/list-manufacturer.component';
 import { EditManufacturerComponent } from '../manufacturer/edit-manufacturer/edit-manufacturer.component';
+import { ManufacturerLibModule } from '@enterprise/commerce/manufacturer-lib';
 
 @NgModule({
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, ManufacturerLibModule],
   declarations: [
     AddManufacturerComponent,
     ListManufacturerComponent,
@@ -19,4 +20,4 @@ import { EditManufacturerComponent } from '../manufacturer/edit-manufacturer/edi
     EditManufacturerComponent
   ]
 })
-export class ManufacturerModule { }
+export class ManufacturerModule {}

@@ -9,7 +9,10 @@ describe('ManufacturerService', () => {
     });
   });
 
-  it('should be created', inject([ManufacturerService], (service: ManufacturerService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([ManufacturerService], (service: ManufacturerService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });
