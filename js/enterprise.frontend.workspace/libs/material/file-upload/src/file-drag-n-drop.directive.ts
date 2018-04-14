@@ -2,7 +2,7 @@ import { Directive, HostListener, HostBinding } from '@angular/core';
 import { Input } from '@angular/core';
 
 @Directive({
-  selector: '[appFileDragNDrop]'
+  selector: '[emFileDragNDrop]'
 })
 export class FileDragNDropDirective {
   @Input() fileMultiple: boolean;
@@ -26,6 +26,7 @@ export class FileDragNDropDirective {
     let files = evt.dataTransfer.files;
     if (files.length > 0) {
       this.background = '#eee';
+      console.log(files);
     }
   }
   constructor() {}
