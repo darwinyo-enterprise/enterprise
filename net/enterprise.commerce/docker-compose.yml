@@ -6,3 +6,10 @@ services:
     build:
       context: .
       dockerfile: Catalog,API/Dockerfile
+
+  catalog.api:
+    image: catalogapi
+    build:
+      context: .
+      dockerfile: src/Catalog/Catalog.API/Dockerfile
+

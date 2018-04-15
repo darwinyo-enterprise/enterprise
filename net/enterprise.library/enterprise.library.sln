@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Library.EventBus", "Enterprise.Library.EventBus\Enterprise.Library.EventBus.csproj", "{8DCCC118-47D8-4527-9481-39E785176041}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{56D81872-1C66-43A0-85CF-84233CCD2C6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F70F6307-6818-4B22-87D7-CC0EBD62361A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.CommandBus", "src\Enterprise.Library.CommandBus\Enterprise.Library.CommandBus.csproj", "{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.EventBus", "src\Enterprise.Library.EventBus\Enterprise.Library.EventBus.csproj", "{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.EventBus.RabbitMQ", "src\Enterprise.Library.EventBus.RabbitMQ\Enterprise.Library.EventBus.RabbitMQ.csproj", "{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.IntegrationEventLog", "src\Enterprise.Library.IntegrationEventLog\Enterprise.Library.IntegrationEventLog.csproj", "{013117AA-611A-4197-A67B-3825DEB1C302}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.EventBus.Tests", "tests\Enterprise.Library.EventBus.Tests\Enterprise.Library.EventBus.Tests.csproj", "{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +23,36 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8DCCC118-47D8-4527-9481-39E785176041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DCCC118-47D8-4527-9481-39E785176041}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DCCC118-47D8-4527-9481-39E785176041}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DCCC118-47D8-4527-9481-39E785176041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{013117AA-611A-4197-A67B-3825DEB1C302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{013117AA-611A-4197-A67B-3825DEB1C302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{013117AA-611A-4197-A67B-3825DEB1C302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{013117AA-611A-4197-A67B-3825DEB1C302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D32E4C55-BA0E-42DD-8988-6C4C1E0688BD} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{2BA160FF-58C1-4BAE-AE09-2E78BDD2BA41} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{7F9C6FB9-8AC7-44D2-B2E0-5B474B54BF4F} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{013117AA-611A-4197-A67B-3825DEB1C302} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{5D2A8A6A-CC63-49F6-BEF3-951BB13B6C25} = {F70F6307-6818-4B22-87D7-CC0EBD62361A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ED04AAEB-893E-43FD-8BD4-88B291A037B0}

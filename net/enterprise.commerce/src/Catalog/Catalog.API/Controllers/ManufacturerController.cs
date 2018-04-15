@@ -4,38 +4,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catalog_API.Controllers
+namespace Catalog.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("api/v1/[controller]")]
+    public class ManufacturerController : Controller
     {
-        // GET api/values
+        // GET api/v1/manufacturer
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        // GET api/v1/manufacturer/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/values
+        // GET api/v1/manufacturer/image/5
+        [HttpGet("image/{id}")]
+        public string GetImage(Guid id)
+        {
+            return "value";
+        }
+
+        // POST api/v1/manufacturer
         [HttpPost]
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/v1/manufacturer/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/v1/manufacturer/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
