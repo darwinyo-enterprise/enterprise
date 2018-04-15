@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Catalog.API.Models
+﻿namespace Catalog.API.Models
 {
     public class Manufacturer
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -14,5 +12,7 @@ namespace Catalog.API.Models
         ///     File will be stored into filestream, after saved this will be altered to http url.
         /// </summary>
         public string ImageUrl { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }
