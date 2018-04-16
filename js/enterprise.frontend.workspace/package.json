@@ -23,7 +23,7 @@
     "update:skip": "./node_modules/.bin/nx update skip",
     "postinstall": "./node_modules/.bin/nx postinstall",
     "build:universal": "npm run build:client-and-server-bundles:dev && npm run webpack:server",
-    "serve:universal": "node dist/server.js",
+    "serve:universal": "node ./apps/commerce.admin-app/dist/server.js",
     "build:client-and-server-bundles:prod": "ng build --prod --app commerce.admin-app && ng build --prod --app commerce.admin-app.server --output-hashing=false",
     "build:client-and-server-bundles:dev": "ng build --app commerce.admin-app && ng build --app commerce.admin-app.server --output-hashing=false",
     "webpack:server": "webpack --config ./apps/commerce.admin-app/webpack.server.config.js --progress --colors"
