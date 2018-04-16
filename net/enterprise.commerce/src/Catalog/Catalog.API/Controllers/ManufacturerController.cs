@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
+using Enterprise.Library.FileUtility;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -15,12 +14,14 @@ namespace Catalog.API.Controllers
     [Route("api/v1/[controller]")]
     public class ManufacturerController : Controller
     {
+        private IHostingEnvironment _hostingEnvironment;
         private readonly CatalogContext _catalogContext;
         private readonly CatalogSettings _catalogSettings;
-        public ManufacturerController(CatalogContext catalogContext, IOptionsSnapshot<CatalogSettings> settings)
+        public ManufacturerController(CatalogContext catalogContext, IOptionsSnapshot<CatalogSettings> settings, IHostingEnvironment hostingEnvironment)
         {
             _catalogContext = catalogContext ??
-            throw new ArgumentNullException(nameof(catalogContext)); ;
+            throw new ArgumentNullException(nameof(catalogContext));
+            _hostingEnvironment = hostingEnvironment;
             _catalogSettings = settings.Value;
 
         }
@@ -67,9 +68,30 @@ namespace Catalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Manufacturer manufacturer)
         {
+
             return null;
         }
 
+        /// <summary>
+        /// store file upload to directory specified.
+        /// </summary>
+        /// <returns>
+        /// json response
+        /// </returns>
+        [HttpPost, DisableRequestSizeLimit]
+        public IActionResult UploadFile()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", file);
+                return Json("Upload Successful.");
+            }
+            catch (System.Exception ex)
+            {
+                return Json("Upload Failed: " + ex.Message);
+            }
+        }
         // PUT api/v1/manufacturer/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value) { }

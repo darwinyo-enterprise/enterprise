@@ -65,6 +65,33 @@
       "tags": []
     },
     {
+      "name": "commerce.admin-app.server",
+      "platform": "server",
+      "root": "apps/commerce.admin-app/src",
+      "outDir": "dist/server/commerce.admin-app",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.server.ts",
+      "polyfills": "polyfills.ts",
+      "test": "../../../test.js",
+      "tsconfig": "tsconfig.server.json",
+      "testTsconfig": "../../../tsconfig.spec.json",
+      "prefix": "eca",
+      "styles": [
+        "styles.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      },
+      "tags": []
+    },
+    {
       "name": "commerce.client-app",
       "root": "apps/commerce.client-app/src",
       "outDir": "dist/apps/commerce.client-app",

@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, PLATFORM_ID, APP_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
@@ -11,7 +12,7 @@ import * as cc from '@enterprise/commerce/core';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'enterprise-commerce-admin-app' }),
     cc.CoreModule,
     FileUploadModule,
     CatalogModule,
@@ -21,4 +22,12 @@ import * as cc from '@enterprise/commerce/core';
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(APP_ID) private appId: string) {
+    const platform = isPlatformBrowser(platformId) ?
+      'in the browser' : 'on the server';
+    console.log(`Running ${platform} with appId=${appId}`);
+  }
+}

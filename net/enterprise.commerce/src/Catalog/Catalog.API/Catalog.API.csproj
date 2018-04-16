@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj" />
     <ProjectReference Include="..\..\..\..\enterprise.library\src\Enterprise.Library.IntegrationEventLog\Enterprise.Library.IntegrationEventLog.csproj" />
   </ItemGroup>
 
