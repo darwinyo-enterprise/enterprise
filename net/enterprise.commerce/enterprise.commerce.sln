@@ -9,11 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "src\Catalog\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A94248FA-4981-426A-BC12-A9D3261E6A2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.IntegrationEventLog", "..\enterprise.library\src\Enterprise.Library.IntegrationEventLog\Enterprise.Library.IntegrationEventLog.csproj", "{9FAAFDB2-F860-4FF3-922D-02424353B6DF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{A2A5FB03-1DD5-41A1-8D6C-9863B8837478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Library.FileUtility", "..\enterprise.library\src\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj", "{AA5E9500-4D76-4E48-A8F7-F13E346C31F1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HealthChecks", "HealthChecks", "{F5A6A326-F457-4BA4-B289-A8546E664A35}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.FileUtility", "..\enterprise.library\src\FileUtility\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj", "{F35C16E4-E350-4EE4-8645-C6C90400FD74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks", "..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj", "{F7EE2D01-9120-4ABB-B258-48186EBD584C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks.SqlServer", "..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj", "{815AD589-12CD-49AC-AC10-A6B3D94ABF43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks.AzureStorage", "..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.AzureStorage\Enterprise.Extensions.HealthChecks.AzureStorage.csproj", "{11394D42-CF18-4FD6-BF43-24B4D7909723}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.HealthChecks", "..\enterprise.library\src\HealthChecks\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj", "{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,23 +37,39 @@ Global
 		{BDAE9B84-2B6F-46F9-99A8-1C21AAD93B39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDAE9B84-2B6F-46F9-99A8-1C21AAD93B39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDAE9B84-2B6F-46F9-99A8-1C21AAD93B39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FAAFDB2-F860-4FF3-922D-02424353B6DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FAAFDB2-F860-4FF3-922D-02424353B6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FAAFDB2-F860-4FF3-922D-02424353B6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FAAFDB2-F860-4FF3-922D-02424353B6DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA5E9500-4D76-4E48-A8F7-F13E346C31F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA5E9500-4D76-4E48-A8F7-F13E346C31F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA5E9500-4D76-4E48-A8F7-F13E346C31F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA5E9500-4D76-4E48-A8F7-F13E346C31F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35C16E4-E350-4EE4-8645-C6C90400FD74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35C16E4-E350-4EE4-8645-C6C90400FD74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35C16E4-E350-4EE4-8645-C6C90400FD74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35C16E4-E350-4EE4-8645-C6C90400FD74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7EE2D01-9120-4ABB-B258-48186EBD584C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7EE2D01-9120-4ABB-B258-48186EBD584C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7EE2D01-9120-4ABB-B258-48186EBD584C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7EE2D01-9120-4ABB-B258-48186EBD584C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{815AD589-12CD-49AC-AC10-A6B3D94ABF43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{815AD589-12CD-49AC-AC10-A6B3D94ABF43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{815AD589-12CD-49AC-AC10-A6B3D94ABF43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{815AD589-12CD-49AC-AC10-A6B3D94ABF43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11394D42-CF18-4FD6-BF43-24B4D7909723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11394D42-CF18-4FD6-BF43-24B4D7909723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11394D42-CF18-4FD6-BF43-24B4D7909723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11394D42-CF18-4FD6-BF43-24B4D7909723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BDAE9B84-2B6F-46F9-99A8-1C21AAD93B39} = {A94248FA-4981-426A-BC12-A9D3261E6A2D}
-		{9FAAFDB2-F860-4FF3-922D-02424353B6DF} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
 		{A2A5FB03-1DD5-41A1-8D6C-9863B8837478} = {A94248FA-4981-426A-BC12-A9D3261E6A2D}
-		{AA5E9500-4D76-4E48-A8F7-F13E346C31F1} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
+		{F5A6A326-F457-4BA4-B289-A8546E664A35} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
+		{F35C16E4-E350-4EE4-8645-C6C90400FD74} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
+		{F7EE2D01-9120-4ABB-B258-48186EBD584C} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
+		{815AD589-12CD-49AC-AC10-A6B3D94ABF43} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
+		{11394D42-CF18-4FD6-BF43-24B4D7909723} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
+		{11C98C91-AA8E-4C47-9FEA-94920DA7AC0A} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {848A472E-7567-47EF-B122-B016D364DC30}
