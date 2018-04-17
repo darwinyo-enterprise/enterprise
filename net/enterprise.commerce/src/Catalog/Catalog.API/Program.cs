@@ -1,12 +1,9 @@
 ﻿using System.IO;
-using Catalog.API.Infrastructure;
 using Enterprise.Library.HealthChecks;
-using Enterprise.Library.IntegrationEventLog;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Catalog.API
 {
@@ -37,7 +34,7 @@ namespace Catalog.API
                 .UseApplicationInsights()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseWebRoot("Pics")
+                .UseWebRoot("Manufacturer")
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
                     config.AddEnvironmentVariables();

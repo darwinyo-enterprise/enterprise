@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Enterprise.Extensions.HealthChecks;
 using Enterprise.Extensions.HealthChecks.AzureStorage;
 using Enterprise.Extensions.HealthChecks.SqlServer;
-using Enterprise.Library.IntegrationEventLog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;

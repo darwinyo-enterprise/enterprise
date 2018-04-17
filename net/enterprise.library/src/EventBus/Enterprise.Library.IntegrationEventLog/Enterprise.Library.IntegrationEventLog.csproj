@@ -23,4 +23,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Enterprise.Library.EventBus">
+      <HintPath>..\..\..\..\..\..\Users\Darwin Yo\.nuget\packages\enterprise.library.eventbus\1.1.0\lib\netstandard2.0\Enterprise.Library.EventBus.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

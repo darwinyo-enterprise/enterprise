@@ -1,4 +1,6 @@
 ﻿using System;
+using Enterprise.Library.EventBus.Events;
+using Newtonsoft.Json;
 
 namespace Enterprise.Library.IntegrationEventLog
 {
@@ -7,22 +9,21 @@ namespace Enterprise.Library.IntegrationEventLog
     /// </summary>
     public class IntegrationEventLogEntry
     {
-        public IntegrationEventLogEntry(Guid eventId, string eventTypeName, EventStateEnum state, int timesSent,
-            DateTime creationTime, string content)
+        private IntegrationEventLogEntry() { }
+        public IntegrationEventLogEntry(IntegrationEvent @event)
         {
-            EventId = eventId;
-            EventTypeName = eventTypeName;
-            State = state;
-            TimesSent = timesSent;
-            CreationTime = creationTime;
-            Content = content;
+            EventId = @event.Id;
+            CreationTime = @event.CreationDate;
+            EventTypeName = @event.GetType().FullName;
+            Content = JsonConvert.SerializeObject(@event);
+            State = EventStateEnum.NotPublished;
+            TimesSent = 0;
         }
-
-        public Guid EventId { get; }
-        public string EventTypeName { get; }
-        public EventStateEnum State { get; }
-        public int TimesSent { get; }
-        public DateTime CreationTime { get; }
-        public string Content { get; }
+        public Guid EventId { get; private set; }
+        public string EventTypeName { get; private set; }
+        public EventStateEnum State { get; set; }
+        public int TimesSent { get; set; }
+        public DateTime CreationTime { get; private set; }
+        public string Content { get; private set; }
     }
 }

@@ -23,4 +23,12 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\FileUtility\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.AzureStorage\Enterprise.Extensions.HealthChecks.AzureStorage.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj" />
+  </ItemGroup>
+
 </Project>
