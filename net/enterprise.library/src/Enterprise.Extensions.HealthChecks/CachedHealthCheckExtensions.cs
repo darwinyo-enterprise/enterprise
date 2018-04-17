@@ -5,11 +5,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Extensions.HealthChecks
+namespace Enterprise.Extensions.HealthChecks
 {
     public static class CachedHealthCheckExtensions
     {
-        public static ValueTask<IHealthCheckResult> RunAsync(this CachedHealthCheck check, IServiceProvider serviceProvider)
+        public static ValueTask<IHealthCheckResult> RunAsync(this CachedHealthCheck check,
+            IServiceProvider serviceProvider)
         {
             Guard.ArgumentNotNull(nameof(check), check);
 

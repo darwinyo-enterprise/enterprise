@@ -15,7 +15,7 @@ namespace Enterprise.Library.IntegrationEventLog.Utilities
 
         public static ResilientTransaction New(DbContext context)
         {
-            return new ResilientTransaction(context: context);
+            return new ResilientTransaction(context);
         }
 
         public async Task ExecuteAsync(Func<Task> action)

@@ -73,9 +73,9 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             var policy = Policy.Handle<BrokerUnreachableException>()
                 .Or<SocketException>()
                 .WaitAndRetry(
-                    retryCount: _retryCount,
+                    _retryCount,
                     sleepDurationProvider: retryAttempt =>
-                        TimeSpan.FromSeconds(Math.Pow(x: 2, y: retryAttempt)),
+                        TimeSpan.FromSeconds(Math.Pow(2, y: retryAttempt)),
                     onRetry: (ex, time) => { _logger.LogWarning(ex.ToString()); });
 
             using (var channel = _persistentConnection.CreateModel())
@@ -84,11 +84,11 @@ namespace Enterprise.Library.EventBus.RabbitMQ
 
                 // to guarantee exchange exists.
                 // type direct means it will directly use bindingkey or routingkey instead of queue name.
-                channel.ExchangeDeclare(exchange: BrokerName,
+                channel.ExchangeDeclare(BrokerName,
                     type: "direct");
 
-                var message = JsonConvert.SerializeObject(value: @event);
-                var body = Encoding.UTF8.GetBytes(s: message);
+                var message = JsonConvert.SerializeObject(@event);
+                var body = Encoding.UTF8.GetBytes(message);
 
                 policy.Execute(() =>
                 {
@@ -97,7 +97,7 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                     properties.DeliveryMode = 2; // persistent
 
                     // ReSharper disable once AccessToDisposedClosure
-                    channel.BasicPublish(exchange: BrokerName,
+                    channel.BasicPublish(BrokerName,
                         routingKey: eventName,
                         mandatory: true,
                         basicProperties: properties,
@@ -109,8 +109,8 @@ namespace Enterprise.Library.EventBus.RabbitMQ
         public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            DoInternalSubscription(eventName: eventName);
-            _subsManager.AddDynamicSubscription<TH>(eventName: eventName);
+            DoInternalSubscription(eventName);
+            _subsManager.AddDynamicSubscription<TH>(eventName);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = _subsManager.GetEventKey<T>();
-            DoInternalSubscription(eventName: eventName);
+            DoInternalSubscription(eventName);
             _subsManager.AddSubscription<T, TH>();
         }
 
@@ -159,7 +159,7 @@ namespace Enterprise.Library.EventBus.RabbitMQ
         public void UnsubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            _subsManager.RemoveDynamicSubscription<TH>(eventName: eventName);
+            _subsManager.RemoveDynamicSubscription<TH>(eventName);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             using (var channel = _persistentConnection.CreateModel())
             {
                 // unbind queue by routing key
-                channel.QueueUnbind(queue: _queueName,
+                channel.QueueUnbind(_queueName,
                     exchange: BrokerName,
                     routingKey: eventName);
 
@@ -198,14 +198,14 @@ namespace Enterprise.Library.EventBus.RabbitMQ
         /// </param>
         private void DoInternalSubscription(string eventName)
         {
-            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName: eventName);
+            var containsKey = _subsManager.HasSubscriptionsForEvent(eventName);
             if (!containsKey)
             {
                 if (!_persistentConnection.IsConnected) _persistentConnection.TryConnect();
 
                 using (var channel = _persistentConnection.CreateModel())
                 {
-                    channel.QueueBind(queue: _queueName,
+                    channel.QueueBind(_queueName,
                         exchange: BrokerName,
                         routingKey: eventName);
                 }
@@ -225,18 +225,18 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             var channel = _persistentConnection.CreateModel();
 
             // make sure exchange is declared
-            channel.ExchangeDeclare(exchange: BrokerName,
+            channel.ExchangeDeclare(BrokerName,
                 type: "direct");
 
             // declare queue
-            channel.QueueDeclare(queue: _queueName,
+            channel.QueueDeclare(_queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
                 arguments: null);
 
             // create instance customer
-            var consumer = new EventingBasicConsumer(model: channel);
+            var consumer = new EventingBasicConsumer(channel);
 
             // hook customer when event received.
             consumer.Received += async (model, ea) =>
@@ -245,17 +245,17 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                 var eventName = ea.RoutingKey;
 
                 // get message from event bus
-                var message = Encoding.UTF8.GetString(bytes: ea.Body);
+                var message = Encoding.UTF8.GetString(ea.Body);
 
                 // process event (custom)
-                await ProcessEvent(eventName: eventName, message: message);
+                await ProcessEvent(eventName, message: message);
 
                 // acknowledge the queue message. to dequeue message.
-                channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                channel.BasicAck(ea.DeliveryTag, multiple: false);
             };
 
             // consume queue
-            channel.BasicConsume(queue: _queueName,
+            channel.BasicConsume(_queueName,
                 autoAck: false,
                 consumer: consumer);
 
@@ -286,28 +286,28 @@ namespace Enterprise.Library.EventBus.RabbitMQ
         private async Task ProcessEvent(string eventName, string message)
         {
             // check if already has this event name
-            if (_subsManager.HasSubscriptionsForEvent(eventName: eventName))
-                using (var scope = _autofac.BeginLifetimeScope(tag: _autofacScopeName))
+            if (_subsManager.HasSubscriptionsForEvent(eventName))
+                using (var scope = _autofac.BeginLifetimeScope(_autofacScopeName))
                 {
                     // get list subscriber for this event
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName: eventName);
+                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
                     foreach (var subscription in subscriptions)
                         if (subscription.IsDynamic)
                         {
                             var handler =
-                                scope.ResolveOptional(serviceType: subscription.HandlerType) as
+                                scope.ResolveOptional(subscription.HandlerType) as
                                     IDynamicIntegrationEventHandler;
-                            dynamic eventData = JObject.Parse(json: message);
+                            dynamic eventData = JObject.Parse(message);
                             if (handler != null) await handler.Handle(eventData: eventData);
                         }
                         else
                         {
-                            var eventType = _subsManager.GetEventTypeByName(eventName: eventName);
-                            var integrationEvent = JsonConvert.DeserializeObject(value: message, type: eventType);
-                            var handler = scope.ResolveOptional(serviceType: subscription.HandlerType);
+                            var eventType = _subsManager.GetEventTypeByName(eventName);
+                            var integrationEvent = JsonConvert.DeserializeObject(message, type: eventType);
+                            var handler = scope.ResolveOptional(subscription.HandlerType);
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                             await (Task) concreteType.GetMethod("Handle")
-                                .Invoke(obj: handler, parameters: new[] {integrationEvent});
+                                .Invoke(handler, parameters: new[] {integrationEvent});
                         }
                 }
         }

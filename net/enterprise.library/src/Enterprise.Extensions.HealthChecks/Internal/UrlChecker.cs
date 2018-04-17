@@ -8,7 +8,11 @@ namespace Enterprise.Extensions.HealthChecks.Internal
 {
     public class UrlChecker
     {
+        /// <summary>
+        ///     Function For Check Health
+        /// </summary>
         private readonly Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> _checkFunc;
+
         private readonly string _url;
 
         public UrlChecker(Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> checkFunc, string url)
@@ -22,6 +26,12 @@ namespace Enterprise.Extensions.HealthChecks.Internal
 
         public CheckStatus PartiallyHealthyStatus { get; set; } = CheckStatus.Warning;
 
+        /// <summary>
+        ///     Check Service Health Function
+        /// </summary>
+        /// <returns>
+        ///     Health Service Info
+        /// </returns>
         public async Task<IHealthCheckResult> CheckAsync()
         {
             using (var httpClient = CreateHttpClient())
@@ -33,33 +43,50 @@ namespace Enterprise.Extensions.HealthChecks.Internal
                 }
                 catch (Exception ex)
                 {
-                    var data = new Dictionary<string, object> { { "url", _url } };
+                    var data = new Dictionary<string, object> {{"url", _url}};
                     return HealthCheckResult.Unhealthy($"Exception during check: {ex.GetType().FullName}", data);
                 }
             }
         }
 
+        /// <summary>
+        ///     Create Http Client Object
+        /// </summary>
+        /// <returns>HttpClient Object</returns>
         private HttpClient CreateHttpClient()
         {
             var httpClient = GetHttpClient();
-            httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+            httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
             return httpClient;
         }
 
+        /// <summary>
+        ///     Check Service Health By HttpResponse
+        /// </summary>
+        /// <param name="response">
+        ///     Check Service Health Response
+        /// </param>
+        /// <returns>
+        ///     Services Health Info
+        /// </returns>
         public static async ValueTask<IHealthCheckResult> DefaultUrlCheck(HttpResponseMessage response)
         {
             var status = response.IsSuccessStatusCode ? CheckStatus.Healthy : CheckStatus.Unhealthy;
             var data = new Dictionary<string, object>
             {
-                { "url", response.RequestMessage.RequestUri.ToString() },
-                { "status", (int)response.StatusCode },
-                { "reason", response.ReasonPhrase },
-                { "body", await response.Content?.ReadAsStringAsync() }
+                {"url", response.RequestMessage.RequestUri.ToString()},
+                {"status", (int) response.StatusCode},
+                {"reason", response.ReasonPhrase},
+                // ReSharper disable once PossibleNullReferenceException
+                {"body", await response.Content?.ReadAsStringAsync()}
             };
-            return HealthCheckResult.FromStatus(status, $"status code {response.StatusCode} ({(int)response.StatusCode})", data);
+            return HealthCheckResult.FromStatus(status,
+                $"status code {response.StatusCode} ({(int) response.StatusCode})", data);
         }
 
         protected virtual HttpClient GetHttpClient()
-            => new HttpClient();
+        {
+            return new HttpClient();
+        }
     }
 }

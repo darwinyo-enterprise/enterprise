@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Extensions.HealthChecks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Newtonsoft.Json;
 
-namespace Enterprise.Extensions.HealthChecks
+namespace Enterprise.Library.HealthChecks
 {
     public class HealthCheckMiddleware
     {
@@ -41,8 +44,8 @@ namespace Enterprise.Extensions.HealthChecks
                     context.Response.StatusCode = 503;
 
                 context.Response.Headers.Add("content-type", "application/json");
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { status = status.ToString() }));
-                return;
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new {status = status.ToString()}),
+                    timeoutTokenSource.Token);
             }
             else
             {
@@ -59,10 +62,7 @@ namespace Enterprise.Extensions.HealthChecks
                     return true;
             }
 
-            if (context.Request.Path == _path)
-            {
-                return true;
-            }
+            if (context.Request.Path == _path) return true;
 
             return false;
         }

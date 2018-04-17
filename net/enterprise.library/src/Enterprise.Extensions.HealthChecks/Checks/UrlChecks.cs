@@ -4,9 +4,9 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.HealthChecks.Internal;
+using Enterprise.Extensions.HealthChecks.Internal;
 
-namespace Microsoft.Extensions.HealthChecks
+namespace Enterprise.Extensions.HealthChecks.Checks
 {
     public static partial class HealthCheckBuilderExtensions
     {
@@ -19,12 +19,16 @@ namespace Microsoft.Extensions.HealthChecks
             return AddUrlCheck(builder, url, builder.DefaultCacheDuration);
         }
 
-        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url, TimeSpan cacheDuration)
-            => AddUrlCheck(builder, url, response => UrlChecker.DefaultUrlCheck(response), cacheDuration);
+        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
+            TimeSpan cacheDuration)
+        {
+            return AddUrlCheck(builder, url, response => UrlChecker.DefaultUrlCheck(response), cacheDuration);
+        }
 
         // Func returning IHealthCheckResult
 
-        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url, Func<HttpResponseMessage, IHealthCheckResult> checkFunc)
+        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
+            Func<HttpResponseMessage, IHealthCheckResult> checkFunc)
         {
             Guard.ArgumentNotNull(nameof(builder), builder);
 
@@ -32,17 +36,19 @@ namespace Microsoft.Extensions.HealthChecks
         }
 
         public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
-                                                     Func<HttpResponseMessage, IHealthCheckResult> checkFunc,
-                                                     TimeSpan cacheDuration)
+            Func<HttpResponseMessage, IHealthCheckResult> checkFunc,
+            TimeSpan cacheDuration)
         {
             Guard.ArgumentNotNull(nameof(checkFunc), checkFunc);
 
-            return AddUrlCheck(builder, url, response => new ValueTask<IHealthCheckResult>(checkFunc(response)), cacheDuration);
+            return AddUrlCheck(builder, url, response => new ValueTask<IHealthCheckResult>(checkFunc(response)),
+                cacheDuration);
         }
 
         // Func returning Task<IHealthCheckResult>
 
-        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url, Func<HttpResponseMessage, Task<IHealthCheckResult>> checkFunc)
+        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
+            Func<HttpResponseMessage, Task<IHealthCheckResult>> checkFunc)
         {
             Guard.ArgumentNotNull(nameof(builder), builder);
 
@@ -50,17 +56,19 @@ namespace Microsoft.Extensions.HealthChecks
         }
 
         public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
-                                                     Func<HttpResponseMessage, Task<IHealthCheckResult>> checkFunc,
-                                                     TimeSpan cacheDuration)
+            Func<HttpResponseMessage, Task<IHealthCheckResult>> checkFunc,
+            TimeSpan cacheDuration)
         {
             Guard.ArgumentNotNull(nameof(checkFunc), checkFunc);
 
-            return AddUrlCheck(builder, url, response => new ValueTask<IHealthCheckResult>(checkFunc(response)), cacheDuration);
+            return AddUrlCheck(builder, url, response => new ValueTask<IHealthCheckResult>(checkFunc(response)),
+                cacheDuration);
         }
 
         // Func returning ValueTask<IHealthCheckResult>
 
-        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url, Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> checkFunc)
+        public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
+            Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> checkFunc)
         {
             Guard.ArgumentNotNull(nameof(builder), builder);
 
@@ -68,8 +76,8 @@ namespace Microsoft.Extensions.HealthChecks
         }
 
         public static HealthCheckBuilder AddUrlCheck(this HealthCheckBuilder builder, string url,
-                                                     Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> checkFunc,
-                                                     TimeSpan cacheDuration)
+            Func<HttpResponseMessage, ValueTask<IHealthCheckResult>> checkFunc,
+            TimeSpan cacheDuration)
         {
             Guard.ArgumentNotNull(nameof(builder), builder);
             Guard.ArgumentNotNullOrEmpty(nameof(url), url);

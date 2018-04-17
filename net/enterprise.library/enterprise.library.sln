@@ -19,11 +19,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.EventBus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.FileUtility", "src\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj", "{EC8B1541-3C59-4CE0-9696-0DFC869F6A6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Library.HealthChecks", "src\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj", "{ADC4DBA0-1A9D-481E-90B5-413A6E6D26B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.HealthChecks", "src\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj", "{ADC4DBA0-1A9D-481E-90B5-413A6E6D26B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Extensions.HealthChecks", "src\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj", "{F1E941DB-9CFA-49D8-80D3-E2931076A00F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks", "src\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj", "{F1E941DB-9CFA-49D8-80D3-E2931076A00F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Extensions.HealthChecks.SqlServer", "src\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj", "{56FA05F8-B486-4522-8710-3C778001028E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks.SqlServer", "src\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj", "{56FA05F8-B486-4522-8710-3C778001028E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{DF3E9DC0-5F66-4D4E-92AE-D92762C0CCDE}"
+	ProjectSection(SolutionItems) = preProject
+		Guard.cs = Guard.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +86,7 @@ Global
 		{ADC4DBA0-1A9D-481E-90B5-413A6E6D26B7} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
 		{F1E941DB-9CFA-49D8-80D3-E2931076A00F} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
 		{56FA05F8-B486-4522-8710-3C778001028E} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{DF3E9DC0-5F66-4D4E-92AE-D92762C0CCDE} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ED04AAEB-893E-43FD-8BD4-88B291A037B0}

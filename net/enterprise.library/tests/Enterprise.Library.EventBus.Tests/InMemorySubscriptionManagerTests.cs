@@ -18,7 +18,7 @@ namespace Enterprise.Library.EventBus.Tests
         public void After_Creation_Should_Be_Empty()
         {
             var manager = new InMemoryEventBusSubscriptionsManager();
-            Assert.True(condition: manager.IsEmpty);
+            Assert.True(manager.IsEmpty);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Enterprise.Library.EventBus.Tests
             manager.OnEventRemoved += (o, e) => raised = true;
             manager.AddSubscription<TestIntegrationEvent, TestIntegrationEventHandler>();
             manager.RemoveSubscription<TestIntegrationEvent, TestIntegrationEventHandler>();
-            Assert.True(condition: raised);
+            Assert.True(raised);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Enterprise.Library.EventBus.Tests
             manager.AddSubscription<TestIntegrationEvent, TestIntegrationEventHandler>();
             manager.AddSubscription<TestIntegrationEvent, TestIntegrationOtherEventHandler>();
             var handlers = manager.GetHandlersForEvent<TestIntegrationEvent>();
-            Assert.Equal(expected: 2, actual: handlers.Count());
+            Assert.Equal(2, actual: handlers.Count());
         }
     }
 }

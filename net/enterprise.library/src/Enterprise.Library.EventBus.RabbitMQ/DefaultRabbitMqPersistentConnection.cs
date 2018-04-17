@@ -84,8 +84,8 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             {
                 var policy = Policy.Handle<SocketException>()
                     .Or<BrokerUnreachableException>()
-                    .WaitAndRetry(retryCount: _retryCount,
-                        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(x: 2, y: retryAttempt)),
+                    .WaitAndRetry(_retryCount,
+                        sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, y: retryAttempt)),
                         onRetry: (ex, time) => { _logger.LogWarning(ex.ToString()); }
                     );
 

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Extensions.HealthChecks
+namespace Enterprise.Extensions.HealthChecks
 {
     public class HealthCheckGroup
     {
@@ -28,7 +28,8 @@ namespace Microsoft.Extensions.HealthChecks
             get => _partialSuccessStatus;
             internal set
             {
-                Guard.ArgumentValid(value != CheckStatus.Unknown, nameof(value), "Check status 'Unknown' is not valid for partial success.");
+                Guard.ArgumentValid(value != CheckStatus.Unknown, nameof(value),
+                    "Check status 'Unknown' is not valid for partial success.");
 
                 _partialSuccessStatus = value;
             }

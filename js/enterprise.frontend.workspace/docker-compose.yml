@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  commerce-web.admin:
+    image: darwinyo/commerce-web.admin
+    build:
+      context: .
+      dockerfile: ./apps/commerce.admin-app/Dockerfile

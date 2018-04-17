@@ -9,7 +9,7 @@ namespace Enterprise.Library.IntegrationEventLog
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IntegrationEventLogEntry>(buildAction: ConfigureIntegrationEventLogEntry);
+            modelBuilder.Entity<IntegrationEventLogEntry>(ConfigureIntegrationEventLogEntry);
         }
 
         private void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<IntegrationEventLogEntry> builder)

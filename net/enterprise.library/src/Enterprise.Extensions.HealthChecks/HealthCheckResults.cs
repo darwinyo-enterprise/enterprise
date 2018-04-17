@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Extensions.HealthChecks
+namespace Enterprise.Extensions.HealthChecks
 {
     public class HealthCheckResults
     {

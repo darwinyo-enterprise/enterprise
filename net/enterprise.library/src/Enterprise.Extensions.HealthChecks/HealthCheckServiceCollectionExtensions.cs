@@ -1,19 +1,18 @@
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 using System;
 using System.Linq;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Enterprise.Extensions.HealthChecks
 {
     public static class HealthCheckServiceCollectionExtensions
     {
         private static readonly Type HealthCheckServiceInterface = typeof(IHealthCheckService);
 
-        public static IServiceCollection AddHealthChecks(this IServiceCollection services, Action<HealthCheckBuilder> checks)
+        public static IServiceCollection AddHealthChecks(this IServiceCollection services,
+            Action<HealthCheckBuilder> checks)
         {
-            Guard.OperationValid(!services.Any(descriptor => descriptor.ServiceType == HealthCheckServiceInterface), "AddHealthChecks may only be called once.");
+            Guard.OperationValid(services.All(descriptor => descriptor.ServiceType != HealthCheckServiceInterface),
+                "AddHealthChecks may only be called once.");
 
             var builder = new HealthCheckBuilder();
 

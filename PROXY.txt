@@ -1,3 +1,7 @@
 -- npm proxy
-npm config set proxy http://<username>:<password>@<proxy-server-url>:<port>
+npm config set proxy http://darwin.yo:123456789@10.88.88.15:8080
 npm config set https-proxy http://<username>:<password>@<proxy-server-url>:<port>
+
+-- git proxy
+git config --global http.proxy http://darwin.yo:123456789@10.88.88.15:8080
+git config --global --unset http.proxy
