@@ -78,7 +78,7 @@ namespace Catalog.API.Controllers
         /// <returns>
         ///     json response
         /// </returns>
-        [HttpPost]
+        [HttpPost("image")]
         [DisableRequestSizeLimit]
         public IActionResult UploadFile()
         {
