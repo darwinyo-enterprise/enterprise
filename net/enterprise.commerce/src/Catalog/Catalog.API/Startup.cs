@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Reflection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Filters;
 using Catalog.API.Infrastructure;
 using Catalog.API.IntegrationEvents;
@@ -16,8 +17,10 @@ using Enterprise.Library.EventBus.ServiceBus;
 using Enterprise.Library.IntegrationEventLog;
 using Enterprise.Library.IntegrationEventLog.Services;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +42,7 @@ namespace Catalog.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
 
@@ -118,51 +121,77 @@ namespace Catalog.API
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
-            //if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            //    services.AddSingleton<IServiceBusPersisterConnection>(sp =>
-            //    {
-            //        var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+                services.AddSingleton<IServiceBusPersisterConnection>(sp =>
+                {
+                    var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
 
-            //        var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
+                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(settings.EventBusConnection);
 
-            //        return new DefaultServiceBusPersisterConnection(serviceBusConnection);
-            //    });
-            //else
-            //    services.AddSingleton<IRabbitMqPersistentConnection>(sp =>
-            //    {
-            //        var logger = sp.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
+                    return new DefaultServiceBusPersisterConnection(serviceBusConnection);
+                });
+            else
+                services.AddSingleton<IRabbitMqPersistentConnection>(sp =>
+                {
+                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
 
-            //        var factory = new ConnectionFactory
-            //        {
-            //            HostName = Configuration["EventBusConnection"]
-            //        };
+                    var factory = new ConnectionFactory
+                    {
+                        HostName = Configuration["EventBusConnection"]
+                    };
 
-            //        if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-            //            factory.UserName = Configuration["EventBusUserName"];
+                    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+                        factory.UserName = Configuration["EventBusUserName"];
 
-            //        if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-            //            factory.Password = Configuration["EventBusPassword"];
+                    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+                        factory.Password = Configuration["EventBusPassword"];
 
-            //        var retryCount = 5;
-            //        if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-            //            retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
 
-            //        return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
-            //    });
+                    return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
+                });
 
             RegisterEventBus(services);
 
             var container = new ContainerBuilder();
-            //container.Populate(services);
-            //return new AutofacServiceProvider(container.Build());
+            container.Populate(services);
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            //Configure logs
 
-            app.UseMvc();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+            loggerFactory.AddAzureWebAppDiagnostics();
+            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                app.UsePathBase(pathBase);
+            }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
+            app.UseCors("CorsPolicy");
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+              .UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+              });
+
+            ConfigureEventBus(app);
         }
 
         private void RegisterAppInsights(IServiceCollection services)
@@ -170,51 +199,51 @@ namespace Catalog.API
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            //if (orchestratorType?.ToUpper() == "K8S") services.EnableKubernetes();
-            //if (orchestratorType?.ToUpper() == "SF")
-            //    services.AddSingleton<ITelemetryInitializer>(serviceProvider =>
-            //        new FabricTelemetryInitializer());
+            if (orchestratorType?.ToUpper() == "K8S") services.EnableKubernetes();
+            if (orchestratorType?.ToUpper() == "SF")
+                services.AddSingleton<ITelemetryInitializer>(serviceProvider =>
+                    new FabricTelemetryInitializer());
         }
 
         private void RegisterEventBus(IServiceCollection services)
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
-            //if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            //    services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
-            //    {
-            //        var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-            //        var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-            //        var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-            //        var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+            if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-            //        return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-            //            eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
-            //    });
-            //else
-            //    services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
-            //    {
-            //        var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
-            //        var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-            //        var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
-            //        var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
+                });
+            else
+                services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
+                {
+                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-            //        var retryCount = 5;
-            //        if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-            //            retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+                        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
 
-            //        return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope,
-            //            eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-            //    });
+                    return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope,
+                        eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                });
 
-            //services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             //services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
             //services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
         }
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
-            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             //eventBus
             //    .Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent,
             //        OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();

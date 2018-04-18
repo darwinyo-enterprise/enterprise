@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileUploadModel } from '../models/file-upload.model';
 
 @Component({
-  selector: 'file-upload-info',
+  selector: 'em-file-upload-info',
   templateUrl: './file-upload-info.component.html',
   styleUrls: ['./file-upload-info.component.scss']
 })

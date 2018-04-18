@@ -156,10 +156,8 @@ namespace Enterprise.Library.EventBus.ServiceBus
                     foreach (var subscription in subscriptions)
                         if (subscription.IsDynamic)
                         {
-                            var handler =
-                                scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
                             dynamic eventData = JObject.Parse(message);
-                            if (handler != null) await handler.Handle(eventData);
+                            if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler) await handler.Handle(eventData);
                         }
                         else
                         {
