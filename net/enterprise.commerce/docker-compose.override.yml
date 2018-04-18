@@ -15,7 +15,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Developer
     ports:
-      - "1433:1433"
+      - "5433:1433"
 
   nosql.data:
     ports:
