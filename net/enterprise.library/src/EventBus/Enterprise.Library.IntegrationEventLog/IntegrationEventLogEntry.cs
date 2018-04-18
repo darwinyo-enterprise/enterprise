@@ -9,7 +9,6 @@ namespace Enterprise.Library.IntegrationEventLog
     /// </summary>
     public class IntegrationEventLogEntry
     {
-        private IntegrationEventLogEntry() { }
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;
@@ -19,11 +18,12 @@ namespace Enterprise.Library.IntegrationEventLog
             State = EventStateEnum.NotPublished;
             TimesSent = 0;
         }
-        public Guid EventId { get; private set; }
-        public string EventTypeName { get; private set; }
+
+        public Guid EventId { get; }
+        public string EventTypeName { get; }
         public EventStateEnum State { get; set; }
         public int TimesSent { get; set; }
-        public DateTime CreationTime { get; private set; }
-        public string Content { get; private set; }
+        public DateTime CreationTime { get; }
+        public string Content { get; }
     }
 }

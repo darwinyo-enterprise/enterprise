@@ -14,20 +14,21 @@ namespace Catalog.API.Controllers
     [Route("api/v1/[controller]")]
     public class ManufacturerController : Controller
     {
-        private IHostingEnvironment _hostingEnvironment;
         private readonly CatalogContext _catalogContext;
         private readonly CatalogSettings _catalogSettings;
-        public ManufacturerController(CatalogContext catalogContext, IOptionsSnapshot<CatalogSettings> settings, IHostingEnvironment hostingEnvironment)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public ManufacturerController(CatalogContext catalogContext, IOptionsSnapshot<CatalogSettings> settings,
+            IHostingEnvironment hostingEnvironment)
         {
             _catalogContext = catalogContext ??
-            throw new ArgumentNullException(nameof(catalogContext));
+                              throw new ArgumentNullException(nameof(catalogContext));
             _hostingEnvironment = hostingEnvironment;
             _catalogSettings = settings.Value;
-
         }
 
         /// <summary>
-        /// Fetch All Manufacturers
+        ///     Fetch All Manufacturers
         /// </summary>
         /// <returns>list of manufacturers</returns>
         // GET api/v1/manufacturer
@@ -39,7 +40,7 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        /// Fetch Single Manufacturer by manufacturer id
+        ///     Fetch Single Manufacturer by manufacturer id
         /// </summary>
         /// <param name="id">manufacturer id</param>
         /// <returns>manufacturer</returns>
@@ -59,8 +60,8 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        /// Create New Manufacturer.
-        /// In this step we'll generate file from base64 to byte[] and store it as file stream sql
+        ///     Create New Manufacturer.
+        ///     In this step we'll generate file from base64 to byte[] and store it as file stream sql
         /// </summary>
         /// <param name="manufacturer"></param>
         /// <returns></returns>
@@ -68,17 +69,17 @@ namespace Catalog.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Manufacturer manufacturer)
         {
-
             return null;
         }
 
         /// <summary>
-        /// store file upload to directory specified.
+        ///     store file upload to directory specified.
         /// </summary>
         /// <returns>
-        /// json response
+        ///     json response
         /// </returns>
-        [HttpPost, DisableRequestSizeLimit]
+        [HttpPost]
+        [DisableRequestSizeLimit]
         public IActionResult UploadFile()
         {
             try
@@ -87,17 +88,22 @@ namespace Catalog.API.Controllers
                 FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", file);
                 return Json("Upload Successful.");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return Json("Upload Failed: " + ex.Message);
             }
         }
+
         // PUT api/v1/manufacturer/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) { }
+        public void Put(int id, [FromBody] string value)
+        {
+        }
 
         // DELETE api/v1/manufacturer/5
         [HttpDelete("{id}")]
-        public void Delete(int id) { }
+        public void Delete(int id)
+        {
+        }
     }
 }

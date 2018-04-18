@@ -10,8 +10,8 @@ namespace Enterprise.Library.IntegrationEventLog.Services
 {
     public class IntegrationEventLogService : IIntegrationEventLogService
     {
-        private readonly IntegrationEventLogContext _integrationEventLogContext;
         private readonly DbConnection _dbConnection;
+        private readonly IntegrationEventLogContext _integrationEventLogContext;
 
         public IntegrationEventLogService(DbConnection dbConnection)
         {
@@ -26,9 +26,8 @@ namespace Enterprise.Library.IntegrationEventLog.Services
         public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
         {
             if (transaction == null)
-            {
-                throw new ArgumentNullException("transaction", $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
-            }
+                throw new ArgumentNullException("transaction",
+                    $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
 
             var eventLogEntry = new IntegrationEventLogEntry(@event);
 

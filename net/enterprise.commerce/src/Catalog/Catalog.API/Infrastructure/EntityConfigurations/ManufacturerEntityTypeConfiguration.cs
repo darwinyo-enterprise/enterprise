@@ -19,10 +19,10 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(maxLength: 100);
+                .HasMaxLength(100);
 
             builder.Property(x => x.Description)
-                .IsRequired(required: false);
+                .IsRequired(false);
 
             builder.Property(x => x.ImageUrl)
                 .IsRequired();

@@ -12,18 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.2" />
+    <PackageReference Include="Autofac" Version="4.7.0" />
     <PackageReference Include="Enterprise.Library.EventBus" Version="1.1.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Polly" Version="5.8.0" />
     <PackageReference Include="RabbitMQ.Client" Version="5.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp">
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.CSharp\v4.0_4.0.0.0__b03f5f7f11d50a3a\Microsoft.CSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

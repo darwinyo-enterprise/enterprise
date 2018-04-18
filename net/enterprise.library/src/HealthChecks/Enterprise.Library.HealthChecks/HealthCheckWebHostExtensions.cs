@@ -7,12 +7,11 @@ namespace Enterprise.Library.HealthChecks
 {
     public static class HealthCheckWebHostExtensions
     {
-        // ReSharper disable once InconsistentNaming
-        private const int DEFAULT_TIMEOUT_SECONDS = 300;
+        private const int DefaultTimeoutSeconds = 300;
 
         public static void RunWhenHealthy(this IWebHost webHost)
         {
-            webHost.RunWhenHealthy(TimeSpan.FromSeconds(DEFAULT_TIMEOUT_SECONDS));
+            webHost.RunWhenHealthy(TimeSpan.FromSeconds(DefaultTimeoutSeconds));
         }
 
         public static void RunWhenHealthy(this IWebHost webHost, TimeSpan timeout)

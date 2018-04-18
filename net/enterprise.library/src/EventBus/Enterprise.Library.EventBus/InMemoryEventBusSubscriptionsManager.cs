@@ -47,7 +47,7 @@ namespace Enterprise.Library.EventBus
         public void AddDynamicSubscription<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            DoAddSubscription(typeof(TH), eventName, isDynamic: true);
+            DoAddSubscription(typeof(TH), eventName, true);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Enterprise.Library.EventBus
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = GetEventKey<T>();
-            DoAddSubscription(typeof(TH), eventName, isDynamic: false);
+            DoAddSubscription(typeof(TH), eventName, false);
             _eventTypes.Add(typeof(T));
         }
 
@@ -81,7 +81,7 @@ namespace Enterprise.Library.EventBus
             where TH : IDynamicIntegrationEventHandler
         {
             var handlerToRemove = FindDynamicSubscriptionToRemove<TH>(eventName);
-            DoRemoveHandler(eventName, subsToRemove: handlerToRemove);
+            DoRemoveHandler(eventName, handlerToRemove);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Enterprise.Library.EventBus
         {
             var handlerToRemove = FindSubscriptionToRemove<T, TH>();
             var eventName = GetEventKey<T>();
-            DoRemoveHandler(eventName, subsToRemove: handlerToRemove);
+            DoRemoveHandler(eventName, handlerToRemove);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Enterprise.Library.EventBus
         private void DoAddSubscription(Type handlerType, string eventName, bool isDynamic)
         {
             if (!HasSubscriptionsForEvent(eventName))
-                _handlers.Add(eventName, value: new List<SubscriptionInfo>());
+                _handlers.Add(eventName, new List<SubscriptionInfo>());
 
             if (_handlers[eventName].Any(s => s.HandlerType == handlerType))
                 throw new ArgumentException(
@@ -275,7 +275,7 @@ namespace Enterprise.Library.EventBus
         private SubscriptionInfo FindDynamicSubscriptionToRemove<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
-            return DoFindSubscriptionToRemove(eventName, handlerType: typeof(TH));
+            return DoFindSubscriptionToRemove(eventName, typeof(TH));
         }
 
 
@@ -296,7 +296,7 @@ namespace Enterprise.Library.EventBus
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = GetEventKey<T>();
-            return DoFindSubscriptionToRemove(eventName, handlerType: typeof(TH));
+            return DoFindSubscriptionToRemove(eventName, typeof(TH));
         }
 
 

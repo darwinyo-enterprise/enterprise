@@ -36,7 +36,7 @@ namespace Enterprise.Library.EventBus
             /// </returns>
             public static SubscriptionInfo Dynamic(Type handlerType)
             {
-                return new SubscriptionInfo(true, handlerType: handlerType);
+                return new SubscriptionInfo(true, handlerType);
             }
 
             /// <summary>
@@ -50,7 +50,7 @@ namespace Enterprise.Library.EventBus
             /// </returns>
             public static SubscriptionInfo Typed(Type handlerType)
             {
-                return new SubscriptionInfo(false, handlerType: handlerType);
+                return new SubscriptionInfo(false, handlerType);
             }
         }
     }

@@ -9,5 +9,4 @@
     {
         void Handle(IntegrationCommand<T> command);
     }
-
 }

@@ -35,10 +35,7 @@ namespace Catalog.API
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseWebRoot("Manufacturer")
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    config.AddEnvironmentVariables();
-                })
+                .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

@@ -13,10 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\EventBus\Enterprise.Library.EventBus.RabbitMQ\Enterprise.Library.EventBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\EventBus\Enterprise.Library.EventBus.ServiceBus\Enterprise.Library.EventBus.ServiceBus.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\EventBus\Enterprise.Library.EventBus\Enterprise.Library.EventBus.csproj" />
+    <ProjectReference Include="..\..\..\..\enterprise.library\src\EventBus\Enterprise.Library.IntegrationEventLog\Enterprise.Library.IntegrationEventLog.csproj" />
     <ProjectReference Include="..\..\..\..\enterprise.library\src\FileUtility\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj" />
     <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.AzureStorage\Enterprise.Extensions.HealthChecks.AzureStorage.csproj" />
     <ProjectReference Include="..\..\..\..\enterprise.library\src\HealthChecks\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj" />

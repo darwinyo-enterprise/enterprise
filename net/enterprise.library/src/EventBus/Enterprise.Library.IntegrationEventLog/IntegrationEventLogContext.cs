@@ -16,7 +16,7 @@ namespace Enterprise.Library.IntegrationEventLog
             builder.Entity<IntegrationEventLogEntry>(ConfigureIntegrationEventLogEntry);
         }
 
-        void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<IntegrationEventLogEntry> builder)
+        private void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<IntegrationEventLogEntry> builder)
         {
             builder.ToTable("IntegrationEventLog");
 
@@ -39,7 +39,6 @@ namespace Enterprise.Library.IntegrationEventLog
 
             builder.Property(e => e.EventTypeName)
                 .IsRequired();
-
         }
     }
 }

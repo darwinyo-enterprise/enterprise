@@ -74,9 +74,9 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                 .Or<SocketException>()
                 .WaitAndRetry(
                     _retryCount,
-                    sleepDurationProvider: retryAttempt =>
-                        TimeSpan.FromSeconds(Math.Pow(2, y: retryAttempt)),
-                    onRetry: (ex, time) => { _logger.LogWarning(ex.ToString()); });
+                    retryAttempt =>
+                        TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (ex, time) => { _logger.LogWarning(ex.ToString()); });
 
             using (var channel = _persistentConnection.CreateModel())
             {
@@ -85,7 +85,7 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                 // to guarantee exchange exists.
                 // type direct means it will directly use bindingkey or routingkey instead of queue name.
                 channel.ExchangeDeclare(BrokerName,
-                    type: "direct");
+                    "direct");
 
                 var message = JsonConvert.SerializeObject(@event);
                 var body = Encoding.UTF8.GetBytes(message);
@@ -98,10 +98,10 @@ namespace Enterprise.Library.EventBus.RabbitMQ
 
                     // ReSharper disable once AccessToDisposedClosure
                     channel.BasicPublish(BrokerName,
-                        routingKey: eventName,
-                        mandatory: true,
-                        basicProperties: properties,
-                        body: body);
+                        eventName,
+                        true,
+                        properties,
+                        body);
                 });
             }
         }
@@ -179,8 +179,8 @@ namespace Enterprise.Library.EventBus.RabbitMQ
             {
                 // unbind queue by routing key
                 channel.QueueUnbind(_queueName,
-                    exchange: BrokerName,
-                    routingKey: eventName);
+                    BrokerName,
+                    eventName);
 
                 if (_subsManager.IsEmpty)
                 {
@@ -206,8 +206,8 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                 using (var channel = _persistentConnection.CreateModel())
                 {
                     channel.QueueBind(_queueName,
-                        exchange: BrokerName,
-                        routingKey: eventName);
+                        BrokerName,
+                        eventName);
                 }
             }
         }
@@ -226,14 +226,14 @@ namespace Enterprise.Library.EventBus.RabbitMQ
 
             // make sure exchange is declared
             channel.ExchangeDeclare(BrokerName,
-                type: "direct");
+                "direct");
 
             // declare queue
             channel.QueueDeclare(_queueName,
-                durable: true,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null);
+                true,
+                false,
+                false,
+                null);
 
             // create instance customer
             var consumer = new EventingBasicConsumer(channel);
@@ -248,16 +248,16 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                 var message = Encoding.UTF8.GetString(ea.Body);
 
                 // process event (custom)
-                await ProcessEvent(eventName, message: message);
+                await ProcessEvent(eventName, message);
 
                 // acknowledge the queue message. to dequeue message.
-                channel.BasicAck(ea.DeliveryTag, multiple: false);
+                channel.BasicAck(ea.DeliveryTag, false);
             };
 
             // consume queue
             channel.BasicConsume(_queueName,
-                autoAck: false,
-                consumer: consumer);
+                false,
+                consumer);
 
             // if exeception occured then dispose channel and recreate that.
             channel.CallbackException += (sender, ea) =>
@@ -303,11 +303,11 @@ namespace Enterprise.Library.EventBus.RabbitMQ
                         else
                         {
                             var eventType = _subsManager.GetEventTypeByName(eventName);
-                            var integrationEvent = JsonConvert.DeserializeObject(message, type: eventType);
+                            var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                             var handler = scope.ResolveOptional(subscription.HandlerType);
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                             await (Task) concreteType.GetMethod("Handle")
-                                .Invoke(handler, parameters: new[] {integrationEvent});
+                                .Invoke(handler, new[] {integrationEvent});
                         }
                 }
         }

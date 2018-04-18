@@ -5,7 +5,7 @@ using Enterprise.Library.EventBus.Events;
 namespace Enterprise.Library.EventBus.Abstractions
 {
     /// <summary>
-    /// Event bus subscription manager
+    ///     Event bus subscription manager
     /// </summary>
     public interface IEventBusSubscriptionsManager
     {

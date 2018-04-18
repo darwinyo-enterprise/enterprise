@@ -20,13 +20,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Enterprise.Library.EventBus">
-      <HintPath>..\..\..\..\..\..\Users\Darwin Yo\.nuget\packages\enterprise.library.eventbus\1.1.0\lib\netstandard2.0\Enterprise.Library.EventBus.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Enterprise.Library.EventBus\Enterprise.Library.EventBus.csproj" />
   </ItemGroup>
 
 </Project>

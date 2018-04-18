@@ -1,16 +1,16 @@
 ﻿namespace Catalog.API.Helpers
 {
     /// <summary>
-    /// File Related work helper
+    ///     File Related work helper
     /// </summary>
     public class FileHelper
     {
         /// <summary>
-        /// Get Image Mime By extension
+        ///     Get Image Mime By extension
         /// </summary>
         /// <param name="extension">
-        /// extension name
-        /// example : .png, .gif, .jpg/.jpeg, so on.
+        ///     extension name
+        ///     example : .png, .gif, .jpg/.jpeg, so on.
         /// </param>
         /// <returns></returns>
         public static string GetImageMimeTypeFromImageFileExtension(string extension)

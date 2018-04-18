@@ -1,6 +1,6 @@
 ﻿namespace Catalog.API.IntegrationEvents
 {
-    public class CatalogIntegrationEventService:ICatalogIntegrationEventService
+    public class CatalogIntegrationEventService : ICatalogIntegrationEventService
     {
     }
 }

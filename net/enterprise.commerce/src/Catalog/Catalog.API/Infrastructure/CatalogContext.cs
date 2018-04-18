@@ -7,7 +7,7 @@ namespace Catalog.API.Infrastructure
 {
     public class CatalogContext : DbContext
     {
-        public CatalogContext(DbContextOptions<CatalogContext> options) : base(options: options)
+        public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
         }
 
@@ -28,7 +28,7 @@ namespace Catalog.API.Infrastructure
                 .UseSqlServer(
                     "Server=.;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;Integrated Security=true");
 
-            return new CatalogContext(options: optionsBuilder.Options);
+            return new CatalogContext(optionsBuilder.Options);
         }
     }
 }

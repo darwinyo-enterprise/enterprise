@@ -11,7 +11,7 @@ namespace Catalog.API.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new[] {"value1", "value2"};
         }
 
         // GET: api/v1/pic/5
@@ -20,19 +20,19 @@ namespace Catalog.API.Controllers
         {
             return "value";
         }
-        
+
         // POST: api/v1/pic
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
-        
+
         // PUT: api/v1/pic/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
-        
+
         // DELETE: api/v1/pic/5
         [HttpDelete("{id}")]
         public void Delete(int id)
