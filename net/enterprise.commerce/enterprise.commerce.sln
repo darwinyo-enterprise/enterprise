@@ -39,7 +39,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileUtility", "FileUtility"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1BF15546-975B-4D41-8477-15B688C8BB07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "src\Catalog\Catalog.API\Catalog.API.csproj", "{29FD84C6-0CB2-413B-879F-01566475203B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "src\Catalog\Catalog.API\Catalog.API.csproj", "{29FD84C6-0CB2-413B-879F-01566475203B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F7273ED8-F750-4BCC-8BFD-1B2603EFEFB4}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

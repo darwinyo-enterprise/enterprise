@@ -243,7 +243,7 @@ namespace Catalog.API
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             //eventBus
             //    .Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent,
             //        OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();

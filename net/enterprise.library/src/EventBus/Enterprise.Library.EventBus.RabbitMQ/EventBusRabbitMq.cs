@@ -18,9 +18,9 @@ namespace Enterprise.Library.EventBus.RabbitMQ
 {
     public class EventBusRabbitMq : IEventBus, IDisposable
     {
-        private const string BrokerName = "eshop_event_bus";
+        private const string BrokerName = "commerce_event_bus";
         private readonly ILifetimeScope _autofac;
-        private readonly string _autofacScopeName = "eshop_event_bus";
+        private readonly string _autofacScopeName = "commerce_event_bus";
         private readonly ILogger<EventBusRabbitMq> _logger;
 
         /// <summary>
