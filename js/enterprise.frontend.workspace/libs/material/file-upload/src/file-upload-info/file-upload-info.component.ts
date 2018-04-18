@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FileUploadModel } from '../models/file-upload.model';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'em-file-upload-info',
@@ -7,13 +8,18 @@ import { FileUploadModel } from '../models/file-upload.model';
   styleUrls: ['./file-upload-info.component.scss']
 })
 export class FileUploadInfoComponent implements OnInit {
-  @Input() filesUpload: FileUploadModel[];
-  constructor() { }
-
-  ngOnInit() {
+  @Input() filesUpload: Observable<FileUploadModel[]>;
+  /** Delete File Event
+   *  When this triggered you must define your own service logic.
+   */
+  @Output() deleteFile: EventEmitter<string>;
+  constructor() {
+    this.deleteFile = new EventEmitter<string>();
   }
 
+  ngOnInit() {}
+
   onDelete(id: string) {
-    console.log(id);
+    this.deleteFile.emit(id);
   }
 }

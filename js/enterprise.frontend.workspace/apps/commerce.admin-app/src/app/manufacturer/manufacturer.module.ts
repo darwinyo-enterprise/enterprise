@@ -6,18 +6,20 @@ import { AddManufacturerComponent } from './add-manufacturer/add-manufacturer.co
 import { ListManufacturerComponent } from './list-manufacturer/list-manufacturer.component';
 import { EditManufacturerComponent } from '../manufacturer/edit-manufacturer/edit-manufacturer.component';
 import { ManufacturerLibModule } from '@enterprise/commerce/manufacturer-lib';
+import { FileUploadModule } from '@enterprise/material/file-upload';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, ManufacturerLibModule],
+  imports: [CommonModule, SharedModule, ManufacturerLibModule, FileUploadModule],
   declarations: [
     AddManufacturerComponent,
     ListManufacturerComponent,
     EditManufacturerComponent
   ],
   exports: [
+    FileUploadModule,
     AddManufacturerComponent,
     ListManufacturerComponent,
     EditManufacturerComponent
   ]
 })
-export class ManufacturerModule {}
+export class ManufacturerModule { }

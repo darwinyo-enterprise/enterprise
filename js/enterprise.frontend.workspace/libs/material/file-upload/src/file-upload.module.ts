@@ -6,8 +6,12 @@ import { FileUploadInfoComponent } from './file-upload-info/file-upload-info.com
 import { SharedModule } from '@enterprise/shared';
 
 @NgModule({
-  imports: [CommonModule,SharedModule],
-  declarations: [FileUploadComponent, FileDragNDropDirective, FileUploadInfoComponent],
+  imports: [CommonModule, SharedModule],
+  declarations: [
+    FileUploadComponent,
+    FileDragNDropDirective,
+    FileUploadInfoComponent
+  ],
   exports: [FileUploadComponent]
 })
 export class FileUploadModule {}

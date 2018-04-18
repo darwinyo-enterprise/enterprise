@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
@@ -33,6 +35,7 @@ namespace Catalog.API.Controllers
         /// <returns>list of manufacturers</returns>
         // GET api/v1/manufacturer
         [HttpGet]
+        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
             var result = await _catalogContext.Manufacturers.ToListAsync();
@@ -46,17 +49,24 @@ namespace Catalog.API.Controllers
         /// <returns>manufacturer</returns>
         // GET api/v1/manufacturer/5
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _catalogContext.Manufacturers.Where(x => x.Id == id).FirstOrDefaultAsync();
-            return Ok(result);
-        }
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
 
-        // GET api/v1/manufacturer/image/5
-        [HttpGet("image/{id}")]
-        public string GetImage(Guid id)
-        {
-            return "value";
+            var result = await _catalogContext.Manufacturers.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound();
         }
 
         /// <summary>
@@ -80,13 +90,14 @@ namespace Catalog.API.Controllers
         /// </returns>
         [HttpPost("image")]
         [DisableRequestSizeLimit]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public IActionResult UploadFile()
         {
             try
             {
                 var file = Request.Form.Files[0];
                 FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", file);
-                return Json("Upload Successful.");
+                return CreatedAtAction(nameof(UploadFile), file.FileName + " Upload Successfully.");
             }
             catch (Exception ex)
             {

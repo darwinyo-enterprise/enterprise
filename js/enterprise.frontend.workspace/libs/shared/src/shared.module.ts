@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -11,14 +11,18 @@ import { MatButtonModule, MatCardModule } from '@angular/material';
 
     //#region Material Imports
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule
     //#endregion
   ],
   exports: [
     //#region Material Imports
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule
     //#endregion
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

@@ -1,4 +1,10 @@
-import { Directive, HostListener, HostBinding } from '@angular/core';
+import {
+  Directive,
+  HostListener,
+  HostBinding,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { Input } from '@angular/core';
 
 @Directive({
@@ -6,6 +12,9 @@ import { Input } from '@angular/core';
 })
 export class FileDragNDropDirective {
   @Input() fileMultiple: boolean;
+  /** Files Hovered into dropzone event */
+  @Output() uploadFiles: EventEmitter<FileList>;
+
   @HostBinding('style.background') private background = '#eee';
   @HostListener('dragover', ['$event'])
   public onDragOver(evt) {
@@ -23,11 +32,13 @@ export class FileDragNDropDirective {
   public onDrop(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    let files = evt.dataTransfer.files;
+    let files: FileList = evt.dataTransfer.files;
     if (files.length > 0) {
       this.background = '#eee';
-      console.log(files);
+      this.uploadFiles.emit(files);
     }
   }
-  constructor() {}
+  constructor() {
+    this.uploadFiles = new EventEmitter<FileList>();
+  }
 }

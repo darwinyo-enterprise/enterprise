@@ -18,19 +18,23 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 console.log(DIST_FOLDER);
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('../../dist/server/commerce.admin-app/main.bundle');
+const {
+  AppServerModuleNgFactory,
+  LAZY_MODULE_MAP
+} = require('../../dist/server/commerce.admin-app/main.bundle');
 
 // Express Engine
 import { ngExpressEngine } from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
-app.engine('html', ngExpressEngine({
-  bootstrap: AppServerModuleNgFactory,
-  providers: [
-    provideModuleMap(LAZY_MODULE_MAP)
-  ]
-}));
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: AppServerModuleNgFactory,
+    providers: [provideModuleMap(LAZY_MODULE_MAP)]
+  })
+);
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'apps/commerce.admin-app'));
@@ -45,7 +49,9 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'apps/commerce.admin-app')));
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
-  res.render(join(DIST_FOLDER, 'apps/commerce.admin-app', 'index.html'), { req });
+  res.render(join(DIST_FOLDER, 'apps/commerce.admin-app', 'index.html'), {
+    req
+  });
 });
 
 // Start up the Node server

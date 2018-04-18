@@ -33,7 +33,7 @@ export class ListManufacturerComponent implements OnInit {
 
   onEdit(id: string) {
     console.log(id);
-    this.store.dispatch([new RegisterLoadingOverlay()])
+    this.store.dispatch([new RegisterLoadingOverlay()]);
   }
   onDelete(id: string) {
     console.log(id);

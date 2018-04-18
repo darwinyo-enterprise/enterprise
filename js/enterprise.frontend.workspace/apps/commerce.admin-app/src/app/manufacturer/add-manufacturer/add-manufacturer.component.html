@@ -1,3 +1,19 @@
-<p>
-  add-manufacturer works!
-</p>
+<mat-card class="form-card">
+  <div class="form-card__title">
+    Add New Manufacturer
+  </div>
+  <div class="form-card__content">
+    <div class="form-container">
+      <mat-form-field class="form-control--full-width">
+        <input matInput placeholder="Name" value="">
+      </mat-form-field>
+
+      <mat-form-field class="form-control--full-width">
+        <textarea matInput placeholder="Description"></textarea>
+      </mat-form-field>
+
+      <em-file-upload></em-file-upload>
+    </div>
+  </div>
+  <div class="form-card__footer"></div>
+</mat-card>

@@ -1,8 +1,18 @@
-<div class="file-upload__drop-zone" emFileDragNDrop>
-  Drop files here...
-  <div class="file-upload__drop-zone__button">
-    or click here..
-    <input type="file" name="file" id="file" />
+<div class="file-upload__container">
+  <div class="file-upload__drop-zone" emFileDragNDrop (uploadFiles)="onDropFileChanged($event)">
+    Drop files here...
+    <div class="file-upload__drop-zone__button">
+      or click here..
+      <input #file type="file" multiple (change)="onDropFileChanged(file.files)" />
+    </div>
   </div>
+  <div class="file-upload__upload-btn">
+    <button mat-button (click)="onFileUpload()">Upload</button>
+  </div>
+
+  <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+    {{progress}}%
+  </span>
+
+  <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesUpload$ | async"></em-file-upload-info>
 </div>
-<em-file-upload-info [filesUpload]=></em-file-upload-info>

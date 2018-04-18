@@ -5,19 +5,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 
-import { FileUploadModule } from '@enterprise/material/file-upload';
-
 import { CatalogModule } from './catalog/catalog.module';
 import * as cc from '@enterprise/commerce/core';
 
 @NgModule({
   imports: [
-    BrowserModule.withServerTransition({ appId: 'enterprise-commerce-admin-app' }),
+    BrowserModule.withServerTransition({
+      appId: 'enterprise-commerce-admin-app'
+    }),
     cc.CoreModule,
-    FileUploadModule,
     CatalogModule,
     NxModule.forRoot(),
-    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    RouterModule.forRoot([], { initialNavigation: 'enabled' })
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
@@ -25,9 +24,11 @@ import * as cc from '@enterprise/commerce/core';
 export class AppModule {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
-      'in the browser' : 'on the server';
+    @Inject(APP_ID) private appId: string
+  ) {
+    const platform = isPlatformBrowser(platformId)
+      ? 'in the browser'
+      : 'on the server';
     console.log(`Running ${platform} with appId=${appId}`);
   }
 }

@@ -18,14 +18,13 @@ export class AppComponent implements OnInit {
   @Select((state: AppStateModel) => state.username)
   username$;
 
-  constructor(private store: Store,private loadingService:TdLoadingService) {
-    
+  constructor(private store: Store, private loadingService: TdLoadingService) {
     this.loadingService.create({
       name: 'loading-facade',
       type: LoadingType.Circular,
       mode: LoadingMode.Indeterminate,
-      color: 'accent',
-  });
+      color: 'accent'
+    });
   }
 
   ngOnInit() {}

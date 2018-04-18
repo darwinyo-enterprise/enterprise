@@ -118,6 +118,13 @@
       "tags": []
     },
     {
+      "name": "commerce/catalog-lib",
+      "root": "libs/commerce/catalog-lib/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "commerce/core",
       "root": "libs/commerce/core/src",
       "test": "../../../../test.js",
