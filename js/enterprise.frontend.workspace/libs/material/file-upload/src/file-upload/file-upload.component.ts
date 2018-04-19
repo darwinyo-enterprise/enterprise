@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class FileUploadComponent implements OnInit {
   private filesData:FormData;
-  @Input() filesUpload$: Observable<FileUploadModel[]>;
+  @Input() filesUpload: FileUploadModel[];
 
   /** Upload File Event
    *  When this triggered you must define your own service logic.

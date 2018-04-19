@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ManufacturerModel,
   ManufacturerService,
   ManufacturerState,
   FetchManufacturers
@@ -8,6 +7,7 @@ import {
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay } from '@enterprise/core';
+import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
 @Component({
   selector: 'eca-list-manufacturer',
@@ -16,7 +16,7 @@ import { RegisterLoadingOverlay } from '@enterprise/core';
 })
 export class ListManufacturerComponent implements OnInit {
   @Select(ManufacturerState.getManufacturers)
-  manufacturers$: Observable<ManufacturerModel>;
+  manufacturers$: Observable<Manufacturer>;
 
   constructor(
     private store: Store,

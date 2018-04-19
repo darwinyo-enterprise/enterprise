@@ -1,30 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 import { FileUploadModel } from '@enterprise/material/file-upload';
 
 @Component({
-  selector: 'manufacturer-form',
+  selector: 'eca-manufacturer-form',
   templateUrl: './manufacturer-form.component.html',
   styleUrls: ['./manufacturer-form.component.scss']
 })
 export class ManufacturerFormComponent implements OnInit {
+  /** Title of form */
+  @Input() title: string;
+  /** Manufacturer if supplied then its in edit mode */
   @Input() manufacturer: Manufacturer;
+
+  /** Upload File Event */
+  @Output() uploadFile: EventEmitter<FormData>;
+
+  /** Delete File Event */
+  @Output() deleteFile: EventEmitter<string>;
+
   filesUpload: FileUploadModel;
   constructor() {
-    this.filesUpload = <FileUploadModel>{
-      id: this.manufacturer.id.toString(),
-      img_src: this.manufacturer.imageUrl
-    };
+    this.uploadFile = new EventEmitter<FormData>();
+    this.deleteFile = new EventEmitter<string>();
+
+    // If Input Supplied (Edit Mode)
+    if (this.manufacturer != null) {
+      this.filesUpload = <FileUploadModel>{
+        id: this.manufacturer.id.toString(),
+        img_src: this.manufacturer.imageUrl
+      };
+    }
+
   }
 
   ngOnInit() {
   }
-  onUploadFile(fileForm) {
-    // DO UPLOAD
-    console.log('do upload');
+  onUploadFile(fileForm: FormData) {
+    this.uploadFile.emit(fileForm);
   }
   onDeleteFile(id: string) {
-    // DO DELETE
-    console.log('do delete');
+    this.deleteFile.emit(id);
   }
 }

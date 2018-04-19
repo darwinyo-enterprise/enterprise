@@ -1,5 +1,5 @@
 <div class="file-upload-info__container">
-  <mat-card class="file-upload-info__card" *ngFor="let item of filesUpload | async">
+  <mat-card class="file-upload-info__card" *ngFor="let item of filesUpload">
     <div class="file-upload-info__card__delete-btn" (click)="onDelete(item.id)"></div>
     <div class="file-upload-info__card__img">
       <img src="{{item.img_src}}" alt="" srcset="">

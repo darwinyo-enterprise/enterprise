@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
 @Component({
   selector: 'eca-add-manufacturer',
@@ -6,7 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-manufacturer.component.scss']
 })
 export class AddManufacturerComponent implements OnInit {
-  constructor() {}
+  title: string;
+  manufacturer: Manufacturer;
 
-  ngOnInit() {}
+  constructor() {
+    this.title = 'Add New Manufacturer';
+    this.manufacturer = <Manufacturer>{};
+  }
+
+  ngOnInit() { }
+
+  onFileDelete(formFile: FormData) {
+    console.log('DO SOMETHING FOR DELETE');
+  }
+  onFileUpload(id: string) {
+    console.log('DO SOMETHING FOR UPLOAD');
+  }
 }

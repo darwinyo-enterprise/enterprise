@@ -1,4 +1,5 @@
-import { ManufacturerModel } from '@enterprise/commerce/manufacturer-lib';
+import { Manufacturer } from "@enterprise/commerce/catalog-lib";
+
 
 /** Fetch All Manufacturers Command */
 export class FetchManufacturers {
@@ -9,13 +10,13 @@ export class FetchManufacturers {
 /** All Manufacturers Fetched Event */
 export class ManufacturersFetched {
   static readonly type = '[COMMERCE] MANUFACTURERS FETCHED';
-  constructor(public payload: ManufacturerModel[]) {}
+  constructor(public payload: Manufacturer[]) {}
 }
 
 /** Add Manufacturer Command */
 export class AddManufacturer {
   static readonly type = '[COMMERCE] ADD MANUFACTURER';
-  constructor(public payload: ManufacturerModel) {}
+  constructor(public payload: Manufacturer) {}
 }
 
 /** Manufacturer Added Event */
@@ -27,7 +28,7 @@ export class ManufacturerAdded {
 /** Update Manufacturer Command */
 export class UpdateManufacturer {
   static readonly type = '[COMMERCE] UPDATE MANUFACTURER';
-  constructor(public payload: ManufacturerModel) {}
+  constructor(public payload: Manufacturer) {}
 }
 
 /** Manufacturer Updated Event */
