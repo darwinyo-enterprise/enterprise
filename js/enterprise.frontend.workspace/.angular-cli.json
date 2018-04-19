@@ -54,6 +54,7 @@
       "testTsconfig": "../../../tsconfig.spec.json",
       "prefix": "eca",
       "styles": [
+        "./../../../../../sass/enterprise.globalstyle/src/_main.scss",
         "styles.scss"
       ],
       "scripts": [],
