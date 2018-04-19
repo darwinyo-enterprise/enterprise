@@ -22,7 +22,7 @@ export class ListManufacturerComponent implements OnInit {
    *  This Comes from State Management.
    */
   @Select(ManufacturerState.getManufacturers)
-  manufacturers$: Observable<Manufacturer>;
+  manufacturers$: Observable<Manufacturer[]>;
 
   constructor(
     private store: Store,
