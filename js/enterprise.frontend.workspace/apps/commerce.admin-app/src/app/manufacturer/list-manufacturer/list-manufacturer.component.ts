@@ -15,13 +15,21 @@ import { Manufacturer } from '@enterprise/commerce/catalog-lib';
   styleUrls: ['./list-manufacturer.component.scss']
 })
 export class ListManufacturerComponent implements OnInit {
+
+  title: string;
+
+  /** Selector Manufacturers List
+   *  This Comes from State Management.
+   */
   @Select(ManufacturerState.getManufacturers)
   manufacturers$: Observable<Manufacturer>;
 
   constructor(
     private store: Store,
     private manufacturerService: ManufacturerService
-  ) {}
+  ) {
+    this.title = 'Manufacturer List';
+  }
 
   ngOnInit() {
     this.fetchManufacturers();
@@ -30,12 +38,14 @@ export class ListManufacturerComponent implements OnInit {
   fetchManufacturers() {
     this.store.dispatch([new FetchManufacturers()]);
   }
-
-  onEdit(id: string) {
+  onAddNewManufacturer() {
+    console.log('Add manufacturer');
+  }
+  onEditManufacturer(id: string) {
     console.log(id);
     this.store.dispatch([new RegisterLoadingOverlay()]);
   }
-  onDelete(id: string) {
+  onDeleteManufacturer(id: string) {
     console.log(id);
   }
 }

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ListItemModel } from '../models/list-item.model';
 
 @Component({
-  selector: 'list-item-actions',
+  selector: 'es-list-item-actions',
   templateUrl: './list-item-actions.component.html',
   styleUrls: ['./list-item-actions.component.scss']
 })

@@ -18,6 +18,8 @@ import { ListItemActionsComponent } from './list-item-actions/list-item-actions.
     //#endregion
   ],
   exports: [
+    ListItemActionsComponent,
+    
     //#region Material Imports
     MatButtonModule,
     MatCardModule,

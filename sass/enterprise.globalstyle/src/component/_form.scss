@@ -20,6 +20,14 @@
         margin-top: 2rem;
         font-size: $font-size-md;
     }
+    &__footer{
+        display: flex;
+        justify-content: center;
+        & > button{
+            @extend %font-placeholder;
+            font-size: $font-size-md;
+        }
+    }
 }
 
 // @TODO:REFACTORING
