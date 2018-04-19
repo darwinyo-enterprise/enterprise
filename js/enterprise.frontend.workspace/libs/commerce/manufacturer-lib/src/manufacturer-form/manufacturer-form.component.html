@@ -1,0 +1,19 @@
+<mat-card class="form-card">
+  <div class="form-card__title">
+    {{title}}
+  </div>
+  <div class="form-card__content">
+    <div class="form-container">
+      <mat-form-field class="form-control--full-width">
+        <input matInput placeholder="Name" value="{{manufacturer.name}}">
+      </mat-form-field>
+
+      <mat-form-field class="form-control--full-width">
+        <textarea matInput placeholder="Description">{{manufacturer.description}}</textarea>
+      </mat-form-field>
+
+      <em-file-upload [filesUpload$]="filesUpload" (uploadFile)="onUploadFile($event)" (deleteFile)="onDeleteFile($event)"></em-file-upload>
+    </div>
+  </div>
+  <div class="form-card__footer"></div>
+</mat-card>
