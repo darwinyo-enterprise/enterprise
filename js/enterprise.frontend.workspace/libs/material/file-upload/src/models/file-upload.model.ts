@@ -1,4 +1,4 @@
-export interface FileUploadModel {
-  id: string;
-  img_src: string;
+export interface FileImageModel {
+  name: string;
+  imgUrl: string;
 }

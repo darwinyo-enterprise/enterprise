@@ -1,8 +1,8 @@
-import { FileUploadModel } from '../models/file-upload.model';
+import { FileImageModel } from '../models/file-upload.model';
 
-export const FileUploadMocks: FileUploadModel[] = [
-  <FileUploadModel>{
-    id: '1',
-    img_src: 'htt'
+export const FileUploadMocks: FileImageModel[] = [
+  <FileImageModel>{
+    name: '1',
+    imgUrl: 'htt'
   }
 ];

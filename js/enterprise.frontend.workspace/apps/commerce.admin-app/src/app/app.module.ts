@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { CatalogModule } from './catalog/catalog.module';
 import * as cc from '@enterprise/commerce/core';
+import * as ci from '@enterprise/commerce/catalog-lib';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import * as cc from '@enterprise/commerce/core';
       appId: 'enterprise-commerce-admin-app'
     }),
     cc.CoreModule,
+    ci.ApiModule,
     CatalogModule,
     NxModule.forRoot(),
     RouterModule.forRoot([], { initialNavigation: 'enabled' })

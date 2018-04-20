@@ -10,9 +10,5 @@
     <button mat-button (click)="onFileUpload()">Upload</button>
   </div>
 
-  <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
-    {{progress}}%
-  </span>
-
-  <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesUpload"></em-file-upload-info>
+  <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesImage"></em-file-upload-info>
 </div>

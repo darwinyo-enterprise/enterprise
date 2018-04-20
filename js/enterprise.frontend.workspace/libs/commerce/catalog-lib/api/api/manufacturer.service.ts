@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { Manufacturer } from '../model/manufacturer';
+import { UploadFileModel } from '../model/uploadFileModel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -27,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class ManufacturerService {
 
-    protected basePath = 'https://localhost';
+    protected basePath = 'http://localhost:5101';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -227,13 +228,14 @@ export class ManufacturerService {
     /**
      * 
      * 
+     * @param uploadFileModel 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerImagePost(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerImagePost(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerImagePost(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerImagePost(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -247,10 +249,18 @@ export class ManufacturerService {
 
         // to determine the Content-Type header
         let consumes: string[] = [
+            'application/json-patch+json',
+            'application/json',
+            'text/json',
+            'application/_*+json'
         ];
+        let httpContentTypeSelected:string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set("Content-Type", httpContentTypeSelected);
+        }
 
         return this.httpClient.post<any>(`${this.basePath}/api/v1/Manufacturer/image`,
-            null,
+            uploadFileModel,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

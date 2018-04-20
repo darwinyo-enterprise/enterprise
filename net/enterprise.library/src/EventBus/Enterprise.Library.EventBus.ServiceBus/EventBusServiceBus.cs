@@ -19,7 +19,7 @@ namespace Enterprise.Library.EventBus.ServiceBus
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         private readonly SubscriptionClient _subscriptionClient;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly string AUTOFAC_SCOPE_NAME = "commerce_event_bus";
+        private readonly string _autofacScopeName = "commerce_event_bus";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager,
@@ -150,7 +150,7 @@ namespace Enterprise.Library.EventBus.ServiceBus
         private async Task ProcessEvent(string eventName, string message)
         {
             if (_subsManager.HasSubscriptionsForEvent(eventName))
-                using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
+                using (var scope = _autofac.BeginLifetimeScope(_autofacScopeName))
                 {
                     var subscriptions = _subsManager.GetHandlersForEvent(eventName);
                     foreach (var subscription in subscriptions)

@@ -12,7 +12,10 @@
         <textarea matInput placeholder="Description">{{manufacturer.description}}</textarea>
       </mat-form-field>
 
-      <em-file-upload [filesUpload]="filesUpload" (uploadFile)="onUploadFile($event)" (deleteFile)="onDeleteFile($event)"></em-file-upload>
+      <em-file-upload [filesImage]="filesUpload" 
+                      [parentId]="manufacturer.id" 
+                      (uploadFile)="onUploadFile($event)" 
+                      (deleteFile)="onDeleteFile($event)"></em-file-upload>
     </div>
   </div>
   <div class="form-card__footer"></div>
