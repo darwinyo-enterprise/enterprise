@@ -1,7 +1,8 @@
-﻿using System.IO;
-using System.Net.Http.Headers;
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 
 namespace Enterprise.Library.FileUtility
 {
@@ -18,21 +19,28 @@ namespace Enterprise.Library.FileUtility
         /// <param name="folderName">
         ///     folder name to place this files
         /// </param>
-        /// <param name="file">
-        ///     file upload
+        /// <param name="fileName">
+        ///     file name with extension
         /// </param>
-        public static void UploadFile(IHostingEnvironment hostingEnvironment, string folderName, IFormFile file)
+        /// <param name="base64File">
+        ///     file object converted to base 64 (in front-end)
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     used for cancellation Task
+        /// </param>
+        public static async Task UploadFile(IHostingEnvironment hostingEnvironment, string folderName, string fileName, string base64File, CancellationToken cancellationToken)
         {
             var webRootPath = hostingEnvironment.WebRootPath;
             var newPath = Path.Combine(webRootPath, folderName);
+
             if (!Directory.Exists(newPath)) Directory.CreateDirectory(newPath);
-            if (file.Length > 0)
+            if (!string.IsNullOrEmpty(base64File))
             {
-                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                 var fullPath = Path.Combine(newPath, fileName);
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    file.CopyTo(stream);
+                    var file = Convert.FromBase64String(base64File);
+                    await stream.WriteAsync(file, 0, file.Length, cancellationToken);
                 }
             }
         }

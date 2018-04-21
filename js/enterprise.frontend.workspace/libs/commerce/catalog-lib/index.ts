@@ -1,2 +1,2 @@
 export { CatalogLibModule } from './src/catalog-lib.module';
-export * from './src/index';
+export * from './api/index';

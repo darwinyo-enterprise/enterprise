@@ -10,6 +10,14 @@ services:
       - sql.data
       - rabbitmq
 
+  order.api:
+    image: darwinyo/orderapi
+    build:
+      context: .
+      dockerfile: src/Order/Order.API/Dockerfile
+    depends_on:
+      - sql.data
+
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
 
@@ -21,3 +29,5 @@ services:
       
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
+ 
+

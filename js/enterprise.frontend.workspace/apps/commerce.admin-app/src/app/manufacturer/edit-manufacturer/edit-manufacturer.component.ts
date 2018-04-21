@@ -1,12 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
 @Component({
-  selector: 'enterprise-edit-manufacturer',
+  selector: 'eca-edit-manufacturer',
   templateUrl: './edit-manufacturer.component.html',
   styleUrls: ['./edit-manufacturer.component.scss']
 })
 export class EditManufacturerComponent implements OnInit {
-  constructor() {}
+  title: string;
+  manufacturer: Manufacturer;
 
-  ngOnInit() {}
+  constructor() {
+    this.title = 'Edit Manufacturer';
+    this.manufacturer = <Manufacturer>{
+      id:1,
+      name:'Samsung',
+      description:'Mobile Manufacturer'
+    };
+  }
+
+  ngOnInit() { }
+
+  onFileDelete(formFile: FormData) {
+    console.log('DO SOMETHING FOR DELETE');
+  }
+  onFileUpload(id: string) {
+    console.log('DO SOMETHING FOR UPLOAD');
+  }
 }

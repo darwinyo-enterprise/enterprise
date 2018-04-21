@@ -4,15 +4,16 @@ import {
   ResolveLoadingOverlay,
   RegisterLoadingOverlay
 } from '@enterprise/core';
-import { ManufacturerModel } from './../models/manufacturer.model';
+
 import { ManufacturerService } from './../services/manufacturer.service';
 import {
   FetchManufacturers,
   ManufacturersFetched
 } from './../shared/manufacturer.actions';
+import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
 export interface ManufacturerStateModel {
-  manufacturers: ManufacturerModel[];
+  manufacturers: Manufacturer[];
 }
 
 const defaults: ManufacturerStateModel = {
@@ -24,7 +25,7 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-  constructor(private manufacturerService: ManufacturerService) {}
+  constructor(private manufacturerService: ManufacturerService) { }
   //#region Selectors
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {

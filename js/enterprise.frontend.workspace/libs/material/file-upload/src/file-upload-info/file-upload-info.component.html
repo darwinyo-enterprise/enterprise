@@ -1,8 +1,8 @@
 <div class="file-upload-info__container">
-  <mat-card class="file-upload-info__card" *ngFor="let item of filesUpload | async">
-    <div class="file-upload-info__card__delete-btn" (click)="onDelete(item.id)"></div>
+  <mat-card class="file-upload-info__card" *ngFor="let item of filesUpload">
+    <div class="file-upload-info__card__delete-btn" (click)="onDelete(item.name)"></div>
     <div class="file-upload-info__card__img">
-      <img src="{{item.img_src}}" alt="" srcset="">
+      <img src="{{item.imgUrl}}" alt="" srcset="">
     </div>
   </mat-card>
 </div>

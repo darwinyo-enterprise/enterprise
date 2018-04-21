@@ -7,22 +7,22 @@ import { ManufacturerService } from './api/manufacturer.service';
 import { PicService } from './api/pic.service';
 
 @NgModule({
-    imports: [CommonModule, HttpClientModule],
-    declarations: [],
-    exports: [],
-    providers: [
-        ManufacturerService,
-        PicService]
+  imports:      [ CommonModule, HttpClientModule ],
+  declarations: [],
+  exports:      [],
+  providers: [
+    ManufacturerService,
+    PicService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
         return {
             ngModule: ApiModule,
-            providers: [{ provide: Configuration, useFactory: configurationFactory }]
+            providers: [ { provide: Configuration, useFactory: configurationFactory } ]
         }
     }
 
-    constructor(@Optional() @SkipSelf() parentModule: ApiModule) {
+    constructor( @Optional() @SkipSelf() parentModule: ApiModule) {
         if (parentModule) {
             throw new Error('ApiModule is already loaded. Import your base AppModule only.');
         }

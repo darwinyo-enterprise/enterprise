@@ -1,0 +1,23 @@
+<mat-card class="form-card">
+  <div class="form-card__title">
+    {{title}}
+  </div>
+  <div class="form-card__content">
+    <div class="list-item-actions">
+      <div class="list-item-actions__item" *ngFor="let item of items$ | async">
+        <div class="list-item-actions__item__grid">
+          <div class="list-item-actions__item__name">{{item.name}}</div>
+          <div class="list-item-actions__item__edit">
+            <button mat-button (click)="onEdit(item.id)">Edit</button>
+          </div>
+          <div class="list-item-actions__item__delete">
+            <button mat-button (click)="onDelete(item.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-card__footer">
+    <button mat-button (click)="onAddNew()">Add New</button>
+  </div>
+</mat-card>

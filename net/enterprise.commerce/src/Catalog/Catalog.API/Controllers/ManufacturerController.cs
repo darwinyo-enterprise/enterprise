@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Enterprise.Library.FileUtility;
+using Enterprise.Library.FileUtility.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -89,15 +91,14 @@ namespace Catalog.API.Controllers
         ///     json response
         /// </returns>
         [HttpPost("image")]
-        [DisableRequestSizeLimit]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public IActionResult UploadFile()
+        public async Task<IActionResult> UploadFile([FromBody] UploadFileModel uploadFileModel, CancellationToken cancellationToken)
         {
             try
             {
-                var file = Request.Form.Files[0];
-                FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", file);
-                return CreatedAtAction(nameof(UploadFile), file.FileName + " Upload Successfully.");
+                await FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", uploadFileModel.FileName, 
+                    uploadFileModel.FileBase64.Replace(@"data:image/svg+xml;base64,", ""), cancellationToken);
+                return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
             }
             catch (Exception ex)
             {
