@@ -28,7 +28,7 @@ namespace Enterprise.Library.FileUtility
         /// <param name="cancellationToken">
         ///     used for cancellation Task
         /// </param>
-        public static async Task UploadFile(IHostingEnvironment hostingEnvironment, string folderName, string fileName, string base64File, CancellationToken cancellationToken)
+        public static async Task UploadFileAsync(IHostingEnvironment hostingEnvironment, string folderName, string fileName, string base64File, CancellationToken cancellationToken)
         {
             var webRootPath = hostingEnvironment.WebRootPath;
             var newPath = Path.Combine(webRootPath, folderName);
@@ -44,5 +44,56 @@ namespace Enterprise.Library.FileUtility
                 }
             }
         }
+
+        /// <summary>
+        /// used to get mime type by extension file
+        /// </summary>
+        /// <param name="extension">
+        /// extension file
+        /// example :
+        /// .png, .jpg, .gif, so on...
+        /// </param>
+        /// <returns>
+        /// mime type
+        /// </returns>
+        public static string GetImageMimeTypeFromImageFileExtension(string extension)
+        {
+            string mimetype;
+
+            switch (extension)
+            {
+                case ".png":
+                    mimetype = "image/png";
+                    break;
+                case ".gif":
+                    mimetype = "image/gif";
+                    break;
+                case ".jpg":
+                case ".jpeg":
+                    mimetype = "image/jpeg";
+                    break;
+                case ".bmp":
+                    mimetype = "image/bmp";
+                    break;
+                case ".tiff":
+                    mimetype = "image/tiff";
+                    break;
+                case ".wmf":
+                    mimetype = "image/wmf";
+                    break;
+                case ".jp2":
+                    mimetype = "image/jp2";
+                    break;
+                case ".svg":
+                    mimetype = "image/svg+xml";
+                    break;
+                default:
+                    mimetype = "application/octet-stream";
+                    break;
+            }
+
+            return mimetype;
+        }
+
     }
 }

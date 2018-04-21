@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -38,7 +39,7 @@ namespace Catalog.API.Controllers
         // GET api/v1/manufacturer
         [HttpGet]
         [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAsync()
         {
             var result = await _catalogContext.Manufacturers.ToListAsync();
             return Ok(result);
@@ -54,7 +55,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
             if (id <= 0)
             {
@@ -79,8 +80,11 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/manufacturer
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Manufacturer manufacturer)
+        public async Task<IActionResult> PostAsync([FromBody] Manufacturer manufacturer)
         {
+            // Change folder name of image to this parent id
+            //var lastManufacturerRecord = await _catalogContext.Manufacturers.LastOrDefaultAsync(cancellationToken);
+            //var newId = Convert.ToInt32(lastManufacturerRecord.Id) + 1;
             return null;
         }
 
@@ -90,20 +94,62 @@ namespace Catalog.API.Controllers
         /// <returns>
         ///     json response
         /// </returns>
+        // POST api/v1/image
         [HttpPost("image")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UploadFile([FromBody] UploadFileModel uploadFileModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> UploadFileAsync([FromBody] UploadFileModel uploadFileModel, CancellationToken cancellationToken)
         {
             try
             {
-                await FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", uploadFileModel.FileName, 
+                // When Add New Manufacturer => has no Id
+                if (string.IsNullOrEmpty(uploadFileModel.Id))
+                {
+                    uploadFileModel.Id = Guid.NewGuid().ToString();
+                }
+                await FileUtility.UploadFileAsync(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
                     uploadFileModel.FileBase64.Replace(@"data:image/svg+xml;base64,", ""), cancellationToken);
-                return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
+                return CreatedAtAction(nameof(UploadFileAsync), uploadFileModel.FileName + " Upload Successfully.");
             }
             catch (Exception ex)
             {
                 return Json("Upload Failed: " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Fetch Image of Manufacturer
+        /// </summary>
+        /// <param name="parentId">manufacturer Id</param>
+        /// <param name="fileName">file name with extension</param>
+        /// <param name="cancellationToken">cancellation token</param>
+        /// <returns>single image</returns>
+        // GET api/v1/image
+        [HttpGet("image")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetImageAsync(int parentId, string fileName, CancellationToken cancellationToken)
+        {
+            if (parentId <= 0)
+            {
+                return BadRequest();
+            }
+
+            var manufacturerItem =
+                await _catalogContext.Manufacturers.SingleOrDefaultAsync(x => x.Id == parentId, cancellationToken);
+
+            if (manufacturerItem != null)
+            {
+                var webRoot = _hostingEnvironment.WebRootPath;
+                var path = Path.Combine(webRoot, parentId.ToString(), fileName);
+
+                string imageFileExtension = Path.GetExtension(fileName);
+                string mimetype = FileUtility.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
+
+                var buffer = await System.IO.File.ReadAllBytesAsync(path, cancellationToken);
+
+                return File(buffer, mimetype);
+            }
+            return NotFound();
         }
 
         // PUT api/v1/manufacturer/5

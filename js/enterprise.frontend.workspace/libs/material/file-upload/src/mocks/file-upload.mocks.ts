@@ -2,7 +2,7 @@ import { FileImageModel } from '../models/file-upload.model';
 
 export const FileUploadMocks: FileImageModel[] = [
   <FileImageModel>{
-    name: '1',
-    imgUrl: 'htt'
+    name: 'test.jpg',
+    imgUrl: 'http://localhost:5105'
   }
 ];
