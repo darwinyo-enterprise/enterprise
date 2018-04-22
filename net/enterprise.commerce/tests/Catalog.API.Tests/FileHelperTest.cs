@@ -1,4 +1,3 @@
-using System;
 using Catalog.API.Helpers;
 using Xunit;
 
@@ -10,7 +9,8 @@ namespace Catalog.API.Tests
         [InlineData(".png", "image/png")]
         [InlineData(".gif", "image/gif")]
         [InlineData(".jpg", "image/jpeg")]
-        public void GetImageMimeTypeFromImageFileExtension_Should_ReturnMimeTypeBasedOnExtensionFileProperly(string fileExtension, string expectedMimeType)
+        public void GetImageMimeTypeFromImageFileExtension_Should_ReturnMimeTypeBasedOnExtensionFileProperly(
+            string fileExtension, string expectedMimeType)
         {
             // Arrange
 
