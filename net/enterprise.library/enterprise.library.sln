@@ -42,6 +42,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.FileUtil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.FileUtility.Tests", "tests\Enterprise.Library.FileUtility.Tests\Enterprise.Library.FileUtility.Tests.csproj", "{7B9B7244-E2D6-491E-98D4-CFDF31A8955B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstraction", "Abstraction", "{14E3254C-1780-4F79-AE0E-49FC308F3770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Abstraction", "src\Abstraction\Enterprise.Abstraction\Enterprise.Abstraction.csproj", "{CE0831AF-BA43-467B-BA2C-9504AFF475D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,10 @@ Global
 		{7B9B7244-E2D6-491E-98D4-CFDF31A8955B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9B7244-E2D6-491E-98D4-CFDF31A8955B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B9B7244-E2D6-491E-98D4-CFDF31A8955B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0831AF-BA43-467B-BA2C-9504AFF475D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0831AF-BA43-467B-BA2C-9504AFF475D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0831AF-BA43-467B-BA2C-9504AFF475D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0831AF-BA43-467B-BA2C-9504AFF475D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +121,8 @@ Global
 		{937CBA14-2769-4E51-9DCE-CFC76A2B91B1} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
 		{F6DEBE88-9202-49B6-A5A8-D55D463A6701} = {937CBA14-2769-4E51-9DCE-CFC76A2B91B1}
 		{7B9B7244-E2D6-491E-98D4-CFDF31A8955B} = {F70F6307-6818-4B22-87D7-CC0EBD62361A}
+		{14E3254C-1780-4F79-AE0E-49FC308F3770} = {56D81872-1C66-43A0-85CF-84233CCD2C6E}
+		{CE0831AF-BA43-467B-BA2C-9504AFF475D9} = {14E3254C-1780-4F79-AE0E-49FC308F3770}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ED04AAEB-893E-43FD-8BD4-88B291A037B0}

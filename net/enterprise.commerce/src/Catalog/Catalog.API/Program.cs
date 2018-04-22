@@ -34,7 +34,7 @@ namespace Catalog.API
                 .UseApplicationInsights()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseWebRoot("Manufacturer")
+                .UseWebRoot("Pic")
                 .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
