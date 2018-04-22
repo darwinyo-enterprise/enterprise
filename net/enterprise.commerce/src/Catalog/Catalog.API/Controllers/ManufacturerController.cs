@@ -96,7 +96,7 @@ namespace Catalog.API.Controllers
         {
             try
             {
-                await FileUtility.UploadFile(_hostingEnvironment, "Manufacturer", uploadFileModel.FileName, 
+                await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
                     uploadFileModel.FileBase64.Replace(@"data:image/svg+xml;base64,", ""), cancellationToken);
                 return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
             }

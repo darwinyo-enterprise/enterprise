@@ -53,8 +53,10 @@ namespace Catalog.API.Filters
 
         private class JsonErrorResponse
         {
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public string[] Messages { get; set; }
 
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             public object DeveloperMessage { get; set; }
         }
     }
