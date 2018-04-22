@@ -3,7 +3,7 @@
     Drop files here...
     <div class="file-upload__drop-zone__button">
       or click here..
-      <input #file type="file" multiple (change)="onDropFileChanged(file.files)" />
+      <input #file type="file" [multiple]="multiple" accept="{{accept}}" (change)="onDropFileChanged(file.files)" />
     </div>
   </div>
   <div class="file-upload__upload-btn">

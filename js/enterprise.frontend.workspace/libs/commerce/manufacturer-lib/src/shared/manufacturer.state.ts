@@ -25,7 +25,7 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-  constructor(private manufacturerService: ManufacturerService) { }
+  constructor(private manufacturerService: ManufacturerService) {}
   //#region Selectors
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {

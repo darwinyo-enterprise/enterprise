@@ -18,9 +18,9 @@ import * as shared from '@enterprise/shared';
     AddManufacturerComponent,
     ListManufacturerComponent,
     EditManufacturerComponent,
-    
+
     ManufacturerLibModule,
     shared.SharedModule
   ]
 })
-export class ManufacturerModule { }
+export class ManufacturerModule {}

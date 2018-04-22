@@ -26,8 +26,7 @@ export class ListItemActionsComponent implements OnInit {
     this.addNewItem = new EventEmitter<null>();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onEdit(id: string) {
     this.editItem.emit(id);

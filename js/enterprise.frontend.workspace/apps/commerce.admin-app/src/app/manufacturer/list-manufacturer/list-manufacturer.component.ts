@@ -15,7 +15,6 @@ import { Manufacturer } from '@enterprise/commerce/catalog-lib';
   styleUrls: ['./list-manufacturer.component.scss']
 })
 export class ListManufacturerComponent implements OnInit {
-
   title: string;
 
   /** Selector Manufacturers List

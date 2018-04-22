@@ -9,11 +9,13 @@ import { ManufacturerFormComponent } from './manufacturer-form/manufacturer-form
 import { FileUploadModule } from '@enterprise/material/file-upload';
 
 @NgModule({
-  imports: [CommonModule, NgxsModule.forFeature([ManufacturerState]), SharedModule, FileUploadModule],
-  declarations: [ManufacturerFormComponent],
-  exports:[
+  imports: [
+    CommonModule,
+    NgxsModule.forFeature([ManufacturerState]),
     SharedModule,
-    ManufacturerFormComponent
-  ]
+    FileUploadModule
+  ],
+  declarations: [ManufacturerFormComponent],
+  exports: [SharedModule, ManufacturerFormComponent]
 })
-export class ManufacturerLibModule { }
+export class ManufacturerLibModule {}

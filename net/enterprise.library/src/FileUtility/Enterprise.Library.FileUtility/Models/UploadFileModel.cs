@@ -16,8 +16,8 @@
         public string FileName { get; set; }
 
         /// <summary>
-        /// file object converted to base64
+        /// file object converted to base64 / HTTP URL File
         /// </summary>
-        public string FileBase64 { get; set; }
+        public string FileUrl { get; set; }
     }
 }

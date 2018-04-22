@@ -1,5 +1,4 @@
-import { Manufacturer } from "@enterprise/commerce/catalog-lib";
-
+import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
 /** Fetch All Manufacturers Command */
 export class FetchManufacturers {

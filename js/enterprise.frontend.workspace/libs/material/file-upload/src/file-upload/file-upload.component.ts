@@ -1,5 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FileImageModel } from '../models/file-upload.model';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
 
@@ -9,19 +15,36 @@ import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
   styleUrls: ['./file-upload.component.scss']
 })
 /** TODO : REFACTOR CODE NEEDED */
+/** Can Receive All Types of File. */
 export class FileUploadComponent implements OnInit {
+  /** Model For Upload */
   uploadFileModel: UploadFileModel[];
+
+  @ViewChild('file') File: HTMLInputElement;
+
+  /** Accept File Format
+   *  Example : .doc, .exe, .xlsx, so on...
+   *  image/*, video/*, so on...
+   */
+  @Input() accept: string;
+
+  /** Identify is this control able to receive multiple files. */
+  @Input() multiple: boolean = true;
 
   /** parent id will be used for naming directory name */
   @Input() parentId: string;
 
   /** this used for generate image card for user take actions */
-  @Input() filesImage: FileImageModel[];
+  @Input() filesImage: UploadFileModel[];
 
   /** Upload File Event
    *  When this triggered you must define your own service logic.
+   *
+   * type:
+   * If Multiple Can be return UploadFileModel[]
+   * if single return UploadFileModel
    */
-  @Output() uploadFile: EventEmitter<UploadFileModel[]>;
+  @Output() uploadFile: EventEmitter<UploadFileModel[] | UploadFileModel>;
 
   /** Delete File Event
    *  When this triggered you must define your own service logic.

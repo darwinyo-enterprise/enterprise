@@ -53,9 +53,8 @@ export class AppState {
       name: this.linearLoadingAppName,
       mode: LoadingMode.Determinate,
       type: LoadingType.Linear,
-      color: 'accent',
+      color: 'accent'
     });
-
   }
   //#region Selectors
   @Selector()
@@ -77,8 +76,10 @@ export class AppState {
   //#endregion
 
   @Action(ProgressLinearLoadingOverlay)
-  progressLinearLoadingOverlay({ patchState }: StateContext<AppStateModel>,
-    { payload }: ProgressLinearLoadingOverlay) {
+  progressLinearLoadingOverlay(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: ProgressLinearLoadingOverlay
+  ) {
     patchState({ isLoading: true, progressLoading: payload });
     this.loadingService.setValue(this.linearLoadingAppName, payload);
   }
@@ -91,7 +92,12 @@ export class AppState {
 
   @Action(ResolveLinearLoadingOverlay)
   resolveLinearLoadingOverlay({ patchState }: StateContext<AppStateModel>) {
-    patchState({ isLoading: false, isError: false, errorMessage: '', progressLoading: 0 });
+    patchState({
+      isLoading: false,
+      isError: false,
+      errorMessage: '',
+      progressLoading: 0
+    });
     this.loadingService.resolve(this.linearLoadingAppName);
   }
 

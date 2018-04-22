@@ -5,7 +5,7 @@ export const ManufacturersMock: Manufacturer[] = [
     id: 1,
     name: 'Intel',
     description: 'CPU Manufacturer',
-    imageUrl: 'http://mock-image/',
+    imageUrl: 'http://mock-image/'
   },
   <Manufacturer>{
     id: 2,

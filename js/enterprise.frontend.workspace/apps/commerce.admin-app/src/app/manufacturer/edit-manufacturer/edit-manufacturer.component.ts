@@ -13,13 +13,13 @@ export class EditManufacturerComponent implements OnInit {
   constructor() {
     this.title = 'Edit Manufacturer';
     this.manufacturer = <Manufacturer>{
-      id:1,
-      name:'Samsung',
-      description:'Mobile Manufacturer'
+      id: 1,
+      name: 'Samsung',
+      description: 'Mobile Manufacturer'
     };
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onFileDelete(formFile: FormData) {
     console.log('DO SOMETHING FOR DELETE');

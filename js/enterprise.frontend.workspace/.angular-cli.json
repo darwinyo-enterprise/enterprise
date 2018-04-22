@@ -147,10 +147,20 @@
       "tags": []
     },
     {
+      "name": "core/testing",
+      "root": "libs/core/testing/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "material/file-upload",
       "root": "libs/material/file-upload/src",
       "test": "../../../../test.js",
       "appRoot": "",
+      "assets": [
+        "assets"
+      ],
       "tags": []
     },
     {
