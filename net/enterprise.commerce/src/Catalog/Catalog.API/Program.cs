@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using Catalog.API.Infrastructure;
 using Enterprise.Library.HealthChecks;
+using Enterprise.Library.IntegrationEventLog;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.API
@@ -27,7 +27,7 @@ namespace Catalog.API
                         .Wait();
 
                 })
-                //.MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
                 .Run();
         }
 
