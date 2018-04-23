@@ -96,8 +96,9 @@ namespace Catalog.API.Controllers
         {
             try
             {
+                var file = uploadFileModel.FileUrl.Split("base64")[1];
                 await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
-                    uploadFileModel.FileUrl.Replace(@"data:image/svg+xml;base64,", ""), cancellationToken);
+                    file, cancellationToken);
                 return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
             }
             catch (Exception ex)
@@ -106,10 +107,18 @@ namespace Catalog.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update Manufacturer Data.
+        /// Image Upload Validation will be in frontend.
+        /// As User Upload Image This automatically change image url value.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         // PUT api/v1/manufacturer/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         // DELETE api/v1/manufacturer/5

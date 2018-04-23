@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Enterprise.Library.IntegrationEventLog
@@ -39,6 +40,17 @@ namespace Enterprise.Library.IntegrationEventLog
 
             builder.Property(e => e.EventTypeName)
                 .IsRequired();
+        }
+    }
+    public class IntegrationEventLogContextDesignFactory : IDesignTimeDbContextFactory<IntegrationEventLogContext>
+    {
+        public IntegrationEventLogContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<IntegrationEventLogContext>()
+                .UseSqlServer(
+                    "Server=.;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;Integrated Security=true");
+
+            return new IntegrationEventLogContext(optionsBuilder.Options);
         }
     }
 }

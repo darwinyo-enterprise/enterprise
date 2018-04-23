@@ -35,8 +35,6 @@ namespace Catalog.API.Infrastructure
                         : GetPreconfiguredManufacturer());
 
                     await context.SaveChangesAsync();
-
-                    GetCatalogItemPictures(contentRootPath, picturePath);
                 }
             });
         }
