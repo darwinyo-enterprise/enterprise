@@ -1,9 +1,13 @@
 ﻿using System.IO;
+using Catalog.API.Infrastructure;
 using Enterprise.Library.HealthChecks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.API
 {
@@ -12,17 +16,17 @@ namespace Catalog.API
         public static void Main(string[] args)
         {
             BuildWebHost(args)
-                //.MigrateDbContext<CatalogContext>((context, services) =>
-                //{
-                //    var env = services.GetService<IHostingEnvironment>();
-                //    var settings = services.GetService<IOptions<CatalogSettings>>();
-                //    var logger = services.GetService<ILogger<CatalogContextSeed>>();
+                .MigrateDbContext<CatalogContext>((context, services) =>
+                {
+                    var env = services.GetService<IHostingEnvironment>();
+                    var settings = services.GetService<IOptions<CatalogSettings>>();
+                    var logger = services.GetService<ILogger<CatalogContextSeed>>();
 
-                //    new CatalogContextSeed()
-                //        .SeedAsync(context, env, settings, logger)
-                //        .Wait();
+                    new CatalogContextSeed()
+                        .SeedAsync(context, env, settings, logger)
+                        .Wait();
 
-                //})
+                })
                 //.MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
                 .Run();
         }

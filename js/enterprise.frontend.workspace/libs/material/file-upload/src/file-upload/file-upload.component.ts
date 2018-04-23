@@ -17,10 +17,9 @@ import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
 /** TODO : REFACTOR CODE NEEDED */
 /** Can Receive All Types of File. */
 export class FileUploadComponent implements OnInit {
+  
   /** Model For Upload */
   uploadFileModel: UploadFileModel[];
-
-  @ViewChild('file') File: HTMLInputElement;
 
   /** Accept File Format
    *  Example : .doc, .exe, .xlsx, so on...
@@ -58,6 +57,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   ngOnInit() {}
+
   /** Triggered when you drop file to dropzone
    *  file reader async function will automaticly fill uploadFileModel
    */
@@ -79,9 +79,11 @@ export class FileUploadComponent implements OnInit {
       fileReader.readAsDataURL(file);
     }
   }
+
   onFileUpload() {
     this.uploadFile.emit(this.uploadFileModel);
   }
+
   onFileDelete(name: string) {
     this.deleteFile.emit(name);
   }

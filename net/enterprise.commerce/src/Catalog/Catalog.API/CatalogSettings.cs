@@ -5,5 +5,6 @@ namespace Catalog.API
         public string BaseManufacturerPicUrl { get; set; }
         public string BaseManufacturerPicPath { get; set; }
         public string EventBusConnection { get; set; }
+        public bool UseCustomizationData { get; set; }
     }
 }

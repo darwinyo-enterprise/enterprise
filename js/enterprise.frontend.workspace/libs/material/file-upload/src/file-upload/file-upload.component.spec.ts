@@ -8,13 +8,15 @@ export class FileUploadPage extends BaseTestPage<FileUploadComponent> {
   constructor(public fixture: ComponentFixture<FileUploadComponent>) {
     super(fixture);
   }
-  get fileInput(){
+  get fileInput() {
     return this.query<HTMLInputElement>('input[type=file]');
   }
+  
 }
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
+  let fileUploadPage: FileUploadPage;
 
   beforeEach(
     async(() => {
@@ -28,18 +30,34 @@ describe('FileUploadComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.componentInstance;
+    fileUploadPage = new FileUploadPage(fixture);
+
     fixture.detectChanges();
   });
-  describe('UI Test', () => {});
-  fdescribe('Functionality Test', () => {
+  describe('UI Test', () => {
+    it()
+  });
+  describe('Functionality Test', () => {
     it('should have accept multiple attribute when multiple is true', () => {
       component.multiple = true;
       fixture.detectChanges();
-      console.log(component.File);
-      expect(component.File.multiple).toBeTruthy();
+
+      expect(fileUploadPage.fileInput.hasAttribute('multiple')).toBeTruthy();
     });
-  });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    it('should not have multiple attribute when multiple is false', () => {
+      component.multiple = false;
+      fixture.detectChanges();
+
+      expect(fileUploadPage.fileInput.hasAttribute('multiple')).toBeFalsy();
+    });
+
+    it('should accept file type by defining accept Input', () => {
+      component.accept = '.jpg';
+      fixture.detectChanges();
+
+      expect(fileUploadPage.fileInput.getAttribute('accept')).toBe(
+        component.accept
+      );
+    });
   });
 });
