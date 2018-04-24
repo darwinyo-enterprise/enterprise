@@ -31,19 +31,18 @@ namespace WebStatus
             services.AddHealthChecks(checks =>
             {
                 var minutes = 1;
-                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
+                if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed)) minutes = minutesParsed;
 
                 checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
+                checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"],
+                    TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
                 checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["LocationsUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["PaymentUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["spa"], TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
+                checks.AddUrlCheckIfNotNull(Configuration["spa"],
+                    TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 
             });
 
             services.AddMvc();
@@ -66,10 +65,7 @@ namespace WebStatus
             }
 
             var pathBase = Configuration["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
+            if (!string.IsNullOrEmpty(pathBase)) app.UsePathBase(pathBase);
 
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -81,8 +77,8 @@ namespace WebStatus
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
 
@@ -91,17 +87,10 @@ namespace WebStatus
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (orchestratorType?.ToUpper() == "K8S")
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            if (orchestratorType?.ToUpper() == "K8S") services.EnableKubernetes();
             if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                services.AddSingleton<ITelemetryInitializer>(serviceProvider =>
                     new FabricTelemetryInitializer());
-            }
         }
     }
 }

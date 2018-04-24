@@ -42,6 +42,7 @@ namespace Enterprise.Library.IntegrationEventLog
                 .IsRequired();
         }
     }
+
     public class IntegrationEventLogContextDesignFactory : IDesignTimeDbContextFactory<IntegrationEventLogContext>
     {
         public IntegrationEventLogContext CreateDbContext(string[] args)

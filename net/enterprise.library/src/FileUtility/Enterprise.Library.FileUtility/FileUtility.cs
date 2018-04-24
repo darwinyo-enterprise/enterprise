@@ -28,7 +28,8 @@ namespace Enterprise.Library.FileUtility
         /// <param name="cancellationToken">
         ///     used for cancellation Task
         /// </param>
-        public static async Task UploadFile(IHostingEnvironment hostingEnvironment, string folderName, string fileName, string base64File, CancellationToken cancellationToken)
+        public static async Task UploadFile(IHostingEnvironment hostingEnvironment, string folderName, string fileName,
+            string base64File, CancellationToken cancellationToken)
         {
             var webRootPath = hostingEnvironment.WebRootPath;
             var newPath = Path.Combine(webRootPath, folderName);

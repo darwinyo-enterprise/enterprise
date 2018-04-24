@@ -66,7 +66,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
+                string[] requiredHeaders = {"Id", "Name", "Description", "ImageName"};
                 csvheaders = GetHeaders(csvFileManufacturers, requiredHeaders);
             }
             catch (Exception ex)
@@ -136,7 +136,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
+                string[] requiredHeaders = {"Id", "Name", "Description", "ImageName"};
                 csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
             }
             catch (Exception ex)

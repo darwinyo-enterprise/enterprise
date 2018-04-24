@@ -47,11 +47,7 @@ namespace Enterprise.Abstraction
 
         public override int GetHashCode()
         {
-            if (IsTransient())
-            {
-                // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
-                return base.GetHashCode();
-            }
+            if (IsTransient()) return base.GetHashCode();
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             if (!_requestedHashCode.HasValue)
                 // ReSharper disable once NonReadonlyMemberInGetHashCode
@@ -62,7 +58,6 @@ namespace Enterprise.Abstraction
 
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return _requestedHashCode.Value;
-
         }
 
         public static bool operator ==(Entity left, Entity right)

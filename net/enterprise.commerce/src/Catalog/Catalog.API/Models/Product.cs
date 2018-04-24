@@ -74,17 +74,17 @@ namespace Catalog.API.Models
         }
 
         /// <summary>
-        /// Update Rate Star.
-        /// to update, we need to insert to db for details...
+        ///     Update Rate Star.
+        ///     to update, we need to insert to db for details...
         /// </summary>
         /// <param name="reviewsCount">
-        ///count reviews. how many persons has rated.
+        ///     count reviews. how many persons has rated.
         /// </param>
         /// <param name="rate">
-        ///rate to add
+        ///     rate to add
         /// </param>
         /// <returns>
-        /// updated product rate
+        ///     updated product rate
         /// </returns>
         public decimal UpdateRate(int reviewsCount, decimal rate)
         {
@@ -95,6 +95,5 @@ namespace Catalog.API.Models
             OverallRating = totalRateCurrent / reviewsCount;
             return OverallRating;
         }
-
     }
 }

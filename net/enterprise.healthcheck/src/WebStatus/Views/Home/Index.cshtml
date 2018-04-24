@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Enterprise.Extensions.HealthChecks
+@{
     ViewData["Title"] = "System Status";
 }
 
@@ -24,15 +25,15 @@
                 </p>
             </div>
             <div class="col-md-2 list-group-status-item-label">
-                @if (result.Result.CheckStatus == Enterprise.Extensions.HealthChecks.CheckStatus.Healthy)
+                @if (result.Result.CheckStatus == CheckStatus.Healthy)
                 {
                     <span class="label label-success">@result.Result.CheckStatus</span>
                 }
-                else if (result.Result.CheckStatus == Enterprise.Extensions.HealthChecks.CheckStatus.Unhealthy)
+                else if (result.Result.CheckStatus == CheckStatus.Unhealthy)
                 {
                     <span class="label label-danger">@result.Result.CheckStatus</span>
                 }
-                else if (result.Result.CheckStatus == Enterprise.Extensions.HealthChecks.CheckStatus.Warning)
+                else if (result.Result.CheckStatus == CheckStatus.Warning)
                 {
                     <span class="label label-warning">@result.Result.CheckStatus</span>
                 }

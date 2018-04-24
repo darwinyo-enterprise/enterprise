@@ -15,11 +15,11 @@ namespace Enterprise.Library.EventBus.ServiceBus
     {
         private const string IntegrationEventSufix = "IntegrationEvent";
         private readonly ILifetimeScope _autofac;
+        private readonly string _autofacScopeName = "commerce_event_bus";
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         private readonly SubscriptionClient _subscriptionClient;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly string _autofacScopeName = "commerce_event_bus";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
             ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager,
@@ -157,7 +157,8 @@ namespace Enterprise.Library.EventBus.ServiceBus
                         if (subscription.IsDynamic)
                         {
                             dynamic eventData = JObject.Parse(message);
-                            if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler) await handler.Handle(eventData);
+                            if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler
+                                handler) await handler.Handle(eventData);
                         }
                         else
                         {

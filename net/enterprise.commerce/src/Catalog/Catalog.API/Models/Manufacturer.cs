@@ -13,7 +13,7 @@
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Image Name with extension.
+        ///     Image Name with extension.
         /// </summary>
         public string ImageName { get; set; }
 

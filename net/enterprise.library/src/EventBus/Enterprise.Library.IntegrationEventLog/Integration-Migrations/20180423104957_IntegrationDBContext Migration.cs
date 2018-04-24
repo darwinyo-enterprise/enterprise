@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
 {
@@ -9,8 +8,8 @@ namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "IntegrationEventLog",
-                columns: table => new
+                "IntegrationEventLog",
+                table => new
                 {
                     EventId = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(nullable: false),
@@ -19,16 +18,13 @@ namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
                     State = table.Column<int>(nullable: false),
                     TimesSent = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId);
-                });
+                constraints: table => { table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "IntegrationEventLog");
+                "IntegrationEventLog");
         }
     }
 }
