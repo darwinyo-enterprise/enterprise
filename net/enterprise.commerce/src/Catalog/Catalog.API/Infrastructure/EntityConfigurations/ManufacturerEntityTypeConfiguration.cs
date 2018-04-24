@@ -24,7 +24,9 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
             builder.Property(x => x.Description)
                 .IsRequired(false);
 
-            builder.Property(x => x.ImageUrl)
+            builder.Ignore(x => x.ImageUrl);
+
+            builder.Property(x => x.ImageName)
                 .IsRequired();
 
             // Timestamp
