@@ -12,10 +12,12 @@ namespace Catalog.API.Infrastructure
         }
 
         public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new ManufacturerEntityTypeConfiguration());
+            builder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
         }
     }
 

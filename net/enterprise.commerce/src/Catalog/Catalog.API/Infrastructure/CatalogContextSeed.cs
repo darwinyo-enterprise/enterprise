@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
-using Remotion.Linq.Clauses;
 
 namespace Catalog.API.Infrastructure
 {
@@ -28,7 +27,6 @@ namespace Catalog.API.Infrastructure
             {
                 var useCustomizationData = settings.Value.UseCustomizationData;
                 var contentRootPath = env.ContentRootPath;
-                var picturePath = env.WebRootPath;
 
                 if (!context.Manufacturers.Any())
                 {
@@ -40,7 +38,20 @@ namespace Catalog.API.Infrastructure
 
                     await context.SaveChangesAsync();
 
-                    var query = await context.Manufacturers.ToListAsync();
+                    await context.Manufacturers.ToListAsync();
+                }
+
+                if (!context.Categories.Any())
+                {
+                    GetPictures(contentRootPath, "Category", "Category.zip");
+
+                    await context.Categories.AddRangeAsync(useCustomizationData
+                        ? GetCategoryFromFile(contentRootPath, logger)
+                        : GetPreconfiguredCategory());
+
+                    await context.SaveChangesAsync();
+
+                    await context.Categories.ToListAsync();
                 }
             });
         }
@@ -115,6 +126,76 @@ namespace Catalog.API.Infrastructure
             };
         }
 
+        private IEnumerable<Category> GetCategoryFromFile(string contentRootPath,
+            ILogger<CatalogContextSeed> logger)
+        {
+            var csvFileCategorys = Path.Combine(contentRootPath, "Setup", "Category.csv");
+
+            if (!File.Exists(csvFileCategorys)) return GetPreconfiguredCategory();
+
+            string[] csvheaders;
+            try
+            {
+                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
+                csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return GetPreconfiguredCategory();
+            }
+
+            return File.ReadAllLines(csvFileCategorys)
+                .Skip(1) // skip header row
+                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                .SelectTry(x =>
+                {
+                    PlacePictureById(x, csvheaders, "Category");
+                    return CreateCategory(x, csvheaders);
+                })
+                .OnCaughtException(ex =>
+                {
+                    logger.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null);
+        }
+
+        private Category CreateCategory(string[] column, string[] headers)
+        {
+            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
+            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
+
+            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
+
+            var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
+
+            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
+
+            return new Category
+            {
+                Name = name,
+                Id = ids,
+                Description = description,
+                ImageName = imageName
+            };
+        }
+
+        private IEnumerable<Category> GetPreconfiguredCategory()
+        {
+            return new List<Category>
+            {
+                new Category {Name = "Phone", Description = "None", Id = 1, ImageName = "Phone.png"},
+                new Category {Name = "Software", Description = "None", Id = 2, ImageName = "Software.png"},
+                new Category {Name = "Laptop", Description = "None", Id = 3, ImageName = "Laptop.png"},
+                new Category {Name = "Console", Description = "None", Id = 4, ImageName = "Console.png"},
+                new Category {Name = "Tablet", Description = "None", Id = 5, ImageName = "Tablet.png"}
+            };
+        }
+
         private string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
         {
             var csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
@@ -152,10 +233,7 @@ namespace Catalog.API.Infrastructure
             var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == id.ToString());
             if (dir != null && dir.Exists)
             {
-                foreach (var fileInfo in dir.GetFiles())
-                {
-                    fileInfo.Delete();
-                }
+                foreach (var fileInfo in dir.GetFiles()) fileInfo.Delete();
 
                 dir.Delete();
             }
@@ -168,6 +246,7 @@ namespace Catalog.API.Infrastructure
             var file = files.SingleOrDefault(x => x.Name == imageName);
             file?.MoveTo(id);
         }
+
         private Policy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().WaitAndRetryAsync(

@@ -18,12 +18,12 @@ namespace Catalog.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public class ManufacturerController : Controller
+    public class ProductController : Controller
     {
         private readonly CatalogContext _catalogContext;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ManufacturerController(CatalogContext catalogContext,
+        public ProductController(CatalogContext catalogContext,
             IHostingEnvironment hostingEnvironment)
         {
             _catalogContext = catalogContext ??

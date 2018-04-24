@@ -18,12 +18,12 @@ namespace Catalog.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public class ManufacturerController : Controller
+    public class CategoryController : Controller
     {
         private readonly CatalogContext _catalogContext;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ManufacturerController(CatalogContext catalogContext,
+        public CategoryController(CatalogContext catalogContext,
             IHostingEnvironment hostingEnvironment)
         {
             _catalogContext = catalogContext ??
@@ -32,35 +32,35 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Fetch All Manufacturers
+        ///     Fetch All Categories
         /// </summary>
         /// <param name="cancellationToken"></param>
-        /// <returns>list of manufacturers</returns>
-        // GET api/v1/manufacturer
+        /// <returns>list of Categories</returns>
+        // GET api/v1/Category
         [HttpGet]
-        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Category>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            var result = await _catalogContext.Manufacturers.ToListAsync(cancellationToken);
+            var result = await _catalogContext.Categories.ToListAsync(cancellationToken);
             return Ok(result);
         }
 
         /// <summary>
-        ///     Fetch Single Manufacturer by manufacturer id
+        ///     Fetch Single Category by Category id
         /// </summary>
-        /// <param name="id">manufacturer id</param>
+        /// <param name="id">Category id</param>
         /// <param name="cancellationToken"></param>
-        /// <returns>manufacturer</returns>
-        // GET api/v1/manufacturer/5
+        /// <returns>Category</returns>
+        // GET api/v1/Category/5
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Category), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest();
 
-            var result = await _catalogContext.Manufacturers.Where(x => x.Id == id)
+            var result = await _catalogContext.Categories.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (result != null) return Ok(result);
@@ -69,43 +69,43 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Create New Manufacturer.
+        ///     Create New Category.
         ///     In this step we'll generate file from base64 to byte[] and store it as file stream sql
         /// </summary>
-        /// <param name="manufacturer">
-        ///     Manufacturer model
+        /// <param name="category">
+        ///     Category model
         /// </param>
         /// <param name="cancellationToken">
         ///     cancelation token
         /// </param>
         /// <returns></returns>
-        // POST api/v1/manufacturer
+        // POST api/v1/Category
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> AddNewManufacturer([FromBody] Manufacturer manufacturer,
+        public async Task<IActionResult> AddNewCategory([FromBody] Category category,
             CancellationToken cancellationToken)
         {
-            var file = manufacturer.ImageUrl.Split("base64")[1];
-            await FileUtility.UploadFile(_hostingEnvironment, manufacturer.Id.ToString(), manufacturer.ImageName,
+            var file = category.ImageUrl.Split("base64")[1];
+            await FileUtility.UploadFile(_hostingEnvironment, category.Id.ToString(), category.ImageName,
                 file, cancellationToken);
 
-            var item = new Manufacturer
+            var item = new Category
             {
-                Description = manufacturer.Description,
-                Id = manufacturer.Id,
-                ImageName = manufacturer.ImageName,
-                Name = manufacturer.Name
+                Description = category.Description,
+                Id = category.Id,
+                ImageName = category.ImageName,
+                Name = category.Name
             };
-            await _catalogContext.Manufacturers.AddAsync(item, cancellationToken);
+            await _catalogContext.Categories.AddAsync(item, cancellationToken);
             await _catalogContext.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(AddNewManufacturer), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(AddNewCategory), new { id = item.Id }, null);
         }
 
         /// <summary>
         ///     Get Image by id
         /// </summary>
         /// <param name="id">
-        ///     id of manufacturer
+        ///     id of Category
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns>
@@ -119,7 +119,7 @@ namespace Catalog.API.Controllers
         {
             if (id <= 0) return BadRequest();
 
-            var item = await _catalogContext.Manufacturers
+            var item = await _catalogContext.Categories
                 .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
             if (item != null)
@@ -140,7 +140,7 @@ namespace Catalog.API.Controllers
 
         /// <summary>
         ///     store file upload to directory specified.
-        ///     this only used for updating manufacturer.
+        ///     this only used for updating Category.
         /// </summary>
         /// <returns>
         ///     json response
@@ -157,17 +157,17 @@ namespace Catalog.API.Controllers
                 if (Convert.ToInt32(uploadFileModel.Id) <= 0) return BadRequest();
 
                 // update db
-                var manufacturer = await _catalogContext.Manufacturers.SingleOrDefaultAsync(x =>
+                var category = await _catalogContext.Categories.SingleOrDefaultAsync(x =>
                     x.Id == Convert.ToInt32(uploadFileModel.Id), cancellationToken);
 
-                if (manufacturer != null)
+                if (category != null)
                 {
                     var file = uploadFileModel.FileUrl.Split("base64")[1];
                     await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 
-                    manufacturer.ImageName = uploadFileModel.FileName;
-                    _catalogContext.Manufacturers.Update(manufacturer);
+                    category.ImageName = uploadFileModel.FileName;
+                    _catalogContext.Categories.Update(category);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
 
                     return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
@@ -182,7 +182,7 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Delete Image Manufacturer
+        ///     Delete Image Category
         /// </summary>
         /// <param name="uploadFileModel">
         ///     file to delete
@@ -220,41 +220,41 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Update Manufacturer Data.
+        ///     Update Category Data.
         ///     Image Upload Validation will be in frontend.
         ///     As User Upload Image This automatically change image url value.
         /// </summary>
-        /// <param name="id">id manufacturer</param>
-        /// <param name="updateModel">manufacturer to update</param>
+        /// <param name="id">id Category</param>
+        /// <param name="updateModel">Category to update</param>
         /// <param name="cancellationToken"></param>
-        // PUT api/v1/manufacturer/5
+        // PUT api/v1/Category/5
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateManufacturer(int id, [FromBody] Manufacturer updateModel,
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category updateModel,
             CancellationToken cancellationToken)
         {
-            var item = await _catalogContext.Manufacturers
+            var item = await _catalogContext.Categories
                 .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
 
             if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
 
             // Update current product
-            _catalogContext.Manufacturers.Update(item);
+            _catalogContext.Categories.Update(item);
 
             await _catalogContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(UpdateManufacturer), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(UpdateCategory), new { id = item.Id }, null);
         }
 
         /// <summary>
-        ///     Delete Manufacturer.
+        ///     Delete Category.
         ///     Image will be deleted too.
         /// </summary>
-        /// <param name="id">id manufacturer</param>
+        /// <param name="id">id Category</param>
         /// <param name="cancellationToken"></param>
-        // DELETE api/v1/manufacturer/5
+        // DELETE api/v1/Category/5
         [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -265,7 +265,7 @@ namespace Catalog.API.Controllers
             {
                 if (id <= 0) return BadRequest();
 
-                var item = await _catalogContext.Manufacturers
+                var item = await _catalogContext.Categories
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
                 if (item != null)
@@ -275,7 +275,7 @@ namespace Catalog.API.Controllers
 
                     System.IO.File.Delete(path);
 
-                    _catalogContext.Manufacturers.Remove(item);
+                    _catalogContext.Categories.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
                     return NoContent();
                 }
