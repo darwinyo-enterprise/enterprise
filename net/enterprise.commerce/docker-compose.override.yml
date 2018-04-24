@@ -56,3 +56,10 @@ services:
     ports:
       - "80"
 
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+

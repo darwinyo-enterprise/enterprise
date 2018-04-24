@@ -38,3 +38,10 @@ services:
       context: .
       dockerfile: ../enterprise.identity/src/Identity.API/Dockerfile
 
+
+  webstatus:
+    image: webstatus
+    build:
+      context: .
+      dockerfile: ../enterprise.healthcheck/src/WebStatus/Dockerfile
+
