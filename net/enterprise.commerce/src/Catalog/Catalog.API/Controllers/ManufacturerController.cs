@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Catalog.API.Helpers;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Enterprise.Library.FileUtility;
@@ -84,6 +86,31 @@ namespace Catalog.API.Controllers
             return null;
         }
 
+        public async Task<IActionResult> GetImage(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var item = await _catalogContext.Manufacturers
+                .SingleOrDefaultAsync(ci => ci.Id == id);
+
+            if (item != null)
+            {
+                var webRoot = _hostingEnvironment.WebRootPath;
+                var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
+
+                string imageFileExtension = Path.GetExtension(item.ImageName);
+                string mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
+
+                var buffer = System.IO.File.ReadAllBytes(path);
+
+                return File(buffer, mimetype);
+            }
+
+            return NotFound();
+        }
         /// <summary>
         ///     store file upload to directory specified.
         /// </summary>

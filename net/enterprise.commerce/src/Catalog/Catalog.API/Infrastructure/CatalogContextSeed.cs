@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using Catalog.API.Extensions;
 using Catalog.API.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
+using Remotion.Linq.Clauses;
 
 namespace Catalog.API.Infrastructure
 {
@@ -30,11 +32,15 @@ namespace Catalog.API.Infrastructure
 
                 if (!context.Manufacturers.Any())
                 {
+                    GetPictures(contentRootPath, "Manufacturer", "Manufacturer.zip");
+
                     await context.Manufacturers.AddRangeAsync(useCustomizationData
                         ? GetManufacturerFromFile(contentRootPath, logger)
                         : GetPreconfiguredManufacturer());
 
                     await context.SaveChangesAsync();
+
+                    var query = await context.Manufacturers.ToListAsync();
                 }
             });
         }
@@ -49,7 +55,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "Name", "Description", "ImageUrl"};
+                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
                 csvheaders = GetHeaders(csvFileManufacturers, requiredHeaders);
             }
             catch (Exception ex)
@@ -61,7 +67,11 @@ namespace Catalog.API.Infrastructure
             return File.ReadAllLines(csvFileManufacturers)
                 .Skip(1) // skip header row
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                .SelectTry(x => CreateManufacturer(x, csvheaders))
+                .SelectTry(x =>
+                {
+                    PlacePictureById(x, csvheaders, "Manufacturer");
+                    return CreateManufacturer(x, csvheaders);
+                })
                 .OnCaughtException(ex =>
                 {
                     logger.LogError(ex.Message);
@@ -81,15 +91,15 @@ namespace Catalog.API.Infrastructure
             var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
-            var imageUrl = column[Array.IndexOf(headers, "ImageUrl")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(imageUrl)) throw new Exception("catalog Brand image url is empty");
+            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new Manufacturer
             {
                 Name = name,
                 Id = ids,
                 Description = description,
-                ImageUrl = imageUrl
+                ImageName = imageName
             };
         }
 
@@ -97,11 +107,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<Manufacturer>
             {
-                new Manufacturer {Name = "Microsoft", Description = "None", Id = 1, ImageUrl = "1"},
-                new Manufacturer {Name = "Dell", Description = "None", Id = 2, ImageUrl = "1"},
-                new Manufacturer {Name = "Google", Description = "None", Id = 3, ImageUrl = "1"},
-                new Manufacturer {Name = "Asus", Description = "None", Id = 4, ImageUrl = "1"},
-                new Manufacturer {Name = "Apple", Description = "None", Id = 5, ImageUrl = "1"}
+                new Manufacturer {Name = "Microsoft", Description = "None", Id = 1, ImageName = "Microsoft.png"},
+                new Manufacturer {Name = "Docker", Description = "None", Id = 2, ImageName = "Docker.png"},
+                new Manufacturer {Name = "Google", Description = "None", Id = 3, ImageName = "Google.png"},
+                new Manufacturer {Name = "Asus", Description = "None", Id = 4, ImageName = "Asus.png"},
+                new Manufacturer {Name = "Apple", Description = "None", Id = 5, ImageName = "Apple.png"}
             };
         }
 
@@ -125,15 +135,39 @@ namespace Catalog.API.Infrastructure
             return csvheaders;
         }
 
-        private void GetCatalogItemPictures(string contentRootPath, string picturePath)
+        private void GetPictures(string contentRootPath, string picturePath, string zipName)
         {
             var directory = new DirectoryInfo(picturePath);
             foreach (var file in directory.GetFiles()) file.Delete();
 
-            var zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
+            var zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", zipName);
             ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
         }
 
+        private void PlacePictureById(string[] column, string[] headers, string picturePath)
+        {
+            var directory = new DirectoryInfo(picturePath);
+
+            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
+            var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == id.ToString());
+            if (dir != null && dir.Exists)
+            {
+                foreach (var fileInfo in dir.GetFiles())
+                {
+                    fileInfo.Delete();
+                }
+
+                dir.Delete();
+            }
+
+            var files = directory.GetFiles();
+            directory.CreateSubdirectory(id);
+
+            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+
+            var file = files.SingleOrDefault(x => x.Name == imageName);
+            file?.MoveTo(id);
+        }
         private Policy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().WaitAndRetryAsync(

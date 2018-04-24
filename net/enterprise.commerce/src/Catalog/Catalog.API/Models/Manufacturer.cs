@@ -7,11 +7,15 @@
         public string Description { get; set; }
 
         /// <summary>
-        ///     Image Url can be through http or base64.
+        ///     Image Url is base64.
         ///     Front end will feed this by base64 to save.
-        ///     File will be stored into filestream, after saved this will be altered to http url.
         /// </summary>
         public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Image Name with extension.
+        /// </summary>
+        public string ImageName { get; set; }
 
         public byte[] Timestamp { get; set; }
     }
