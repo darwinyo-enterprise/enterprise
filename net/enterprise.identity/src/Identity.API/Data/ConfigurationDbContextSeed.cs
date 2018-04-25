@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.Configuration;
@@ -17,29 +16,23 @@ namespace Identity.API.Data
             //callbacks urls from config:
             var clientUrls = new Dictionary<string, string>
             {
-                {"Mvc", configuration.GetValue<string>("MvcClient")},
-                {"Spa", configuration.GetValue<string>("SpaClient")},
-                {"Xamarin", configuration.GetValue<string>("XamarinCallback")},
-                {"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
-                {"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
-                {"BasketApi", configuration.GetValue<string>("BasketApiClient")},
-                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
+                //{"Mvc", configuration.GetValue<string>("MvcClient")},
+                //{"Spa", configuration.GetValue<string>("SpaClient")},
+                //{"Xamarin", configuration.GetValue<string>("XamarinCallback")},
+                //{"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
+                //{"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
+                //{"BasketApi", configuration.GetValue<string>("BasketApiClient")},
+                //{"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
             };
 
             if (!await context.Clients.AnyAsync())
-            {
                 context.Clients.AddRange(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
-            }
 
             if (!await context.IdentityResources.AnyAsync())
-            {
                 context.IdentityResources.AddRange(Config.GetResources().Select(resource => resource.ToEntity()));
-            }
 
             if (!await context.ApiResources.AnyAsync())
-            {
                 context.ApiResources.AddRange(Config.GetApis().Select(api => api.ToEntity()));
-            }
 
             await context.SaveChangesAsync();
         }

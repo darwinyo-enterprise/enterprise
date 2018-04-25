@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
 {
-    public partial class IntegrationDBContextMigration : Migration
+    public partial class IntegrationDbContextMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

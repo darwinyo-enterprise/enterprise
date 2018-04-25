@@ -1,11 +1,11 @@
-﻿using IdentityServer4;
+﻿using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
-using System.Collections.Generic;
 
 namespace Identity.API.Configuration
 {
     /// <summary>
-    /// TODO: Refactor Code
+    ///     TODO: Refactor Code
     /// </summary>
     public class Config
     {
@@ -44,10 +44,10 @@ namespace Identity.API.Configuration
                     ClientName = "eShop SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RedirectUris = {$"{clientsUrl["Spa"]}/"},
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
-                    AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
+                    PostLogoutRedirectUris = {$"{clientsUrl["Spa"]}/"},
+                    AllowedCorsOrigins = {$"{clientsUrl["Spa"]}"},
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -65,8 +65,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["LocationsApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["LocationsApi"]}/swagger/o2c.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["LocationsApi"]}/swagger/"},
 
                     AllowedScopes =
                     {
@@ -80,8 +80,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["MarketingApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["MarketingApi"]}/swagger/o2c.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["MarketingApi"]}/swagger/"},
 
                     AllowedScopes =
                     {
@@ -95,8 +95,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["BasketApi"]}/swagger/o2c.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["BasketApi"]}/swagger/"},
 
                     AllowedScopes =
                     {
@@ -110,8 +110,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["OrderingApi"]}/swagger/o2c.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["OrderingApi"]}/swagger/"},
 
                     AllowedScopes =
                     {

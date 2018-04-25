@@ -12,7 +12,7 @@ namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
 {
     [DbContext(typeof(IntegrationEventLogContext))]
     [Migration("20180423104957_IntegrationDBContext Migration")]
-    partial class IntegrationDBContextMigration
+    partial class IntegrationDbContextMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Identity.API.Models;
+using Identity.API.Services;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Identity.API.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IOptionsSnapshot<AppSettings> _settings;
         private readonly IRedirectService _redirectSvc;
+        private readonly IOptionsSnapshot<AppSettings> _settings;
 
-        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings, IRedirectService redirectSvc)
+        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings,
+            IRedirectService redirectSvc)
         {
             _interaction = interaction;
             _settings = settings;
@@ -28,12 +30,11 @@ namespace Identity.API.Controllers
         {
             if (returnUrl != null)
                 return Redirect(_redirectSvc.ExtractRedirectUriFromReturnUrl(returnUrl));
-            else
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
-        /// Shows the error page
+        ///     Shows the error page
         /// </summary>
         public async Task<IActionResult> Error(string errorId)
         {
@@ -41,10 +42,7 @@ namespace Identity.API.Controllers
 
             // retrieve error details from identityserver
             var message = await _interaction.GetErrorContextAsync(errorId);
-            if (message != null)
-            {
-                vm.Error = message;
-            }
+            if (message != null) vm.Error = message;
 
             return View("Error", vm);
         }
