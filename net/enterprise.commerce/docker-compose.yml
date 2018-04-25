@@ -44,3 +44,10 @@ services:
       
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
+
+  basket.api:
+    image: basketapi
+    build:
+      context: .
+      dockerfile: src/Basket/Basket.API/Dockerfile
+
