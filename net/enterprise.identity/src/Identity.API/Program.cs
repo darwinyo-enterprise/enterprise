@@ -1,10 +1,10 @@
 ﻿using System.IO;
-using AutoMapper.Configuration;
 using Enterprise.Library.HealthChecks;
 using Identity.API.Data;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

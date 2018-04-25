@@ -1,12 +1,5 @@
-﻿using System;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Enterprise.Extensions.HealthChecks;
-using Enterprise.Extensions.HealthChecks.SqlServer;
-using Identity.API.Data;
-using Identity.API.Models;
-using Identity.API.Services;
 using IdentityServer4.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
@@ -15,10 +8,18 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Identity.API.Certificates;
+using Identity.API.Data;
+using Identity.API.Models;
+using Identity.API.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Enterprise.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
+using System;
+using System.Reflection;
+using Enterprise.Extensions.HealthChecks.SqlServer;
 
 namespace Identity.API
 {
@@ -101,8 +102,8 @@ namespace Identity.API
                                     sqlServerOptionsAction: sqlOptions =>
                                     {
                                         sqlOptions.MigrationsAssembly(migrationsAssembly);
-                                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                     });
                 })
                 .Services.AddTransient<IProfileService, ProfileService>();
