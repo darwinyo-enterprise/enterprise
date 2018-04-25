@@ -51,3 +51,10 @@ services:
       context: .
       dockerfile: src/Basket/Basket.API/Dockerfile
 
+
+  payment.api:
+    image: paymentapi
+    build:
+      context: .
+      dockerfile: src/Payment/Payment.API/Dockerfile
+

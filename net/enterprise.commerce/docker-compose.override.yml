@@ -106,3 +106,10 @@ services:
     ports:
       - "80"
 
+
+  payment.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
