@@ -2,7 +2,7 @@ version: '3'
 
 services:
   catalog.api:
-    image: darwinyo/catalogapi
+    image: darwinyo/catalogapi:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Catalog/Catalog.API/Dockerfile
@@ -11,12 +11,27 @@ services:
       - rabbitmq
 
   order.api:
-    image: darwinyo/orderapi
+    image: darwinyo/orderapi:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Order/Order.API/Dockerfile
     depends_on:
       - sql.data
+
+      
+  identity.api:
+    image: darwinyo/identityapi:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ../enterprise.identity/src/Identity.API/Dockerfile
+    depends_on:
+      - sql.data
+
+  webstatus:
+    image: darwinyo/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ../enterprise.healthcheck/src/WebStatus/Dockerfile
 
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
@@ -29,19 +44,3 @@ services:
       
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
- 
-
-
-  identity.api:
-    image: identityapi
-    build:
-      context: .
-      dockerfile: ../enterprise.identity/src/Identity.API/Dockerfile
-
-
-  webstatus:
-    image: webstatus
-    build:
-      context: .
-      dockerfile: ../enterprise.healthcheck/src/WebStatus/Dockerfile
-
