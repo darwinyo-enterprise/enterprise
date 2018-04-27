@@ -14,7 +14,7 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .ForSqlServerUseSequenceHiLo("catalog_type_hilo")
+                .ForSqlServerUseSequenceHiLo("manufacturer_type_hilo")
                 .IsRequired();
 
             builder.Property(x => x.Name)

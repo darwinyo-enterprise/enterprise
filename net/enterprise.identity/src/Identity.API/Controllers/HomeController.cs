@@ -3,7 +3,6 @@ using Identity.API.Models;
 using Identity.API.Services;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Identity.API.Controllers
 {
@@ -11,13 +10,10 @@ namespace Identity.API.Controllers
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IRedirectService _redirectSvc;
-        private readonly IOptionsSnapshot<AppSettings> _settings;
 
-        public HomeController(IIdentityServerInteractionService interaction, IOptionsSnapshot<AppSettings> settings,
-            IRedirectService redirectSvc)
+        public HomeController(IIdentityServerInteractionService interaction, IRedirectService redirectSvc)
         {
             _interaction = interaction;
-            _settings = settings;
             _redirectSvc = redirectSvc;
         }
 

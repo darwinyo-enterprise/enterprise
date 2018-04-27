@@ -21,34 +21,37 @@ namespace Identity.API.Data
         public async Task SeedAsync(ApplicationDbContext context, IHostingEnvironment env,
             ILogger<ApplicationDbContextSeed> logger, IOptions<AppSettings> settings, int? retry = 0)
         {
-            var retryForAvaiability = retry.Value;
-
-            try
+            if (retry != null)
             {
-                var useCustomizationData = settings.Value.UseCustomizationData;
-                var contentRootPath = env.ContentRootPath;
-                var webroot = env.WebRootPath;
+                var retryForAvaiability = retry.Value;
 
-                if (!context.Users.Any())
+                try
                 {
-                    context.Users.AddRange(useCustomizationData
-                        ? GetUsersFromFile(contentRootPath, logger)
-                        : GetDefaultUser());
+                    var useCustomizationData = settings.Value.UseCustomizationData;
+                    var contentRootPath = env.ContentRootPath;
+                    var webroot = env.WebRootPath;
 
-                    await context.SaveChangesAsync();
+                    if (!context.Users.Any())
+                    {
+                        context.Users.AddRange(useCustomizationData
+                            ? GetUsersFromFile(contentRootPath, logger)
+                            : GetDefaultUser());
+
+                        await context.SaveChangesAsync();
+                    }
+
+                    if (useCustomizationData) GetPreconfiguredImages(contentRootPath, webroot, logger);
                 }
-
-                if (useCustomizationData) GetPreconfiguredImages(contentRootPath, webroot, logger);
-            }
-            catch (Exception ex)
-            {
-                if (retryForAvaiability < 10)
+                catch (Exception ex)
                 {
-                    retryForAvaiability++;
+                    if (retryForAvaiability < 10)
+                    {
+                        retryForAvaiability++;
 
-                    logger.LogError(ex.Message, $"There is an error migrating data for ApplicationDbContext");
+                        logger.LogError(ex.Message, $"There is an error migrating data for ApplicationDbContext");
 
-                    await SeedAsync(context, env, logger, settings, retryForAvaiability);
+                        await SeedAsync(context, env, logger, settings, retryForAvaiability);
+                    }
                 }
             }
         }
@@ -142,23 +145,23 @@ namespace Identity.API.Data
                     CardType = 1,
                     City = "Redmond",
                     Country = "U.S.",
-                    Email = "demouser@microsoft.com",
+                    Email = "demouser@enterprise.com",
                     Expiration = "12/20",
                     Id = Guid.NewGuid().ToString(),
                     LastName = "DemoLastName",
                     Name = "DemoUser",
                     PhoneNumber = "1234567890",
-                    UserName = "demouser@microsoft.com",
+                    UserName = "demouser@enterprise.com",
                     ZipCode = "98052",
                     State = "WA",
                     Street = "15703 NE 61st Ct",
                     SecurityNumber = "535",
-                    NormalizedEmail = "DEMOUSER@MICROSOFT.COM",
-                    NormalizedUserName = "DEMOUSER@MICROSOFT.COM",
+                    NormalizedEmail = "DEMOUSER@ENTERPRISE.COM",
+                    NormalizedUserName = "DEMOUSER@ENTERPRISE.COM",
                     SecurityStamp = Guid.NewGuid().ToString("D")
                 };
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, "Pass@word1");
+            user.PasswordHash = _passwordHasher.HashPassword(user, "P@ssw0rd");
 
             return new List<ApplicationUser>
             {

@@ -2,7 +2,7 @@
 
 @{
     var error = Model?.Error?.Error;
-    var requestId = Model?.Error?.RequestId;
+    var request_id = Model?.Error?.RequestId;
 }
 
 <div class="error-page">
@@ -25,9 +25,9 @@
                 }
             </div>
 
-            @if (requestId != null)
+            @if (request_id != null)
             {
-                <div class="request-id">Request Id: @requestId</div>
+                <div class="request-id">Request Id: @request_id</div>
             }
         </div>
     </div>

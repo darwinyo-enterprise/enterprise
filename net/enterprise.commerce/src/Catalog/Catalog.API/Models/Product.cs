@@ -6,9 +6,7 @@ namespace Catalog.API.Models
 {
     public class Product
     {
-        public Guid Id { get; set; }
-        public int ManufacturerId { get; set; }
-
+        public string Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal OverallRating { get; set; }
@@ -17,18 +15,17 @@ namespace Catalog.API.Models
         public string Description { get; set; }
 
         public DateTime LastUpdated { get; set; }
-        public Guid LastUpdatedBy { get; set; }
-
-        public Guid AddedBy { get; set; }
-        public DateTime AddedDateTime { get; set; }
-
-        public Guid PriceChangedBy { get; set; }
-        public DateTime LastPriceChanged { get; set; }
+        public string LastUpdatedBy { get; set; }
 
         // Quantity in stock
         public int AvailableStock { get; set; }
 
+        public int ManufacturerId { get; set; }
+        public int CategoryId { get; set; }
+
+        public byte[] Timestamp { get; set; }
         public Manufacturer Manufacturer { get; set; }
+        public Category Category { get; set; }
 
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<ProductColor> ProductColors { get; set; }

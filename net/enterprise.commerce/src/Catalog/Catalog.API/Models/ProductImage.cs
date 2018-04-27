@@ -1,9 +1,11 @@
-﻿namespace Catalog.API.Models
+﻿using System;
+
+namespace Catalog.API.Models
 {
     public class ProductImage
     {
         public int Id { get; set; }
-
+        public string ProductId { get; set; }
         /// <summary>
         ///     Image Url is base64.
         ///     Front end will feed this by base64 to save.
