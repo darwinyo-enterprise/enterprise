@@ -16,7 +16,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
 
-        private int? _buyerId;
+        private string _buyerId;
 
         private string _description;
 
@@ -34,7 +34,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         }
 
         public Order(string userId, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-            string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null)
+            string cardHolderName, DateTime cardExpiration, string buyerId = null, int? paymentMethodId = null)
         {
             _orderItems = new List<OrderItem>();
             _buyerId = buyerId;
