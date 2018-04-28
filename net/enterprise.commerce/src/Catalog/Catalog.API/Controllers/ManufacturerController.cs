@@ -10,7 +10,6 @@ using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Enterprise.Library.FileUtility;
 using Enterprise.Library.FileUtility.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,24 +20,24 @@ namespace Catalog.API.Controllers
     public class ManufacturerController : Controller
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IFileUtility _fileUtility;
 
         public ManufacturerController(CatalogContext catalogContext,
-            IHostingEnvironment hostingEnvironment)
+            IFileUtility fileUtility)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
-            _hostingEnvironment = hostingEnvironment;
+            _fileUtility = fileUtility;
         }
 
         /// <summary>
         ///     Fetch All Manufacturers
         /// </summary>
         /// <param name="cancellationToken"></param>
-        /// <returns>list of manufacturers</returns>
-        // GET api/v1/manufacturer
+        /// <returns>list of Manufacturers</returns>
+        // GET api/v1/Manufacturer
         [HttpGet]
-        [ProducesResponseType(typeof(List<Manufacturer>), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Manufacturers.ToListAsync(cancellationToken);
@@ -46,16 +45,16 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Fetch Single Manufacturer by manufacturer id
+        ///     Fetch Single Manufacturer by Manufacturer id
         /// </summary>
-        /// <param name="id">manufacturer id</param>
+        /// <param name="id">Manufacturer id</param>
         /// <param name="cancellationToken"></param>
-        /// <returns>manufacturer</returns>
-        // GET api/v1/manufacturer/5
+        /// <returns>Manufacturer</returns>
+        // GET api/v1/Manufacturer/5
         [HttpGet("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Manufacturer), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest();
@@ -79,42 +78,44 @@ namespace Catalog.API.Controllers
         ///     cancelation token
         /// </param>
         /// <returns></returns>
-        // POST api/v1/manufacturer
+        // POST api/v1/Manufacturer
         [HttpPost]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewManufacturer([FromBody] Manufacturer manufacturer,
             CancellationToken cancellationToken)
         {
+            if (manufacturer == null) return BadRequest();
+
             var file = manufacturer.ImageUrl.Split("base64")[1];
-            await FileUtility.UploadFile(_hostingEnvironment, manufacturer.Id.ToString(), manufacturer.ImageName,
+            await _fileUtility.UploadFileAsync(manufacturer.Id.ToString(), manufacturer.ImageName,
                 file, cancellationToken);
 
             var item = new Manufacturer
             {
                 Description = manufacturer.Description,
-                Id = manufacturer.Id,
                 ImageName = manufacturer.ImageName,
                 Name = manufacturer.Name
             };
             await _catalogContext.Manufacturers.AddAsync(item, cancellationToken);
             await _catalogContext.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(AddNewManufacturer), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(AddNewManufacturer), new { id = item.Id }, null);
         }
 
         /// <summary>
         ///     Get Image by id
         /// </summary>
         /// <param name="id">
-        ///     id of manufacturer
+        ///     id of Manufacturer
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns>
         ///     return file to download
         /// </returns>
         [HttpGet("image/id")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetImage(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest();
@@ -124,13 +125,10 @@ namespace Catalog.API.Controllers
 
             if (item != null)
             {
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
-
                 var imageFileExtension = Path.GetExtension(item.ImageName);
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = System.IO.File.ReadAllBytes(path);
+                var buffer = await _fileUtility.ReadFileAsync(item.Id.ToString(), item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -140,15 +138,15 @@ namespace Catalog.API.Controllers
 
         /// <summary>
         ///     store file upload to directory specified.
-        ///     this only used for updating manufacturer.
+        ///     this only used for updating Manufacturer.
         /// </summary>
         /// <returns>
         ///     json response
         /// </returns>
         [HttpPost("image")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UploadFile([FromBody] UploadFileModel uploadFileModel,
             CancellationToken cancellationToken)
         {
@@ -163,7 +161,7 @@ namespace Catalog.API.Controllers
                 if (manufacturer != null)
                 {
                     var file = uploadFileModel.FileUrl.Split("base64")[1];
-                    await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
+                    await _fileUtility.UploadFileAsync(uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 
                     manufacturer.ImageName = uploadFileModel.FileName;
@@ -192,9 +190,9 @@ namespace Catalog.API.Controllers
         ///     no content
         /// </returns>
         [HttpDelete("image")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult DeleteImage([FromBody] UploadFileModel uploadFileModel,
             CancellationToken cancellationToken)
         {
@@ -202,10 +200,7 @@ namespace Catalog.API.Controllers
             {
                 if (Convert.ToInt32(uploadFileModel.Id) <= 0) return BadRequest();
 
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, uploadFileModel.Id, uploadFileModel.FileName);
-
-                System.IO.File.Delete(path);
+                _fileUtility.DeleteFile(uploadFileModel.Id, uploadFileModel.FileName);
 
                 return NoContent();
             }
@@ -224,41 +219,41 @@ namespace Catalog.API.Controllers
         ///     Image Upload Validation will be in frontend.
         ///     As User Upload Image This automatically change image url value.
         /// </summary>
-        /// <param name="id">id manufacturer</param>
-        /// <param name="updateModel">manufacturer to update</param>
+        /// <param name="id">id Manufacturer</param>
+        /// <param name="updateModel">Manufacturer to update</param>
         /// <param name="cancellationToken"></param>
-        // PUT api/v1/manufacturer/5
+        // PUT api/v1/Manufacturer/5
         [HttpPut("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateManufacturer(int id, [FromBody] Manufacturer updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Manufacturers
                 .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
 
-            if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
 
             // Update current product
             _catalogContext.Manufacturers.Update(item);
 
-            await _catalogContext.SaveChangesAsync();
+            await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            return CreatedAtAction(nameof(UpdateManufacturer), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(UpdateManufacturer), new { id = item.Id }, null);
         }
 
         /// <summary>
         ///     Delete Manufacturer.
         ///     Image will be deleted too.
         /// </summary>
-        /// <param name="id">id manufacturer</param>
+        /// <param name="id">id Manufacturer</param>
         /// <param name="cancellationToken"></param>
-        // DELETE api/v1/manufacturer/5
+        // DELETE api/v1/Manufacturer/5
         [HttpDelete("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             try
@@ -270,10 +265,7 @@ namespace Catalog.API.Controllers
 
                 if (item != null)
                 {
-                    var webRoot = _hostingEnvironment.WebRootPath;
-                    var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
-
-                    System.IO.File.Delete(path);
+                    _fileUtility.DeleteFile(item.Id.ToString(), item.ImageName);
 
                     _catalogContext.Manufacturers.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);

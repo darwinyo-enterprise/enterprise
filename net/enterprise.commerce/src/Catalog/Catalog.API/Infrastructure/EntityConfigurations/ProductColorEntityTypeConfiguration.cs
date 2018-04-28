@@ -15,6 +15,7 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
 
             builder.Property(x => x.Id)
                 .ForSqlServerUseSequenceHiLo("product_color_type_hilo")
+                .UseSqlServerIdentityColumn()
                 .IsRequired();
 
             builder.Property(x => x.ProductId)

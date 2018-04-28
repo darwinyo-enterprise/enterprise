@@ -30,7 +30,7 @@ namespace Catalog.API.Models
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<ProductColor> ProductColors { get; set; }
         public ICollection<ProductRating> ProductRatings { get; set; }
-
+        
         /// <summary>
         ///     Decrements the quantity of a particular item in inventory and ensures the restockThreshold hasn't
         ///     been breached. If so, a RestockRequest is generated in CheckThreshold.

@@ -279,7 +279,7 @@ namespace Catalog.API.Infrastructure
         private Product CreateProduct(string[] column, string[] headers)
         {
             var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
+            if (string.IsNullOrEmpty(id)) throw new Exception("id is empty");
 
             var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("product Name is empty");
@@ -288,22 +288,22 @@ namespace Catalog.API.Infrastructure
             if (Decimal.TryParse(price, out decimal prices)) throw new Exception("product price is not decimal");
 
             var overallRating = column[Array.IndexOf(headers, "OverallRating")].Trim('"').Trim();
-            if (Decimal.TryParse(price, out decimal overallRatings)) throw new Exception("product OverallRating is not number");
+            if (Decimal.TryParse(overallRating, out decimal overallRatings)) throw new Exception("product OverallRating is not number");
 
             var totalFavorite = column[Array.IndexOf(headers, "TotalFavorites")].Trim('"').Trim();
-            if (int.TryParse(price, out int totalFavorites)) throw new Exception("product TotalFavorites is not number");
+            if (int.TryParse(totalFavorite, out int totalFavorites)) throw new Exception("product TotalFavorites is not number");
 
             var totalReview = column[Array.IndexOf(headers, "TotalReviews")].Trim('"').Trim();
-            if (int.TryParse(price, out int totalReviews)) throw new Exception("product TotalReviews is not number");
+            if (int.TryParse(totalReview, out int totalReviews)) throw new Exception("product TotalReviews is not number");
 
             var availableStock = column[Array.IndexOf(headers, "AvailableStock")].Trim('"').Trim();
-            if (int.TryParse(price, out int availableStocks)) throw new Exception("product AvailableStock is not number");
+            if (int.TryParse(availableStock, out int availableStocks)) throw new Exception("product AvailableStock is not number");
 
             var manufacturerId = column[Array.IndexOf(headers, "ManufacturerId")].Trim('"').Trim();
-            if (int.TryParse(price, out int manufacturerIds)) throw new Exception("product ManufacturerId is not number");
+            if (int.TryParse(manufacturerId, out int manufacturerIds)) throw new Exception("product ManufacturerId is not number");
 
             var categoryId = column[Array.IndexOf(headers, "CategoryId")].Trim('"').Trim();
-            if (int.TryParse(price, out int categoryIds)) throw new Exception("product CategoryId is not number");
+            if (int.TryParse(categoryId, out int categoryIds)) throw new Exception("product CategoryId is not number");
 
             var lastUpdated = column[Array.IndexOf(headers, "LastUpdated")].Trim('"').Trim();
             var lastUpdatedBy = column[Array.IndexOf(headers, "LastUpdatedBy")].Trim('"').Trim();

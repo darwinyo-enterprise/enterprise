@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Enterprise.Library.FileUtility
 {
-    public class FileUtility
+    public class FileUtility : IFileUtility
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public FileUtility(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
         /// <summary>
         ///     Responsible for creating file in intended folder dir.
         ///     Note :
         ///     Only for .NET Core
         /// </summary>
-        /// <param name="hostingEnvironment">
-        ///     Provides information about the web hosting environment an application is running in.
-        /// </param>
         /// <param name="folderName">
         ///     folder name to place this files
         /// </param>
@@ -28,10 +31,10 @@ namespace Enterprise.Library.FileUtility
         /// <param name="cancellationToken">
         ///     used for cancellation Task
         /// </param>
-        public static async Task UploadFile(IHostingEnvironment hostingEnvironment, string folderName, string fileName,
+        public async Task UploadFileAsync(string folderName, string fileName,
             string base64File, CancellationToken cancellationToken)
         {
-            var webRootPath = hostingEnvironment.WebRootPath;
+            var webRootPath = _hostingEnvironment.WebRootPath;
             var newPath = Path.Combine(webRootPath, folderName);
 
             if (!Directory.Exists(newPath)) Directory.CreateDirectory(newPath);
@@ -43,6 +46,52 @@ namespace Enterprise.Library.FileUtility
                     var file = Convert.FromBase64String(base64File);
                     await stream.WriteAsync(file, 0, file.Length, cancellationToken);
                 }
+            }
+        }
+
+        /// <summary>
+        /// read file from hosting web root.
+        /// </summary>
+        /// <param name="folderName">
+        ///     folder name to place this files
+        /// </param>
+        /// <param name="fileName">
+        ///     file name with extension
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     used for cancellation Task
+        /// </param>
+        /// <returns>
+        /// stream file
+        /// </returns>
+        public async Task<byte[]> ReadFileAsync(string folderName, string fileName, CancellationToken cancellationToken)
+        {
+            var webRoot = _hostingEnvironment.WebRootPath;
+            var path = Path.Combine(webRoot, folderName, fileName);
+            return await File.ReadAllBytesAsync(path, cancellationToken);
+        }
+
+        /// <summary>
+        /// Delete file from hosting web root.
+        /// </summary>
+        /// <param name="folderName">
+        ///     folder name to place this files
+        /// </param>
+        /// <param name="fileName">
+        ///     file name with extension
+        /// </param>
+        public void DeleteFile(string folderName, string fileName)
+        {
+            var webRoot = _hostingEnvironment.WebRootPath;
+
+            var dirPath = Path.Combine(webRoot, folderName);
+            var path = Path.Combine(dirPath, fileName);
+
+            File.Delete(path);
+
+            if (Directory.GetFiles(dirPath).Length == 0)
+            {
+                Directory.Delete(dirPath);
             }
         }
     }

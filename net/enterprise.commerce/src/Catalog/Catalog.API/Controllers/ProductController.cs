@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Catalog.API.Helpers;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
+using Catalog.API.ViewModels;
 using Enterprise.Library.FileUtility;
 using Enterprise.Library.FileUtility.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,14 +21,13 @@ namespace Catalog.API.Controllers
     public class ProductController : Controller
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IFileUtility _fileUtility;
 
-        public ProductController(CatalogContext catalogContext,
-            IHostingEnvironment hostingEnvironment)
+        public ProductController(CatalogContext catalogContext, IFileUtility fileUtility)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
-            _hostingEnvironment = hostingEnvironment;
+            _fileUtility = fileUtility;
         }
 
         /// <summary>
@@ -56,9 +55,9 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(string id, CancellationToken cancellationToken)
         {
-            if (id == new Guid()) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest();
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -82,21 +81,61 @@ namespace Catalog.API.Controllers
         // POST api/v1/Product
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddNewProduct([FromBody] Product product,
             CancellationToken cancellationToken)
         {
-            var file = product.ImageUrl.Split("base64")[1];
-            await FileUtility.UploadFile(_hostingEnvironment, product.Id.ToString(), product.ImageName,
-                file, cancellationToken);
+            if (product == null ||
+                product.ProductImages.Count <= 0 ||
+                product.CategoryId <= 0 ||
+                product.ManufacturerId <= 0) return BadRequest();
 
+            #region Initialize id for insert
+
+            product.Id = Guid.NewGuid().ToString();
+
+            #endregion
+
+            #region Insert Image
+
+            foreach (var image in product.ProductImages)
+            {
+                // Initialize id
+                image.ProductId = product.Id;
+                await _fileUtility.UploadFileAsync(image.ProductId, image.ImageName, image.ImageUrl, cancellationToken);
+            }
+
+            #endregion
+
+            #region Product Context
+
+            //  TODO: Replace updated by id in model.
             var item = new Product
             {
                 Description = product.Description,
                 Id = product.Id,
-                ImageName = product.ImageName,
-                Name = product.Name
+                LastUpdatedBy = "1",
+                LastUpdated = DateTime.Now,
+                AvailableStock = 0,
+                Name = product.Name,
+                CategoryId = product.CategoryId,
+                ManufacturerId = product.ManufacturerId,
+                Price = product.Price,
+                OverallRating = 0,
+                TotalFavorites = 0,
+                TotalReviews = 0,
+                ProductImages = product.ProductImages
             };
+
+
+            if (product.ProductColors.Count > 0)
+            {
+                item.ProductColors = product.ProductColors;
+            }
             await _catalogContext.Products.AddAsync(item, cancellationToken);
+
+            #endregion
+
             await _catalogContext.SaveChangesAsync(cancellationToken);
             return CreatedAtAction(nameof(AddNewProduct), new { id = item.Id }, null);
         }
@@ -119,18 +158,15 @@ namespace Catalog.API.Controllers
         {
             if (id <= 0) return BadRequest();
 
-            var item = await _catalogContext.Products
+            var item = await _catalogContext.ProductImages
                 .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
             if (item != null)
             {
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
-
                 var imageFileExtension = Path.GetExtension(item.ImageName);
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = System.IO.File.ReadAllBytes(path);
+                var buffer = await _fileUtility.ReadFileAsync(item.ProductId, item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -156,21 +192,118 @@ namespace Catalog.API.Controllers
             {
                 if (Convert.ToInt32(uploadFileModel.Id) <= 0) return BadRequest();
 
-                // update db
-                var Product = await _catalogContext.Products.SingleOrDefaultAsync(x =>
-                    x.Id == Convert.ToInt32(uploadFileModel.Id), cancellationToken);
+                // select db
+                var product = await _catalogContext.Products.SingleOrDefaultAsync(x =>
+                    x.Id == uploadFileModel.Id, cancellationToken);
 
-                if (Product != null)
+                if (product != null)
                 {
                     var file = uploadFileModel.FileUrl.Split("base64")[1];
-                    await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
+                    await _fileUtility.UploadFileAsync(uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 
-                    Product.ImageName = uploadFileModel.FileName;
-                    _catalogContext.Products.Update(Product);
+                    var image = new ProductImage
+                    {
+                        ProductId = product.Id,
+                        ImageName = uploadFileModel.FileName
+                    };
+
+                    // add new entity to db
+                    await _catalogContext.ProductImages.AddAsync(image, cancellationToken);
+
+                    // update product entity to db
+                    product.ProductImages.Add(image);
+                    _catalogContext.Products.Update(product);
+
                     await _catalogContext.SaveChangesAsync(cancellationToken);
 
                     return CreatedAtAction(nameof(UploadFile), uploadFileModel.FileName + " Upload Successfully.");
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Json("Upload Failed: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///     store file upload to directory specified.
+        ///     this only used for updating Product.
+        /// </summary>
+        /// <returns>
+        ///     json response
+        /// </returns>
+        [HttpPost("inventory/id")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> UpdateInventory(string id, int amount,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id) || amount <= 0) return BadRequest();
+
+                // select db
+                var product = await _catalogContext.Products.SingleOrDefaultAsync(x =>
+                    x.Id == id, cancellationToken);
+
+                if (product != null)
+                {
+                    product.AddStock(amount);
+                    await _catalogContext.SaveChangesAsync(cancellationToken);
+
+                    return CreatedAtAction(nameof(UploadFile), product.Name + " Upload Successfully.");
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Json("Upload Failed: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///     store file upload to directory specified.
+        ///     this only used for updating Product.
+        /// </summary>
+        /// <returns>
+        ///     json response
+        /// </returns>
+        [HttpPost("rate/id")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> RateProduct([FromBody] ProductRateViewModel productRateViewModel,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(productRateViewModel.ProductId) || productRateViewModel.Rate <= 0) return BadRequest();
+
+                // select db
+                var product = await _catalogContext.Products.SingleOrDefaultAsync(x =>
+                    x.Id != productRateViewModel.ProductId, cancellationToken);
+
+                if (product != null)
+                {
+                    var rates = new ProductRating()
+                    {
+                        ProductId = productRateViewModel.ProductId,
+                        Rate = productRateViewModel.Rate,
+                        User = productRateViewModel.User
+                    };
+
+                    product.UpdateRate(product.ProductRatings.Count, productRateViewModel.Rate);
+                    await _catalogContext.ProductRatings.AddAsync(rates, cancellationToken);
+                    _catalogContext.Products.Update(product);
+
+                    await _catalogContext.SaveChangesAsync(cancellationToken);
+
+                    return CreatedAtAction(nameof(UploadFile), product.Name + " Upload Successfully.");
                 }
 
                 return NotFound();
@@ -195,18 +328,21 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public IActionResult DeleteImage([FromBody] UploadFileModel uploadFileModel,
+        public async Task<IActionResult> DeleteImage([FromBody] UploadFileModel uploadFileModel,
             CancellationToken cancellationToken)
         {
             try
             {
                 if (Convert.ToInt32(uploadFileModel.Id) <= 0) return BadRequest();
 
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, uploadFileModel.Id, uploadFileModel.FileName);
+                _fileUtility.DeleteFile(uploadFileModel.Id, uploadFileModel.FileName);
 
-                System.IO.File.Delete(path);
+                var imageToDelete =
+                    await _catalogContext.ProductImages.SingleOrDefaultAsync(
+                        x => x.Id == Convert.ToInt32(uploadFileModel.Id), cancellationToken);
+                _catalogContext.ProductImages.Remove(imageToDelete);
 
+                await _catalogContext.SaveChangesAsync(cancellationToken);
                 return NoContent();
             }
             catch (FileNotFoundException)
@@ -240,12 +376,33 @@ namespace Catalog.API.Controllers
 
             if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
 
+            #region Mapping
+
+            item.Description = updateModel.Description;
+            // TODO: Replace this to proper value.
+            item.LastUpdatedBy = "1";
+            item.LastUpdated = DateTime.Now;
+            item.Name = updateModel.Name;
+            item.CategoryId = updateModel.CategoryId;
+            item.ManufacturerId = updateModel.ManufacturerId;
+            item.Price = updateModel.Price;
+
+            if (updateModel.ProductColors.Count > 0)
+            {
+                item.ProductColors = updateModel.ProductColors;
+            }
+
+            #endregion
+
             // Update current product
             _catalogContext.Products.Update(item);
 
-            await _catalogContext.SaveChangesAsync();
+            await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            return CreatedAtAction(nameof(UpdateProduct), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(UpdateProduct), new
+            {
+                id = item.Id
+            }, null);
         }
 
         /// <summary>
@@ -259,22 +416,33 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
         {
             try
             {
-                if (id <= 0) return BadRequest();
+                if (string.IsNullOrEmpty(id)) return BadRequest();
 
                 var item = await _catalogContext.Products
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
                 if (item != null)
                 {
-                    var webRoot = _hostingEnvironment.WebRootPath;
-                    var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
+                    var imagesToDelete = await _catalogContext.ProductImages.Where(x => x.ProductId == item.Id)
+                        .ToListAsync(cancellationToken);
+                    var ratingsToDelete = await _catalogContext.ProductRatings.Where(x => x.ProductId == item.Id)
+                        .ToListAsync(cancellationToken);
+                    var colorsToDelete = await _catalogContext.ProductColors.Where(x => x.ProductId == item.Id)
+                        .ToListAsync(cancellationToken);
 
-                    System.IO.File.Delete(path);
+                    // Delete Foreach image in directory and eventually delete folder when its empty.
+                    imagesToDelete.ForEach(image => _fileUtility.DeleteFile(image.ProductId, image.ImageName));
 
+                    // remove all product image from db
+                    _catalogContext.ProductImages.RemoveRange(imagesToDelete);
+                    _catalogContext.ProductRatings.RemoveRange(ratingsToDelete);
+                    _catalogContext.ProductColors.RemoveRange(colorsToDelete);
+
+                    // remove product from db
                     _catalogContext.Products.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
                     return NoContent();

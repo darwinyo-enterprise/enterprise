@@ -10,7 +10,6 @@ using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Enterprise.Library.FileUtility;
 using Enterprise.Library.FileUtility.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,14 +20,14 @@ namespace Catalog.API.Controllers
     public class CategoryController : Controller
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IFileUtility _fileUtility;
 
         public CategoryController(CatalogContext catalogContext,
-            IHostingEnvironment hostingEnvironment)
+            IFileUtility fileUtility)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
-            _hostingEnvironment = hostingEnvironment;
+            _fileUtility = fileUtility;
         }
 
         /// <summary>
@@ -81,18 +80,20 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Category
         [HttpPost]
+        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewCategory([FromBody] Category category,
             CancellationToken cancellationToken)
         {
+            if (category == null) return BadRequest();
+
             var file = category.ImageUrl.Split("base64")[1];
-            await FileUtility.UploadFile(_hostingEnvironment, category.Id.ToString(), category.ImageName,
+            await _fileUtility.UploadFileAsync(category.Id.ToString(), category.ImageName,
                 file, cancellationToken);
 
             var item = new Category
             {
                 Description = category.Description,
-                Id = category.Id,
                 ImageName = category.ImageName,
                 Name = category.Name
             };
@@ -124,13 +125,10 @@ namespace Catalog.API.Controllers
 
             if (item != null)
             {
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
-
                 var imageFileExtension = Path.GetExtension(item.ImageName);
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = System.IO.File.ReadAllBytes(path);
+                var buffer = await _fileUtility.ReadFileAsync(item.Id.ToString(), item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -163,7 +161,7 @@ namespace Catalog.API.Controllers
                 if (category != null)
                 {
                     var file = uploadFileModel.FileUrl.Split("base64")[1];
-                    await FileUtility.UploadFile(_hostingEnvironment, uploadFileModel.Id, uploadFileModel.FileName,
+                    await _fileUtility.UploadFileAsync(uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 
                     category.ImageName = uploadFileModel.FileName;
@@ -202,10 +200,7 @@ namespace Catalog.API.Controllers
             {
                 if (Convert.ToInt32(uploadFileModel.Id) <= 0) return BadRequest();
 
-                var webRoot = _hostingEnvironment.WebRootPath;
-                var path = Path.Combine(webRoot, uploadFileModel.Id, uploadFileModel.FileName);
-
-                System.IO.File.Delete(path);
+                _fileUtility.DeleteFile(uploadFileModel.Id, uploadFileModel.FileName);
 
                 return NoContent();
             }
@@ -243,7 +238,7 @@ namespace Catalog.API.Controllers
             // Update current product
             _catalogContext.Categories.Update(item);
 
-            await _catalogContext.SaveChangesAsync();
+            await _catalogContext.SaveChangesAsync(cancellationToken);
 
             return CreatedAtAction(nameof(UpdateCategory), new {id = item.Id}, null);
         }
@@ -270,10 +265,7 @@ namespace Catalog.API.Controllers
 
                 if (item != null)
                 {
-                    var webRoot = _hostingEnvironment.WebRootPath;
-                    var path = Path.Combine(webRoot, item.Id.ToString(), item.ImageName);
-
-                    System.IO.File.Delete(path);
+                    _fileUtility.DeleteFile(item.Id.ToString(), item.ImageName);
 
                     _catalogContext.Categories.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);

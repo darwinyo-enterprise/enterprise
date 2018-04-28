@@ -15,6 +15,7 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
 
             builder.Property(x => x.Id)
                 .ForSqlServerUseSequenceHiLo("product_rating_hilo")
+                .UseSqlServerIdentityColumn()
                 .IsRequired();
 
             builder.Property(x => x.Rate)
