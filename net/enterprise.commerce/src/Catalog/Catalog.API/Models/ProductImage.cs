@@ -2,7 +2,7 @@
 
 namespace Catalog.API.Models
 {
-    public class ProductImage
+    public class ProductImage: IImage
     {
         public int Id { get; set; }
         public string ProductId { get; set; }

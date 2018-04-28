@@ -12,6 +12,7 @@ using Enterprise.Library.FileUtility;
 using Enterprise.Library.FileUtility.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Catalog.API.Controllers
 {
@@ -20,14 +21,16 @@ namespace Catalog.API.Controllers
     public class ManufacturerController : Controller
     {
         private readonly CatalogContext _catalogContext;
+        private readonly CatalogSettings _settings;
         private readonly IFileUtility _fileUtility;
 
         public ManufacturerController(CatalogContext catalogContext,
-            IFileUtility fileUtility)
+            IFileUtility fileUtility, IOptionsSnapshot<CatalogSettings> settings)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
             _fileUtility = fileUtility;
+            _settings = settings.Value;
         }
 
         /// <summary>
@@ -41,7 +44,8 @@ namespace Catalog.API.Controllers
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Manufacturers.ToListAsync(cancellationToken);
-            return Ok(result);
+            var withUrl = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(result, _settings.ManufacturerImageBaseUrl, _settings.AzureStorageEnabled);
+            return Ok(withUrl);
         }
 
         /// <summary>

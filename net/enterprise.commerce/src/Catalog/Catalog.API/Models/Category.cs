@@ -1,6 +1,6 @@
 ﻿namespace Catalog.API.Models
 {
-    public class Category
+    public class Category: IImage
     {
         public int Id { get; set; }
         public string Name { get; set; }

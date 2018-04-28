@@ -31,7 +31,7 @@ namespace Catalog.API.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageName")
+                    b.Property<string>("ImageId")
                         .IsRequired();
 
                     b.Property<string>("Name")
@@ -56,7 +56,7 @@ namespace Catalog.API.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageName")
+                    b.Property<string>("ImageId")
                         .IsRequired();
 
                     b.Property<string>("Name")

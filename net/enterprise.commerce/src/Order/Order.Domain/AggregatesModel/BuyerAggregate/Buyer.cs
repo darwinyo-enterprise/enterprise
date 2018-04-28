@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enterprise.Abstraction;
 using Order.Domain.Events;
-using Order.Domain.SeedWork;
 
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
@@ -11,7 +11,7 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
     {
         public string IdentityGuid { get; private set; }
 
-        private List<PaymentMethod> _paymentMethods;        
+        private readonly List<PaymentMethod> _paymentMethods;        
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Order.Domain.Exceptions;
-using Order.Domain.SeedWork;
+using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.OrderAggregate
 {

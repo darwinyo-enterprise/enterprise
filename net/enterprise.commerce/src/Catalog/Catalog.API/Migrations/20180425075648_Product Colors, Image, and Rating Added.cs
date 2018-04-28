@@ -11,7 +11,7 @@ namespace Catalog.API.Migrations
             migrationBuilder.RenameColumn(
                 name: "ImageUrl",
                 table: "Manufacturer",
-                newName: "ImageName");
+                newName: "ImageId");
 
             migrationBuilder.CreateTable(
                 name: "Category",
@@ -35,7 +35,7 @@ namespace Catalog.API.Migrations
                 name: "Category");
 
             migrationBuilder.RenameColumn(
-                name: "ImageName",
+                name: "ImageId",
                 table: "Manufacturer",
                 newName: "ImageUrl");
         }

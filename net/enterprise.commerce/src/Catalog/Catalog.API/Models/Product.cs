@@ -16,7 +16,7 @@ namespace Catalog.API.Models
 
         public DateTime? LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
-
+        
         // Quantity in stock
         public int AvailableStock { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using MediatR;
 
 namespace Order.Domain.Events
 {
@@ -15,7 +16,7 @@ namespace Order.Domain.Events
         public DateTime CardExpiration { get; private set; }
         public Order Order { get; private set; }
 
-        public OrderStartedDomainEvent(Order order, string userId,
+        public OrderStartedDomainEvent(AggregatesModel.OrderAggregate.Order order, string userId,
                                        int cardTypeId, string cardNumber, 
                                        string cardSecurityNumber, string cardHolderName, 
                                        DateTime cardExpiration)
