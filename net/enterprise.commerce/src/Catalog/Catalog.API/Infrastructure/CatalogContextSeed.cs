@@ -111,7 +111,21 @@ namespace Catalog.API.Infrastructure
             });
         }
 
+        private Policy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
+        {
+            return Policy.Handle<SqlException>().WaitAndRetryAsync(
+                retries,
+                retry => TimeSpan.FromSeconds(5),
+                (exception, timeSpan, retry, ctx) =>
+                {
+                    logger.LogTrace(
+                        $"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                }
+            );
+        }
+
         #region Manufacturer
+
         private IEnumerable<Manufacturer> GetManufacturerFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -122,7 +136,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
+                string[] requiredHeaders = {"Id", "Name", "Description", "ImageId"};
                 csvheaders = GetHeaders(csvFileManufacturers, requiredHeaders);
             }
             catch (Exception ex)
@@ -158,7 +172,7 @@ namespace Catalog.API.Infrastructure
             var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
-            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
             if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new Manufacturer
@@ -182,9 +196,11 @@ namespace Catalog.API.Infrastructure
                 new Manufacturer {Name = "Sony", Description = "None", Id = 6, ImageName = "Sony.png"}
             };
         }
+
         #endregion
 
         #region User
+
         private IEnumerable<User> GetUserFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -195,7 +211,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name" };
+                string[] requiredHeaders = {"Id", "Name"};
                 csvheaders = GetHeaders(csvFileUsers, requiredHeaders);
             }
             catch (Exception ex)
@@ -236,15 +252,17 @@ namespace Catalog.API.Infrastructure
             return new List<User>
             {
                 new User {Name = "Darwin", Id = "1"},
-                new User {Name = "Eric",  Id = "2"},
-                new User {Name = "Musk",  Id = "3"},
-                new User {Name = "Bill",  Id = "4"},
+                new User {Name = "Eric", Id = "2"},
+                new User {Name = "Musk", Id = "3"},
+                new User {Name = "Bill", Id = "4"},
                 new User {Name = "Albert", Id = "5"}
             };
         }
+
         #endregion
 
         #region Product
+
         private IEnumerable<Product> GetProductFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -255,7 +273,11 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name", "Price", "OverallRating", "TotalFavorites", "TotalReviews", "Description", "LastUpdated", "LastUpdatedBy", "AvailableStock", "ManufacturerId", "CategoryId" };
+                string[] requiredHeaders =
+                {
+                    "Id", "Name", "Price", "OverallRating", "TotalFavorites", "TotalReviews", "Description",
+                    "LastUpdated", "LastUpdatedBy", "AvailableStock", "ManufacturerId", "CategoryId"
+                };
                 csvheaders = GetHeaders(csvFileProducts, requiredHeaders);
             }
             catch (Exception ex)
@@ -285,25 +307,30 @@ namespace Catalog.API.Infrastructure
             if (string.IsNullOrEmpty(name)) throw new Exception("product Name is empty");
 
             var price = column[Array.IndexOf(headers, "Price")].Trim('"').Trim();
-            if (Decimal.TryParse(price, out decimal prices)) throw new Exception("product price is not decimal");
+            if (decimal.TryParse(price, out var prices)) throw new Exception("product price is not decimal");
 
             var overallRating = column[Array.IndexOf(headers, "OverallRating")].Trim('"').Trim();
-            if (Decimal.TryParse(overallRating, out decimal overallRatings)) throw new Exception("product OverallRating is not number");
+            if (decimal.TryParse(overallRating, out var overallRatings))
+                throw new Exception("product OverallRating is not number");
 
             var totalFavorite = column[Array.IndexOf(headers, "TotalFavorites")].Trim('"').Trim();
-            if (int.TryParse(totalFavorite, out int totalFavorites)) throw new Exception("product TotalFavorites is not number");
+            if (int.TryParse(totalFavorite, out var totalFavorites))
+                throw new Exception("product TotalFavorites is not number");
 
             var totalReview = column[Array.IndexOf(headers, "TotalReviews")].Trim('"').Trim();
-            if (int.TryParse(totalReview, out int totalReviews)) throw new Exception("product TotalReviews is not number");
+            if (int.TryParse(totalReview, out var totalReviews))
+                throw new Exception("product TotalReviews is not number");
 
             var availableStock = column[Array.IndexOf(headers, "AvailableStock")].Trim('"').Trim();
-            if (int.TryParse(availableStock, out int availableStocks)) throw new Exception("product AvailableStock is not number");
+            if (int.TryParse(availableStock, out var availableStocks))
+                throw new Exception("product AvailableStock is not number");
 
             var manufacturerId = column[Array.IndexOf(headers, "ManufacturerId")].Trim('"').Trim();
-            if (int.TryParse(manufacturerId, out int manufacturerIds)) throw new Exception("product ManufacturerId is not number");
+            if (int.TryParse(manufacturerId, out var manufacturerIds))
+                throw new Exception("product ManufacturerId is not number");
 
             var categoryId = column[Array.IndexOf(headers, "CategoryId")].Trim('"').Trim();
-            if (int.TryParse(categoryId, out int categoryIds)) throw new Exception("product CategoryId is not number");
+            if (int.TryParse(categoryId, out var categoryIds)) throw new Exception("product CategoryId is not number");
 
             var lastUpdated = column[Array.IndexOf(headers, "LastUpdated")].Trim('"').Trim();
             var lastUpdatedBy = column[Array.IndexOf(headers, "LastUpdatedBy")].Trim('"').Trim();
@@ -332,9 +359,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<Product>();
         }
+
         #endregion
 
         #region ProductColor
+
         private IEnumerable<ProductColor> GetProductColorFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -345,7 +374,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "ProductId", "Name" };
+                string[] requiredHeaders = {"Id", "ProductId", "Name"};
                 csvheaders = GetHeaders(csvFileProductColors, requiredHeaders);
             }
             catch (Exception ex)
@@ -381,7 +410,7 @@ namespace Catalog.API.Infrastructure
             {
                 Name = name,
                 ProductId = productId,
-                Id = ids,
+                Id = ids
             };
         }
 
@@ -389,9 +418,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<ProductColor>();
         }
+
         #endregion
 
         #region ProductImage
+
         private IEnumerable<ProductImage> GetProductImageFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -402,7 +433,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "ProductId", "ImageName" };
+                string[] requiredHeaders = {"Id", "ProductId", "ImageId"};
                 csvheaders = GetHeaders(csvFileProductImages, requiredHeaders);
             }
             catch (Exception ex)
@@ -435,7 +466,7 @@ namespace Catalog.API.Infrastructure
             var productId = column[Array.IndexOf(headers, "ProductId")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("Product id is empty");
 
-            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
             if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new ProductImage
@@ -450,9 +481,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<ProductImage>();
         }
+
         #endregion
 
         #region ProductRating
+
         private IEnumerable<ProductRating> GetProductRatingFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -463,7 +496,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "ProductId", "UserId", "Rate" };
+                string[] requiredHeaders = {"Id", "ProductId", "UserId", "Rate"};
                 csvheaders = GetHeaders(csvFileProductRatings, requiredHeaders);
             }
             catch (Exception ex)
@@ -496,7 +529,7 @@ namespace Catalog.API.Infrastructure
             if (string.IsNullOrEmpty(userId)) throw new Exception("User id is empty");
 
             var rate = column[Array.IndexOf(headers, "Rate")].Trim('"').Trim();
-            if (!decimal.TryParse(rate, out decimal rates)) throw new Exception("rates name is empty");
+            if (!decimal.TryParse(rate, out var rates)) throw new Exception("rates name is empty");
 
             return new ProductRating
             {
@@ -511,9 +544,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<ProductRating>();
         }
+
         #endregion
 
         #region Category
+
         private IEnumerable<Category> GetCategoryFromFile(string contentRootPath,
             ILogger<CatalogContextSeed> logger)
         {
@@ -524,7 +559,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "Id", "Name", "Description", "ImageName" };
+                string[] requiredHeaders = {"Id", "Name", "Description", "ImageId"};
                 csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
             }
             catch (Exception ex)
@@ -560,7 +595,7 @@ namespace Catalog.API.Infrastructure
             var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
-            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
             if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new Category
@@ -583,9 +618,11 @@ namespace Catalog.API.Infrastructure
                 new Category {Name = "Tablet", Description = "None", Id = 5, ImageName = "Tablet.png"}
             };
         }
+
         #endregion
 
         #region Utility
+
         private string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
         {
             var csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
@@ -631,24 +668,12 @@ namespace Catalog.API.Infrastructure
             var files = directory.GetFiles();
             directory.CreateSubdirectory(id);
 
-            var imageName = column[Array.IndexOf(headers, "ImageName")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
 
             var file = files.SingleOrDefault(x => x.Name == imageName);
             file?.MoveTo(id);
         }
-        #endregion
 
-        private Policy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
-        {
-            return Policy.Handle<SqlException>().WaitAndRetryAsync(
-                retries,
-                retry => TimeSpan.FromSeconds(5),
-                (exception, timeSpan, retry, ctx) =>
-                {
-                    logger.LogTrace(
-                        $"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                }
-            );
-        }
+        #endregion
     }
 }

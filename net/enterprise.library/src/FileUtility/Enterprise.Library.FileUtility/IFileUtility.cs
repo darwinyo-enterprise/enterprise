@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Enterprise.Library.FileUtility
 {
@@ -31,7 +26,7 @@ namespace Enterprise.Library.FileUtility
             string base64File, CancellationToken cancellationToken);
 
         /// <summary>
-        /// read file from hosting web root.
+        ///     read file from hosting web root.
         /// </summary>
         /// <param name="folderName">
         ///     folder name to place this files
@@ -43,13 +38,13 @@ namespace Enterprise.Library.FileUtility
         ///     used for cancellation Task
         /// </param>
         /// <returns>
-        /// stream file
+        ///     stream file
         /// </returns>
         Task<byte[]> ReadFileAsync(string folderName, string fileName,
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Delete file from hosting web root.
+        ///     Delete file from hosting web root.
         /// </summary>
         /// <param name="folderName">
         ///     folder name to place this files

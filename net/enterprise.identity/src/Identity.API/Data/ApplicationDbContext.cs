@@ -20,6 +20,7 @@ namespace Identity.API.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
+
     public class ApplicationDbContextDesignFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
         public ApplicationDbContext CreateDbContext(string[] args)

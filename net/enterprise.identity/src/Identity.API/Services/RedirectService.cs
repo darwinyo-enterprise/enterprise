@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Identity.API.Services
 {
@@ -7,7 +8,7 @@ namespace Identity.API.Services
         public string ExtractRedirectUriFromReturnUrl(string url)
         {
             var result = "";
-            var decodedUrl = System.Net.WebUtility.HtmlDecode(url);
+            var decodedUrl = WebUtility.HtmlDecode(url);
             var results = Regex.Split(decodedUrl, "redirect_uri=");
             if (results.Length < 2)
                 return "";
@@ -19,7 +20,7 @@ namespace Identity.API.Services
                 splitKey = "signin-oidc";
             else
                 splitKey = "scope";
-            
+
             results = Regex.Split(result, splitKey);
             if (results.Length < 2)
                 return "";

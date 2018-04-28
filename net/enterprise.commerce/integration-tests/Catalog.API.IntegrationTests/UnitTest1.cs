@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Catalog.API.IntegrationTests
@@ -8,7 +7,6 @@ namespace Catalog.API.IntegrationTests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
                 .IsRequired();
 
             builder.Property(x => x.Description)
-                    .IsRequired(false);
+                .IsRequired(false);
 
             builder.Property(x => x.AvailableStock)
                 .IsRequired();

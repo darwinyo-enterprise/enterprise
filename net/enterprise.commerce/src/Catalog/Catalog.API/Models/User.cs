@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Catalog.API.Models
 {
     public class User
     {
         /// <summary>
-        /// Default Implementation of Microsoft Identity
+        ///     Default Implementation of Microsoft Identity
         /// </summary>
         public string Id { get; set; }
 

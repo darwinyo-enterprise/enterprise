@@ -14,6 +14,7 @@ namespace Enterprise.Library.FileUtility
         {
             _hostingEnvironment = hostingEnvironment;
         }
+
         /// <summary>
         ///     Responsible for creating file in intended folder dir.
         ///     Note :
@@ -50,7 +51,7 @@ namespace Enterprise.Library.FileUtility
         }
 
         /// <summary>
-        /// read file from hosting web root.
+        ///     read file from hosting web root.
         /// </summary>
         /// <param name="folderName">
         ///     folder name to place this files
@@ -62,7 +63,7 @@ namespace Enterprise.Library.FileUtility
         ///     used for cancellation Task
         /// </param>
         /// <returns>
-        /// stream file
+        ///     stream file
         /// </returns>
         public async Task<byte[]> ReadFileAsync(string folderName, string fileName, CancellationToken cancellationToken)
         {
@@ -72,7 +73,7 @@ namespace Enterprise.Library.FileUtility
         }
 
         /// <summary>
-        /// Delete file from hosting web root.
+        ///     Delete file from hosting web root.
         /// </summary>
         /// <param name="folderName">
         ///     folder name to place this files
@@ -89,10 +90,7 @@ namespace Enterprise.Library.FileUtility
 
             File.Delete(path);
 
-            if (Directory.GetFiles(dirPath).Length == 0)
-            {
-                Directory.Delete(dirPath);
-            }
+            if (Directory.GetFiles(dirPath).Length == 0) Directory.Delete(dirPath);
         }
     }
 }

@@ -81,7 +81,7 @@ namespace Identity.API.Data
                 return GetDefaultUser();
             }
 
-            List<ApplicationUser> users = File.ReadAllLines(csvFileUsers)
+            var users = File.ReadAllLines(csvFileUsers)
                 .Skip(1) // skip header column
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(column => CreateApplicationUser(column, csvheaders))

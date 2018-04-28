@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.OrderAggregate
 {
     public class Address : ValueObject
     {
-        public String Street { get; private set; }
-        public String City { get; private set; }
-        public String State { get; private set; }
-        public String Country { get; private set; }
-        public String ZipCode { get; private set; }
-
-        private Address() { }
+        private Address()
+        {
+        }
 
         public Address(string street, string city, string state, string country, string zipcode)
         {
@@ -22,6 +17,12 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             Country = country;
             ZipCode = zipcode;
         }
+
+        public string Street { get; }
+        public string City { get; }
+        public string State { get; }
+        public string Country { get; }
+        public string ZipCode { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

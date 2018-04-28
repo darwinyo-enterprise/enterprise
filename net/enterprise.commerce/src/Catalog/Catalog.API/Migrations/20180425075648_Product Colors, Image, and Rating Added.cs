@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace Catalog.API.Migrations
 {
@@ -9,13 +7,13 @@ namespace Catalog.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "ImageUrl",
-                table: "Manufacturer",
-                newName: "ImageId");
+                "ImageUrl",
+                "Manufacturer",
+                "ImageId");
 
             migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
+                "Category",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
@@ -23,21 +21,18 @@ namespace Catalog.API.Migrations
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Category", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Category");
+                "Category");
 
             migrationBuilder.RenameColumn(
-                name: "ImageId",
-                table: "Manufacturer",
-                newName: "ImageUrl");
+                "ImageId",
+                "Manufacturer",
+                "ImageUrl");
         }
     }
 }

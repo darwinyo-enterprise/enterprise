@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
 using Identity.API.Models;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Identity.API.Services
 {
     public class EfLoginService : ILoginService<ApplicationUser>
     {
-        readonly UserManager<ApplicationUser> _userManager;
-        readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EfLoginService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public EfLoginService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        {
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -24,7 +25,8 @@ namespace Identity.API.Services
             return await _userManager.CheckPasswordAsync(user, password);
         }
 
-        public Task SignIn(ApplicationUser user) {
+        public Task SignIn(ApplicationUser user)
+        {
             return _signInManager.SignInAsync(user, true);
         }
     }

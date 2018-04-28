@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Order.Domain.Exceptions;
 using Enterprise.Abstraction;
+using Order.Domain.Exceptions;
 
 namespace Order.Domain.AggregatesModel.OrderAggregate
 {
@@ -10,7 +10,10 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         : Enumeration
     {
         public static OrderStatus Submitted = new OrderStatus(1, nameof(Submitted).ToLowerInvariant());
-        public static OrderStatus AwaitingValidation = new OrderStatus(2, nameof(AwaitingValidation).ToLowerInvariant());
+
+        public static OrderStatus AwaitingValidation =
+            new OrderStatus(2, nameof(AwaitingValidation).ToLowerInvariant());
+
         public static OrderStatus StockConfirmed = new OrderStatus(3, nameof(StockConfirmed).ToLowerInvariant());
         public static OrderStatus Paid = new OrderStatus(4, nameof(Paid).ToLowerInvariant());
         public static OrderStatus Shipped = new OrderStatus(5, nameof(Shipped).ToLowerInvariant());
@@ -25,18 +28,19 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
         }
 
-        public static IEnumerable<OrderStatus> List() =>
-            new[] { Submitted, AwaitingValidation, StockConfirmed, Paid, Shipped, Cancelled };
+        public static IEnumerable<OrderStatus> List()
+        {
+            return new[] {Submitted, AwaitingValidation, StockConfirmed, Paid, Shipped, Cancelled};
+        }
 
         public static OrderStatus FromName(string name)
         {
             var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
+                .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (state == null)
-            {
-                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                throw new OrderingDomainException(
+                    $"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }
@@ -46,9 +50,8 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             var state = List().SingleOrDefault(s => s.Id == id);
 
             if (state == null)
-            {
-                throw new OrderingDomainException($"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                throw new OrderingDomainException(
+                    $"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }

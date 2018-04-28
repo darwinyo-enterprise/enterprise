@@ -166,7 +166,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
                 cardNumber, cardSecurityNumber,
                 cardHolderName, cardExpiration);
 
-            this.AddDomainEvent(orderStartedDomainEvent);
+            AddDomainEvent(orderStartedDomainEvent);
         }
 
         private void StatusChangeException(OrderStatus orderStatusToChange)

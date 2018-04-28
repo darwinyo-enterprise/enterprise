@@ -7,8 +7,8 @@ namespace Enterprise.Library.HealthChecks
     public class HealthCheckStartupFilter : IStartupFilter
     {
         private readonly string _path;
-        private readonly TimeSpan _timeout;
         private readonly int? _port;
+        private readonly TimeSpan _timeout;
 
         public HealthCheckStartupFilter(int port, TimeSpan timeout)
         {

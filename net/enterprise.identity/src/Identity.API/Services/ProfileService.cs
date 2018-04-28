@@ -1,13 +1,13 @@
-﻿using IdentityModel;
-using IdentityServer4.Models;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Identity;
-using Identity.API.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Identity.API.Models;
+using IdentityModel;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Identity.API.Services
 {
@@ -20,7 +20,7 @@ namespace Identity.API.Services
             _userManager = userManager;
         }
 
-        async public Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
@@ -34,7 +34,7 @@ namespace Identity.API.Services
             context.IssuedClaims = claims.ToList();
         }
 
-        async public Task IsActiveAsync(IsActiveContext context)
+        public async Task IsActiveAsync(IsActiveContext context)
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
@@ -47,7 +47,8 @@ namespace Identity.API.Services
             {
                 if (_userManager.SupportsUserSecurityStamp)
                 {
-                    var securityStamp = subject.Claims.Where(c => c.Type == "security_stamp").Select(c => c.Value).SingleOrDefault();
+                    var securityStamp = subject.Claims.Where(c => c.Type == "security_stamp").Select(c => c.Value)
+                        .SingleOrDefault();
                     if (securityStamp != null)
                     {
                         var dbSecurityStamp = await _userManager.GetSecurityStampAsync(user);
@@ -105,22 +106,20 @@ namespace Identity.API.Services
                 claims.Add(new Claim("address_zip_code", user.ZipCode));
 
             if (_userManager.SupportsUserEmail)
-            {
                 claims.AddRange(new[]
                 {
                     new Claim(JwtClaimTypes.Email, user.Email),
-                    new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed ? "true" : "false", ClaimValueTypes.Boolean)
+                    new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed ? "true" : "false",
+                        ClaimValueTypes.Boolean)
                 });
-            }
 
             if (_userManager.SupportsUserPhoneNumber && !string.IsNullOrWhiteSpace(user.PhoneNumber))
-            {
                 claims.AddRange(new[]
                 {
                     new Claim(JwtClaimTypes.PhoneNumber, user.PhoneNumber),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, user.PhoneNumberConfirmed ? "true" : "false", ClaimValueTypes.Boolean)
+                    new Claim(JwtClaimTypes.PhoneNumberVerified, user.PhoneNumberConfirmed ? "true" : "false",
+                        ClaimValueTypes.Boolean)
                 });
-            }
 
             return claims;
         }

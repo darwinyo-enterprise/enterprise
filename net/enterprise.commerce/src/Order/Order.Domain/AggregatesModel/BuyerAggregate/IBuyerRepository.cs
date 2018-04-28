@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Enterprise.Abstraction;
+﻿using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
