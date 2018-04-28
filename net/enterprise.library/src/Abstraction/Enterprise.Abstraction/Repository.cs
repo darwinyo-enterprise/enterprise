@@ -21,10 +21,11 @@ namespace Enterprise.Abstraction
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public virtual async Task AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             _context.Entry(entity);
             await _context.Set<T>().AddAsync(entity);
+            return entity;
         }
 
         public virtual async Task<IEnumerable<T>> AllIncludingAsync(
@@ -75,10 +76,11 @@ namespace Enterprise.Abstraction
             return await queryable.FirstOrDefaultAsync(predicate);
         }
 
-        public virtual void Update(T entity)
+        public virtual T Update(T entity)
         {
             EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Modified;
+            return entity;
         }
 
         public override void Dispose()

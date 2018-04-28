@@ -9,7 +9,7 @@ namespace Enterprise.Abstraction
     {
         IUnitOfWork UnitOfWork { get; }
 
-        Task AddAsync(T entity);
+        Task<T> AddAsync(T entity);
         Task<IEnumerable<T>> AllIncludingAsync(params Expression<Func<T, object>>[] includeProperties);
         Task<long> CountAsync();
         void Delete(T entity);
@@ -21,6 +21,6 @@ namespace Enterprise.Abstraction
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includeProperties);
 
-        void Update(T entity);
+        T Update(T entity);
     }
 }

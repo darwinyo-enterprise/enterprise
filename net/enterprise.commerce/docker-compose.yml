@@ -58,3 +58,10 @@ services:
       context: .
       dockerfile: src/Payment/Payment.API/Dockerfile
 
+
+  order.backgroundtasks:
+    image: orderbackgroundtasks
+    build:
+      context: .
+      dockerfile: src/Order/Order.BackgroundTasks/Dockerfile
+

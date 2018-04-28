@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MediatR;
 
+
 namespace Enterprise.Abstraction
 {
     public abstract class Entity
