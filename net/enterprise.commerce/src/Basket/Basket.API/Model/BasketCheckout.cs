@@ -4,6 +4,10 @@ namespace Basket.API.Model
 {
     public class BasketCheckout
     {
+        public string Buyer { get; set; }
+
+        public Guid RequestId { get; set; }
+
         #region Location
 
         public string City { get; set; }
@@ -31,9 +35,5 @@ namespace Basket.API.Model
         public int CardTypeId { get; set; }
 
         #endregion
-
-        public string Buyer { get; set; }
-
-        public Guid RequestId { get; set; }
     }
 }

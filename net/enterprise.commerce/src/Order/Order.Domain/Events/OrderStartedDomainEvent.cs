@@ -28,6 +28,6 @@ namespace Order.Domain.Events
         public string CardSecurityNumber { get; }
         public string CardHolderName { get; }
         public DateTime CardExpiration { get; }
-        public Order Order { get; }
+        public AggregatesModel.OrderAggregate.Order Order { get; }
     }
 }

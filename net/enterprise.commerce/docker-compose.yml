@@ -2,7 +2,7 @@ version: '3'
 
 services:
   catalog.api:
-    image: darwinyo/catalogapi:${TAG:-latest}
+    image: darwinyo/catalog.api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Catalog/Catalog.API/Dockerfile
@@ -11,27 +11,13 @@ services:
       - rabbitmq
 
   order.api:
-    image: darwinyo/orderapi:${TAG:-latest}
+    image: darwinyo/order.api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Order/Order.API/Dockerfile
     depends_on:
       - sql.data
 
-      
-  identity.api:
-    image: darwinyo/identityapi:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: ../enterprise.identity/src/Identity.API/Dockerfile
-    depends_on:
-      - sql.data
-
-  webstatus:
-    image: darwinyo/webstatus:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: ../enterprise.healthcheck/src/WebStatus/Dockerfile
 
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
@@ -46,21 +32,19 @@ services:
     image: rabbitmq:3.7.4-management-alpine
 
   basket.api:
-    image: basketapi
+    image: darwinyo/basket.api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Basket/Basket.API/Dockerfile
 
-
   payment.api:
-    image: paymentapi
+    image: darwinyo/payment.api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Payment/Payment.API/Dockerfile
 
-
   order.backgroundtasks:
-    image: orderbackgroundtasks
+    image: darwinyo/order.backgroundtasks:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Order/Order.BackgroundTasks/Dockerfile

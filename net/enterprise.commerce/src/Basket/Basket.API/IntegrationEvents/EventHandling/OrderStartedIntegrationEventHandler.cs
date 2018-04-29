@@ -1,6 +1,6 @@
-﻿using Basket.API.IntegrationEvents.Events;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Basket.API.IntegrationEvents.Events;
 using Basket.API.Model;
 using Enterprise.Library.EventBus.Abstractions;
 
@@ -17,10 +17,7 @@ namespace Basket.API.IntegrationEvents.EventHandling
 
         public async Task Handle(OrderStartedIntegrationEvent @event)
         {
-            await _repository.DeleteBasketAsync(@event.UserId.ToString());
+            await _repository.DeleteBasketAsync(@event.UserId);
         }
     }
 }
-
-
-

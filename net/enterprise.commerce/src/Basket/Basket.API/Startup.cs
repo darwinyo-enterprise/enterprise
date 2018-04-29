@@ -52,16 +52,16 @@ namespace Basket.API
             {
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 options.Filters.Add(typeof(ValidateModelStateFilter));
-
             }).AddControllersAsServices();
 
             ConfigureAuthService(services);
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")),
-                                         TimeSpan.Zero  //No cache for this HealthCheck, better just for demos
-                                        );
+                checks.AddValueTaskCheck("HTTP Endpoint",
+                    () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")),
+                    TimeSpan.Zero //No cache for this HealthCheck, better just for demos
+                );
             });
 
             services.Configure<BasketSettings>(Configuration);
@@ -84,7 +84,6 @@ namespace Basket.API
 
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var serviceBusConnectionString = Configuration["EventBusConnection"];
@@ -92,37 +91,28 @@ namespace Basket.API
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection);
                 });
-            }
             else
-            {
                 services.AddSingleton<IRabbitMqPersistentConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
 
-                    var factory = new ConnectionFactory()
+                    var factory = new ConnectionFactory
                     {
                         HostName = Configuration["EventBusConnection"]
                     };
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-                    {
                         factory.UserName = Configuration["EventBusUserName"];
-                    }
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-                    {
                         factory.Password = Configuration["EventBusPassword"];
-                    }
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
 
                     return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
                 });
-            }
 
             RegisterEventBus(services);
 
@@ -143,9 +133,9 @@ namespace Basket.API
                     Flow = "implicit",
                     AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
                     TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-                    Scopes = new Dictionary<string, string>()
+                    Scopes = new Dictionary<string, string>
                     {
-                        { "basket", "Basket API" }
+                        {"basket", "Basket API"}
                     }
                 });
 
@@ -156,9 +146,9 @@ namespace Basket.API
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
@@ -180,10 +170,7 @@ namespace Basket.API
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
+            if (!string.IsNullOrEmpty(pathBase)) app.UsePathBase(pathBase);
 
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -198,15 +185,16 @@ namespace Basket.API
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Basket.API V1");
-                   c.OAuthClientId("basketswaggerui");
-                   c.OAuthAppName("Basket Swagger UI");
-               });
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint(
+                        $"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json",
+                        "Basket.API V1");
+                    c.OAuthClientId("basketswaggerui");
+                    c.OAuthAppName("Basket Swagger UI");
+                });
 
             ConfigureEventBus(app);
-
         }
 
         private void RegisterAppInsights(IServiceCollection services)
@@ -214,17 +202,10 @@ namespace Basket.API
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (orchestratorType?.ToUpper() == "K8S")
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            if (orchestratorType?.ToUpper() == "K8S") services.EnableKubernetes();
             if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                services.AddSingleton<ITelemetryInitializer>(serviceProvider =>
                     new FabricTelemetryInitializer());
-            }
         }
 
         private void ConfigureAuthService(IServiceCollection services)
@@ -238,7 +219,6 @@ namespace Basket.API
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             }).AddJwtBearer(options =>
             {
                 options.Authority = identityUrl;
@@ -249,10 +229,7 @@ namespace Basket.API
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
         {
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
+            if (Configuration.GetValue<bool>("UseLoadTest")) app.UseMiddleware<ByPassAuthMiddleware>();
 
             app.UseAuthentication();
         }
@@ -262,7 +239,6 @@ namespace Basket.API
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
@@ -273,9 +249,7 @@ namespace Basket.API
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
-            }
             else
-            {
                 services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
                 {
                     var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
@@ -285,13 +259,11 @@ namespace Basket.API
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
 
-                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope,
+                        eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
-            }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 

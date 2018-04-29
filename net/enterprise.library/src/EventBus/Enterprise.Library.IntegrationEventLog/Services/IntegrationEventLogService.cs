@@ -15,7 +15,7 @@ namespace Enterprise.Library.IntegrationEventLog.Services
 
         public IntegrationEventLogService(DbConnection dbConnection)
         {
-            _dbConnection = dbConnection ?? throw new ArgumentNullException("dbConnection");
+            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
                     .UseSqlServer(_dbConnection)
@@ -26,7 +26,7 @@ namespace Enterprise.Library.IntegrationEventLog.Services
         public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
         {
             if (transaction == null)
-                throw new ArgumentNullException("transaction",
+                throw new ArgumentNullException(nameof(transaction),
                     $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
 
             var eventLogEntry = new IntegrationEventLogEntry(@event);

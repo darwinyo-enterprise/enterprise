@@ -16,8 +16,8 @@ namespace Basket.API.Infrastructure.Filters
 
             if (hasAuthorize)
             {
-                operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-                operation.Responses.Add("403", new Response { Description = "Forbidden" });
+                operation.Responses.Add("401", new Response {Description = "Unauthorized"});
+                operation.Responses.Add("403", new Response {Description = "Forbidden"});
 
                 operation.Security = new List<IDictionary<string, IEnumerable<string>>>
                 {

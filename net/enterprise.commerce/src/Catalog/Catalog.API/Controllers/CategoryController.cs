@@ -45,7 +45,7 @@ namespace Catalog.API.Controllers
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Categories.ToListAsync(cancellationToken);
-            var withUrl = UrlImageHelper<Category>.ChangeUriPlaceholder(result, _settings.ManufacturerImageBaseUrl,
+            var withUrl = UrlImageHelper<Category>.ChangeUriPlaceholder(result, _settings.CategoryImageBaseUrl,
                 _settings.AzureStorageEnabled);
             return Ok(withUrl);
         }

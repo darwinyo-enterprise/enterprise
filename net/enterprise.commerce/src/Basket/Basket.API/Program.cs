@@ -15,19 +15,14 @@ namespace Basket.API
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseFailing(options =>
-                {
-                    options.ConfigPath = "/Failing";
-                })
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
+                .UseFailing(options => { options.ConfigPath = "/Failing"; })
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    config.AddEnvironmentVariables();
-                })
+                .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
@@ -36,5 +31,6 @@ namespace Basket.API
                 })
                 .UseApplicationInsights()
                 .Build();
+        }
     }
 }

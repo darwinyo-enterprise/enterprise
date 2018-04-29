@@ -88,7 +88,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             _paymentMethodId = id;
         }
 
-        public void SetBuyerId(int id)
+        public void SetBuyerId(string id)
         {
             _buyerId = id;
         }

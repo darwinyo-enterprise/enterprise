@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -10,10 +9,10 @@ namespace Basket.API.Model
 {
     public class RedisBasketRepository : IBasketRepository
     {
+        private readonly IDatabase _database;
         private readonly ILogger<RedisBasketRepository> _logger;
 
         private readonly ConnectionMultiplexer _redis;
-        private readonly IDatabase _database;
 
         public RedisBasketRepository(ILoggerFactory loggerFactory, ConnectionMultiplexer redis)
         {
@@ -37,10 +36,7 @@ namespace Basket.API.Model
         public async Task<CustomerBasket> GetBasketAsync(string customerId)
         {
             var data = await _database.StringGetAsync(customerId);
-            if (data.IsNullOrEmpty)
-            {
-                return null;
-            }
+            if (data.IsNullOrEmpty) return null;
 
             return JsonConvert.DeserializeObject<CustomerBasket>(data);
         }
