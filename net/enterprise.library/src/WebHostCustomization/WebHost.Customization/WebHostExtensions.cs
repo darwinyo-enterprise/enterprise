@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 
 // ReSharper disable once CheckNamespace
-namespace Microsoft.AspNetCore.Hosting
+namespace WebHost.Customization
 {
     // ReSharper disable once InconsistentNaming
     public static class IWebHostExtensions

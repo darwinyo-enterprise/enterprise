@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
+namespace Enterprise.Library.IntegrationEventLog.Migrations
 {
     [DbContext(typeof(IntegrationEventLogContext))]
     internal class IntegrationEventLogContextModelSnapshot : ModelSnapshot

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Enterprise.Library.IntegrationEventLog.IntegrationMigrations
+namespace Enterprise.Library.IntegrationEventLog.Migrations
 {
     public partial class IntegrationDbContextMigration : Migration
     {
