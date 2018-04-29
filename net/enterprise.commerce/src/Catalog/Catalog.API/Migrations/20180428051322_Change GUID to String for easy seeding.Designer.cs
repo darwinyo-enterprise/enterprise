@@ -12,7 +12,7 @@ namespace Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     [Migration("20180428051322_Change GUID to String for easy seeding")]
-    partial class ChangeGUIDtoStringforeasyseeding
+    partial class ChangeGuiDtoStringforeasyseeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

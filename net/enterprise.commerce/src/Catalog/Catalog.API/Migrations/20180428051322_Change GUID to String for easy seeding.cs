@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Catalog.API.Migrations
 {
-    public partial class ChangeGUIDtoStringforeasyseeding : Migration
+    public partial class ChangeGuiDtoStringforeasyseeding : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
