@@ -11,7 +11,7 @@
  */
 
 
-export interface Manufacturer {
+export interface Category {
     name?: string;
     description?: string;
     timestamp?: string;

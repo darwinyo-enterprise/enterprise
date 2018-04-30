@@ -9,13 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ProductRating } from './productRating';
 
 
-export interface Manufacturer {
+export interface User {
+    id?: string;
     name?: string;
-    description?: string;
-    timestamp?: string;
-    id?: number;
-    imageUrl?: string;
-    imageName?: string;
+    productRatings?: Array<ProductRating>;
 }

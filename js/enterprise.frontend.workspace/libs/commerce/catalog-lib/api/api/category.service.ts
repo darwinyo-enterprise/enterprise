@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs/Observable';
 
-import { Manufacturer } from '../model/manufacturer';
+import { Category } from '../model/category';
 import { UploadFileModel } from '../model/uploadFileModel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -26,7 +26,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable()
-export class ManufacturerService {
+export class CategoryService {
 
     protected basePath = 'https://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -64,12 +64,12 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerByIdDelete(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerByIdDelete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerByIdDelete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerByIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryByIdDelete(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryByIdDelete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryByIdDelete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryByIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiV1ManufacturerByIdDelete.');
+            throw new Error('Required parameter id was null or undefined when calling apiV1CategoryByIdDelete.');
         }
 
         let headers = this.defaultHeaders;
@@ -86,7 +86,7 @@ export class ManufacturerService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/v1/Category/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -103,12 +103,12 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<Manufacturer>;
-    public apiV1ManufacturerByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Manufacturer>>;
-    public apiV1ManufacturerByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Manufacturer>>;
-    public apiV1ManufacturerByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<Category>;
+    public apiV1CategoryByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Category>>;
+    public apiV1CategoryByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Category>>;
+    public apiV1CategoryByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiV1ManufacturerByIdGet.');
+            throw new Error('Required parameter id was null or undefined when calling apiV1CategoryByIdGet.');
         }
 
         let headers = this.defaultHeaders;
@@ -126,7 +126,7 @@ export class ManufacturerService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<Manufacturer>(`${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<Category>(`${this.basePath}/api/v1/Category/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -144,12 +144,12 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryByIdPut(id: number, updateModel?: Category, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryByIdPut(id: number, updateModel?: Category, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryByIdPut(id: number, updateModel?: Category, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryByIdPut(id: number, updateModel?: Category, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiV1ManufacturerByIdPut.');
+            throw new Error('Required parameter id was null or undefined when calling apiV1CategoryByIdPut.');
         }
 
         let headers = this.defaultHeaders;
@@ -174,7 +174,7 @@ export class ManufacturerService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.put<any>(`${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
+        return this.httpClient.put<any>(`${this.basePath}/api/v1/Category/${encodeURIComponent(String(id))}`,
             updateModel,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -191,10 +191,10 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerGet(observe?: 'body', reportProgress?: boolean): Observable<Array<Manufacturer>>;
-    public apiV1ManufacturerGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Manufacturer>>>;
-    public apiV1ManufacturerGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Manufacturer>>>;
-    public apiV1ManufacturerGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryGet(observe?: 'body', reportProgress?: boolean): Observable<Array<Category>>;
+    public apiV1CategoryGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Category>>>;
+    public apiV1CategoryGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Category>>>;
+    public apiV1CategoryGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -211,7 +211,7 @@ export class ManufacturerService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<Manufacturer>>(`${this.basePath}/api/v1/Manufacturer`,
+        return this.httpClient.get<Array<Category>>(`${this.basePath}/api/v1/Category`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -228,10 +228,10 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerImageDelete(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerImageDelete(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerImageDelete(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerImageDelete(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryImageDelete(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryImageDelete(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryImageDelete(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryImageDelete(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -255,7 +255,7 @@ export class ManufacturerService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.delete<any>(`${this.basePath}/api/v1/Manufacturer/image`,
+        return this.httpClient.delete<any>(`${this.basePath}/api/v1/Category/image`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -272,10 +272,10 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerImageIdGet(id?: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerImageIdGet(id?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerImageIdGet(id?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerImageIdGet(id?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryImageIdGet(id?: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryImageIdGet(id?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryImageIdGet(id?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryImageIdGet(id?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (id !== undefined) {
@@ -297,7 +297,7 @@ export class ManufacturerService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/api/v1/Manufacturer/image/id`,
+        return this.httpClient.get<any>(`${this.basePath}/api/v1/Category/image/id`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -315,10 +315,10 @@ export class ManufacturerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryImagePost(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryImagePost(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryImagePost(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryImagePost(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -342,7 +342,7 @@ export class ManufacturerService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.post<any>(`${this.basePath}/api/v1/Manufacturer/image`,
+        return this.httpClient.post<any>(`${this.basePath}/api/v1/Category/image`,
             uploadFileModel,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -356,14 +356,14 @@ export class ManufacturerService {
     /**
      * 
      * 
-     * @param manufacturer 
+     * @param category 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1CategoryPost(category?: Category, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1CategoryPost(category?: Category, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1CategoryPost(category?: Category, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1CategoryPost(category?: Category, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -387,8 +387,8 @@ export class ManufacturerService {
             headers = headers.set("Content-Type", httpContentTypeSelected);
         }
 
-        return this.httpClient.post<any>(`${this.basePath}/api/v1/Manufacturer`,
-            manufacturer,
+        return this.httpClient.post<any>(`${this.basePath}/api/v1/Category`,
+            category,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

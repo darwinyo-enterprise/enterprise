@@ -11,11 +11,8 @@
  */
 
 
-export interface Manufacturer {
-    name?: string;
-    description?: string;
-    timestamp?: string;
+export interface ProductColor {
     id?: number;
-    imageUrl?: string;
-    imageName?: string;
+    productId?: string;
+    name?: string;
 }

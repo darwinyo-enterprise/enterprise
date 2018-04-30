@@ -9,13 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { CatalogItemViewModel } from './catalogItemViewModel';
 
 
-export interface Manufacturer {
-    name?: string;
-    description?: string;
-    timestamp?: string;
-    id?: number;
-    imageUrl?: string;
-    imageName?: string;
+export interface PaginatedCatalogViewModelCatalogItemViewModel {
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CatalogItemViewModel>;
 }

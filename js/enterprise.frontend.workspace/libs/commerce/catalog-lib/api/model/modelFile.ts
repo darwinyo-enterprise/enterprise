@@ -11,11 +11,5 @@
  */
 
 
-export interface Manufacturer {
-    name?: string;
-    description?: string;
-    timestamp?: string;
-    id?: number;
-    imageUrl?: string;
-    imageName?: string;
+export interface ModelFile {
 }

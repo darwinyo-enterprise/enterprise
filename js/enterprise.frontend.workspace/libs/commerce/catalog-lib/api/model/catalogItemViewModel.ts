@@ -11,10 +11,15 @@
  */
 
 
-export interface Manufacturer {
+export interface CatalogItemViewModel {
+    catalogId?: string;
     name?: string;
-    description?: string;
-    timestamp?: string;
+    price?: number;
+    overallRating?: number;
+    totalFavorites?: number;
+    totalReviews?: number;
+    manufacturerId?: number;
+    categoryId?: number;
     id?: number;
     imageUrl?: string;
     imageName?: string;

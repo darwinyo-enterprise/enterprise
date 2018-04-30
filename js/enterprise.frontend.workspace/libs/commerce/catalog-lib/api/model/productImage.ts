@@ -11,10 +11,8 @@
  */
 
 
-export interface Manufacturer {
-    name?: string;
-    description?: string;
-    timestamp?: string;
+export interface ProductImage {
+    productId?: string;
     id?: number;
     imageUrl?: string;
     imageName?: string;
