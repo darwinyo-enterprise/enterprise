@@ -4,6 +4,8 @@ import {
   UploadFileModel
 } from '@enterprise/commerce/catalog-lib';
 import { FileUploadMocks } from '@enterprise/material/file-upload';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'eca-manufacturer-form',
@@ -22,23 +24,22 @@ export class ManufacturerFormComponent implements OnInit {
   /** Delete File Event */
   @Output() deleteFile: EventEmitter<string>;
 
-  filesUpload: UploadFileModel[];
+  filesUpload$: Observable<UploadFileModel[]>;
 
   constructor() {
     this.uploadFile = new EventEmitter<UploadFileModel[]>();
     this.deleteFile = new EventEmitter<string>();
 
-    this.filesUpload = FileUploadMocks;
-    console.log(this.filesUpload);
+    this.filesUpload$ = of(FileUploadMocks);
     // If Input Supplied (Edit Mode)
     if (this.manufacturer != null) {
-      this.filesUpload = [
+      this.filesUpload$ = of([
         <UploadFileModel>{
           id: this.manufacturer.id.toString(),
           fileName: this.manufacturer.name.toString(),
           fileUrl: this.manufacturer.imageUrl
         }
-      ];
+      ]);
     }
   }
 

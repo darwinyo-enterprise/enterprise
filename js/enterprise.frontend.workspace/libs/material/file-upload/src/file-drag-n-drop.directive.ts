@@ -16,7 +16,9 @@ export class FileDragNDropDirective {
    */
   @Input() fileMultiple: boolean;
 
-  /** Wont Receive any interaction with user */
+  /** Wont Receive any interaction with user
+   * this will triggers as validation.
+   */
   @Input() disabled: boolean;
 
   /** Files Hovered into dropzone event */
@@ -47,6 +49,8 @@ export class FileDragNDropDirective {
       let files: FileList = evt.dataTransfer.files;
       if (files.length > 0) {
         this.background = '#eee';
+
+        // if file multiple emit multiples
         if (this.fileMultiple) {
           this.uploadFiles.emit(files);
         } else {

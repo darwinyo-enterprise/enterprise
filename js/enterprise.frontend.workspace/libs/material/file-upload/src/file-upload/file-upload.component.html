@@ -1,13 +1,18 @@
 <div class="file-upload__container">
-  <div class="file-upload__drop-zone" emFileDragNDrop (uploadFiles)="onDropFileChanged($event)">
-    Drop files here...
-    <div class="file-upload__drop-zone__button">
-      or click here..
-      <input #file type="file" [multiple]="multiple" accept="{{accept}}" (change)="onDropFileChanged(file.files)" />
-    </div>
+  <div class="file-upload__drop-zone" emFileDragNDrop [disabled]="disable" [fileMultiple]="multiple" (uploadFiles)="onDropFileChanged($event)">
+    <ng-template [ngIf]="!disable">
+      Drop files here...
+      <div class="file-upload__drop-zone__button">
+        or click here..
+        <input #file type="file" [multiple]="multiple" accept="image/*" (change)="onDropFileChanged(file.files)" />
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="disable">
+      Please remove below image first...
+    </ng-template>
   </div>
   <div class="file-upload__upload-btn">
-    <button mat-button (click)="onFileUpload()">Upload</button>
+    <button id="upload-btn" mat-button (click)="onFileUpload()">Upload</button>
   </div>
 
   <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesImage"></em-file-upload-info>

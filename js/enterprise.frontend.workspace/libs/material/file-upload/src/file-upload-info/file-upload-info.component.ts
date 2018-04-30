@@ -21,6 +21,22 @@ export class FileUploadInfoComponent implements OnInit {
   ngOnInit() {}
 
   onDelete(uploadFileModel: UploadFileModel) {
+     // delete view.
+     let index = this.filesUpload.findIndex(
+      x => x.fileName === uploadFileModel.fileName
+    );
+    // remove image by name
+    this.filesUpload.splice(index, 1);
+
+    // delete in upload file model.
+    index = this.filesUpload.findIndex(
+      x => x.fileName === uploadFileModel.fileName
+    );
+
+    // if file exists in upload file model.
+    if (index >= 0) {
+      this.filesUpload.splice(index, 1);
+    }
     this.deleteFile.emit(uploadFileModel);
   }
 }

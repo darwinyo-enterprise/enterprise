@@ -20,7 +20,7 @@ export class FileUploadInfoPage extends BaseTestPage<FileUploadInfoComponent> {
   }
 }
 
-describe('FileUploadInfoComponent', () => {
+fdescribe('FileUploadInfoComponent', () => {
   let component: FileUploadInfoComponent;
   let fixture: ComponentFixture<FileUploadInfoComponent>;
   let fileUploadInfoPage: FileUploadInfoPage;
@@ -76,6 +76,7 @@ describe('FileUploadInfoComponent', () => {
 
   describe('Functional Test', () => {
     it('should emit delete event when delete button clicked', () => {
+      let fileToDelete = FileUploadMocks[0];
       component.filesUpload = mockFileUpload;
       // 2nd change detection
       fixture.detectChanges();
@@ -86,8 +87,39 @@ describe('FileUploadInfoComponent', () => {
 
       fileUploadInfoPage.deleteBtns[0].click();
 
-      expect(value.id).toBe(mockFileUpload[0].id);
-      expect(value.fileName).toBe(mockFileUpload[0].fileName);
+      expect(value.id).toBe(fileToDelete.id);
+      expect(value.fileName).toBe(fileToDelete.fileName);
     });
+
+    it('should splice array when delete button clicked', () => {
+      mockFileUpload = FileUploadMocks;
+      component.filesUpload = mockFileUpload;
+      // 2nd change detection
+      fixture.detectChanges();
+
+      expect(fileUploadInfoPage.fileImages.length).toBe(3);
+
+      fileUploadInfoPage.deleteBtns[0].click();
+
+      fixture.detectChanges();
+      expect(fileUploadInfoPage.fileImages.length).toBe(2);
+      expect(
+        fileUploadInfoPage.fileImages[0].attributes.getNamedItem('src')
+          .textContent
+      ).toContain(mockFileUpload[1].fileUrl);
+    });
+    it('should delete from file upload when delete button clicked',()=>{
+      mockFileUpload = FileUploadMocks;
+      component.filesUpload = mockFileUpload;
+      // 2nd change detection
+      fixture.detectChanges();
+
+      expect(fileUploadInfoPage.fileImages.length).toBe(2);
+
+      fileUploadInfoPage.deleteBtns[0].click();
+
+      fixture.detectChanges();
+      expect(component.filesUpload.length).toBe(1);
+    })
   });
 });
