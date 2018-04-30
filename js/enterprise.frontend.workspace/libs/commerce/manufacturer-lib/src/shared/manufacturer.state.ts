@@ -8,7 +8,9 @@ import {
 import { ManufacturerService } from './../services/manufacturer.service';
 import {
   FetchManufacturers,
-  ManufacturersFetched
+  ManufacturersFetched,
+  ManufacturerAdded,
+  AddManufacturer
 } from './../shared/manufacturer.actions';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 
@@ -56,6 +58,31 @@ export class ManufacturerState {
     { payload }: ManufacturersFetched
   ) {
     patchState({ manufacturers: payload });
+  }
+
+  /** Manufacturer Added Event */
+  @Action(ManufacturerAdded)
+  manufacturerAdded(
+    { patchState }: StateContext<ManufacturerStateModel>,
+    { payload }: ManufacturersFetched
+  ) {
+    patchState({})
+  }
+
+  @Action(AddManufacturer)
+  AddManufacturer(
+    { dispatch }: StateContext<ManufacturerStateModel>
+  ) {
+    // call manufacturer service
+    return this.manufacturerService.getManufacturerList().subscribe(
+      manufacturers => {
+        // Register Loading Overlay
+        dispatch(new RegisterLoadingOverlay());
+        dispatch(new ManufacturersFetched(manufacturers));
+      },
+      (err: Error) => dispatch(new ErrorOccured(err.message)),
+      () => dispatch(new ResolveLoadingOverlay())
+    );
   }
   //#endregion
 }

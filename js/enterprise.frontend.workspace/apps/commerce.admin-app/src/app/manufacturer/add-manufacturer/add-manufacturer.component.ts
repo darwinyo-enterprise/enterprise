@@ -28,17 +28,8 @@ export class AddManufacturerComponent implements OnInit, OnDestroy {
   title: string;
   manufacturer: Manufacturer;
 
-  /** identifier for linear loading overlay as upload progress */
-  progress: number;
-
-  /** identify if current state is loading then shouldn't register another loading overlay.
-   *  doesn't make sense to have multiple overlay at once.
-   */
-  @Select(AppState.isLoading) isLoading$: Observable<boolean>;
-
   constructor(
-    private manufacturerService: ManufacturerService,
-    private store: Store
+    private manufacturerService: ManufacturerService
   ) {
     this.title = 'Add New Manufacturer';
     this.manufacturer = <Manufacturer>{};
@@ -54,7 +45,6 @@ export class AddManufacturerComponent implements OnInit, OnDestroy {
   }
 
   onFileUpload(uploadFiles: UploadFileModel[]) {
-    console.log(uploadFiles);
     this.manufacturerService
       .apiV1ManufacturerImagePost(uploadFiles[0])
       .subscribe(event => {

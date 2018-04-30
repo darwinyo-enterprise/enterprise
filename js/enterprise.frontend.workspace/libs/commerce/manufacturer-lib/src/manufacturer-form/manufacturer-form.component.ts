@@ -6,6 +6,8 @@ import {
 import { FileUploadMocks } from '@enterprise/material/file-upload';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { Select, Store } from '@ngxs/store';
+import { AppState } from '@enterprise/core';
 
 @Component({
   selector: 'eca-manufacturer-form',
@@ -13,8 +15,22 @@ import { of } from 'rxjs/observable/of';
   styleUrls: ['./manufacturer-form.component.scss']
 })
 export class ManufacturerFormComponent implements OnInit {
+
+  /** identifier for linear loading overlay as upload progress */
+  progress: number;
+
+  /** identify if current state is loading then shouldn't register another loading overlay.
+   *  doesn't make sense to have multiple overlay at once.
+   */
+  @Select(AppState.isLoading) isLoading$: Observable<boolean>;
+
+
+  /** constant for manufacturer */
+  multiple: boolean = false;
+
   /** Title of form */
   @Input() title: string;
+
   /** Manufacturer if supplied then its in edit mode */
   @Input() manufacturer: Manufacturer;
 
@@ -26,7 +42,7 @@ export class ManufacturerFormComponent implements OnInit {
 
   filesUpload$: Observable<UploadFileModel[]>;
 
-  constructor() {
+  constructor(private store: Store) {
     this.uploadFile = new EventEmitter<UploadFileModel[]>();
     this.deleteFile = new EventEmitter<string>();
 
@@ -44,9 +60,12 @@ export class ManufacturerFormComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  /** upload file event will be handled by each forms */
   onUploadFile(uploadModels: UploadFileModel[]) {
     this.uploadFile.emit(uploadModels);
   }
+
   onDeleteFile(name: string) {
     this.deleteFile.emit(name);
   }

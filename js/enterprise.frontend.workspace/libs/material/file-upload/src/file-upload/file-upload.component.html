@@ -12,7 +12,7 @@
     </ng-template>
   </div>
   <div class="file-upload__upload-btn">
-    <button id="upload-btn" mat-button (click)="onFileUpload()">Upload</button>
+    <button id="upload-btn" mat-button (click)="onFileUpload()" [disabled]="uploadFileModel.length<=0">Upload</button>
   </div>
 
   <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesImage"></em-file-upload-info>

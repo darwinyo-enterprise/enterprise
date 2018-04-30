@@ -62,7 +62,8 @@ export class FileUploadComponent implements OnInit {
 
     // to show
     this.filesImage.push(image);
-    console.log(this.filesImage);
+
+    this.checkMultipleFileValidation();
   }
 
   /** Triggered when you drop file to dropzone
@@ -97,6 +98,7 @@ export class FileUploadComponent implements OnInit {
   /** Remove and emit delete event */
   onFileDelete(uploadModel: UploadFileModel) {
     this.deleteFile.emit(uploadModel);
+    this.uploadFileModel.splice(this.uploadFileModel.indexOf(uploadModel),1)
     this.checkMultipleFileValidation();
   }
 
