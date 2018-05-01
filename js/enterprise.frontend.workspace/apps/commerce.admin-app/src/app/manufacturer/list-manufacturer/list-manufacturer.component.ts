@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ManufacturerService,
   ManufacturerState,
   FetchManufacturers
 } from '@enterprise/commerce/manufacturer-lib';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay } from '@enterprise/core';
-import { Manufacturer } from '@enterprise/commerce/catalog-lib';
+import { Manufacturer, ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
 @Component({
   selector: 'eca-list-manufacturer',

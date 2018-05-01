@@ -3,11 +3,12 @@ import {
   Manufacturer,
   UploadFileModel
 } from '@enterprise/commerce/catalog-lib';
-import { FileUploadMocks } from '@enterprise/material/file-upload';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Select, Store } from '@ngxs/store';
 import { AppState } from '@enterprise/core';
+import { FileUploadState } from '@enterprise/material/file-upload';
+import { DeleteImageManufacturer, UploadImageManufacturer } from '../shared/manufacturer.actions';
 
 @Component({
   selector: 'eca-manufacturer-form',
@@ -15,7 +16,6 @@ import { AppState } from '@enterprise/core';
   styleUrls: ['./manufacturer-form.component.scss']
 })
 export class ManufacturerFormComponent implements OnInit {
-
   /** identifier for linear loading overlay as upload progress */
   progress: number;
 
@@ -24,9 +24,8 @@ export class ManufacturerFormComponent implements OnInit {
    */
   @Select(AppState.isLoading) isLoading$: Observable<boolean>;
 
-
   /** constant for manufacturer */
-  multiple: boolean = false;
+  @Select(FileUploadState.isMultiple) multiple: boolean;
 
   /** Title of form */
   @Input() title: string;
@@ -34,19 +33,10 @@ export class ManufacturerFormComponent implements OnInit {
   /** Manufacturer if supplied then its in edit mode */
   @Input() manufacturer: Manufacturer;
 
-  /** Upload File Event */
-  @Output() uploadFile: EventEmitter<UploadFileModel[]>;
-
-  /** Delete File Event */
-  @Output() deleteFile: EventEmitter<string>;
-
   filesUpload$: Observable<UploadFileModel[]>;
 
   constructor(private store: Store) {
-    this.uploadFile = new EventEmitter<UploadFileModel[]>();
-    this.deleteFile = new EventEmitter<string>();
 
-    this.filesUpload$ = of(FileUploadMocks);
     // If Input Supplied (Edit Mode)
     if (this.manufacturer != null) {
       this.filesUpload$ = of([
@@ -61,12 +51,11 @@ export class ManufacturerFormComponent implements OnInit {
 
   ngOnInit() {}
 
-  /** upload file event will be handled by each forms */
-  onUploadFile(uploadModels: UploadFileModel[]) {
-    this.uploadFile.emit(uploadModels);
+  onUploadFile(uploadModels: UploadFileModel) {
+    this.store.dispatch(new UploadImageManufacturer(uploadModels));
   }
 
-  onDeleteFile(name: string) {
-    this.deleteFile.emit(name);
+  onDeleteFile(modelToDelete: UploadFileModel) {
+    this.store.dispatch(new DeleteImageManufacturer(modelToDelete));
   }
 }

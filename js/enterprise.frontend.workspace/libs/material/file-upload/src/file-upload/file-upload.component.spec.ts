@@ -5,7 +5,16 @@ import { BaseTestPage } from '@enterprise/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
-import { FileUploadMocks } from '@enterprise/material/file-upload';
+import {
+  SetModeFileUpload,
+  ValidateFileUpload,
+  AddFileImage,
+  DeleteFileImage
+} from '../shared/file-upload.actions';
+import { FileUploadMocks } from '../mocks/file-upload.mocks';
+import { Store, NgxsModule } from '@ngxs/store';
+import { FileUploadState } from '@enterprise/material/file-upload';
+import { of } from 'rxjs/observable/of';
 
 export class FileUploadPage extends BaseTestPage<FileUploadComponent> {
   constructor(public fixture: ComponentFixture<FileUploadComponent>) {
@@ -26,10 +35,11 @@ describe('FileUploadComponent', () => {
   let fixture: ComponentFixture<FileUploadComponent>;
   let fileUploadPage: FileUploadPage;
   let mockFileUpload: UploadFileModel[];
+  let store: Store;
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientModule],
+        imports: [HttpClientModule, NgxsModule.forRoot([FileUploadState])],
         declarations: [FileUploadComponent],
         schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
@@ -42,49 +52,68 @@ describe('FileUploadComponent', () => {
     component = fixture.componentInstance;
 
     fileUploadPage = new FileUploadPage(fixture);
-
-    component.filesImage = mockFileUpload;
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
   describe('Functionality Test', () => {
     it('should have accept multiple attribute when multiple is true', () => {
-      component.multiple = true;
-      component.checkMultipleFileValidation();
+      // Set Multiple to true
+      store.dispatch(new SetModeFileUpload(true));
+
+      // validate is file upload control is valid
+      store.dispatch(new ValidateFileUpload());
       fixture.detectChanges();
 
       expect(fileUploadPage.fileInput.hasAttribute('multiple')).toBeTruthy();
     });
     it('should not have multiple attribute when multiple is false', () => {
-      component.multiple = false;
-      component.disable = false;
+      // Set Multiple to false
+      store.dispatch(new SetModeFileUpload(false));
+
+      // validate is file upload control is valid
+      store.dispatch(new ValidateFileUpload());
       fixture.detectChanges();
 
       expect(fileUploadPage.fileInput.hasAttribute('multiple')).toBeFalsy();
     });
     it('should disable if multiple image exists in single', () => {
-      component.multiple = false;
-      component.disable = false;
+      // Set Multiple to false
+      store.dispatch(new SetModeFileUpload(false));
+
+      // validate is file upload control is valid
+      store.dispatch(new ValidateFileUpload());
+
       fixture.detectChanges();
+      //valid template
       let input = fileUploadPage.dropdownZone.textContent;
 
-      component.checkMultipleFileValidation();
+      store.dispatch(new AddFileImage(mockFileUpload));
+      store.dispatch(new ValidateFileUpload());
       fixture.detectChanges();
 
       expect(fileUploadPage.dropdownZone.textContent).not.toContain(input);
     });
     it('should enable if all images deleted in single mode', () => {
-      component.multiple = false;
-      component.disable = false;
+      // Set Multiple to false
+      store.dispatch(new SetModeFileUpload(false));
+
+      // validate is file upload control is valid
+      store.dispatch(new ValidateFileUpload());
+
       fixture.detectChanges();
+      //valid template
       let input = fileUploadPage.dropdownZone.textContent;
 
-      component.checkMultipleFileValidation();
+      store.dispatch(new AddFileImage(mockFileUpload));
+      store.dispatch(new ValidateFileUpload());
       fixture.detectChanges();
 
       expect(fileUploadPage.dropdownZone.textContent).not.toContain(input);
 
-      component.filesImage = [];
-      component.checkMultipleFileValidation();
+      mockFileUpload.forEach(x =>
+        store.dispatch(new DeleteFileImage(x.fileName))
+      );
+      store.dispatch(new ValidateFileUpload());
       fixture.detectChanges();
       expect(fileUploadPage.dropdownZone.textContent).toContain(input);
     });

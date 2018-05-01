@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ManufacturerService } from '@enterprise/commerce/manufacturer-lib';
+import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
 import * as ec from '@enterprise/core';
 

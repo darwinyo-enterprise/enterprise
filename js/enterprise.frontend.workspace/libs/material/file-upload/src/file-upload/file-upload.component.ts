@@ -1,6 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
+import { Select, Store } from '@ngxs/store';
+import { FileUploadState } from '@enterprise/material/file-upload/src/shared/file-upload.state';
+import {
+  ValidateFileUpload,
+  DeleteFileImage,
+  AddFileImage,
+  SetModeFileUpload
+} from '@enterprise/material/file-upload/src/shared/file-upload.actions';
 
 @Component({
   selector: 'em-file-upload',
@@ -10,19 +18,19 @@ import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
 /** TODO : REFACTOR CODE NEEDED */
 /** Can Receive All Types of File. */
 export class FileUploadComponent implements OnInit {
-  disable: boolean;
+  @Select(FileUploadState.isDisabled) disable: boolean;
 
   /** Model For Upload */
-  uploadFileModel: UploadFileModel[];
+  @Select(FileUploadState.getFileUploads) uploadFileModel: UploadFileModel[];
 
   /** Identify is this control able to receive multiple files. */
-  @Input() multiple: boolean;
+  @Select(FileUploadState.isMultiple) multiple: boolean;
 
   /** parent id will be used for naming directory name */
   @Input() parentId: string;
 
   /** this used for generate image card for user take actions */
-  @Input() filesImage: UploadFileModel[];
+  @Select(FileUploadState.getFileImages) filesImage: UploadFileModel[];
 
   /** Upload File Event
    *  When this triggered you must define your own service logic.
@@ -38,14 +46,17 @@ export class FileUploadComponent implements OnInit {
    */
   @Output() deleteFile: EventEmitter<UploadFileModel>;
 
-  constructor() {
+  constructor(private store: Store) {
     this.uploadFile = new EventEmitter<UploadFileModel[]>();
     this.deleteFile = new EventEmitter<UploadFileModel>();
-    this.uploadFileModel = [];
   }
 
   ngOnInit() {
-    this.checkMultipleFileValidation();
+    // Set Multiple to false
+    this.store.dispatch(new SetModeFileUpload(false));
+
+    // validate is file upload control is valid
+    this.store.dispatch(new ValidateFileUpload());
   }
 
   /** async method triggered when file reader load end */
@@ -57,13 +68,7 @@ export class FileUploadComponent implements OnInit {
       fileUrl: base64
     };
 
-    // for upload
-    this.uploadFileModel.push(image);
-
-    // to show
-    this.filesImage.push(image);
-
-    this.checkMultipleFileValidation();
+    this.store.dispatch(new AddFileImage(image));
   }
 
   /** Triggered when you drop file to dropzone
@@ -97,23 +102,7 @@ export class FileUploadComponent implements OnInit {
 
   /** Remove and emit delete event */
   onFileDelete(uploadModel: UploadFileModel) {
+    this.store.dispatch(new DeleteFileImage(uploadModel.fileName));
     this.deleteFile.emit(uploadModel);
-    this.uploadFileModel.splice(this.uploadFileModel.indexOf(uploadModel),1)
-    this.checkMultipleFileValidation();
-  }
-
-  /**
-   *  this will check if single then file image card not null then disable drop area.
-   */
-  checkMultipleFileValidation() {
-    if (!this.multiple) {
-      if (this.filesImage.length > 0) {
-        this.disable = true;
-      } else {
-        this.disable = false;
-      }
-    } else {
-      this.disable = false;
-    }
   }
 }
