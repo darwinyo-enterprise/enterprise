@@ -7,11 +7,11 @@
 
       <div class="form-container">
         <mat-form-field class="form-control--full-width">
-          <input matInput placeholder="Name" value="{{manufacturer.name}}" formControlName="name">
+          <input id="name" matInput placeholder="Name" value="{{manufacturer.name}}" formControlName="name">
         </mat-form-field>
 
         <mat-form-field class="form-control--full-width">
-          <textarea matInput placeholder="Description" formControlName="description">{{manufacturer.description}}</textarea>
+          <textarea id="description" matInput placeholder="Description" formControlName="description">{{manufacturer.description}}</textarea>
         </mat-form-field>
 
         <em-file-upload [parentId]="manufacturer.id" 
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="form-card__footer">
-      <button mat-button class="ok" [disabled]="manufacturerForm.pristine" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
+      <button id="save-button" mat-button class="ok" [disabled]="manufacturerForm.pristine || manufacturerForm.invalid" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
     </div>
   </mat-card>
   `

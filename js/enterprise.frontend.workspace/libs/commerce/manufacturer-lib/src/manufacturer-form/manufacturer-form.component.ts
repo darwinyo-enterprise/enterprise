@@ -15,7 +15,10 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Select, Store } from '@ngxs/store';
 import { AppState } from '@enterprise/core';
-import { FileUploadState } from '@enterprise/material/file-upload';
+import {
+  FileUploadState,
+  SetModeFileUpload
+} from '@enterprise/material/file-upload';
 import {
   DeleteImageManufacturer,
   UploadImageManufacturer
@@ -35,10 +38,12 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
   templateUrl: './manufacturer-form.component.html',
   styleUrls: ['./manufacturer-form.component.scss']
 })
+/**TODO: Make Interaction with backend with progress bar */
 export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   /** identifier for linear loading overlay as upload progress */
   progress: number;
 
+  //#region Selectors
   /** identify if current state is loading then shouldn't register another loading overlay.
    *  doesn't make sense to have multiple overlay at once.
    */
@@ -49,6 +54,10 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Select(FileUploadState.getFileImages)
   fileImages: Observable<UploadFileModel[]>;
+
+  //#endregion
+
+  //#region Inputs Outputs
 
   /** Title of form */
   @Input() title: string;
@@ -62,14 +71,18 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   /** Save Event triggered When save Button clicked */
   @Output() save: EventEmitter<Manufacturer>;
 
+  //#endregion
+
   filesUpload$: Observable<UploadFileModel[]>;
+
   manufacturerForm: FormGroup;
 
   unsubscribe$: ReplaySubject<boolean>;
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createForm();
-
+    // Set Multiple to false
+    store.dispatch(new SetModeFileUpload(false));
     this.save = new EventEmitter<Manufacturer>();
 
     // buffer size 1.
@@ -132,6 +145,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(new DeleteImageManufacturer(modelToDelete));
   }
 
+  /** File Input Changed by Store Management */
   onFileInputChanged(uploadModel: UploadFileModel[]) {
     if (uploadModel.length > 0) {
       this.manufacturerForm.patchValue({
@@ -145,6 +159,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
   }
+
   /** Should be handled for each form */
   onSaveBtnClicked() {
     this.save.emit(this.manufacturerForm.value);

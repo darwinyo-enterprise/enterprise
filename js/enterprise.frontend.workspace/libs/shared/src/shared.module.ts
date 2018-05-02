@@ -30,7 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   exports: [
     ListItemActionsComponent,
     ReactiveFormsModule,
-    
+
     //#region Material Imports
     MatButtonModule,
     MatCardModule,

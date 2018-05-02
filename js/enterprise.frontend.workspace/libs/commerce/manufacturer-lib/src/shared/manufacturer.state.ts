@@ -58,7 +58,7 @@ export class ManufacturerState {
     return this.manufacturerService
       .apiV1ManufacturerImagePost(payload)
       .subscribe(
-        (event) => {
+        event => {
           // if (event.type === HttpEventType.UploadProgress) {
           //   this.isLoading$.pipe(takeUntil(this.unsubsribe$)).subscribe(x => {
           //     if (!x) {
@@ -71,7 +71,7 @@ export class ManufacturerState {
           //   ]);
           // } else if (event.type === HttpEventType.Response)
           //   console.log(event.body.toString());
-          
+
           // Register Loading Overlay
           dispatch(new RegisterLoadingOverlay());
           dispatch(new ImageManufacturerUploaded());
@@ -83,8 +83,7 @@ export class ManufacturerState {
 
   /** Single Manufacturer Fetched Event */
   @Action(ImageManufacturerUploaded)
-  imageManufacturerUploaded(
-  ) {
+  imageManufacturerUploaded() {
     //TODO: DELETE UPLOAD IMAGE VARIABLES
     // dispatch(new Navigate(''))
     console.log('TODO Navigate to List');

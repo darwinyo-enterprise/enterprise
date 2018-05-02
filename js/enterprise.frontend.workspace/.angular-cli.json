@@ -126,6 +126,13 @@
       "tags": []
     },
     {
+      "name": "commerce/category-lib",
+      "root": "libs/commerce/category-lib/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "commerce/core",
       "root": "libs/commerce/core/src",
       "test": "../../../../test.js",

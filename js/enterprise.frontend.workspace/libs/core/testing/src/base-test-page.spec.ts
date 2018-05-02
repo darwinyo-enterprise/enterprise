@@ -1,10 +1,8 @@
-import { ComponentFixture } from "@angular/core/testing";
+import { ComponentFixture } from '@angular/core/testing';
 
-export class BaseTestPage<T>{
-
-  constructor(public fixture: ComponentFixture<T>) {
-  }
-    //// query helpers ////
+export class BaseTestPage<T> {
+  constructor(public fixture: ComponentFixture<T>) {}
+  //// query helpers ////
   protected query<TE>(selector: string): TE {
     return this.fixture.nativeElement.querySelector(selector);
   }
