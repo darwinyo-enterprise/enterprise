@@ -1,20 +1,28 @@
-<mat-card class="form-card">
-  <div class="form-card__title">
-    {{title}}
-  </div>
-  <div class="form-card__content">
-    <div class="form-container">
-      <mat-form-field class="form-control--full-width">
-        <input matInput placeholder="Name" value="{{manufacturer.name}}">
-      </mat-form-field>
-
-      <mat-form-field class="form-control--full-width">
-        <textarea matInput placeholder="Description">{{manufacturer.description}}</textarea>
-      </mat-form-field>
-
-      <em-file-upload [parentId]="manufacturer.id" (uploadFile)="onUploadFile($event)" (deleteFile)="onDeleteFile($event)"></em-file-upload>
+<form [formGroup]="manufacturerForm" (ngSubmit)="onSaveBtnClicked()">
+  <mat-card class="form-card">
+    <div class="form-card__title">
+      {{title}}
     </div>
-  </div>
-  <div class="form-card__footer"></div>
-</mat-card>
-`
+    <div class="form-card__content">
+
+      <div class="form-container">
+        <mat-form-field class="form-control--full-width">
+          <input matInput placeholder="Name" value="{{manufacturer.name}}" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field class="form-control--full-width">
+          <textarea matInput placeholder="Description" formControlName="description">{{manufacturer.description}}</textarea>
+        </mat-form-field>
+
+        <em-file-upload [parentId]="manufacturer.id" 
+                        (uploadFile)="onUploadFile($event)" 
+                        (deleteFile)="onDeleteFile($event)"></em-file-upload>
+
+      </div>
+    </div>
+    <div class="form-card__footer">
+      <button mat-button class="ok" [disabled]="manufacturerForm.pristine" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
+    </div>
+  </mat-card>
+  `
+</form>

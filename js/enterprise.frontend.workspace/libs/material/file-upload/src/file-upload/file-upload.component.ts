@@ -67,7 +67,6 @@ export class FileUploadComponent implements OnInit {
       fileName: file.name,
       fileUrl: base64
     };
-
     this.store.dispatch(new AddFileImage(image));
   }
 

@@ -11,10 +11,13 @@ import {
 } from '@angular/material';
 import { ListItemActionsComponent } from './list-item-actions/list-item-actions.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
 
     //#region Material Imports
     MatButtonModule,
@@ -26,7 +29,8 @@ import { ListItemActionsComponent } from './list-item-actions/list-item-actions.
   ],
   exports: [
     ListItemActionsComponent,
-
+    ReactiveFormsModule,
+    
     //#region Material Imports
     MatButtonModule,
     MatCardModule,

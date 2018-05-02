@@ -14,6 +14,7 @@ using Enterprise.Library.EventBus.Abstractions;
 using Enterprise.Library.EventBus.RabbitMQ;
 using Enterprise.Library.EventBus.RabbitMQ.Abstractions;
 using Enterprise.Library.EventBus.ServiceBus;
+using Enterprise.Library.FileUtility;
 using Enterprise.Library.IntegrationEventLog;
 using Enterprise.Library.IntegrationEventLog.Services;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -121,6 +122,7 @@ namespace Catalog.API
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
+            services.AddTransient<IFileUtility, FileUtility>();
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {

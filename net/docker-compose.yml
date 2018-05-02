@@ -13,15 +13,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
 
-  basket.api:
-    image: darwinyo/basket.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Commerce/Basket/Basket.API/Dockerfile
-    depends_on:
-      - basket.data
-      - identity.api
-      - rabbitmq
+  # basket.api:
+  #   image: darwinyo/basket.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Commerce/Basket/Basket.API/Dockerfile
+  #   depends_on:
+  #     - basket.data
+  #     - identity.api
+  #     - rabbitmq
 
   catalog.api:
     image: darwinyo/catalog.api:${TAG:-latest}
@@ -32,43 +32,43 @@ services:
       - sql.data
       - rabbitmq
 
-  identity.api:
-    image: darwinyo/identity.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Identity/Identity.API/Dockerfile
-    depends_on:
-      - sql.data
+  # identity.api:
+  #   image: darwinyo/identity.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Identity/Identity.API/Dockerfile
+  #   depends_on:
+  #     - sql.data
 
-  order.api:
-    image: darwinyo/order.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Commerce/Order/Order.API/Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
+  # order.api:
+  #   image: darwinyo/order.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Commerce/Order/Order.API/Dockerfile
+  #   depends_on:
+  #     - sql.data
+  #     - rabbitmq
 
-  order.backgroundtasks:
-    image: darwinyo/order.backgroundtasks:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Commerce/Order/Order.BackgroundTasks/Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
+  # order.backgroundtasks:
+  #   image: darwinyo/order.backgroundtasks:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Commerce/Order/Order.BackgroundTasks/Dockerfile
+  #   depends_on:
+  #     - sql.data
+  #     - rabbitmq
 
-  payment.api:
-    image: darwinyo/payment.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Commerce/Payment/Payment.API/Dockerfile
-    depends_on:
-      - rabbitmq   
+  # payment.api:
+  #   image: darwinyo/payment.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Commerce/Payment/Payment.API/Dockerfile
+  #   depends_on:
+  #     - rabbitmq   
 
-  webstatus:
-    image: darwinyo/webstatus:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/HealthCheck/WebStatus/Dockerfile
+  # webstatus:
+  #   image: darwinyo/webstatus:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/HealthCheck/WebStatus/Dockerfile
 

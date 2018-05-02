@@ -18,32 +18,34 @@ namespace Catalog.API.Infrastructure
 {
     public class CatalogContextSeed
     {
+        private IHostingEnvironment _env;
         public async Task SeedAsync(CatalogContext context, IHostingEnvironment env, IOptions<CatalogSettings> settings,
             ILogger<CatalogContextSeed> logger)
         {
+            _env = env;
             var policy = CreatePolicy(logger, nameof(CatalogContextSeed));
 
             await policy.ExecuteAsync(async () =>
             {
                 var useCustomizationData = settings.Value.UseCustomizationData;
                 var contentRootPath = env.ContentRootPath;
-
                 if (!context.Manufacturers.Any())
                 {
-                    GetPictures(contentRootPath, "Manufacturer", "Manufacturer.zip");
-
+                    GetPictures(contentRootPath, _env.WebRootPath + "/Manufacturer", "Manufacturer.zip");
                     await context.Manufacturers.AddRangeAsync(useCustomizationData
                         ? GetManufacturerFromFile(contentRootPath, logger)
                         : GetPreconfiguredManufacturer());
 
                     await context.SaveChangesAsync();
 
+
+
                     await context.Manufacturers.ToListAsync();
                 }
 
                 if (!context.Categories.Any())
                 {
-                    GetPictures(contentRootPath, "Category", "Category.zip");
+                    GetPictures(contentRootPath, _env.WebRootPath + "/Category", "Category.zip");
 
                     await context.Categories.AddRangeAsync(useCustomizationData
                         ? GetCategoryFromFile(contentRootPath, logger)
@@ -136,7 +138,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "Name", "Description", "ImageId"};
+                string[] requiredHeaders = { "name", "description", "imagename" };
                 csvheaders = GetHeaders(csvFileManufacturers, requiredHeaders);
             }
             catch (Exception ex)
@@ -150,7 +152,7 @@ namespace Catalog.API.Infrastructure
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(x =>
                 {
-                    PlacePictureById(x, csvheaders, "Manufacturer");
+                    PlacePictureById(x, csvheaders, _env.WebRootPath + "/Manufacturer");
                     return CreateManufacturer(x, csvheaders);
                 })
                 .OnCaughtException(ex =>
@@ -163,22 +165,18 @@ namespace Catalog.API.Infrastructure
 
         private Manufacturer CreateManufacturer(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
+            var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("Manufacturer Name is empty");
 
-            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
+            var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("Manufacturer Description is empty");
 
-            var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
-
-            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
+            var imageName = column[Array.IndexOf(headers, "imagename")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(imageName)) throw new Exception("Manufacturer image name is empty");
 
             return new Manufacturer
             {
                 Name = name,
-                Id = ids,
                 Description = description,
                 ImageName = imageName
             };
@@ -188,12 +186,12 @@ namespace Catalog.API.Infrastructure
         {
             return new List<Manufacturer>
             {
-                new Manufacturer {Name = "Microsoft", Description = "None", Id = 1, ImageName = "Microsoft.png"},
-                new Manufacturer {Name = "Docker", Description = "None", Id = 5, ImageName = "Docker.png"},
-                new Manufacturer {Name = "Google", Description = "None", Id = 4, ImageName = "Google.png"},
-                new Manufacturer {Name = "Asus", Description = "None", Id = 2, ImageName = "Asus.png"},
-                new Manufacturer {Name = "Apple", Description = "None", Id = 3, ImageName = "Apple.png"},
-                new Manufacturer {Name = "Sony", Description = "None", Id = 6, ImageName = "Sony.png"}
+                new Manufacturer {Name = "Microsoft", Description = "None", ImageName = "Microsoft.png"},
+                new Manufacturer {Name = "Asus", Description = "None",  ImageName = "Asus.png"},
+                new Manufacturer {Name = "Apple", Description = "None",  ImageName = "Apple.png"},
+                new Manufacturer {Name = "Google", Description = "None",  ImageName = "Google.png"},
+                new Manufacturer {Name = "Docker", Description = "None",  ImageName = "Docker.png"},
+                new Manufacturer {Name = "Sony", Description = "None",  ImageName = "Sony.png"}
             };
         }
 
@@ -211,7 +209,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "Name"};
+                string[] requiredHeaders = { "id", "name" };
                 csvheaders = GetHeaders(csvFileUsers, requiredHeaders);
             }
             catch (Exception ex)
@@ -234,11 +232,11 @@ namespace Catalog.API.Infrastructure
 
         private User CreateUser(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(id)) throw new Exception($"id is empty");
+            var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(id)) throw new Exception($"user id is empty");
 
-            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
+            var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("user Name is empty");
 
             return new User
             {
@@ -261,6 +259,76 @@ namespace Catalog.API.Infrastructure
 
         #endregion
 
+        #region Category
+
+        private IEnumerable<Category> GetCategoryFromFile(string contentRootPath,
+            ILogger<CatalogContextSeed> logger)
+        {
+            var csvFileCategorys = Path.Combine(contentRootPath, "Setup", "Category.csv");
+
+            if (!File.Exists(csvFileCategorys)) return GetPreconfiguredCategory();
+
+            string[] csvheaders;
+            try
+            {
+                string[] requiredHeaders = { "name", "description", "imageid" };
+                csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return GetPreconfiguredCategory();
+            }
+
+            return File.ReadAllLines(csvFileCategorys)
+                .Skip(1) // skip header row
+                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                .SelectTry(x =>
+                {
+                    PlacePictureById(x, csvheaders, "Category");
+                    return CreateCategory(x, csvheaders);
+                })
+                .OnCaughtException(ex =>
+                {
+                    logger.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null);
+        }
+
+        private Category CreateCategory(string[] column, string[] headers)
+        {
+            var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
+
+            var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
+
+            var imageName = column[Array.IndexOf(headers, "imageid")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
+
+            return new Category
+            {
+                Name = name,
+                Description = description,
+                ImageName = imageName
+            };
+        }
+
+        private IEnumerable<Category> GetPreconfiguredCategory()
+        {
+            return new List<Category>
+            {
+                new Category {Name = "Phone", Description = "None",  ImageName = "Phone.png"},
+                new Category {Name = "Software", Description = "None",  ImageName = "Software.png"},
+                new Category {Name = "Laptop", Description = "None",  ImageName = "Laptop.png"},
+                new Category {Name = "Console", Description = "None", ImageName = "Console.png"},
+                new Category {Name = "Tablet", Description = "None",  ImageName = "Tablet.png"}
+            };
+        }
+
+        #endregion
+
         #region Product
 
         private IEnumerable<Product> GetProductFromFile(string contentRootPath,
@@ -275,8 +343,8 @@ namespace Catalog.API.Infrastructure
             {
                 string[] requiredHeaders =
                 {
-                    "Id", "Name", "Price", "OverallRating", "TotalFavorites", "TotalReviews", "Description",
-                    "LastUpdated", "LastUpdatedBy", "AvailableStock", "ManufacturerId", "CategoryId"
+                    "id", "name", "price", "overallrating", "totalfavorites", "totalreviews", "description",
+                    "lastupdated", "lastupdatedby", "availablestock", "manufacturerid", "categoryid"
                 };
                 csvheaders = GetHeaders(csvFileProducts, requiredHeaders);
             }
@@ -286,7 +354,7 @@ namespace Catalog.API.Infrastructure
                 return GetPreconfiguredProduct();
             }
 
-            return File.ReadAllLines(csvFileProducts)
+            var result = File.ReadAllLines(csvFileProducts)
                 .Skip(1) // skip header row
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(x => CreateProduct(x, csvheaders))
@@ -295,47 +363,49 @@ namespace Catalog.API.Infrastructure
                     logger.LogError(ex.Message);
                     return null;
                 })
-                .Where(x => x != null);
+                .Where(x => x != null).ToList();
+
+            return result;
         }
 
         private Product CreateProduct(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
+            var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
             if (string.IsNullOrEmpty(id)) throw new Exception("id is empty");
 
-            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
+            var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("product Name is empty");
 
-            var price = column[Array.IndexOf(headers, "Price")].Trim('"').Trim();
+            var price = column[Array.IndexOf(headers, "price")].Trim('"').Trim();
             if (decimal.TryParse(price, out var prices)) throw new Exception("product price is not decimal");
 
-            var overallRating = column[Array.IndexOf(headers, "OverallRating")].Trim('"').Trim();
+            var overallRating = column[Array.IndexOf(headers, "overallrating")].Trim('"').Trim();
             if (decimal.TryParse(overallRating, out var overallRatings))
                 throw new Exception("product OverallRating is not number");
 
-            var totalFavorite = column[Array.IndexOf(headers, "TotalFavorites")].Trim('"').Trim();
+            var totalFavorite = column[Array.IndexOf(headers, "totalfavorites")].Trim('"').Trim();
             if (int.TryParse(totalFavorite, out var totalFavorites))
                 throw new Exception("product TotalFavorites is not number");
 
-            var totalReview = column[Array.IndexOf(headers, "TotalReviews")].Trim('"').Trim();
+            var totalReview = column[Array.IndexOf(headers, "totalreviews")].Trim('"').Trim();
             if (int.TryParse(totalReview, out var totalReviews))
                 throw new Exception("product TotalReviews is not number");
 
-            var availableStock = column[Array.IndexOf(headers, "AvailableStock")].Trim('"').Trim();
+            var availableStock = column[Array.IndexOf(headers, "availablestock")].Trim('"').Trim();
             if (int.TryParse(availableStock, out var availableStocks))
                 throw new Exception("product AvailableStock is not number");
 
-            var manufacturerId = column[Array.IndexOf(headers, "ManufacturerId")].Trim('"').Trim();
+            var manufacturerId = column[Array.IndexOf(headers, "manufacturerid")].Trim('"').Trim();
             if (int.TryParse(manufacturerId, out var manufacturerIds))
                 throw new Exception("product ManufacturerId is not number");
 
-            var categoryId = column[Array.IndexOf(headers, "CategoryId")].Trim('"').Trim();
+            var categoryId = column[Array.IndexOf(headers, "categoryid")].Trim('"').Trim();
             if (int.TryParse(categoryId, out var categoryIds)) throw new Exception("product CategoryId is not number");
 
-            var lastUpdated = column[Array.IndexOf(headers, "LastUpdated")].Trim('"').Trim();
+            var lastUpdated = column[Array.IndexOf(headers, "lastupdated")].Trim('"').Trim();
             var lastUpdatedBy = column[Array.IndexOf(headers, "LastUpdatedBy")].Trim('"').Trim();
 
-            var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
+            var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
             return new Product
@@ -374,7 +444,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "ProductId", "Name"};
+                string[] requiredHeaders = { "productid", "name" };
                 csvheaders = GetHeaders(csvFileProductColors, requiredHeaders);
             }
             catch (Exception ex)
@@ -397,20 +467,16 @@ namespace Catalog.API.Infrastructure
 
         private ProductColor CreateProductColor(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
-
-            var productId = column[Array.IndexOf(headers, "ProductId")].Trim('"').Trim();
+            var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("ProductId is empty");
 
-            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
+            var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("Name is empty");
 
             return new ProductColor
             {
                 Name = name,
                 ProductId = productId,
-                Id = ids
             };
         }
 
@@ -433,7 +499,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "ProductId", "ImageId"};
+                string[] requiredHeaders = { "productid", "imageid" };
                 csvheaders = GetHeaders(csvFileProductImages, requiredHeaders);
             }
             catch (Exception ex)
@@ -460,18 +526,14 @@ namespace Catalog.API.Infrastructure
 
         private ProductImage CreateProductImage(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
-
-            var productId = column[Array.IndexOf(headers, "ProductId")].Trim('"').Trim();
+            var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("Product id is empty");
 
-            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "imageid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new ProductImage
             {
-                Id = ids,
                 ProductId = productId,
                 ImageName = imageName
             };
@@ -496,7 +558,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = {"Id", "ProductId", "UserId", "Rate"};
+                string[] requiredHeaders = { "productid", "userid", "rate" };
                 csvheaders = GetHeaders(csvFileProductRatings, requiredHeaders);
             }
             catch (Exception ex)
@@ -519,21 +581,17 @@ namespace Catalog.API.Infrastructure
 
         private ProductRating CreateProductRating(string[] column, string[] headers)
         {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
-
-            var productId = column[Array.IndexOf(headers, "ProductId")].Trim('"').Trim();
+            var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("Product Id is empty");
 
-            var userId = column[Array.IndexOf(headers, "UserId")].Trim('"').Trim();
+            var userId = column[Array.IndexOf(headers, "userid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(userId)) throw new Exception("User id is empty");
 
-            var rate = column[Array.IndexOf(headers, "Rate")].Trim('"').Trim();
+            var rate = column[Array.IndexOf(headers, "rate")].Trim('"').Trim();
             if (!decimal.TryParse(rate, out var rates)) throw new Exception("rates name is empty");
 
             return new ProductRating
             {
-                Id = ids,
                 ProductId = productId,
                 UserId = userId,
                 Rate = rates
@@ -547,79 +605,7 @@ namespace Catalog.API.Infrastructure
 
         #endregion
 
-        #region Category
 
-        private IEnumerable<Category> GetCategoryFromFile(string contentRootPath,
-            ILogger<CatalogContextSeed> logger)
-        {
-            var csvFileCategorys = Path.Combine(contentRootPath, "Setup", "Category.csv");
-
-            if (!File.Exists(csvFileCategorys)) return GetPreconfiguredCategory();
-
-            string[] csvheaders;
-            try
-            {
-                string[] requiredHeaders = {"Id", "Name", "Description", "ImageId"};
-                csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return GetPreconfiguredCategory();
-            }
-
-            return File.ReadAllLines(csvFileCategorys)
-                .Skip(1) // skip header row
-                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                .SelectTry(x =>
-                {
-                    PlacePictureById(x, csvheaders, "Category");
-                    return CreateCategory(x, csvheaders);
-                })
-                .OnCaughtException(ex =>
-                {
-                    logger.LogError(ex.Message);
-                    return null;
-                })
-                .Where(x => x != null);
-        }
-
-        private Category CreateCategory(string[] column, string[] headers)
-        {
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
-            if (!int.TryParse(id, out var ids)) throw new Exception($"id={id}is not a valid number");
-
-            var name = column[Array.IndexOf(headers, "Name")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
-
-            var description = column[Array.IndexOf(headers, "Description")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
-
-            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
-
-            return new Category
-            {
-                Name = name,
-                Id = ids,
-                Description = description,
-                ImageName = imageName
-            };
-        }
-
-        private IEnumerable<Category> GetPreconfiguredCategory()
-        {
-            return new List<Category>
-            {
-                new Category {Name = "Phone", Description = "None", Id = 1, ImageName = "Phone.png"},
-                new Category {Name = "Software", Description = "None", Id = 2, ImageName = "Software.png"},
-                new Category {Name = "Laptop", Description = "None", Id = 3, ImageName = "Laptop.png"},
-                new Category {Name = "Console", Description = "None", Id = 4, ImageName = "Console.png"},
-                new Category {Name = "Tablet", Description = "None", Id = 5, ImageName = "Tablet.png"}
-            };
-        }
-
-        #endregion
 
         #region Utility
 
@@ -646,6 +632,11 @@ namespace Catalog.API.Infrastructure
         private void GetPictures(string contentRootPath, string picturePath, string zipName)
         {
             var directory = new DirectoryInfo(picturePath);
+            if (!directory.Exists)
+            {
+                directory.Create();
+            }
+
             foreach (var file in directory.GetFiles()) file.Delete();
 
             var zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", zipName);
@@ -656,7 +647,7 @@ namespace Catalog.API.Infrastructure
         {
             var directory = new DirectoryInfo(picturePath);
 
-            var id = column[Array.IndexOf(headers, "Id")].Trim('"').Trim();
+            var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
             var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == id.ToString());
             if (dir != null && dir.Exists)
             {
@@ -668,10 +659,17 @@ namespace Catalog.API.Infrastructure
             var files = directory.GetFiles();
             directory.CreateSubdirectory(id);
 
-            var imageName = column[Array.IndexOf(headers, "ImageId")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "imagename")].Trim('"').Trim();
 
             var file = files.SingleOrDefault(x => x.Name == imageName);
-            file?.MoveTo(id);
+            var subdir = directory.GetDirectories(id).FirstOrDefault();
+            var fileToInsert = subdir?.GetFiles(imageName).FirstOrDefault();
+            if (fileToInsert != null && fileToInsert.Exists)
+            {
+                fileToInsert.Delete();
+            }
+            file?.CopyTo(picturePath + "/" + id);
+            file?.Delete();
         }
 
         #endregion

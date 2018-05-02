@@ -11,8 +11,8 @@ using System;
 namespace Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20180428051322_Change GUID to String for easy seeding")]
-    partial class ChangeGuiDtoStringforeasyseeding
+    [Migration("20180501083627_Clean Migrations")]
+    partial class CleanMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
