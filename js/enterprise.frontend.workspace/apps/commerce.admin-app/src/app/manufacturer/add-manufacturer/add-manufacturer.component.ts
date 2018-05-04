@@ -25,8 +25,7 @@ export class AddManufacturerComponent implements OnInit {
     this.manufacturer = <Manufacturer>{};
   }
 
-  ngOnInit() {
-    this.manufacturer=ManufacturersMock[0];}
+  ngOnInit() {}
   onAddNewManufacturer(manufacturer: Manufacturer) {
     this.store.dispatch(new AddManufacturer(manufacturer));
   }
