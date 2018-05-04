@@ -4,23 +4,26 @@ import { ManufacturerFormComponent } from './manufacturer-form.component';
 import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
-import { FileUploadState } from '@enterprise/material/file-upload';
-import { ManufacturerState } from '@enterprise/commerce';
-import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
+import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage } from '@enterprise/material/file-upload';
+import { ManufacturerState, ManufacturersMock } from '@enterprise/commerce';
+import { ManufacturerService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 export class ManufacturerFormPage extends BaseTestPage<
   ManufacturerFormComponent
-> {
+  > {
   constructor(public fixture: ComponentFixture<ManufacturerFormComponent>) {
     super(fixture);
   }
   get saveBtn() {
     return this.query<HTMLButtonElement>('#save-button');
   }
-  get nameInputControl() {
-    return this.query<HTMLInputElement>('#name');
+  get nameInputGroup() {
+    return this.query<HTMLElement>('#name-txtbox');
+  }
+  get nameInputControl(): HTMLInputElement {
+    return <HTMLInputElement>this.nameInputGroup.children.item(0);
   }
   get descriptionInputControl() {
     return this.query<HTMLElement>('#description');
@@ -64,42 +67,106 @@ fdescribe('ManufacturerFormComponent', () => {
   });
 
   describe('Functionality Tests', () => {
-    // it('should populate value in input when manufacturer input provided', () => {});
-    // it('should populate value to form when file upload changed', () => {});
-    // it('should remove form value when image deleted', () => {});
+    it('should populate value in input when manufacturer input provided', () => {
+      component.manufacturer = ManufacturersMock[0];
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      console.log(component.manufacturerForm);
+      expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
+    });
+    it('should populate value to image url in form when file upload changed', () => {
+      let uploadFileModel: UploadFileModel = FileUploadMocks[0];
+      expect(component.manufacturerForm.controls['imageUrl'].value).not.toContain(uploadFileModel.fileUrl);
+      expect(component.manufacturerForm.controls['imageName'].value).not.toContain(uploadFileModel.fileName);
+
+      store.dispatch(new AddFileImage(uploadFileModel));
+
+      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(uploadFileModel.fileUrl);
+      expect(component.manufacturerForm.controls['imageName'].value).toContain(uploadFileModel.fileName);
+    });
+    it('should remove image url in form value when image deleted', () => {
+      let uploadFileModel: UploadFileModel = FileUploadMocks[0];
+      store.dispatch(new AddFileImage(uploadFileModel));
+
+      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(uploadFileModel.fileUrl);
+      expect(component.manufacturerForm.controls['imageName'].value).toContain(uploadFileModel.fileName);
+
+      store.dispatch(new DeleteFileImage(uploadFileModel.fileName));
+
+      expect(component.manufacturerForm.controls['imageUrl'].value).not.toContain(uploadFileModel.fileUrl);
+      expect(component.manufacturerForm.controls['imageName'].value).not.toContain(uploadFileModel.fileName);
+    });
   });
 
   describe('UI Tests', () => {
     it('should render correct Title', () => {
-      expect(manufacturerFormPage.title).toEqual('Test Manufacturer');
+      expect(manufacturerFormPage.title.innerText).toContain(title);
     });
-    // it('should render correct save button name', () => {
-    //   expect(manufacturerFormPage.saveBtn).toContain(btnName);
-    // });
-    // it('should disabled save button when form pristine', () => {
-    //   expect(
-    //     manufacturerFormPage.saveBtn.attributes.getNamedItem('disabled')
-    //       .textContent
-    //   ).toBeTruthy();
-    // });
-    // it('should disabled save button when form invalid', () => {
-    //   // Name Field Null => invalid
-    //   expect(
-    //     manufacturerFormPage.saveBtn.attributes.getNamedItem('disabled')
-    //       .textContent
-    //   ).toBeTruthy();
+    it('should render correct save button name', () => {
+      expect(manufacturerFormPage.saveBtn.innerText).toContain(btnName);
+    });
+    it('should disabled save button when form pristine', () => {
+      expect(
+        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+      ).toBeTruthy();
+    });
+    it('should disabled save button when form invalid', () => {
+      // Name Field Null => invalid
+      expect(
+        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+      ).toBeTruthy();
+      component.manufacturerForm.markAsTouched();
+      component.manufacturerForm.markAsDirty();
 
-    //   // Name Field Inputed
-    //   manufacturerFormPage.nameInputControl.value = 'Tests';
+      fixture.detectChanges();
+      expect(
+        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+      ).toBeTruthy();
 
-    //   fixture.detectChanges();
+    });
+    it('should render validation error message when input error', () => {
+      component.manufacturerForm.patchValue({
+        name: 'Test'
+      });
+      component.nameControl.markAsDirty();
+      component.nameControl.markAsTouched();
+      fixture.detectChanges();
+      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(1);
 
-    //   expect(
-    //     manufacturerFormPage.saveBtn.attributes.getNamedItem('disabled')
-    //       .textContent
-    //   ).toBeUndefined();
-    // });
-    // it('should render validation error message when input error', () => {});
-    // it('should enabled save button when form valid', () => {});
+      component.manufacturerForm.patchValue({
+        name: ''
+      });
+
+      fixture.detectChanges();
+      console.log(fixture.nativeElement);
+      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(2);
+      expect(manufacturerFormPage.nameInputGroup.children.item(1)).toBeDefined();
+    });
+    it('should not render validation error message when input is pristine', () => {
+      expect(component.nameControl.pristine).toBeTruthy();
+      expect(component.nameControl.invalid).toBeTruthy();
+      fixture.detectChanges();
+
+      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(1);
+      expect(manufacturerFormPage.nameInputGroup.children.item(1)).toBeNull();
+    });
+    it('should enabled save button when form valid', () => {
+      // Name Field Null => invalid
+      expect(
+        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+      ).toBeTruthy();
+
+      // Name Field Inputed
+      component.manufacturerForm.patchValue({
+        name: 'Test'
+      });
+
+      fixture.detectChanges();
+      expect(
+        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+      ).toBeFalsy();
+
+    });
   });
 });

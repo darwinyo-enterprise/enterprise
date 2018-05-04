@@ -4,7 +4,7 @@ import {
   ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
-import { AddManufacturer } from '@enterprise/commerce';
+import { AddManufacturer, ManufacturersMock } from '@enterprise/commerce';
 
 @Component({
   selector: 'eca-add-manufacturer',
@@ -25,7 +25,8 @@ export class AddManufacturerComponent implements OnInit {
     this.manufacturer = <Manufacturer>{};
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.manufacturer=ManufacturersMock[0];}
   onAddNewManufacturer(manufacturer: Manufacturer) {
     this.store.dispatch(new AddManufacturer(manufacturer));
   }

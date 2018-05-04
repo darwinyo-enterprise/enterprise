@@ -27,11 +27,13 @@ import {
   FormControl,
   FormGroup,
   FormBuilder,
-  Validators
+  Validators,
+  AbstractControl
 } from '@angular/forms';
 
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Guid } from '@enterprise/shared';
 
 @Component({
   selector: 'eca-manufacturer-form',
@@ -113,9 +115,21 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe$.next(false);
     this.unsubscribe$.complete();
   }
+
+  /** Name Form Control Getter */
+  get nameControl(): AbstractControl {
+    return this.manufacturerForm.controls['name'];
+  }
+
+  /** Description Form Control Getter */
+  get descriptionControl(): AbstractControl {
+    return this.manufacturerForm.controls['description'];
+  }
+
   /** Create Manufacturer Form By form builder */
   createForm() {
     this.manufacturerForm = this.fb.group({
+      id: '',
       name: ['', Validators.required],
       description: '',
       imageUrl: '',
@@ -126,7 +140,8 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   /** resposible for change form value. */
   rebuildForm() {
     this.manufacturerForm.reset({
-      name: this.manufacturer.imageName || '',
+      id: this.manufacturer.id || '',
+      name: this.manufacturer.name || '',
       description: this.manufacturer.description || '',
       imageUrl: this.manufacturer.imageUrl || '',
       imageName: this.manufacturer.imageName || ''

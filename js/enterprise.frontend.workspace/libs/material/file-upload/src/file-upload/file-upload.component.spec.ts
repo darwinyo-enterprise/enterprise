@@ -117,5 +117,11 @@ describe('FileUploadComponent', () => {
       fixture.detectChanges();
       expect(fileUploadPage.dropdownZone.textContent).toContain(input);
     });
+
   });
+  describe('UI Test', () => {
+    it('should button disable when parentId is undefined', () => {
+      expect(fileUploadPage.uploadBtn).toBeNull();
+    })
+  })
 });
