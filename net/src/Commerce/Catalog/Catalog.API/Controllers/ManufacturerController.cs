@@ -117,7 +117,7 @@ namespace Catalog.API.Controllers
         /// <returns>
         ///     return file to download
         /// </returns>
-        [HttpGet("image/id")]
+        [HttpGet("image/{id}")]
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]

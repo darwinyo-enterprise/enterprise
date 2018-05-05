@@ -2,8 +2,7 @@ import { State, StateContext, Selector, Action } from '@ngxs/store';
 import {
   ErrorOccured,
   ResolveLoadingOverlay,
-  RegisterLoadingOverlay,
-  Navigate
+  RegisterLoadingOverlay
 } from '@enterprise/core';
 import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import {

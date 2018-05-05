@@ -175,9 +175,11 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  /** Should be handled for each form */
+  /** Should be handled for each form.
+   * add should hit add new api.
+   * edit should hit update api.
+  */
   onSaveBtnClicked() {
     this.save.emit(this.manufacturerForm.value);
-    console.log(this.manufacturerForm.value);
   }
 }

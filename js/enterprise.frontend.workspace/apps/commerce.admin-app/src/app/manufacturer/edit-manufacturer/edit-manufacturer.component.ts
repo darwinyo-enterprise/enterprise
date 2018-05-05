@@ -1,30 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
+import { Store, Select } from '@ngxs/store';
+import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'eca-edit-manufacturer',
   templateUrl: './edit-manufacturer.component.html',
   styleUrls: ['./edit-manufacturer.component.scss']
 })
+/** TODO: Remove Mock manufacturer */
 export class EditManufacturerComponent implements OnInit {
   title: string;
-  manufacturer: Manufacturer;
+  @Select(ManufacturerState.getSelectedManufacturer)
+  manufacturer$: Observable<Manufacturer>;
+  nameSaveButton: string;
 
-  constructor() {
+  constructor(private store: Store) {
     this.title = 'Edit Manufacturer';
-    this.manufacturer = <Manufacturer>{
-      id: 1,
-      name: 'Samsung',
-      description: 'Mobile Manufacturer'
-    };
+    this.nameSaveButton = 'Update';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
 
-  onFileDelete(formFile: FormData) {
-    console.log('DO SOMETHING FOR DELETE');
   }
-  onFileUpload(id: string) {
-    console.log('DO SOMETHING FOR UPLOAD');
+  onManufacturerUpdate(manufacturer: Manufacturer) {
+    this.store.dispatch(new UpdateManufacturer(manufacturer));
   }
 }

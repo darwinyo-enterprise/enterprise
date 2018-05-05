@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Catalog.API.Infrastructure.EntityConfigurations;
 using Catalog.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,18 @@ namespace Catalog.API.Infrastructure
             builder.ApplyConfiguration(new ProductImageEntityTypeConfiguration());
             builder.ApplyConfiguration(new ProductRatingEntityTypeConfiguration());
             builder.ApplyConfiguration(new UserEntityTypeConfiguration());
+        }
+
+        /// <summary>
+        /// used for reset identity seed back to 0
+        /// </summary>
+        /// <param name="tableName">
+        /// table name to reset
+        /// </param>
+        /// <returns></returns>
+        public async Task SpResetIdentity(string tableName)
+        {
+            await this.Database.ExecuteSqlCommandAsync("EXEC	[spResetIdentity] @TableName='" + tableName + "'");
         }
     }
 

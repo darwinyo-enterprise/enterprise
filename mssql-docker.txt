@@ -2,4 +2,4 @@ docker create -v /var/opt/mssql --name mssql-volume microsoft/mssql-server-linux
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" -p 1433:1433 --volumes-from mssql-volume --name mssql -d microsoft/mssql-server-linux:2017-latest
 
 if cant connect to ip sql
-route add 172.17.0.0 MASK 255.255.0.0 10.0.75.2`
+route add 172.17.0.0 MASK 255.255.0.0 10.0.75.2

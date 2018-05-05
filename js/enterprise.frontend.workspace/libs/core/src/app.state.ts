@@ -4,7 +4,8 @@ import {
   TdLoadingService,
   TdDialogService,
   LoadingType,
-  LoadingMode
+  LoadingMode,
+  IConfirmConfig
 } from '@covalent/core';
 import {
   RegisterLoadingOverlay,
@@ -13,13 +14,17 @@ import {
   SetUsername,
   RegisterLinearLoadingOverlay,
   ResolveLinearLoadingOverlay,
-  ProgressLinearLoadingOverlay
+  ProgressLinearLoadingOverlay,
+  Confirm,
+  Confirmed
 } from './app.actions';
 
 export interface AppStateModel {
   username: string;
   errorMessage: string;
   progressLoading: number;
+  confirmModel: IConfirmConfig;
+  confirmation: boolean;
   isError: boolean;
   isLoading: boolean;
 }
@@ -28,6 +33,8 @@ const defaults: AppStateModel = {
   username: '',
   errorMessage: '',
   progressLoading: 0,
+  confirmModel: null,
+  confirmation: false,
   isError: false,
   isLoading: false
 };
@@ -72,6 +79,10 @@ export class AppState {
   @Selector()
   static progressLoading(state: AppStateModel) {
     return state.progressLoading;
+  }
+  @Selector()
+  static confirmation(state: AppStateModel) {
+    return state.confirmation;
   }
   //#endregion
 
@@ -134,5 +145,27 @@ export class AppState {
     { payload }: SetUsername
   ) {
     patchState({ username: payload });
+  }
+
+  @Action(Confirm)
+  confirm(
+    { patchState, dispatch }: StateContext<AppStateModel>,
+    { payload }: Confirm
+  ) {
+    patchState({
+      confirmModel: payload
+    });
+    this.dialogService.openConfirm(payload).afterClosed().subscribe((accept: boolean) => {
+      dispatch(new Confirmed(accept));
+    });
+
+  }
+
+  @Action(Confirmed)
+  confirmed({ patchState }: StateContext<AppStateModel>,
+    { payload }: Confirmed) {
+    patchState({
+      confirmation: payload
+    });
   }
 }

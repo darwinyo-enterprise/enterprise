@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -31,21 +32,24 @@ namespace Catalog.API.Infrastructure
                 var contentRootPath = env.ContentRootPath;
                 if (!context.Manufacturers.Any())
                 {
-                    GetPictures(contentRootPath, _env.WebRootPath + "/Manufacturer", "Manufacturer.zip");
+                    const string manufacturer = "Manufacturer";
+                    await context.SpResetIdentity(manufacturer);
+                    GetPictures(contentRootPath, _env.WebRootPath + "/" + manufacturer, manufacturer + ".zip");
                     await context.Manufacturers.AddRangeAsync(useCustomizationData
                         ? GetManufacturerFromFile(contentRootPath, logger)
                         : GetPreconfiguredManufacturer());
 
                     await context.SaveChangesAsync();
 
-
-
-                    await context.Manufacturers.ToListAsync();
+                    DeleteAllFilesWithinDir(_env.WebRootPath + "/" + manufacturer);
+                    ValidateFileDirExists(manufacturer);
                 }
 
                 if (!context.Categories.Any())
                 {
-                    GetPictures(contentRootPath, _env.WebRootPath + "/Category", "Category.zip");
+                    const string category = "Category";
+                    await context.SpResetIdentity(category);
+                    GetPictures(contentRootPath, _env.WebRootPath + "/" + category, category + ".zip");
 
                     await context.Categories.AddRangeAsync(useCustomizationData
                         ? GetCategoryFromFile(contentRootPath, logger)
@@ -53,7 +57,8 @@ namespace Catalog.API.Infrastructure
 
                     await context.SaveChangesAsync();
 
-                    await context.Categories.ToListAsync();
+                    DeleteAllFilesWithinDir(_env.WebRootPath + "/" + category);
+                    ValidateFileDirExists(category);
                 }
 
                 if (!context.Users.Any())
@@ -63,8 +68,6 @@ namespace Catalog.API.Infrastructure
                         : GetPreconfiguredUser());
 
                     await context.SaveChangesAsync();
-
-                    await context.Users.ToListAsync();
                 }
 
                 if (!context.Products.Any())
@@ -74,43 +77,58 @@ namespace Catalog.API.Infrastructure
                         : GetPreconfiguredProduct());
 
                     await context.SaveChangesAsync();
-
-                    await context.Products.ToListAsync();
                 }
 
                 if (!context.ProductColors.Any())
                 {
+                    await context.SpResetIdentity("ProductColor");
                     await context.ProductColors.AddRangeAsync(useCustomizationData
                         ? GetProductColorFromFile(contentRootPath, logger)
                         : GetPreconfiguredProductColor());
 
                     await context.SaveChangesAsync();
-
-                    await context.ProductColors.ToListAsync();
                 }
 
                 if (!context.ProductRatings.Any())
                 {
+                    await context.SpResetIdentity("ProductRating");
                     await context.ProductRatings.AddRangeAsync(useCustomizationData
                         ? GetProductRatingFromFile(contentRootPath, logger)
                         : GetPreconfiguredProductRating());
 
                     await context.SaveChangesAsync();
-
-                    await context.ProductRatings.ToListAsync();
                 }
 
                 if (!context.ProductImages.Any())
                 {
+                    const string productImage = "ProductImage";
+                    await context.SpResetIdentity(productImage);
+                    GetPictures(contentRootPath, _env.WebRootPath + "/" + productImage, productImage + ".zip");
                     await context.ProductImages.AddRangeAsync(useCustomizationData
                         ? GetProductImageFromFile(contentRootPath, logger)
                         : GetPreconfiguredProductImage());
 
                     await context.SaveChangesAsync();
 
-                    await context.ProductRatings.ToListAsync();
+                    DeleteAllFilesWithinDir(_env.WebRootPath + "/" + productImage);
+                    ValidateFileDirExists(productImage);
                 }
             });
+        }
+
+        private void ValidateFileDirExists(string filename)
+        {
+            var dirRoot = new DirectoryInfo(_env.WebRootPath + "/" + filename);
+            var dirs = dirRoot.GetDirectories();
+            foreach (var directoryInfo in dirs)
+            {
+                if (directoryInfo.GetFiles().Length > 0)
+                {
+                    continue;
+                }
+
+                throw new Exception("File Directory Seed is Empty");
+            }
         }
 
         private Policy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
@@ -165,6 +183,9 @@ namespace Catalog.API.Infrastructure
 
         private Manufacturer CreateManufacturer(string[] column, string[] headers)
         {
+            //var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            //if (!int.TryParse(id, out var ids)) throw new Exception($"category id is empty");
+
             var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("Manufacturer Name is empty");
 
@@ -176,6 +197,7 @@ namespace Catalog.API.Infrastructure
 
             return new Manufacturer
             {
+                //Id = ids,
                 Name = name,
                 Description = description,
                 ImageName = imageName
@@ -271,7 +293,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "name", "description", "imageid" };
+                string[] requiredHeaders = { "name", "description", "imagename" };
                 csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
             }
             catch (Exception ex)
@@ -285,7 +307,7 @@ namespace Catalog.API.Infrastructure
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(x =>
                 {
-                    PlacePictureById(x, csvheaders, "Category");
+                    PlacePictureById(x, csvheaders, _env.WebRootPath + "/Category");
                     return CreateCategory(x, csvheaders);
                 })
                 .OnCaughtException(ex =>
@@ -298,17 +320,21 @@ namespace Catalog.API.Infrastructure
 
         private Category CreateCategory(string[] column, string[] headers)
         {
+            //var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            //if (!int.TryParse(id, out var ids)) throw new Exception($"category id is empty");
+
             var name = column[Array.IndexOf(headers, "name")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Name is empty");
+            if (string.IsNullOrEmpty(name)) throw new Exception("category Name is empty");
 
             var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
+            if (string.IsNullOrEmpty(name)) throw new Exception("category Description is empty");
 
-            var imageName = column[Array.IndexOf(headers, "imageid")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
+            var imageName = column[Array.IndexOf(headers, "imagename")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(imageName)) throw new Exception("category image name is empty");
 
             return new Category
             {
+                //Id = ids,
                 Name = name,
                 Description = description,
                 ImageName = imageName
@@ -377,34 +403,35 @@ namespace Catalog.API.Infrastructure
             if (string.IsNullOrEmpty(name)) throw new Exception("product Name is empty");
 
             var price = column[Array.IndexOf(headers, "price")].Trim('"').Trim();
-            if (decimal.TryParse(price, out var prices)) throw new Exception("product price is not decimal");
+            if (!decimal.TryParse(price, out var prices)) throw new Exception("product price is not decimal");
 
             var overallRating = column[Array.IndexOf(headers, "overallrating")].Trim('"').Trim();
-            if (decimal.TryParse(overallRating, out var overallRatings))
+            if (!decimal.TryParse(overallRating, out var overallRatings))
                 throw new Exception("product OverallRating is not number");
 
             var totalFavorite = column[Array.IndexOf(headers, "totalfavorites")].Trim('"').Trim();
-            if (int.TryParse(totalFavorite, out var totalFavorites))
+            if (!int.TryParse(totalFavorite, out var totalFavorites))
                 throw new Exception("product TotalFavorites is not number");
 
             var totalReview = column[Array.IndexOf(headers, "totalreviews")].Trim('"').Trim();
-            if (int.TryParse(totalReview, out var totalReviews))
+            if (!int.TryParse(totalReview, out var totalReviews))
                 throw new Exception("product TotalReviews is not number");
 
             var availableStock = column[Array.IndexOf(headers, "availablestock")].Trim('"').Trim();
-            if (int.TryParse(availableStock, out var availableStocks))
+            if (!int.TryParse(availableStock, out var availableStocks))
                 throw new Exception("product AvailableStock is not number");
 
             var manufacturerId = column[Array.IndexOf(headers, "manufacturerid")].Trim('"').Trim();
-            if (int.TryParse(manufacturerId, out var manufacturerIds))
+            if (!int.TryParse(manufacturerId, out var manufacturerIds))
                 throw new Exception("product ManufacturerId is not number");
 
             var categoryId = column[Array.IndexOf(headers, "categoryid")].Trim('"').Trim();
-            if (int.TryParse(categoryId, out var categoryIds)) throw new Exception("product CategoryId is not number");
+            if (!int.TryParse(categoryId, out var categoryIds)) throw new Exception("product CategoryId is not number");
 
             var lastUpdated = column[Array.IndexOf(headers, "lastupdated")].Trim('"').Trim();
-            var lastUpdatedBy = column[Array.IndexOf(headers, "LastUpdatedBy")].Trim('"').Trim();
+            if (!DateTime.TryParseExact(lastUpdated, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var lastUpdates)) throw new Exception("lastUpdated is not Datetime");
 
+            var lastUpdatedBy = column[Array.IndexOf(headers, "lastupdatedby")].Trim('"').Trim();
             var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
@@ -419,7 +446,7 @@ namespace Catalog.API.Infrastructure
                 OverallRating = overallRatings,
                 TotalFavorites = totalFavorites,
                 TotalReviews = totalReviews,
-                LastUpdated = DateTime.Parse(lastUpdated),
+                LastUpdated = lastUpdates,
                 LastUpdatedBy = lastUpdatedBy,
                 ManufacturerId = manufacturerIds
             };
@@ -467,6 +494,9 @@ namespace Catalog.API.Infrastructure
 
         private ProductColor CreateProductColor(string[] column, string[] headers)
         {
+            //var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            //if (!int.TryParse(id, out var ids)) throw new Exception($"id is empty");
+
             var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("ProductId is empty");
 
@@ -475,6 +505,7 @@ namespace Catalog.API.Infrastructure
 
             return new ProductColor
             {
+                //Id = ids,
                 Name = name,
                 ProductId = productId,
             };
@@ -499,7 +530,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "productid", "imageid" };
+                string[] requiredHeaders = { "productid", "imagename" };
                 csvheaders = GetHeaders(csvFileProductImages, requiredHeaders);
             }
             catch (Exception ex)
@@ -513,7 +544,7 @@ namespace Catalog.API.Infrastructure
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(x =>
                 {
-                    PlacePictureById(x, csvheaders, "ProductImage");
+                    PlacePictureById(x, csvheaders, _env.WebRootPath + "/ProductImage");
                     return CreateProductImage(x, csvheaders);
                 })
                 .OnCaughtException(ex =>
@@ -526,14 +557,18 @@ namespace Catalog.API.Infrastructure
 
         private ProductImage CreateProductImage(string[] column, string[] headers)
         {
+            //var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            //if (!int.TryParse(id, out var ids)) throw new Exception($"id is empty");
+
             var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("Product id is empty");
 
-            var imageName = column[Array.IndexOf(headers, "imageid")].Trim('"').Trim();
+            var imageName = column[Array.IndexOf(headers, "imagename")].Trim('"').Trim();
             if (string.IsNullOrEmpty(imageName)) throw new Exception("catalog Brand image name is empty");
 
             return new ProductImage
             {
+                //Id = ids,
                 ProductId = productId,
                 ImageName = imageName
             };
@@ -581,6 +616,9 @@ namespace Catalog.API.Infrastructure
 
         private ProductRating CreateProductRating(string[] column, string[] headers)
         {
+            //var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            //if (!int.TryParse(id, out var ids)) throw new Exception($"id is empty");
+
             var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(productId)) throw new Exception("Product Id is empty");
 
@@ -592,6 +630,7 @@ namespace Catalog.API.Infrastructure
 
             return new ProductRating
             {
+                //Id = ids,
                 ProductId = productId,
                 UserId = userId,
                 Rate = rates
@@ -669,9 +708,17 @@ namespace Catalog.API.Infrastructure
                 fileToInsert.Delete();
             }
             file?.CopyTo(picturePath + "/" + id);
-            file?.Delete();
         }
 
+        private void DeleteAllFilesWithinDir(string directoryPath)
+        {
+            var directory = new DirectoryInfo(directoryPath);
+            var files = directory.GetFiles();
+            foreach (var fileInfo in files)
+            {
+                fileInfo.Delete();
+            }
+        }
         #endregion
     }
 }

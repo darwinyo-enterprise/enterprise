@@ -27,10 +27,12 @@ import {
 
 export interface ManufacturerStateModel {
   manufacturers: Manufacturer[];
+  selectedManufacturer: Manufacturer;
 }
 
 const defaults: ManufacturerStateModel = {
-  manufacturers: []
+  manufacturers: [],
+  selectedManufacturer: null
 };
 
 @State({
@@ -43,6 +45,11 @@ export class ManufacturerState {
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {
     return state.manufacturers;
+  }
+
+  @Selector()
+  static getSelectedManufacturer(state: ManufacturerStateModel) {
+    return state.selectedManufacturer;
   }
   //#endregion
 
@@ -112,12 +119,14 @@ export class ManufacturerState {
   /** Single Manufacturer Fetched Event */
   @Action(SingleManufacturerFetched)
   singleManufacturerFetched(
-    { dispatch }: StateContext<ManufacturerStateModel>,
-    { payload }: ManufacturersFetched
+    { patchState, dispatch }: StateContext<ManufacturerStateModel>,
+    { payload }: SingleManufacturerFetched
   ) {
-    //TODO: Navigate to Manufacturer LIST
+    //TODO: Navigate to Manufacturer Edit Manufacturer
     // dispatch(new Navigate(''))
-    console.log('TODO Navigate to List');
+    patchState({
+      selectedManufacturer: payload
+    });
   }
 
   /** Effects Fetch Manufacturer API */

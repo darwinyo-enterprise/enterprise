@@ -8,7 +8,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState } from '@enterprise/material/file-upload';
 import { ManufacturerState, ManufacturersMock, AddManufacturer } from '@enterprise/commerce';
 
-fdescribe('AddManufacturerComponent', () => {
+describe('AddManufacturerComponent', () => {
   let component: AddManufacturerComponent;
   let fixture: ComponentFixture<AddManufacturerComponent>;
   let store: Store;

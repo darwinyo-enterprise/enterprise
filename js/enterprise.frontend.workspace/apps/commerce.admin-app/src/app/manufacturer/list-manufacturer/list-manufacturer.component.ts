@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
   ManufacturerState,
-  FetchManufacturers
+  FetchManufacturers,
+  DeleteManufacturer
 } from '@enterprise/commerce/manufacturer-lib';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
-import { RegisterLoadingOverlay } from '@enterprise/core';
+import { RegisterLoadingOverlay, Navigate, AppState } from '@enterprise/core';
 import {
   Manufacturer,
   ManufacturerService
@@ -18,12 +19,15 @@ import {
 })
 export class ListManufacturerComponent implements OnInit {
   title: string;
-
+  selectedId: string;
   /** Selector Manufacturers List
    *  This Comes from State Management.
    */
   @Select(ManufacturerState.getManufacturers)
   manufacturers$: Observable<Manufacturer[]>;
+
+  @Select(AppState.confirmation)
+  confirmation$: Observable<boolean>;
 
   constructor(
     private store: Store,
@@ -34,18 +38,26 @@ export class ListManufacturerComponent implements OnInit {
 
   ngOnInit() {
     this.fetchManufacturers();
+    this.confirmation$.subscribe(confirmation => this.store.dispatch(new DeleteManufacturer(this.selectedId)));
   }
+
   /** call manufacturer service to get manufacturers */
   fetchManufacturers() {
-    this.store.dispatch([new FetchManufacturers()]);
+    this.store.dispatch(new FetchManufacturers());
   }
+
+  /** Navigate when manufacturer add button clicked */
   onAddNewManufacturer() {
-    console.log('Add manufacturer');
+    this.store.dispatch(new Navigate('manufacturer-add'));
   }
+
+  /** Navigate to edit manufacturer form when clicked */
   onEditManufacturer(id: string) {
     console.log(id);
     this.store.dispatch([new RegisterLoadingOverlay()]);
   }
+
+  /** Open Prompt When Clicked */
   onDeleteManufacturer(id: string) {
     console.log(id);
   }

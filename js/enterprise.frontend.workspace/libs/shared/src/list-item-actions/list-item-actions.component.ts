@@ -9,7 +9,7 @@ import { ListItemModel } from '../models/list-item.model';
 })
 export class ListItemActionsComponent implements OnInit {
   @Input() title: string;
-  @Input() items$: Observable<ListItemModel>;
+  @Input() items$: Observable<ListItemModel[]>;
 
   /** Edit Item Event */
   @Output() editItem: EventEmitter<string>;
