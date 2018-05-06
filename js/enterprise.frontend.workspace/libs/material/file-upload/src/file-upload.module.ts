@@ -11,7 +11,6 @@ import { FileUploadState } from '@enterprise/material/file-upload/src/shared/fil
   imports: [
     CommonModule,
     SharedModule,
-    NgxsModule.forFeature([FileUploadState])
   ],
   declarations: [
     FileUploadComponent,

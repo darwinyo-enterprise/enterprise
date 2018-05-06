@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: '[emFileDragNDrop]'
 })
 export class FileDragNDropDirective {
@@ -46,7 +47,7 @@ export class FileDragNDropDirective {
     if (!this.disabled) {
       evt.preventDefault();
       evt.stopPropagation();
-      let files: FileList = evt.dataTransfer.files;
+      const files: FileList = evt.dataTransfer.files;
       if (files.length > 0) {
         this.background = '#eee';
 

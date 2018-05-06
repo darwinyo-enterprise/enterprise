@@ -44,7 +44,7 @@ describe('EditManufacturerComponent', () => {
       })
     })
     it('should dispatch update manufacturer', () => {
-      let manufacturer = ManufacturersMock[0];
+      const manufacturer = ManufacturersMock[0];
       component.onManufacturerUpdate(manufacturer);
       expect(editManufacturerSpy).toHaveBeenCalled();
       expect(storeSpy).toHaveBeenCalledWith(new UpdateManufacturer(manufacturer));

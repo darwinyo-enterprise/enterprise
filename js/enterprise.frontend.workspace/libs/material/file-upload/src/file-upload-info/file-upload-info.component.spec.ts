@@ -76,7 +76,7 @@ describe('FileUploadInfoComponent', () => {
 
   describe('Functional Test', () => {
     it('should emit delete event when delete button clicked', () => {
-      let fileToDelete = FileUploadMocks[0];
+      const fileToDelete = FileUploadMocks[0];
       component.filesUpload = mockFileUpload;
       // 2nd change detection
       fixture.detectChanges();

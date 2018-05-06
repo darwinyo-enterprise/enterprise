@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ListItemModel } from '../models/list-item.model';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'es-list-item-actions',
   templateUrl: './list-item-actions.component.html',
   styleUrls: ['./list-item-actions.component.scss']

@@ -1,23 +1,7 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
-import {
-  TdLoadingService,
-  TdDialogService,
-  LoadingType,
-  LoadingMode,
-  IConfirmConfig
-} from '@covalent/core';
-import {
-  RegisterLoadingOverlay,
-  ResolveLoadingOverlay,
-  ErrorOccured,
-  SetUsername,
-  RegisterLinearLoadingOverlay,
-  ResolveLinearLoadingOverlay,
-  ProgressLinearLoadingOverlay,
-  Confirm,
-  Confirmed
-} from './app.actions';
+import { TdLoadingService, TdDialogService, LoadingType, LoadingMode, IConfirmConfig } from '@covalent/core';
+import { RegisterLoadingOverlay, ResolveLoadingOverlay, ErrorOccured, SetUsername, RegisterLinearLoadingOverlay, ResolveLinearLoadingOverlay, ProgressLinearLoadingOverlay, Confirm, Confirmed } from './app.actions';
 
 export interface AppStateModel {
   username: string;

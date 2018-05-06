@@ -87,7 +87,7 @@ namespace Catalog.API.Controllers
         [HttpPost]
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.Created)]
-        public async Task<IActionResult> AddNewManufacturer([FromBody] Manufacturer manufacturer,
+        public async Task<IActionResult> AddNewManufacturer([FromBody]Manufacturer manufacturer,
             CancellationToken cancellationToken)
         {
             if (manufacturer == null) return BadRequest();

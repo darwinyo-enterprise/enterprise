@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 import { Store, Select } from '@ngxs/store';
 import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'eca-edit-manufacturer',
   templateUrl: './edit-manufacturer.component.html',
   styleUrls: ['./edit-manufacturer.component.scss']

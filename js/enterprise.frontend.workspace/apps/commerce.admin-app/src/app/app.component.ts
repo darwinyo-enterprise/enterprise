@@ -10,6 +10,7 @@ import { Store, Select } from '@ngxs/store';
 import { TdLoadingService, LoadingType, LoadingMode } from '@covalent/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'enterprise-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

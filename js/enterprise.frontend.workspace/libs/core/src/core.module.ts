@@ -33,4 +33,4 @@ import { AppState } from './app.state';
     //#endregion
   ]
 })
-export class CoreModule {}
+export class CoreModule { }

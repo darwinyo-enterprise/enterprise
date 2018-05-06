@@ -57,7 +57,7 @@ export class ManufacturerService {
    */
   private canConsumeForm(consumes: string[]): boolean {
     const form = 'multipart/form-data';
-    for (let consume of consumes) {
+    for (const consume of consumes) {
       if (form === consume) {
         return true;
       }
@@ -101,16 +101,16 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
+    const consumes: string[] = [];
 
     return this.httpClient.delete<any>(
       `${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
@@ -159,16 +159,16 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = ['application/json'];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = ['application/json'];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
+    const consumes: string[] = [];
 
     return this.httpClient.get<Manufacturer>(
       `${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
@@ -222,25 +222,25 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [
+    const consumes: string[] = [
       'application/json-patch+json',
       'application/json',
       'text/json',
       'application/_*+json'
     ];
-    let httpContentTypeSelected:
+    const httpContentTypeSelected:
       | string
       | undefined = this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected != undefined) {
+    if (httpContentTypeSelected !== undefined) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
@@ -281,16 +281,16 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = ['application/json'];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = ['application/json'];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
+    const consumes: string[] = [];
 
     return this.httpClient.get<Array<Manufacturer>>(
       `${this.basePath}/api/v1/Manufacturer`,
@@ -333,25 +333,25 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [
+    const consumes: string[] = [
       'application/json-patch+json',
       'application/json',
       'text/json',
       'application/_*+json'
     ];
-    let httpContentTypeSelected:
+    const httpContentTypeSelected:
       | string
       | undefined = this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected != undefined) {
+    if (httpContentTypeSelected !== undefined) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
@@ -403,16 +403,16 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = ['application/json'];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = ['application/json'];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
+    const consumes: string[] = [];
 
     return this.httpClient.get<any>(
       `${this.basePath}/api/v1/Manufacturer/image/id`,
@@ -456,25 +456,25 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [
+    const consumes: string[] = [
       'application/json-patch+json',
       'application/json',
       'text/json',
       'application/_*+json'
     ];
-    let httpContentTypeSelected:
+    const httpContentTypeSelected:
       | string
       | undefined = this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected != undefined) {
+    if (httpContentTypeSelected !== undefined) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
@@ -520,25 +520,25 @@ export class ManufacturerService {
     let headers = this.defaultHeaders;
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = [];
-    let httpHeaderAcceptSelected:
+    const httpHeaderAccepts: string[] = [];
+    const httpHeaderAcceptSelected:
       | string
       | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    if (httpHeaderAcceptSelected != undefined) {
+    if (httpHeaderAcceptSelected !== undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [
+    const consumes: string[] = [
       'application/json-patch+json',
       'application/json',
       'text/json',
       'application/_*+json'
     ];
-    let httpContentTypeSelected:
+    const httpContentTypeSelected:
       | string
       | undefined = this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected != undefined) {
+    if (httpContentTypeSelected !== undefined) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 

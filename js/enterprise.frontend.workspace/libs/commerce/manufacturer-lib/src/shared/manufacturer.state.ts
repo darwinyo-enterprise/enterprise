@@ -1,9 +1,12 @@
-import { State, StateContext, Selector, Action } from '@ngxs/store';
+import { State, StateContext, Selector, Action, Select } from '@ngxs/store';
 import {
   ErrorOccured,
   ResolveLoadingOverlay,
   RegisterLoadingOverlay,
-  Navigate
+  Navigate,
+  AppState,
+  RegisterLinearLoadingOverlay,
+  ProgressLinearLoadingOverlay
 } from '@enterprise/core';
 
 import {
@@ -24,6 +27,10 @@ import {
   Manufacturer,
   ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
+import { HttpEventType } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators/takeUntil';
+import { OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 export interface ManufacturerStateModel {
   manufacturers: Manufacturer[];
@@ -40,8 +47,14 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-  constructor(private manufacturerService: ManufacturerService) { }
+
+  constructor(private manufacturerService: ManufacturerService) {
+  }
   //#region Selectors
+  @Select(AppState.isLoading)
+  private isLoading$: Observable<boolean>;
+
+  private progress: number;
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {
     return state.manufacturers;
@@ -58,33 +71,29 @@ export class ManufacturerState {
   /** Command Upload Image Manufacturer API */
   @Action(UploadImageManufacturer, { cancelUncompleted: true })
   uploadImageManufacturer(
-    { dispatch }: StateContext<ManufacturerStateModel>,
+    { dispatch, getState }: StateContext<ManufacturerStateModel>,
     { payload }: UploadImageManufacturer
   ) {
     // call manufacturer service
     return this.manufacturerService
-      .apiV1ManufacturerImagePost(payload)
+      .apiV1ManufacturerImagePost(payload, "body", true)
       .subscribe(
         event => {
-          // if (event.type === HttpEventType.UploadProgress) {
-          //   this.isLoading$.pipe(takeUntil(this.unsubsribe$)).subscribe(x => {
-          //     if (!x) {
-          //       this.store.dispatch([new RegisterLinearLoadingOverlay()]);
-          //     }
-          //   });
-          //   this.progress = Math.round(100 * event.loaded / event.total);
-          //   this.store.dispatch([
-          //     new ProgressLinearLoadingOverlay(this.progress)
-          //   ]);
-          // } else if (event.type === HttpEventType.Response)
-          //   console.log(event.body.toString());
+          if (event.type === HttpEventType.UploadProgress) {
+            // if is loading false them dispatch register Loading
+            this.isLoading$.subscribe(x => {
+              if (!x) {
+                dispatch([new RegisterLinearLoadingOverlay()]);
+              }
+            });
 
-          // Register Loading Overlay
-          dispatch(new RegisterLoadingOverlay());
-          dispatch(new ImageManufacturerUploaded());
+            this.progress = Math.round(100 * event.loaded / event.total);
+            dispatch(new ProgressLinearLoadingOverlay(this.progress));
+          } else if (event.type === HttpEventType.Response)
+            console.log(event.body.toString());
         },
         (err: Error) => dispatch(new ErrorOccured(err.message)),
-        () => dispatch(new ResolveLoadingOverlay())
+        () => dispatch([dispatch(new ImageManufacturerUploaded()), new ResolveLoadingOverlay()])
       );
   }
 
@@ -193,6 +202,7 @@ export class ManufacturerState {
           dispatch(new RegisterLoadingOverlay());
           dispatch(new ManufacturerDeleted());
         }),
+      // tslint:disable-next-line:no-unused-expression
       (err: Error) => dispatch(new ErrorOccured(err.message)),
       () => dispatch(new ResolveLoadingOverlay())
     );
@@ -220,6 +230,7 @@ export class ManufacturerState {
           dispatch(new RegisterLoadingOverlay());
           dispatch(new ManufacturerUpdated());
         }),
+      // tslint:disable-next-line:no-unused-expression
       (err: Error) => dispatch(new ErrorOccured(err.message)),
       () => dispatch(new ResolveLoadingOverlay())
     );

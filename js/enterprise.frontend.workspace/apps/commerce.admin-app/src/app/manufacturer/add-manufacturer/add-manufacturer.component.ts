@@ -7,6 +7,7 @@ import { Store } from '@ngxs/store';
 import { AddManufacturer, ManufacturersMock } from '@enterprise/commerce';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'eca-add-manufacturer',
   templateUrl: './add-manufacturer.component.html',
   styleUrls: ['./add-manufacturer.component.scss']
@@ -25,8 +26,11 @@ export class AddManufacturerComponent implements OnInit {
     this.manufacturer = <Manufacturer>{};
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
   onAddNewManufacturer(manufacturer: Manufacturer) {
+    // mock id. though it will be decided on server.
+    // API Cant get model properly if id is null
+    manufacturer.id = 1;
     this.store.dispatch(new AddManufacturer(manufacturer));
   }
 }

@@ -4,8 +4,7 @@ import { ListItemActionsComponent } from './list-item-actions.component';
 import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ListItemActionsMocks } from '../mocks/list-item-actions.mocks';
-import { of } from 'rxjs';
-import { ListManufacturerComponent } from 'apps/commerce.admin-app/src/app/manufacturer/list-manufacturer/list-manufacturer.component';
+import { of } from 'rxjs/observable/of';
 
 
 export class ListItemActionsComponentPage extends BaseTestPage<ListItemActionsComponent> {

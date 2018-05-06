@@ -42,7 +42,7 @@ describe('AddManufacturerComponent', () => {
       expect(component.manufacturer).toEqual(<Manufacturer>{})
     })
     it('should dispatch add manufacturer', () => {
-      let manufacturer = ManufacturersMock[0];
+      const manufacturer = ManufacturersMock[0];
       component.onAddNewManufacturer(manufacturer);
       expect(addManufacturerSpy).toHaveBeenCalled();
       expect(storeSpy).toHaveBeenCalledWith(new AddManufacturer(manufacturer));

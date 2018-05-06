@@ -13,6 +13,7 @@ import {
 } from '@enterprise/commerce/catalog-lib';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'eca-list-manufacturer',
   templateUrl: './list-manufacturer.component.html',
   styleUrls: ['./list-manufacturer.component.scss']

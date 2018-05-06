@@ -76,7 +76,7 @@ describe('ManufacturerFormComponent', () => {
       expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
     });
     it('should populate value to image url in form when file upload changed', () => {
-      let uploadFileModel: UploadFileModel = FileUploadMocks[0];
+      const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       expect(component.manufacturerForm.controls['imageUrl'].value).not.toContain(uploadFileModel.fileUrl);
       expect(component.manufacturerForm.controls['imageName'].value).not.toContain(uploadFileModel.fileName);
 
@@ -86,7 +86,7 @@ describe('ManufacturerFormComponent', () => {
       expect(component.manufacturerForm.controls['imageName'].value).toContain(uploadFileModel.fileName);
     });
     it('should remove image url in form value when image deleted', () => {
-      let uploadFileModel: UploadFileModel = FileUploadMocks[0];
+      const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       store.dispatch(new AddFileImage(uploadFileModel));
 
       expect(component.manufacturerForm.controls['imageUrl'].value).toContain(uploadFileModel.fileUrl);

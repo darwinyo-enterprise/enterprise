@@ -11,6 +11,7 @@ import {
 } from '@enterprise/material/file-upload/src/shared/file-upload.actions';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'em-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
@@ -61,8 +62,8 @@ export class FileUploadComponent implements OnInit {
 
   /** async method triggered when file reader load end */
   onFileReaderLoadEnd(event: any, file: File) {
-    let base64: string = event.target.result;
-    let image = <UploadFileModel>{
+    const base64: string = event.target.result;
+    const image = <UploadFileModel>{
       id: this.parentId,
       fileName: file.name,
       fileUrl: base64
@@ -76,8 +77,9 @@ export class FileUploadComponent implements OnInit {
   onDropFileChanged(files) {
     if (files.length === 0) return;
     if (files.length > 1) {
-      for (let file of files) {
-        var fileReader = new FileReader();
+      for (const file of files) {
+        // tslint:disable-next-line:no-shadowed-variable
+        const fileReader = new FileReader();
         fileReader.onloadend = (event: any) =>
           this.onFileReaderLoadEnd(event, file);
         fileReader.readAsDataURL(file);
@@ -90,7 +92,7 @@ export class FileUploadComponent implements OnInit {
       img = files.item(0);
     }
 
-    var fileReader = new FileReader();
+    const fileReader = new FileReader();
     fileReader.onloadend = (event: any) => this.onFileReaderLoadEnd(event, img);
     fileReader.readAsDataURL(img);
   }

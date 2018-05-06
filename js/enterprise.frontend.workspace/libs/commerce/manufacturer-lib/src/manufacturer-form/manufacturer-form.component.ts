@@ -36,6 +36,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Guid } from '@enterprise/shared';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'eca-manufacturer-form',
   templateUrl: './manufacturer-form.component.html',
   styleUrls: ['./manufacturer-form.component.scss']

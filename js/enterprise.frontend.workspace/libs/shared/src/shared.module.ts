@@ -12,31 +12,45 @@ import {
 import { ListItemActionsComponent } from './list-item-actions/list-item-actions.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
 
     //#region Material Imports
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    //#endregion
+    
+    //#region Covalent Imports
+    CovalentLoadingModule,
+    CovalentDialogsModule,
     //#endregion
   ],
   exports: [
     ListItemActionsComponent,
     ReactiveFormsModule,
+    HttpClientModule,
 
     //#region Material Imports
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    //#endregion
+    
+    //#region Covalent Imports
+    CovalentLoadingModule,
+    CovalentDialogsModule,
     //#endregion
   ],
   declarations: [ListItemActionsComponent]

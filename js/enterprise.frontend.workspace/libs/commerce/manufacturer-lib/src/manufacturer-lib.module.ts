@@ -11,7 +11,7 @@ import { FileUploadModule } from '@enterprise/material/file-upload';
 @NgModule({
   imports: [
     CommonModule,
-    NgxsModule.forFeature([ManufacturerState]),
+    // NgxsModule.forFeature([ManufacturerState]),
     SharedModule,
     FileUploadModule
   ],

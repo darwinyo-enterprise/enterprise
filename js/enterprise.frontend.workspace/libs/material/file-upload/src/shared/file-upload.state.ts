@@ -1,9 +1,5 @@
 import { State, StateContext, Selector, Action } from '@ngxs/store';
-import {
-  ErrorOccured,
-  ResolveLoadingOverlay,
-  RegisterLoadingOverlay
-} from '@enterprise/core';
+
 import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import {
   FileImageAdded,
@@ -38,11 +34,11 @@ const defaults: FileUploadStateModel = {
 };
 
 @State({
-  name: 'file-upload',
+  name: 'fileupload',
   defaults: defaults
 })
 export class FileUploadState {
-  constructor() {}
+  constructor() { }
   //#region Selectors
   @Selector()
   static getFileImages(state: FileUploadStateModel) {
@@ -91,8 +87,8 @@ export class FileUploadState {
   ) {
     const state = getState();
     patchState({
-      filesImages: state.filesImages.filter(x => x.fileName != payload),
-      filesUploads: state.filesUploads.filter(x => x.fileName != payload)
+      filesImages: state.filesImages.filter(x => x.fileName !== payload),
+      filesUploads: state.filesUploads.filter(x => x.fileName !== payload)
     });
     dispatch(new FileImageDeleted());
   }
