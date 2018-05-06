@@ -20,7 +20,7 @@
       <em-file-upload [parentId]="manufacturer?.id" (uploadFile)="onUploadFile($event)" (deleteFile)="onDeleteFile($event)"></em-file-upload>
     </div>
     <div class="form-card__footer">
-      <button id="save-button" mat-button class="ok" [disabled]="manufacturerForm.invalid" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
+      <button id="save-button" mat-button class="ok" [disabled]="manufacturerForm.invalid" type="submit">{{nameSaveButton}}</button>
     </div>
   </mat-card>
 </form>

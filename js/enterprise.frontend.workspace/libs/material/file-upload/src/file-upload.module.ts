@@ -8,10 +8,7 @@ import { NgxsModule } from '@ngxs/store';
 import { FileUploadState } from '@enterprise/material/file-upload/src/shared/file-upload.state';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, SharedModule, NgxsModule.forFeature([FileUploadState])],
   declarations: [
     FileUploadComponent,
     FileDragNDropDirective,
@@ -19,4 +16,4 @@ import { FileUploadState } from '@enterprise/material/file-upload/src/shared/fil
   ],
   exports: [FileUploadComponent]
 })
-export class FileUploadModule {}
+export class FileUploadModule { }

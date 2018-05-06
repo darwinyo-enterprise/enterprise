@@ -26,7 +26,8 @@ export class AddManufacturerComponent implements OnInit {
     this.manufacturer = <Manufacturer>{};
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
   onAddNewManufacturer(manufacturer: Manufacturer) {
     // mock id. though it will be decided on server.
     // API Cant get model properly if id is null

@@ -171,6 +171,13 @@
       "tags": []
     },
     {
+      "name": "material/list-item-actions",
+      "root": "libs/material/list-item-actions/src",
+      "test": "../../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "material/navbar",
       "root": "libs/material/navbar/src",
       "test": "../../../../test.js",

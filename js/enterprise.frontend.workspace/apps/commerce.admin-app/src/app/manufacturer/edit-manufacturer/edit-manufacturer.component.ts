@@ -4,7 +4,6 @@ import { Store, Select } from '@ngxs/store';
 import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
 import { Observable } from 'rxjs/Observable';
 
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'eca-edit-manufacturer',
@@ -23,9 +22,7 @@ export class EditManufacturerComponent implements OnInit {
     this.nameSaveButton = 'Update';
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
   onManufacturerUpdate(manufacturer: Manufacturer) {
     this.store.dispatch(new UpdateManufacturer(manufacturer));
   }

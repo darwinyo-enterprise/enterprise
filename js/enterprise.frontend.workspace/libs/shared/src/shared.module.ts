@@ -9,7 +9,6 @@ import {
   MatInputModule,
   MatProgressSpinnerModule
 } from '@angular/material';
-import { ListItemActionsComponent } from './list-item-actions/list-item-actions.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,14 +28,13 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
     MatInputModule,
     MatProgressSpinnerModule,
     //#endregion
-    
+
     //#region Covalent Imports
     CovalentLoadingModule,
-    CovalentDialogsModule,
+    CovalentDialogsModule
     //#endregion
   ],
   exports: [
-    ListItemActionsComponent,
     ReactiveFormsModule,
     HttpClientModule,
 
@@ -47,12 +45,11 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
     MatInputModule,
     MatProgressSpinnerModule,
     //#endregion
-    
+
     //#region Covalent Imports
     CovalentLoadingModule,
-    CovalentDialogsModule,
+    CovalentDialogsModule
     //#endregion
-  ],
-  declarations: [ListItemActionsComponent]
+  ]
 })
 export class SharedModule {}

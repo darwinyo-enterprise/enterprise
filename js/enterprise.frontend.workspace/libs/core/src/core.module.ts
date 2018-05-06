@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
 //#region NGXS imports
 import { NgxsModule } from '@ngxs/store';
@@ -12,25 +10,17 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { RouterState } from './router.state';
 import { AppState } from './app.state';
 
+import { SharedModule } from '@enterprise/shared';
+
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,
-
-    //#region Covalent Imports
-    CovalentLoadingModule,
-    CovalentDialogsModule,
-    //#endregion
+    SharedModule,
 
     NgxsModule.forRoot([RouterState, AppState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot()
   ],
-  exports: [
-    //#region Covalent Imports
-    CovalentLoadingModule,
-    CovalentDialogsModule
-    //#endregion
-  ]
+  exports: [SharedModule]
 })
-export class CoreModule { }
+export class CoreModule {}

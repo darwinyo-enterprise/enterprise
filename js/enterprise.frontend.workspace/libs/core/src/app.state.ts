@@ -1,7 +1,23 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
-import { TdLoadingService, TdDialogService, LoadingType, LoadingMode, IConfirmConfig } from '@covalent/core';
-import { RegisterLoadingOverlay, ResolveLoadingOverlay, ErrorOccured, SetUsername, RegisterLinearLoadingOverlay, ResolveLinearLoadingOverlay, ProgressLinearLoadingOverlay, Confirm, Confirmed } from './app.actions';
+import {
+  TdLoadingService,
+  TdDialogService,
+  LoadingType,
+  LoadingMode,
+  IConfirmConfig
+} from '@covalent/core';
+import {
+  RegisterLoadingOverlay,
+  ResolveLoadingOverlay,
+  ErrorOccured,
+  SetUsername,
+  RegisterLinearLoadingOverlay,
+  ResolveLinearLoadingOverlay,
+  ProgressLinearLoadingOverlay,
+  Confirm,
+  Confirmed
+} from './app.actions';
 
 export interface AppStateModel {
   username: string;
@@ -139,15 +155,19 @@ export class AppState {
     patchState({
       confirmModel: payload
     });
-    this.dialogService.openConfirm(payload).afterClosed().subscribe((accept: boolean) => {
-      dispatch(new Confirmed(accept));
-    });
-
+    this.dialogService
+      .openConfirm(payload)
+      .afterClosed()
+      .subscribe((accept: boolean) => {
+        dispatch(new Confirmed(accept));
+      });
   }
 
   @Action(Confirmed)
-  confirmed({ patchState }: StateContext<AppStateModel>,
-    { payload }: Confirmed) {
+  confirmed(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: Confirmed
+  ) {
     patchState({
       confirmation: payload
     });

@@ -31,6 +31,7 @@ import { HttpEventType } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
 
 export interface ManufacturerStateModel {
   manufacturers: Manufacturer[];
@@ -47,12 +48,9 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-
-  constructor(private manufacturerService: ManufacturerService) {
-  }
+  constructor(private manufacturerService: ManufacturerService) { }
   //#region Selectors
-  @Select(AppState.isLoading)
-  private isLoading$: Observable<boolean>;
+  @Select(AppState.isLoading) private isLoading$: Observable<boolean>;
 
   private progress: number;
   @Selector()
@@ -76,7 +74,7 @@ export class ManufacturerState {
   ) {
     // call manufacturer service
     return this.manufacturerService
-      .apiV1ManufacturerImagePost(payload, "body", true)
+      .apiV1ManufacturerImagePost(payload, 'body', true)
       .subscribe(
         event => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -93,7 +91,11 @@ export class ManufacturerState {
             console.log(event.body.toString());
         },
         (err: Error) => dispatch(new ErrorOccured(err.message)),
-        () => dispatch([dispatch(new ImageManufacturerUploaded()), new ResolveLoadingOverlay()])
+        () =>
+          dispatch([
+            dispatch(new ImageManufacturerUploaded()),
+            new ResolveLoadingOverlay()
+          ])
       );
   }
 
@@ -171,20 +173,20 @@ export class ManufacturerState {
   }
 
   /** Add Manufacturer Command*/
-  @Action(AddManufacturer)
-  addManufacturer(
-    { dispatch }: StateContext<ManufacturerStateModel>,
-    { payload }: AddManufacturer
-  ) {
+  @Action(AddManufacturer, { cancelUncompleted: true })
+  addManufacturer({ dispatch }: StateContext<ManufacturerStateModel>, { payload }: AddManufacturer) {
     // call manufacturer service
-    return this.manufacturerService.apiV1ManufacturerPost(payload).subscribe(
-      manufacturers => {
-        // Register Loading Overlay
-        dispatch(new RegisterLoadingOverlay());
-        dispatch(new ManufacturerAdded());
-      },
-      (err: Error) => dispatch(new ErrorOccured(err.message)),
-      () => dispatch(new ResolveLoadingOverlay())
+    return this.manufacturerService.apiV1ManufacturerPost(payload).pipe(
+      tap(
+        () => {
+          // Register Loading Overlay
+          dispatch(new RegisterLoadingOverlay());
+        },
+        (err: Error) => {
+          dispatch(new ErrorOccured(err.message))
+        },
+        () => dispatch([new ResolveLoadingOverlay(), new ManufacturerAdded()])
+      )
     );
   }
 

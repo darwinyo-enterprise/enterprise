@@ -77,25 +77,41 @@ describe('ManufacturerFormComponent', () => {
     });
     it('should populate value to image url in form when file upload changed', () => {
       const uploadFileModel: UploadFileModel = FileUploadMocks[0];
-      expect(component.manufacturerForm.controls['imageUrl'].value).not.toContain(uploadFileModel.fileUrl);
-      expect(component.manufacturerForm.controls['imageName'].value).not.toContain(uploadFileModel.fileName);
+      expect(
+        component.manufacturerForm.controls['imageUrl'].value
+      ).not.toContain(uploadFileModel.fileUrl);
+      expect(
+        component.manufacturerForm.controls['imageName'].value
+      ).not.toContain(uploadFileModel.fileName);
 
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(uploadFileModel.fileUrl);
-      expect(component.manufacturerForm.controls['imageName'].value).toContain(uploadFileModel.fileName);
+      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(
+        uploadFileModel.fileUrl
+      );
+      expect(component.manufacturerForm.controls['imageName'].value).toContain(
+        uploadFileModel.fileName
+      );
     });
     it('should remove image url in form value when image deleted', () => {
       const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(uploadFileModel.fileUrl);
-      expect(component.manufacturerForm.controls['imageName'].value).toContain(uploadFileModel.fileName);
+      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(
+        uploadFileModel.fileUrl
+      );
+      expect(component.manufacturerForm.controls['imageName'].value).toContain(
+        uploadFileModel.fileName
+      );
 
       store.dispatch(new DeleteFileImage(uploadFileModel.fileName));
 
-      expect(component.manufacturerForm.controls['imageUrl'].value).not.toContain(uploadFileModel.fileUrl);
-      expect(component.manufacturerForm.controls['imageName'].value).not.toContain(uploadFileModel.fileName);
+      expect(
+        component.manufacturerForm.controls['imageUrl'].value
+      ).not.toContain(uploadFileModel.fileUrl);
+      expect(
+        component.manufacturerForm.controls['imageName'].value
+      ).not.toContain(uploadFileModel.fileName);
     });
   });
 
@@ -123,7 +139,6 @@ describe('ManufacturerFormComponent', () => {
       expect(
         manufacturerFormPage.saveBtn.hasAttribute('disabled')
       ).toBeTruthy();
-
     });
     it('should render validation error message when input error', () => {
       component.manufacturerForm.patchValue({
@@ -141,7 +156,9 @@ describe('ManufacturerFormComponent', () => {
       fixture.detectChanges();
       console.log(fixture.nativeElement);
       expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(2);
-      expect(manufacturerFormPage.nameInputGroup.children.item(1)).toBeDefined();
+      expect(
+        manufacturerFormPage.nameInputGroup.children.item(1)
+      ).toBeDefined();
     });
     it('should not render validation error message when input is pristine', () => {
       expect(component.nameControl.pristine).toBeTruthy();
@@ -163,10 +180,7 @@ describe('ManufacturerFormComponent', () => {
       });
 
       fixture.detectChanges();
-      expect(
-        manufacturerFormPage.saveBtn.hasAttribute('disabled')
-      ).toBeFalsy();
-
+      expect(manufacturerFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
     });
   });
 });

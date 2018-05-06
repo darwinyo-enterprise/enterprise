@@ -53,9 +53,6 @@ export class FileUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Set Multiple to false
-    this.store.dispatch(new SetModeFileUpload(false));
-
     // validate is file upload control is valid
     this.store.dispatch(new ValidateFileUpload());
   }

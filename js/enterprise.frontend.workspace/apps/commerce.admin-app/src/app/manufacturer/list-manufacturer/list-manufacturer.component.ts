@@ -1,16 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ManufacturerState,
-  FetchManufacturers,
-  DeleteManufacturer
-} from '@enterprise/commerce/manufacturer-lib';
+import { ManufacturerState, FetchManufacturers, DeleteManufacturer } from '@enterprise/commerce/manufacturer-lib';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState } from '@enterprise/core';
-import {
-  Manufacturer,
-  ManufacturerService
-} from '@enterprise/commerce/catalog-lib';
+import { Manufacturer, ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -27,8 +20,7 @@ export class ListManufacturerComponent implements OnInit {
   @Select(ManufacturerState.getManufacturers)
   manufacturers$: Observable<Manufacturer[]>;
 
-  @Select(AppState.confirmation)
-  confirmation$: Observable<boolean>;
+  @Select(AppState.confirmation) confirmation$: Observable<boolean>;
 
   constructor(
     private store: Store,
@@ -39,7 +31,9 @@ export class ListManufacturerComponent implements OnInit {
 
   ngOnInit() {
     this.fetchManufacturers();
-    this.confirmation$.subscribe(confirmation => this.store.dispatch(new DeleteManufacturer(this.selectedId)));
+    this.confirmation$.subscribe(confirmation =>
+      this.store.dispatch(new DeleteManufacturer(this.selectedId))
+    );
   }
 
   /** call manufacturer service to get manufacturers */

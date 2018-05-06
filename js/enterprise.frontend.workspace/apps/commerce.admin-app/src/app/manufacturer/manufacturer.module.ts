@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { AddManufacturerComponent } from './add-manufacturer/add-manufacturer.component';
 import { ListManufacturerComponent } from './list-manufacturer/list-manufacturer.component';
-import { EditManufacturerComponent } from '../manufacturer/edit-manufacturer/edit-manufacturer.component';
+import { EditManufacturerComponent } from './edit-manufacturer/edit-manufacturer.component';
+
 import { ManufacturerLibModule } from '@enterprise/commerce/manufacturer-lib';
-import * as shared from '@enterprise/shared';
+import { ListItemActionsModule } from '@enterprise/material/list-item-actions';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
-  imports: [CommonModule, ManufacturerLibModule, shared.SharedModule],
+  imports: [CommonModule, ManufacturerLibModule, ListItemActionsModule],
   declarations: [
     AddManufacturerComponent,
     ListManufacturerComponent,
@@ -17,10 +19,7 @@ import * as shared from '@enterprise/shared';
   exports: [
     AddManufacturerComponent,
     ListManufacturerComponent,
-    EditManufacturerComponent,
-
-    ManufacturerLibModule,
-    shared.SharedModule
+    EditManufacturerComponent
   ]
 })
-export class ManufacturerModule {}
+export class ManufacturerModule { }

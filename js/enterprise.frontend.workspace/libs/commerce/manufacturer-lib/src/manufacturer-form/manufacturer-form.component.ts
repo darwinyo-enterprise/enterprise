@@ -1,39 +1,19 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  EventEmitter,
-  Output,
-  OnChanges,
-  OnDestroy
-} from '@angular/core';
-import {
-  Manufacturer,
-  UploadFileModel
-} from '@enterprise/commerce/catalog-lib';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { Select, Store } from '@ngxs/store';
-import { AppState } from '@enterprise/core';
-import {
-  FileUploadState,
-  SetModeFileUpload
-} from '@enterprise/material/file-upload';
-import {
-  DeleteImageManufacturer,
-  UploadImageManufacturer
-} from '../shared/manufacturer.actions';
-import {
-  FormControl,
-  FormGroup,
-  FormBuilder,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
-
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+
+import { Select, Store } from '@ngxs/store';
+
+import { AppState } from '@enterprise/core';
 import { Guid } from '@enterprise/shared';
+import { Manufacturer, UploadFileModel } from '@enterprise/commerce/catalog-lib';
+import { FileUploadState, SetModeFileUpload } from '@enterprise/material/file-upload';
+import { DeleteImageManufacturer, UploadImageManufacturer } from '../shared/manufacturer.actions';
+
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -41,6 +21,7 @@ import { Guid } from '@enterprise/shared';
   templateUrl: './manufacturer-form.component.html',
   styleUrls: ['./manufacturer-form.component.scss']
 })
+
 /**TODO: Make Interaction with backend with progress bar */
 export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   /** identifier for linear loading overlay as upload progress */
@@ -84,8 +65,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createForm();
-    // Set Multiple to false
-    store.dispatch(new SetModeFileUpload(false));
+
     this.save = new EventEmitter<Manufacturer>();
 
     // buffer size 1.
@@ -103,6 +83,10 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+
+    // Set Multiple to false
+    this.store.dispatch(new SetModeFileUpload(false));
+
     this.fileImages
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.onFileInputChanged(x));
@@ -179,7 +163,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   /** Should be handled for each form.
    * add should hit add new api.
    * edit should hit update api.
-  */
+   */
   onSaveBtnClicked() {
     this.save.emit(this.manufacturerForm.value);
   }

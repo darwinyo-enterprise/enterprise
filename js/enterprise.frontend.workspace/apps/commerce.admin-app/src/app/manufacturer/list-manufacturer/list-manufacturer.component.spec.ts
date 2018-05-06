@@ -5,7 +5,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState } from '@enterprise/material/file-upload';
-import { ManufacturerState, FetchSingleManufacturer, FetchManufacturers } from '@enterprise/commerce';
+import {
+  ManufacturerState,
+  FetchSingleManufacturer,
+  FetchManufacturers
+} from '@enterprise/commerce';
 import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
 fdescribe('ListManufacturerComponent', () => {
@@ -17,7 +21,10 @@ fdescribe('ListManufacturerComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientModule, NgxsModule.forRoot([FileUploadState, ManufacturerState])],
+        imports: [
+          HttpClientModule,
+          NgxsModule.forRoot([FileUploadState, ManufacturerState])
+        ],
         declarations: [ListManufacturerComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [ManufacturerService]
@@ -33,23 +40,21 @@ fdescribe('ListManufacturerComponent', () => {
     store = TestBed.get(Store);
     storeSpy = spyOn(store, 'dispatch').and.callThrough();
   });
-  describe('UI Tests', () => {
-
-  })
+  describe('UI Tests', () => {});
   describe('Functional Tests', () => {
     it('should dispatch add new manufacturer event when addEvent Triggered', () => {
       expect(false).toBeTruthy();
-    })
+    });
     it('should dispatch delete manufacturer event when deleteEvent triggered', () => {
       component.onDeleteManufacturer();
-      expect(storeSpy).toHaveBeenCalledWith()
-    })
+      expect(storeSpy).toHaveBeenCalledWith();
+    });
     it('should dispatch fetch manufacturers when component on init', () => {
       component.ngOnInit();
       expect(storeSpy).toHaveBeenCalledWith(new FetchManufacturers());
-    })
+    });
     it('should dispatch fetch manufacturer when edit button clicked', () => {
       expect(false).toBeTruthy();
-    })
-  })
+    });
+  });
 });
