@@ -1,0 +1,7 @@
+DELETE	[Category]
+DELETE	[Manufacturer]
+DELETE	[Product]
+DELETE	[ProductColor]
+DELETE	[ProductImage]
+DELETE	[ProductRating]
+DELETE	[User]

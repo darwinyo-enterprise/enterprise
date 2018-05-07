@@ -168,8 +168,8 @@ namespace Catalog.API.Controllers
         /// <returns>
         ///     json response
         /// </returns>
-        // POST api/v1/Product/inventory[?id=3&amount=10]
-        [HttpPost("inventory")]
+        // PUT api/v1/Product/inventory[?id=3&amount=10]
+        [HttpPut("inventory")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -511,7 +511,7 @@ namespace Catalog.API.Controllers
 
                 if (product != null)
                 {
-                    var file = uploadFileModel.FileUrl.Split("base64")[1];
+                    var file = uploadFileModel.FileUrl.Split("base64,")[1];
                     await _fileUtility.UploadFileAsync(uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 

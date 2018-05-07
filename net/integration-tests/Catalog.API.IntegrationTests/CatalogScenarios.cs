@@ -7,41 +7,41 @@ namespace Catalog.API.IntegrationTests
     public class CatalogScenarios
         : CatalogScenarioBase
     {
-        //[Fact]
-        //public async Task Get_catalog_brands_response_ok_status_code()
-        //{
-        //    using (var server = CreateServer())
-        //    {
-        //        var response = await server.CreateClient()
-        //            .GetAsync(Get.Brands);
+        [Fact]
+        public async Task Get_catalog_brands_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Brands);
 
-        //        response.EnsureSuccessStatusCode();
-        //    }
-        //}
+                response.EnsureSuccessStatusCode();
+            }
+        }
 
-        //[Fact]
-        //public async Task Get_catalog_types_response_ok_status_code()
-        //{
-        //    using (var server = CreateServer())
-        //    {
-        //        var response = await server.CreateClient()
-        //            .GetAsync(Get.Types);
+        [Fact]
+        public async Task Get_catalog_types_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Types);
 
-        //        response.EnsureSuccessStatusCode();
-        //    }
-        //}
+                response.EnsureSuccessStatusCode();
+            }
+        }
 
-        //[Fact]
-        //public async Task Get_get_all_catalogitems_and_response_ok_status_code()
-        //{
-        //    using (var server = CreateServer())
-        //    {
-        //        var response = await server.CreateClient()
-        //            .GetAsync(Get.Items());
+        [Fact]
+        public async Task Get_get_all_catalogitems_and_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Items());
 
-        //        response.EnsureSuccessStatusCode();
-        //    }
-        //}
+                response.EnsureSuccessStatusCode();
+            }
+        }
 
         [Fact]
         public async Task Get_get_catalogitem_by_id_and_response_bad_request_status_code()
@@ -103,18 +103,18 @@ namespace Catalog.API.IntegrationTests
             }
         }
 
-        //[Fact]
-        //public async Task Get_get_paginated_catalog_items_and_response_ok_status_code()
-        //{
-        //    using (var server = CreateServer())
-        //    {
-        //        const bool paginated = true;
-        //        var response = await server.CreateClient()
-        //            .GetAsync(Get.Items(paginated));
+        [Fact]
+        public async Task Get_get_paginated_catalog_items_and_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                const bool paginated = true;
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Items(paginated));
 
-        //        response.EnsureSuccessStatusCode();
-        //    }
-        //}
+                response.EnsureSuccessStatusCode();
+            }
+        }
 
         [Fact]
         public async Task Get_get_paginated_catalogitem_by_name_and_response_ok_status_code()

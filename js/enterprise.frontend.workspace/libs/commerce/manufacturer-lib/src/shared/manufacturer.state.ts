@@ -27,7 +27,7 @@ import {
   Manufacturer,
   ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
-import { HttpEventType } from '@angular/common/http';
+import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -182,8 +182,8 @@ export class ManufacturerState {
           // Register Loading Overlay
           dispatch(new RegisterLoadingOverlay());
         },
-        (err: Error) => {
-          dispatch(new ErrorOccured(err.message))
+        (err:HttpErrorResponse) => {
+          dispatch(new ErrorOccured(err.error['Manufacturer name'][0]))
         },
         () => dispatch([new ResolveLoadingOverlay(), new ManufacturerAdded()])
       )

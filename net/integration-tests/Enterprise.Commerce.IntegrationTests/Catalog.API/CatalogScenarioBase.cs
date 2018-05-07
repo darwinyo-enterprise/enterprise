@@ -1,27 +1,27 @@
 ﻿using System.IO;
+using Catalog.API;
 using Catalog.API.Infrastructure;
 using Enterprise.Library.IntegrationEventLog;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.API.IntegrationTests
+namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 {
     public class CatalogScenarioBase
     {
         public TestServer CreateServer()
         {
-            var webHostBuilder = WebHost.CreateDefaultBuilder().
-                UseConfiguration(new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json")
+            var webHostBuilder = WebHost.CreateDefaultBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(new ConfigurationBuilder()
+                    .AddJsonFile(Directory.GetCurrentDirectory() + @"\Catalog.API\appsettings.json")
                     .Build()
                 )
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                
                 .UseStartup<Startup>();
 
             var testServer = new TestServer(webHostBuilder);
@@ -51,7 +51,7 @@ namespace Catalog.API.IntegrationTests
 
             public static string Manufacturers = "api/v1/manufacturer";
 
-            public static string ManufacturerById(string manufacturerId) => "api/v1/manufacturer/" + manufacturerId;
+            public static string ManufacturerById(int manufacturerId) => "api/v1/manufacturer/" + manufacturerId;
 
             public static string ManufacturerImageById(string manufacturerId) =>
                 "api/v1/manufacturer/image" + manufacturerId;
@@ -105,7 +105,72 @@ namespace Catalog.API.IntegrationTests
 
         public static class Post
         {
+            #region Manufacturer
 
+            public static string AddManufacturer => $"api/v1/manufacturer";
+            public static string AddManufacturerImage => $"api/v1/manufacturer/image";
+
+            #endregion
+
+            #region Category
+
+            public static string AddCategory => $"api/v1/category";
+            public static string AddCategoryImage => $"api/v1/category/image";
+
+            #endregion
+
+            #region Product
+
+            public static string AddRate => $"api/v1/product/rate";
+            public static string AddProduct => $"api/v1/product";
+            public static string AddProductImage => $"api/v1/product/image";
+
+            #endregion
+        }
+
+        public static class Put
+        {
+            #region Manufacturer
+
+            public static string UpdateManufacturer(int id) => $"api/v1/manufacturer/{id}";
+
+            #endregion
+
+            #region Category
+
+            public static string UpdateCategory(int id) => $"api/v1/category/{id}";
+
+            #endregion
+
+            #region Product
+
+            public static string UpdateInventory(string id, int amount) => $"api/v1/product/inventory?id={id}&amount={amount}";
+            public static string UpdateProduct(int id) => $"api/v1/product/{id}";
+
+            #endregion
+        }
+
+        public static class Delete
+        {
+            #region Manufacturer
+
+            public static string DeleteManufacturer(int id) => $"api/v1/manufacturer/{id}";
+            public static string DeleteManufacturerImage => $"api/v1/manufacturer/image";
+
+            #endregion
+            #region Category
+
+            public static string DeleteCategory(int id) => $"api/v1/category/{id}";
+            public static string DeleteCategoryImage => $"api/v1/category/image";
+
+            #endregion
+
+            #region Product
+
+            public static string DeleteProduct(string id) => $"api/v1/product/{id}";
+            public static string DeleteProductImage => $"api/v1/product/image";
+
+            #endregion
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Helpers;
@@ -40,7 +41,7 @@ namespace Catalog.API.Controllers
         /// <returns>list of Manufacturers</returns>
         // GET api/v1/Manufacturer
         [HttpGet]
-        [ProducesResponseType(typeof(List<Manufacturer>), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Manufacturers.ToListAsync(cancellationToken);
@@ -57,9 +58,9 @@ namespace Catalog.API.Controllers
         /// <returns>Manufacturer</returns>
         // GET api/v1/Manufacturer/5
         [HttpGet("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Manufacturer), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest();
@@ -85,16 +86,23 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Manufacturer
         [HttpPost]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewManufacturer([FromBody]Manufacturer manufacturer,
             CancellationToken cancellationToken)
         {
+            #region Validations
             if (manufacturer == null) return BadRequest();
 
-            var file = manufacturer.ImageUrl.Split("base64")[1];
-            await _fileUtility.UploadFileAsync(manufacturer.Id.ToString(), manufacturer.ImageName,
-                file, cancellationToken);
+            var existManufacturer = await _catalogContext.Manufacturers.Where(x => x.Name == manufacturer.Name).ToListAsync(cancellationToken);
+            if (existManufacturer != null)
+            {
+                ModelState.AddModelError("Manufacturer name", string.Format("Manufacturer with Name {0} existed", manufacturer.Name));
+                return BadRequest(ModelState);
+            }
+            #endregion
+
+            #region Creation
 
             var item = new Manufacturer
             {
@@ -104,7 +112,15 @@ namespace Catalog.API.Controllers
             };
             await _catalogContext.Manufacturers.AddAsync(item, cancellationToken);
             await _catalogContext.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction(nameof(AddNewManufacturer), new {id = item.Id}, null);
+
+            var insertedManufacturer = await _catalogContext.Manufacturers.SingleOrDefaultAsync(x => x.Name == item.Name, cancellationToken);
+            var file = manufacturer.ImageUrl.Split("base64,")[1];
+            await _fileUtility.UploadFileAsync(@"Manufacturer/" + insertedManufacturer.Id.ToString(), manufacturer.ImageName,
+                file, cancellationToken);
+
+            #endregion
+            
+            return CreatedAtAction(nameof(AddNewManufacturer), new { id = item.Id }, null);
         }
 
         /// <summary>
@@ -118,9 +134,9 @@ namespace Catalog.API.Controllers
         ///     return file to download
         /// </returns>
         [HttpGet("image/{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetImage(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest();
@@ -149,9 +165,9 @@ namespace Catalog.API.Controllers
         ///     json response
         /// </returns>
         [HttpPost("image")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UploadFile([FromBody] UploadFileModel uploadFileModel,
             CancellationToken cancellationToken)
         {
@@ -165,7 +181,7 @@ namespace Catalog.API.Controllers
 
                 if (manufacturer != null)
                 {
-                    var file = uploadFileModel.FileUrl.Split("base64")[1];
+                    var file = uploadFileModel.FileUrl.Split("base64,")[1];
                     await _fileUtility.UploadFileAsync(uploadFileModel.Id, uploadFileModel.FileName,
                         file, cancellationToken);
 
@@ -195,9 +211,9 @@ namespace Catalog.API.Controllers
         ///     no content
         /// </returns>
         [HttpDelete("image")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult DeleteImage([FromBody] UploadFileModel uploadFileModel,
             CancellationToken cancellationToken)
         {
@@ -229,23 +245,23 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Manufacturer/5
         [HttpPut("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateManufacturer(int id, [FromBody] Manufacturer updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Manufacturers
                 .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
 
-            if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
 
             // Update current product
             _catalogContext.Manufacturers.Update(item);
 
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            return CreatedAtAction(nameof(UpdateManufacturer), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(UpdateManufacturer), new { id = item.Id }, null);
         }
 
         /// <summary>
@@ -256,9 +272,9 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // DELETE api/v1/Manufacturer/5
         [HttpDelete("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             try
