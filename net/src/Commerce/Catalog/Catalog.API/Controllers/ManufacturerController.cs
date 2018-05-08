@@ -51,7 +51,9 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Fetch Single Manufacturer by Manufacturer id
+        ///     Fetch Single Manufacturer by Manufacturer id.
+        ///     Used by admin, for Get into Manufacturer Edit Page
+        ///     TODO: Implement Authorize
         /// </summary>
         /// <param name="id">Manufacturer id</param>
         /// <param name="cancellationToken"></param>
@@ -68,7 +70,12 @@ namespace Catalog.API.Controllers
             var result = await _catalogContext.Manufacturers.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (result != null) return Ok(result);
+            if (result != null)
+            {
+                var withUrl = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(result, _settings.ManufacturerImageBaseUrl,
+                    _settings.AzureStorageEnabled);
+                return Ok(result);
+            }
 
             return NotFound();
         }

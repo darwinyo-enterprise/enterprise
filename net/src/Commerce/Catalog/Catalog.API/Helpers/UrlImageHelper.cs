@@ -16,5 +16,12 @@ namespace Catalog.API.Helpers
 
             return items;
         }
+        public static T ChangeUriPlaceholder(T item, string baseUri, bool azureStorageEnabled)
+        {
+                item.ImageUrl = azureStorageEnabled
+                    ? baseUri + item.ImageName
+                    : baseUri + item.Id.ToString();
+            return item;
+        }
     }
 }

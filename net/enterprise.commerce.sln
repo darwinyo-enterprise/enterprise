@@ -97,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripting", "scripting", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Commerce.IntegrationTests", "integration-tests\Enterprise.Commerce.IntegrationTests\Enterprise.Commerce.IntegrationTests.csproj", "{ADB6ECA8-1075-48F3-B155-CDFC11D04D7D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Commerce.Tests", "tests\Enterprise.Commerce.Tests\Enterprise.Commerce.Tests.csproj", "{C1118669-98F2-4898-9FAB-6C1D5E934F58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +201,10 @@ Global
 		{ADB6ECA8-1075-48F3-B155-CDFC11D04D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB6ECA8-1075-48F3-B155-CDFC11D04D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB6ECA8-1075-48F3-B155-CDFC11D04D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1118669-98F2-4898-9FAB-6C1D5E934F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1118669-98F2-4898-9FAB-6C1D5E934F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1118669-98F2-4898-9FAB-6C1D5E934F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1118669-98F2-4898-9FAB-6C1D5E934F58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,6 +248,7 @@ Global
 		{8F6664EF-694A-4274-B0F0-4A031DAD2104} = {D7CE7A34-6B26-4943-978E-BB8D46A56C43}
 		{E2F6C720-CEF9-4F10-8E32-DF36A2A67474} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
 		{ADB6ECA8-1075-48F3-B155-CDFC11D04D7D} = {4BE4862A-D3DB-41AC-BF27-3264EBB45E1E}
+		{C1118669-98F2-4898-9FAB-6C1D5E934F58} = {D7CE7A34-6B26-4943-978E-BB8D46A56C43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {848A472E-7567-47EF-B122-B016D364DC30}

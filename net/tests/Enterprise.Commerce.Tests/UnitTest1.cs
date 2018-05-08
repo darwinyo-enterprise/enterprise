@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Enterprise.Commerce.IntegrationTests
+namespace Enterprise.Commerce.Tests
 {
     public class UnitTest1
     {
