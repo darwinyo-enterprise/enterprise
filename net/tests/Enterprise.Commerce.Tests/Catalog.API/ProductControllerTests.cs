@@ -1,49 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using Catalog.API.Infrastructure;
+using Catalog.API;
+using Catalog.API.Controllers;
+using Catalog.API.Helpers;
+using Catalog.API.Models;
 using Enterprise.Commerce.IntegrationTests.Fixture;
+using Enterprise.Commerce.Tests.Fixture;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Moq;
 using Xunit;
 
 namespace Enterprise.Commerce.Tests.Catalog.API
 {
     /// <summary>
-    /// Test Case
+    ///     Test Case
     /// </summary>
-    public class ProductControllerTests:IClassFixture<CatalogContextFixture>
+    public class ProductControllerTests : IClassFixture<CatalogContextFixture>, IClassFixture<FileUtilityFixture>
     {
-        private readonly CatalogContextFixture _catalogContextFixture;
-        public ProductControllerTests(CatalogContextFixture catalogContextFixture)
+        public ProductControllerTests(CatalogContextFixture catalogContextFixture,
+            FileUtilityFixture fileUtilityFixture)
         {
+            var catalogSettings = new CatalogSettings
+            {
+                AzureStorageEnabled = false,
+                CategoryImageBaseUrl = "http://localhost:5101/api/v1/category/image/",
+                EventBusConnection = "localhost",
+                ManufacturerImageBaseUrl = "http://localhost:5101/api/v1/manufacturer/image/",
+                ProductImageBaseUrl = "http://localhost:5101/api/v1/product/image/",
+                UseCustomizationData = true
+            };
             _catalogContextFixture = catalogContextFixture;
-        }
-        #region Version 1
+            _fileUtilityFixture = fileUtilityFixture;
 
-        #region Get
-
-        [Fact]
-        public async Task Get_manufacturers_response_complete_url_image()
-        {
-            var options = new DbContextOptionsBuilder<CatalogContext>()
-                .UseInMemoryDatabase(databaseName: "Add_writes_to_database")
-                .Options;
-
-        }
-        [Fact]
-        public async Task Get_manufacturer_by_id_response_complete_url_image()
-        {
-            var options = new DbContextOptionsBuilder<CatalogContext>()
-                .UseInMemoryDatabase(databaseName: "Add_writes_to_database")
-                .Options;
-
+            var settings = new Mock<IOptionsSnapshot<CatalogSettings>>();
+            settings.Setup(x => x.Value).Returns(catalogSettings);
+            _settings = settings.Object;
         }
 
-        #endregion
+        private readonly CatalogContextFixture _catalogContextFixture;
+        private readonly FileUtilityFixture _fileUtilityFixture;
 
-
-        #endregion
-
+        private readonly IOptionsSnapshot<CatalogSettings> _settings;
+        
     }
 }

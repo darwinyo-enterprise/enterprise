@@ -3,25 +3,26 @@ import {
   OnInit,
   Input,
   EventEmitter,
-  Output,
-  ViewEncapsulation
-} from '@angular/core';
-import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
+  Output } from "@angular/core";
+import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'em-file-upload-info',
-  templateUrl: './file-upload-info.component.html',
-  styleUrls: ['./file-upload-info.component.scss']
+  selector: "em-file-upload-info",
+  templateUrl: "./file-upload-info.component.html",
+  styleUrls: ["./file-upload-info.component.scss"]
 })
 export class FileUploadInfoComponent implements OnInit {
   /** Input Existing Images */
-  @Input() filesUpload: UploadFileModel[];
+  @Input()
+  filesUpload: UploadFileModel[];
 
   /** Delete File Event
    *  When this triggered you must define your own service logic.
    */
-  @Output() deleteFile: EventEmitter<UploadFileModel>;
+  @Output()
+  deleteFile: EventEmitter<UploadFileModel>;
+
   constructor() {
     this.deleteFile = new EventEmitter<UploadFileModel>();
   }

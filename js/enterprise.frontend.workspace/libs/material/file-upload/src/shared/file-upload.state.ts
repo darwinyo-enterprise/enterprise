@@ -1,6 +1,6 @@
-import { State, StateContext, Selector, Action } from '@ngxs/store';
+import { State, StateContext, Selector, Action } from "@ngxs/store";
 
-import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
+import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 import {
   FileImageAdded,
   FileImageDeleted,
@@ -10,13 +10,9 @@ import {
   FileUploadCleared,
   ValidateFileUpload,
   SetModeFileUpload
-} from './file-upload.actions';
+} from "./file-upload.actions";
 
 export interface FileUploadStateModel {
-  /** File for uploads.
-   *  if file uploaded this will be clear
-   */
-  filesUploads: UploadFileModel[];
   /** File for show */
   filesImages: UploadFileModel[];
   /** Accept Multiple file or not */
@@ -27,31 +23,29 @@ export interface FileUploadStateModel {
 }
 
 const defaults: FileUploadStateModel = {
-  filesUploads: [],
   filesImages: [],
   multiple: false,
   disable: false
 };
 
 @State({
-  name: 'fileupload',
+  name: "fileupload",
   defaults: defaults
 })
 export class FileUploadState {
   constructor() { }
+
   //#region Selectors
   @Selector()
   static getFileImages(state: FileUploadStateModel) {
     return state.filesImages;
   }
-  @Selector()
-  static getFileUploads(state: FileUploadStateModel) {
-    return state.filesUploads;
-  }
+
   @Selector()
   static isMultiple(state: FileUploadStateModel) {
     return state.multiple;
   }
+
   @Selector()
   static isDisabled(state: FileUploadStateModel) {
     return state.disable;
@@ -67,8 +61,7 @@ export class FileUploadState {
   ) {
     const state = getState();
     patchState({
-      filesImages: [...state.filesImages.concat(payload)],
-      filesUploads: [...state.filesUploads.concat(payload)]
+      filesImages: [...state.filesImages.concat(payload)]
     });
     dispatch(new FileImageAdded());
   }
@@ -87,8 +80,7 @@ export class FileUploadState {
   ) {
     const state = getState();
     patchState({
-      filesImages: state.filesImages.filter(x => x.fileName !== payload),
-      filesUploads: state.filesUploads.filter(x => x.fileName !== payload)
+      filesImages: state.filesImages.filter(x => x.fileName !== payload)
     });
     dispatch(new FileImageDeleted());
   }
@@ -108,7 +100,7 @@ export class FileUploadState {
   }: StateContext<FileUploadStateModel>) {
     const state = getState();
     patchState({
-      filesUploads: []
+      filesImages: []
     });
     dispatch(new FileUploadCleared());
   }
@@ -155,5 +147,6 @@ export class FileUploadState {
       });
     }
   }
+
   //#endregion
 }

@@ -47,7 +47,7 @@ namespace Enterprise.Library.EventBus.Tests
             manager.AddSubscription<TestIntegrationEvent, TestIntegrationEventHandler>();
             manager.AddSubscription<TestIntegrationEvent, TestIntegrationOtherEventHandler>();
             var handlers = manager.GetHandlersForEvent<TestIntegrationEvent>();
-            Assert.Equal(2, actual: handlers.Count());
+            Assert.Equal(2, handlers.Count());
         }
     }
 }

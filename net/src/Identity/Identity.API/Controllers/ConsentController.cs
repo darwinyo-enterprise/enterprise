@@ -60,13 +60,9 @@ namespace Identity.API.Controllers
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model.Button == "no")
-            {
                 response = ConsentResponse.Denied;
-            }
             // user clicked 'yes' - validate the data
             else if (model.Button == "yes")
-            {
-                // if the user consented to some scope, build the response model
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                     response = new ConsentResponse
                     {
@@ -75,11 +71,8 @@ namespace Identity.API.Controllers
                     };
                 else
                     ModelState.AddModelError("", "You must pick at least one permission.");
-            }
             else
-            {
                 ModelState.AddModelError("", "Invalid Selection");
-            }
 
             if (response != null)
             {

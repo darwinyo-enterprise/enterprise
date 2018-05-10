@@ -12,8 +12,6 @@ import { AppState } from '@enterprise/core';
 import { Guid } from '@enterprise/shared';
 import { Manufacturer, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { FileUploadState, SetModeFileUpload } from '@enterprise/material/file-upload';
-import { DeleteImageManufacturer, UploadImageManufacturer } from '../shared/manufacturer.actions';
-
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -131,18 +129,6 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
       imageUrl: this.manufacturer.imageUrl || '',
       imageName: this.manufacturer.imageName || ''
     });
-  }
-
-  /** Upload File Method */
-  onUploadFile(uploadModels: Observable<UploadFileModel>) {
-    uploadModels.subscribe(x =>
-      this.store.dispatch(new UploadImageManufacturer(x))
-    );
-  }
-
-  /** Delete File Method */
-  onDeleteFile(modelToDelete: UploadFileModel) {
-    this.store.dispatch(new DeleteImageManufacturer(modelToDelete));
   }
 
   /** File Input Changed by Store Management */

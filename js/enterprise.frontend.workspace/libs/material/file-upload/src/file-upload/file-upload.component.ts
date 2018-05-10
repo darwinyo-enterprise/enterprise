@@ -1,55 +1,34 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { UploadFileModel } from '@enterprise/commerce/catalog-lib';
-import { Select, Store } from '@ngxs/store';
-import { FileUploadState } from '@enterprise/material/file-upload/src/shared/file-upload.state';
-import {
-  ValidateFileUpload,
-  DeleteFileImage,
-  AddFileImage,
-  SetModeFileUpload
-} from '@enterprise/material/file-upload/src/shared/file-upload.actions';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
+import { Select, Store } from "@ngxs/store";
+import { FileUploadState } from "@enterprise/material/file-upload/src/shared/file-upload.state";
+import { ValidateFileUpload, DeleteFileImage, AddFileImage } from "@enterprise/material/file-upload/src/shared/file-upload.actions";
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'em-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  selector: "em-file-upload",
+  templateUrl: "./file-upload.component.html",
+  styleUrls: ["./file-upload.component.scss"]
 })
 /** TODO : REFACTOR CODE NEEDED */
 /** Can Receive All Types of File. */
 export class FileUploadComponent implements OnInit {
-  @Select(FileUploadState.isDisabled) disable: boolean;
-
-  /** Model For Upload */
-  @Select(FileUploadState.getFileUploads) uploadFileModel: UploadFileModel[];
+  @Select(FileUploadState.isDisabled)
+  disable: boolean;
 
   /** Identify is this control able to receive multiple files. */
-  @Select(FileUploadState.isMultiple) multiple: boolean;
+  @Select(FileUploadState.isMultiple)
+  multiple: boolean;
 
   /** parent id will be used for naming directory name */
-  @Input() parentId: string;
+  @Input()
+  parentId: string;
 
   /** this used for generate image card for user take actions */
-  @Select(FileUploadState.getFileImages) filesImage: UploadFileModel[];
-
-  /** Upload File Event
-   *  When this triggered you must define your own service logic.
-   *
-   * type:
-   * If Multiple Can be return UploadFileModel[]
-   * if single return UploadFileModel
-   */
-  @Output() uploadFile: EventEmitter<UploadFileModel[] | UploadFileModel>;
-
-  /** Delete File Event
-   *  When this triggered you must define your own service logic.
-   */
-  @Output() deleteFile: EventEmitter<UploadFileModel>;
+  @Select(FileUploadState.getFileImages)
+  filesImage: UploadFileModel[];
 
   constructor(private store: Store) {
-    this.uploadFile = new EventEmitter<UploadFileModel[]>();
-    this.deleteFile = new EventEmitter<UploadFileModel>();
   }
 
   ngOnInit() {
@@ -60,11 +39,11 @@ export class FileUploadComponent implements OnInit {
   /** async method triggered when file reader load end */
   onFileReaderLoadEnd(event: any, file: File) {
     const base64: string = event.target.result;
-    const image = <UploadFileModel>{
+    const image = {
       id: this.parentId,
       fileName: file.name,
       fileUrl: base64
-    };
+    } as UploadFileModel;
     this.store.dispatch(new AddFileImage(image));
   }
 
@@ -94,13 +73,8 @@ export class FileUploadComponent implements OnInit {
     fileReader.readAsDataURL(img);
   }
 
-  onFileUpload() {
-    this.uploadFile.emit(this.uploadFileModel);
-  }
-
-  /** Remove and emit delete event */
+  /** emit delete event */
   onFileDelete(uploadModel: UploadFileModel) {
     this.store.dispatch(new DeleteFileImage(uploadModel.fileName));
-    this.deleteFile.emit(uploadModel);
   }
 }

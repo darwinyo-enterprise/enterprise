@@ -19,9 +19,7 @@ import {
   UpdateManufacturer,
   ManufacturerUpdated,
   FetchSingleManufacturer,
-  SingleManufacturerFetched,
-  UploadImageManufacturer,
-  ImageManufacturerUploaded
+  SingleManufacturerFetched
 } from './../shared/manufacturer.actions';
 import {
   Manufacturer,
@@ -65,47 +63,6 @@ export class ManufacturerState {
   //#endregion
 
   //#region Commands and Event
-
-  /** Command Upload Image Manufacturer API */
-  @Action(UploadImageManufacturer, { cancelUncompleted: true })
-  uploadImageManufacturer(
-    { dispatch, getState }: StateContext<ManufacturerStateModel>,
-    { payload }: UploadImageManufacturer
-  ) {
-    // call manufacturer service
-    return this.manufacturerService
-      .apiV1ManufacturerImagePost(payload, 'body', true)
-      .subscribe(
-        event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            // if is loading false them dispatch register Loading
-            this.isLoading$.subscribe(x => {
-              if (!x) {
-                dispatch([new RegisterLinearLoadingOverlay()]);
-              }
-            });
-
-            this.progress = Math.round(100 * event.loaded / event.total);
-            dispatch(new ProgressLinearLoadingOverlay(this.progress));
-          } else if (event.type === HttpEventType.Response)
-            console.log(event.body.toString());
-        },
-        (err: Error) => dispatch(new ErrorOccured(err.message)),
-        () =>
-          dispatch([
-            dispatch(new ImageManufacturerUploaded()),
-            new ResolveLoadingOverlay()
-          ])
-      );
-  }
-
-  /** Single Manufacturer Fetched Event */
-  @Action(ImageManufacturerUploaded)
-  imageManufacturerUploaded() {
-    //TODO: DELETE UPLOAD IMAGE VARIABLES
-    // dispatch(new Navigate(''))
-    console.log('TODO Navigate to List');
-  }
 
   /** Command Fetch Single Manufacturer API */
   @Action(FetchSingleManufacturer, { cancelUncompleted: true })

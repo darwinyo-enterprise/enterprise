@@ -11,9 +11,6 @@
       Please remove below image first...
     </ng-template>
   </div>
-  <div class="file-upload__upload-btn" *ngIf="parentId!==undefined">
-    <button id="upload-btn" mat-button (click)="onFileUpload()" [disabled]="(uploadFileModel | async).length<=0">Upload</button>
-  </div>
 
   <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesImage | async"></em-file-upload-info>
 </div>

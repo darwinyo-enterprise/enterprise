@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Enterprise.Commerce.Tests
@@ -8,7 +7,6 @@ namespace Enterprise.Commerce.Tests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

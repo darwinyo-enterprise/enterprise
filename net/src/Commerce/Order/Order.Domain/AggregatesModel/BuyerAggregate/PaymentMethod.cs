@@ -21,17 +21,20 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             CardType = cardType;
         }
 
-        public PaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber, string cardHolderName, DateTime expiration)
+        public PaymentMethod(int cardTypeId, string alias, string cardNumber, string securityNumber,
+            string cardHolderName, DateTime expiration)
         {
+            _cardNumber = !string.IsNullOrWhiteSpace(cardNumber)
+                ? cardNumber
+                : throw new OrderingDomainException(nameof(cardNumber));
+            _securityNumber = !string.IsNullOrWhiteSpace(securityNumber)
+                ? securityNumber
+                : throw new OrderingDomainException(nameof(securityNumber));
+            _cardHolderName = !string.IsNullOrWhiteSpace(cardHolderName)
+                ? cardHolderName
+                : throw new OrderingDomainException(nameof(cardHolderName));
 
-            _cardNumber = !string.IsNullOrWhiteSpace(cardNumber) ? cardNumber : throw new OrderingDomainException(nameof(cardNumber));
-            _securityNumber = !string.IsNullOrWhiteSpace(securityNumber) ? securityNumber : throw new OrderingDomainException(nameof(securityNumber));
-            _cardHolderName = !string.IsNullOrWhiteSpace(cardHolderName) ? cardHolderName : throw new OrderingDomainException(nameof(cardHolderName));
-
-            if (expiration < DateTime.UtcNow)
-            {
-                throw new OrderingDomainException(nameof(expiration));
-            }
+            if (expiration < DateTime.UtcNow) throw new OrderingDomainException(nameof(expiration));
 
             _alias = alias;
             _expiration = expiration;

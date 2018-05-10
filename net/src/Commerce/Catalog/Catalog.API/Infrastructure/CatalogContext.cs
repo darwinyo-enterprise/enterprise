@@ -32,15 +32,15 @@ namespace Catalog.API.Infrastructure
         }
 
         /// <summary>
-        /// used for reset identity seed back to 0
+        ///     used for reset identity seed back to 0
         /// </summary>
         /// <param name="tableName">
-        /// table name to reset
+        ///     table name to reset
         /// </param>
         /// <returns></returns>
         public async Task SpResetIdentity(string tableName)
         {
-            await this.Database.ExecuteSqlCommandAsync("EXEC	[spResetIdentity] @TableName='" + tableName + "'");
+            await Database.ExecuteSqlCommandAsync("EXEC	[spResetIdentity] @TableName='" + tableName + "'");
         }
     }
 

@@ -4,7 +4,7 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class BuyerEntityTypeConfiguration
+    internal class BuyerEntityTypeConfiguration
         : IEntityTypeConfiguration<Buyer>
     {
         public void Configure(EntityTypeBuilder<Buyer> buyerConfiguration)
@@ -23,12 +23,12 @@ namespace Order.Infrastructure.EntityConfigurations
                 .IsRequired();
 
             buyerConfiguration.HasIndex("IdentityGuid")
-              .IsUnique();
+                .IsUnique();
 
             buyerConfiguration.HasMany(b => b.PaymentMethods)
-               .WithOne()
-               .HasForeignKey("BuyerId")
-               .OnDelete(DeleteBehavior.Cascade);
+                .WithOne()
+                .HasForeignKey("BuyerId")
+                .OnDelete(DeleteBehavior.Cascade);
 
             var navigation = buyerConfiguration.Metadata.FindNavigation(nameof(Buyer.PaymentMethods));
 

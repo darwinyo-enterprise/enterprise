@@ -4,6 +4,9 @@ using Xunit;
 
 namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 {
+    /// <summary>
+    ///     TODO: Make test for file manipulations
+    /// </summary>
     public class CatalogScenarios
         : CatalogScenarioBase
     {

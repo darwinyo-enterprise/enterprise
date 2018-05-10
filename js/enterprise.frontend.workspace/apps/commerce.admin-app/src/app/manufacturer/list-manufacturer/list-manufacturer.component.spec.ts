@@ -12,7 +12,7 @@ import {
 } from '@enterprise/commerce';
 import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
-fdescribe('ListManufacturerComponent', () => {
+describe('ListManufacturerComponent', () => {
   let component: ListManufacturerComponent;
   let fixture: ComponentFixture<ListManufacturerComponent>;
   let store: Store;
@@ -46,7 +46,7 @@ fdescribe('ListManufacturerComponent', () => {
       expect(false).toBeTruthy();
     });
     it('should dispatch delete manufacturer event when deleteEvent triggered', () => {
-      component.onDeleteManufacturer();
+      // component.onDeleteManufacturer();
       expect(storeSpy).toHaveBeenCalledWith();
     });
     it('should dispatch fetch manufacturers when component on init', () => {

@@ -396,9 +396,9 @@ export class ManufacturerService {
     let queryParameters = new HttpParams({
       encoder: new CustomHttpUrlEncodingCodec()
     });
-    if (id !== undefined) {
-      queryParameters = queryParameters.set('id', <any>id);
-    }
+    // if (id !== undefined) {
+    //   queryParameters = queryParameters.set('id', <any>id);
+    // }
 
     let headers = this.defaultHeaders;
 
@@ -415,7 +415,7 @@ export class ManufacturerService {
     const consumes: string[] = [];
 
     return this.httpClient.get<any>(
-      `${this.basePath}/api/v1/Manufacturer/image/id`,
+      `${this.basePath}/api/v1/Manufacturer/image/`+id,
       {
         params: queryParameters,
         withCredentials: this.configuration.withCredentials,

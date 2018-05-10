@@ -1,1 +1,1 @@
-export { ListItemActionsModule } from './src/list-item-actions.module';
+export { ListItemActionsModule } from "./src/list-item-actions.module";

@@ -5,7 +5,7 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Domain.AggregatesModel.OrderAggregate.Order>
+    internal class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Domain.AggregatesModel.OrderAggregate.Order>
     {
         public void Configure(EntityTypeBuilder<Domain.AggregatesModel.OrderAggregate.Order> orderConfiguration)
         {
@@ -27,8 +27,10 @@ namespace Order.Infrastructure.EntityConfigurations
             orderConfiguration.Property<int?>("PaymentMethodId").IsRequired(false);
             orderConfiguration.Property<string>("Description").IsRequired(false);
 
-            var navigation = orderConfiguration.Metadata.FindNavigation(nameof(Domain.AggregatesModel.OrderAggregate.Order.OrderItems));
-            
+            var navigation =
+                orderConfiguration.Metadata.FindNavigation(
+                    nameof(Domain.AggregatesModel.OrderAggregate.Order.OrderItems));
+
             // DDD Patterns comment:
             //Set as field (New since EF 1.1) to access the OrderItem collection property through its field
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);

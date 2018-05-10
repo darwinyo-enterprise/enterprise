@@ -51,6 +51,26 @@ namespace Enterprise.Library.FileUtility
         }
 
         /// <summary>
+        /// TODO: Test this manually.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public async Task CleanImageFilesAsync(string folderName)
+        {
+            var webRootPath = _hostingEnvironment.WebRootPath;
+            var newPath = Path.Combine(webRootPath, folderName);
+
+            if (Directory.Exists(newPath))
+            {
+                foreach (var file in Directory.GetFiles(newPath))
+                {
+                    file.Remove(0);
+                }
+            };
+
+        }
+
+        /// <summary>
         ///     read file from hosting web root.
         /// </summary>
         /// <param name="folderName">
@@ -68,7 +88,7 @@ namespace Enterprise.Library.FileUtility
         public async Task<byte[]> ReadFileAsync(string folderName, string fileName, CancellationToken cancellationToken)
         {
             var webRoot = _hostingEnvironment.WebRootPath;
-            var path = Path.Combine(webRoot, folderName, fileName);
+            var path = webRoot + folderName + "/" + fileName;
             return await File.ReadAllBytesAsync(path, cancellationToken);
         }
 

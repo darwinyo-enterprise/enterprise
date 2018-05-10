@@ -51,10 +51,15 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 
             public static string Manufacturers = "api/v1/manufacturer";
 
-            public static string ManufacturerById(int manufacturerId) => "api/v1/manufacturer/" + manufacturerId;
+            public static string ManufacturerById(int manufacturerId)
+            {
+                return "api/v1/manufacturer/" + manufacturerId;
+            }
 
-            public static string ManufacturerImageById(string manufacturerId) =>
-                "api/v1/manufacturer/image" + manufacturerId;
+            public static string ManufacturerImageById(string manufacturerId)
+            {
+                return "api/v1/manufacturer/image" + manufacturerId;
+            }
 
             #endregion
 
@@ -62,16 +67,24 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 
             public static string Categories = "api/v1/category";
 
-            public static string CategoryById(string categoryId) => "api/v1/category/" + categoryId;
+            public static string CategoryById(string categoryId)
+            {
+                return "api/v1/category/" + categoryId;
+            }
 
-            public static string CategoryImageById(string categoryId) =>
-                "api/v1/category/image" + categoryId;
+            public static string CategoryImageById(string categoryId)
+            {
+                return "api/v1/category/image" + categoryId;
+            }
 
             #endregion
 
             #region Product
 
-            public static string PaginatedItem() => "api/v1/product" + Paginated(PageIndex, PageCount);
+            public static string PaginatedItem()
+            {
+                return "api/v1/product" + Paginated(PageIndex, PageCount);
+            }
 
             public static string ItemById(int id)
             {
@@ -98,7 +111,10 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
                 return $"?pageIndex={pageIndex}&pageSize={pageCount}";
             }
 
-            public static string ImageByProductImageId(string productImageId) => $"api/v1/product/image/{productImageId}";
+            public static string ImageByProductImageId(string productImageId)
+            {
+                return $"api/v1/product/image/{productImageId}";
+            }
 
             #endregion
         }
@@ -132,20 +148,33 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
         {
             #region Manufacturer
 
-            public static string UpdateManufacturer(int id) => $"api/v1/manufacturer/{id}";
+            public static string UpdateManufacturer(int id)
+            {
+                return $"api/v1/manufacturer/{id}";
+            }
 
             #endregion
 
             #region Category
 
-            public static string UpdateCategory(int id) => $"api/v1/category/{id}";
+            public static string UpdateCategory(int id)
+            {
+                return $"api/v1/category/{id}";
+            }
 
             #endregion
 
             #region Product
 
-            public static string UpdateInventory(string id, int amount) => $"api/v1/product/inventory?id={id}&amount={amount}";
-            public static string UpdateProduct(int id) => $"api/v1/product/{id}";
+            public static string UpdateInventory(string id, int amount)
+            {
+                return $"api/v1/product/inventory?id={id}&amount={amount}";
+            }
+
+            public static string UpdateProduct(int id)
+            {
+                return $"api/v1/product/{id}";
+            }
 
             #endregion
         }
@@ -154,20 +183,33 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
         {
             #region Manufacturer
 
-            public static string DeleteManufacturer(int id) => $"api/v1/manufacturer/{id}";
+            public static string DeleteManufacturer(int id)
+            {
+                return $"api/v1/manufacturer/{id}";
+            }
+
             public static string DeleteManufacturerImage => $"api/v1/manufacturer/image";
 
             #endregion
+
             #region Category
 
-            public static string DeleteCategory(int id) => $"api/v1/category/{id}";
+            public static string DeleteCategory(int id)
+            {
+                return $"api/v1/category/{id}";
+            }
+
             public static string DeleteCategoryImage => $"api/v1/category/image";
 
             #endregion
 
             #region Product
 
-            public static string DeleteProduct(string id) => $"api/v1/product/{id}";
+            public static string DeleteProduct(string id)
+            {
+                return $"api/v1/product/{id}";
+            }
+
             public static string DeleteProductImage => $"api/v1/product/image";
 
             #endregion

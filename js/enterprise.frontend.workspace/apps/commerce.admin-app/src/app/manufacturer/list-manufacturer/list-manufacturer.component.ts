@@ -14,6 +14,7 @@ import { Manufacturer, ManufacturerService } from '@enterprise/commerce/catalog-
 export class ListManufacturerComponent implements OnInit {
   title: string;
   selectedId: string;
+
   /** Selector Manufacturers List
    *  This Comes from State Management.
    */

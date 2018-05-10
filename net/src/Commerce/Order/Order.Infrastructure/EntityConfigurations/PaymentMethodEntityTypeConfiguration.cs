@@ -5,7 +5,7 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class PaymentMethodEntityTypeConfiguration
+    internal class PaymentMethodEntityTypeConfiguration
         : IEntityTypeConfiguration<PaymentMethod>
     {
         public void Configure(EntityTypeBuilder<PaymentMethod> paymentConfiguration)

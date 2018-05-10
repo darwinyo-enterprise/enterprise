@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Catalog.API.Extensions;
 using Catalog.API.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -20,6 +19,7 @@ namespace Catalog.API.Infrastructure
     public class CatalogContextSeed
     {
         private IHostingEnvironment _env;
+
         public async Task SeedAsync(CatalogContext context, IHostingEnvironment env, IOptions<CatalogSettings> settings,
             ILogger<CatalogContextSeed> logger)
         {
@@ -35,12 +35,23 @@ namespace Catalog.API.Infrastructure
                     const string manufacturer = "Manufacturer";
                     await context.SpResetIdentity(manufacturer);
                     GetPictures(contentRootPath, _env.WebRootPath + "/" + manufacturer, manufacturer + ".zip");
-                    await context.Manufacturers.AddRangeAsync(useCustomizationData
-                        ? GetManufacturerFromFile(contentRootPath, logger)
-                        : GetPreconfiguredManufacturer());
 
-                    await context.SaveChangesAsync();
+                    if (useCustomizationData)
+                    {
+                        var manufacturers = GetManufacturerFromFile(contentRootPath, logger);
+                        foreach (var manufacturer1 in manufacturers)
+                        {
+                            await context.Manufacturers.AddAsync(manufacturer1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.Manufacturers.AddRangeAsync(GetPreconfiguredManufacturer());
 
+                        await context.SaveChangesAsync();
+                    }
+                    
                     DeleteAllFilesWithinDir(_env.WebRootPath + "/" + manufacturer);
                     ValidateFileDirExists(manufacturer);
                 }
@@ -50,12 +61,22 @@ namespace Catalog.API.Infrastructure
                     const string category = "Category";
                     await context.SpResetIdentity(category);
                     GetPictures(contentRootPath, _env.WebRootPath + "/" + category, category + ".zip");
+                    
+                    if (useCustomizationData)
+                    {
+                        var categories = GetCategoryFromFile(contentRootPath, logger);
+                        foreach (var category1 in categories)
+                        {
+                            await context.Categories.AddAsync(category1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.Categories.AddRangeAsync(GetPreconfiguredCategory());
 
-                    await context.Categories.AddRangeAsync(useCustomizationData
-                        ? GetCategoryFromFile(contentRootPath, logger)
-                        : GetPreconfiguredCategory());
-
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
 
                     DeleteAllFilesWithinDir(_env.WebRootPath + "/" + category);
                     ValidateFileDirExists(category);
@@ -63,40 +84,80 @@ namespace Catalog.API.Infrastructure
 
                 if (!context.Users.Any())
                 {
-                    await context.Users.AddRangeAsync(useCustomizationData
-                        ? GetUserFromFile(contentRootPath, logger)
-                        : GetPreconfiguredUser());
+                    if (useCustomizationData)
+                    {
+                        var users = GetUserFromFile(contentRootPath, logger);
+                        foreach (var user1 in users)
+                        {
+                            await context.Users.AddAsync(user1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.Users.AddRangeAsync(GetPreconfiguredUser());
 
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if (!context.Products.Any())
                 {
-                    await context.Products.AddRangeAsync(useCustomizationData
-                        ? GetProductFromFile(contentRootPath, logger)
-                        : GetPreconfiguredProduct());
+                    if (useCustomizationData)
+                    {
+                        var products = GetProductFromFile(contentRootPath, logger);
+                        foreach (var product1 in products)
+                        {
+                            await context.Products.AddAsync(product1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.Products.AddRangeAsync(GetPreconfiguredProduct());
 
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if (!context.ProductColors.Any())
                 {
                     await context.SpResetIdentity("ProductColor");
-                    await context.ProductColors.AddRangeAsync(useCustomizationData
-                        ? GetProductColorFromFile(contentRootPath, logger)
-                        : GetPreconfiguredProductColor());
+                    if (useCustomizationData)
+                    {
+                        var productcolors = GetProductColorFromFile(contentRootPath, logger);
+                        foreach (var productcolor1 in productcolors)
+                        {
+                            await context.ProductColors.AddAsync(productcolor1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.ProductColors.AddRangeAsync(GetPreconfiguredProductColor());
 
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if (!context.ProductRatings.Any())
                 {
                     await context.SpResetIdentity("ProductRating");
-                    await context.ProductRatings.AddRangeAsync(useCustomizationData
-                        ? GetProductRatingFromFile(contentRootPath, logger)
-                        : GetPreconfiguredProductRating());
+                    if (useCustomizationData)
+                    {
+                        var productratings = GetProductRatingFromFile(contentRootPath, logger);
+                        foreach (var productrating1 in productratings)
+                        {
+                            await context.ProductRatings.AddAsync(productrating1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.ProductRatings.AddRangeAsync(GetPreconfiguredProductRating());
 
-                    await context.SaveChangesAsync();
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if (!context.ProductImages.Any())
@@ -104,11 +165,22 @@ namespace Catalog.API.Infrastructure
                     const string productImage = "ProductImage";
                     await context.SpResetIdentity(productImage);
                     GetPictures(contentRootPath, _env.WebRootPath + "/" + productImage, productImage + ".zip");
-                    await context.ProductImages.AddRangeAsync(useCustomizationData
-                        ? GetProductImageFromFile(contentRootPath, logger)
-                        : GetPreconfiguredProductImage());
 
-                    await context.SaveChangesAsync();
+                    if (useCustomizationData)
+                    {
+                        var productimages = GetProductImageFromFile(contentRootPath, logger);
+                        foreach (var productimage1 in productimages)
+                        {
+                            await context.ProductImages.AddAsync(productimage1);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    else
+                    {
+                        await context.ProductImages.AddRangeAsync(GetPreconfiguredProductImage());
+
+                        await context.SaveChangesAsync();
+                    }
 
                     DeleteAllFilesWithinDir(_env.WebRootPath + "/" + productImage);
                     ValidateFileDirExists(productImage);
@@ -122,10 +194,7 @@ namespace Catalog.API.Infrastructure
             var dirs = dirRoot.GetDirectories();
             foreach (var directoryInfo in dirs)
             {
-                if (directoryInfo.GetFiles().Length > 0)
-                {
-                    continue;
-                }
+                if (directoryInfo.GetFiles().Length > 0) continue;
 
                 throw new Exception("File Directory Seed is Empty");
             }
@@ -209,11 +278,11 @@ namespace Catalog.API.Infrastructure
             return new List<Manufacturer>
             {
                 new Manufacturer {Name = "Microsoft", Description = "None", ImageName = "Microsoft.png"},
-                new Manufacturer {Name = "Asus", Description = "None",  ImageName = "Asus.png"},
-                new Manufacturer {Name = "Apple", Description = "None",  ImageName = "Apple.png"},
-                new Manufacturer {Name = "Google", Description = "None",  ImageName = "Google.png"},
-                new Manufacturer {Name = "Docker", Description = "None",  ImageName = "Docker.png"},
-                new Manufacturer {Name = "Sony", Description = "None",  ImageName = "Sony.png"}
+                new Manufacturer {Name = "Asus", Description = "None", ImageName = "Asus.png"},
+                new Manufacturer {Name = "Apple", Description = "None", ImageName = "Apple.png"},
+                new Manufacturer {Name = "Google", Description = "None", ImageName = "Google.png"},
+                new Manufacturer {Name = "Docker", Description = "None", ImageName = "Docker.png"},
+                new Manufacturer {Name = "Sony", Description = "None", ImageName = "Sony.png"}
             };
         }
 
@@ -345,11 +414,11 @@ namespace Catalog.API.Infrastructure
         {
             return new List<Category>
             {
-                new Category {Name = "Phone", Description = "None",  ImageName = "Phone.png"},
-                new Category {Name = "Software", Description = "None",  ImageName = "Software.png"},
-                new Category {Name = "Laptop", Description = "None",  ImageName = "Laptop.png"},
+                new Category {Name = "Phone", Description = "None", ImageName = "Phone.png"},
+                new Category {Name = "Software", Description = "None", ImageName = "Software.png"},
+                new Category {Name = "Laptop", Description = "None", ImageName = "Laptop.png"},
                 new Category {Name = "Console", Description = "None", ImageName = "Console.png"},
-                new Category {Name = "Tablet", Description = "None",  ImageName = "Tablet.png"}
+                new Category {Name = "Tablet", Description = "None", ImageName = "Tablet.png"}
             };
         }
 
@@ -429,7 +498,8 @@ namespace Catalog.API.Infrastructure
             if (!int.TryParse(categoryId, out var categoryIds)) throw new Exception("product CategoryId is not number");
 
             var lastUpdated = column[Array.IndexOf(headers, "lastupdated")].Trim('"').Trim();
-            if (!DateTime.TryParseExact(lastUpdated, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var lastUpdates)) throw new Exception("lastUpdated is not Datetime");
+            if (!DateTime.TryParseExact(lastUpdated, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out var lastUpdates)) throw new Exception("lastUpdated is not Datetime");
 
             var lastUpdatedBy = column[Array.IndexOf(headers, "lastupdatedby")].Trim('"').Trim();
             var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
@@ -507,7 +577,7 @@ namespace Catalog.API.Infrastructure
             {
                 //Id = ids,
                 Name = name,
-                ProductId = productId,
+                ProductId = productId
             };
         }
 
@@ -645,7 +715,6 @@ namespace Catalog.API.Infrastructure
         #endregion
 
 
-
         #region Utility
 
         private string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
@@ -671,10 +740,7 @@ namespace Catalog.API.Infrastructure
         private void GetPictures(string contentRootPath, string picturePath, string zipName)
         {
             var directory = new DirectoryInfo(picturePath);
-            if (!directory.Exists)
-            {
-                directory.Create();
-            }
+            if (!directory.Exists) directory.Create();
 
             foreach (var file in directory.GetFiles()) file.Delete();
 
@@ -703,10 +769,7 @@ namespace Catalog.API.Infrastructure
             var file = files.SingleOrDefault(x => x.Name == imageName);
             var subdir = directory.GetDirectories(id).FirstOrDefault();
             var fileToInsert = subdir?.GetFiles(imageName).FirstOrDefault();
-            if (fileToInsert != null && fileToInsert.Exists)
-            {
-                fileToInsert.Delete();
-            }
+            if (fileToInsert != null && fileToInsert.Exists) fileToInsert.Delete();
             file?.CopyTo(picturePath + "/" + id);
         }
 
@@ -714,11 +777,9 @@ namespace Catalog.API.Infrastructure
         {
             var directory = new DirectoryInfo(directoryPath);
             var files = directory.GetFiles();
-            foreach (var fileInfo in files)
-            {
-                fileInfo.Delete();
-            }
+            foreach (var fileInfo in files) fileInfo.Delete();
         }
+
         #endregion
     }
 }
