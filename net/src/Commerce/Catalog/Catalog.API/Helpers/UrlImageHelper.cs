@@ -35,16 +35,14 @@ namespace Catalog.API.Helpers
         /// </summary>
         /// <param name="item">Model has image</param>
         /// <param name="fileUtility">file utility helper</param>
-        /// <param name="folderName">folder group name => Manufacturer, Product, Category</param>
-        /// <param name="baseUri">base url image</param>
-        /// <param name="azureStorageEnabled"></param>
+        /// <param name="folderName">folder group name => Manufacturer, Product, Category</param
         /// <param name="cancellationToken"></param>
         /// <returns>base64 format image model</returns>
-        public static async Task<T> GetImageBase64UrlAsync(T item, IFileUtility fileUtility, string folderName, string baseUri, bool azureStorageEnabled, CancellationToken cancellationToken)
+        public static async Task<T> GetImageBase64UrlAsync(T item, IFileUtility fileUtility, string folderName, CancellationToken cancellationToken)
         {
             var imageFileExtension = Path.GetExtension(item.ImageName);
 
-            var buffer = await fileUtility.ReadFileAsync("/" + folderName + "/" + item.Id, item.ImageName, cancellationToken);
+            var buffer = await fileUtility.ReadFileAsync(folderName + "/" + item.Id, item.ImageName, cancellationToken);
             item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," + Convert.ToBase64String(buffer);
             return item;
         }

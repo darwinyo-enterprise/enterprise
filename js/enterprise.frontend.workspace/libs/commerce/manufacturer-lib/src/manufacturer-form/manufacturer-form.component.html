@@ -17,7 +17,7 @@
           <textarea matInput placeholder="Description" formControlName="description"></textarea>
         </mat-form-field>
       </div>
-      <em-file-upload [parentId]="manufacturer?.id"></em-file-upload>
+      <em-file-upload [parentId]="(manufacturer$ | async)?.id"></em-file-upload>
     </div>
     <div class="form-card__footer">
       <button id="save-button" mat-button class="ok" [disabled]="manufacturerForm.invalid" type="submit">{{nameSaveButton}}</button>

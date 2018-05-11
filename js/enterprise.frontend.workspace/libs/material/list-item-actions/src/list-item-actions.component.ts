@@ -4,7 +4,7 @@ import { Observable } from "rxjs/Observable";
 import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  
   selector: "em-list-item-actions",
   templateUrl: "./list-item-actions.component.html",
   styleUrls: ["./list-item-actions.component.scss"]

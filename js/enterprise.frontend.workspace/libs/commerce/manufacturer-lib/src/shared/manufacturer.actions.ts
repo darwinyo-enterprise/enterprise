@@ -67,3 +67,13 @@ export class ManufacturerDeleted {
   static readonly type = '[COMMERCE] MANUFACTURER DELETED';
   constructor() {}
 }
+
+export class ClearSelectedManufacturer{
+  static  readonly type='[COMMERCE] CLEAR SELECTED MANUFACTURER'
+  constructor(){}
+}
+
+export class SelectedManufacturerCleared{
+  static  readonly type='[COMMERCE] SELECTED MANUFACTURER CLEARED'
+  constructor(){}
+}

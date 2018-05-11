@@ -11,10 +11,12 @@ import { Select, Store } from '@ngxs/store';
 import { AppState } from '@enterprise/core';
 import { Guid } from '@enterprise/shared';
 import { Manufacturer, UploadFileModel } from '@enterprise/commerce/catalog-lib';
-import { FileUploadState, SetModeFileUpload } from '@enterprise/material/file-upload';
+import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload } from '@enterprise/material/file-upload';
+import { take } from 'rxjs/operators';
+import { ManufacturerState } from './../shared/manufacturer.state';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+
   selector: 'eca-manufacturer-form',
   templateUrl: './manufacturer-form.component.html',
   styleUrls: ['./manufacturer-form.component.scss']
@@ -37,15 +39,14 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
   @Select(FileUploadState.getFileImages)
   fileImages: Observable<UploadFileModel[]>;
 
+  @Select(ManufacturerState.getSelectedManufacturer)
+  manufacturer$: Observable<Manufacturer>;
   //#endregion
 
   //#region Inputs Outputs
 
   /** Title of form */
   @Input() title: string;
-
-  /** Manufacturer if supplied then its in edit mode */
-  @Input() manufacturer: Manufacturer;
 
   /** Name Save Button */
   @Input() nameSaveButton: string;
@@ -68,19 +69,30 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
 
     // buffer size 1.
     this.unsubscribe$ = new ReplaySubject(1);
-    // If Input Supplied (Edit Mode)
-    if (this.manufacturer != null) {
-      this.filesUpload$ = of([
-        <UploadFileModel>{
-          id: this.manufacturer.id.toString(),
-          fileName: this.manufacturer.name.toString(),
-          fileUrl: this.manufacturer.imageUrl
-        }
-      ]);
-    }
+
   }
 
   ngOnInit() {
+    // If Input Supplied (Edit Mode)
+    let manufacturer: Manufacturer;
+
+    // take 2 for make sure get latest selected manufacturer
+    this.manufacturer$.pipe(take(2)).subscribe(x => {
+      manufacturer = x;
+    },
+      (err) => alert(err),
+      () => {
+        if (manufacturer != null) {
+          this.store.dispatch([new ClearFileUpload(), new AddFileImage(
+            {
+              id: manufacturer.id.toString(),
+              fileName: manufacturer.imageName.toString(),
+              fileUrl: manufacturer.imageUrl
+            }
+          )]);
+          this.rebuildForm();
+        }
+      })
 
     // Set Multiple to false
     this.store.dispatch(new SetModeFileUpload(false));
@@ -122,13 +134,27 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
 
   /** resposible for change form value. */
   rebuildForm() {
-    this.manufacturerForm.reset({
-      id: this.manufacturer.id || '',
-      name: this.manufacturer.name || '',
-      description: this.manufacturer.description || '',
-      imageUrl: this.manufacturer.imageUrl || '',
-      imageName: this.manufacturer.imageName || ''
-    });
+    let targetManufacturer = <Manufacturer>{};
+    this.manufacturer$.pipe(take(1)).subscribe((x) => {
+      targetManufacturer = <Manufacturer>{
+        id: x.id,
+        name: x.name,
+        description: x.description,
+        imageName: x.imageName,
+        imageUrl: x.imageUrl
+      }
+    }, (err) => {
+      alert('error')
+    }, () => {
+      this.manufacturerForm.reset({
+        id: targetManufacturer.id || '',
+        name: targetManufacturer.name || '',
+        description: targetManufacturer.description || '',
+        imageUrl: targetManufacturer.imageUrl || '',
+        imageName: targetManufacturer.imageName || ''
+      });
+    })
+
   }
 
   /** File Input Changed by Store Management */

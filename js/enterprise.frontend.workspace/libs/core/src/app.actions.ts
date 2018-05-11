@@ -1,4 +1,5 @@
 import { IConfirmConfig } from '@covalent/core';
+import { Subject } from 'rxjs';
 
 /** Register Linear Loading Overlay Command */
 export class RegisterLinearLoadingOverlay {
@@ -33,7 +34,7 @@ export class ResolveLoadingOverlay {
 
 export class Confirm {
   static readonly type = '[APP] CONFIRM';
-  constructor(public payload: IConfirmConfig) {}
+  constructor(public payload: IConfirmConfig,public handler:Subject<boolean>) {}
 }
 export class Confirmed {
   static readonly type = '[APP] CONFIRMED';

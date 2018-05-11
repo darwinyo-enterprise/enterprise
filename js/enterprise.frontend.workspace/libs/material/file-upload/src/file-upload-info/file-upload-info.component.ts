@@ -7,7 +7,7 @@ import {
 import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  
   selector: "em-file-upload-info",
   templateUrl: "./file-upload-info.component.html",
   styleUrls: ["./file-upload-info.component.scss"]

@@ -12,7 +12,8 @@ import { FileUploadState } from '@enterprise/material/file-upload';
 import {
   ManufacturerState,
   ManufacturersMock,
-  AddManufacturer
+  AddManufacturer,
+  ClearSelectedManufacturer
 } from '@enterprise/commerce';
 
 describe('AddManufacturerComponent', () => {
@@ -48,16 +49,17 @@ describe('AddManufacturerComponent', () => {
     storeSpy = spyOn(store, 'dispatch').and.callThrough();
   });
 
-  describe('UI Tests', () => {});
+  describe('UI Tests', () => { });
   describe('Functional Tests', () => {
-    it('should be empty manufacturer input', () => {
-      expect(component.manufacturer).toEqual(<Manufacturer>{});
-    });
     it('should dispatch add manufacturer', () => {
       const manufacturer = ManufacturersMock[0];
       component.onAddNewManufacturer(manufacturer);
       expect(addManufacturerSpy).toHaveBeenCalled();
       expect(storeSpy).toHaveBeenCalledWith(new AddManufacturer(manufacturer));
     });
+    it('should dispatch Clear Selected Manufacturer when on init', () => {
+      component.ngOnInit();
+      expect(storeSpy).toHaveBeenCalledWith(ClearSelectedManufacturer);
+    })
   });
 });

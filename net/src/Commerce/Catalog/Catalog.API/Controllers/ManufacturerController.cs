@@ -83,9 +83,7 @@ namespace Catalog.API.Controllers
 
             if (result != null)
             {
-                var withUrl = UrlImageHelper<Manufacturer>.GetImageBase64UrlAsync(result, _fileUtility, "Manufacturer",
-                    _settings.ManufacturerImageBaseUrl,
-                    _settings.AzureStorageEnabled, cancellationToken);
+                var withUrl = UrlImageHelper<Manufacturer>.GetImageBase64UrlAsync(result, _fileUtility, "Manufacturer", cancellationToken);
                 return Ok(withUrl);
             }
 
@@ -117,17 +115,16 @@ namespace Catalog.API.Controllers
             CancellationToken cancellationToken)
         {
             #region Validations
-            if (manufacturer == null) return BadRequest();
-            if (string.IsNullOrEmpty(manufacturer.ImageUrl)) return BadRequest();
+            if (manufacturer == null)
+                return BadRequest(new { Message = $"Cant Create Empty Manufacturer." });
+
+            if (string.IsNullOrEmpty(manufacturer.ImageUrl))
+                return BadRequest(new { Message = $"Cant Create Manufacturer without image ." });
 
             var existManufacturer = await _catalogContext.Manufacturers.Where(x => x.Name == manufacturer.Name)
                 .ToListAsync(cancellationToken);
             if (existManufacturer != null)
-            {
-                ModelState.AddModelError("Manufacturer name",
-                    string.Format("Manufacturer with Name {0} existed", manufacturer.Name));
-                return BadRequest(ModelState);
-            }
+                return BadRequest(new { Message = $"Manufacturer with Name {manufacturer.Name} existed." });
 
             #endregion
 
@@ -184,7 +181,7 @@ namespace Catalog.API.Controllers
                 var imageFileExtension = Path.GetExtension(item.ImageName);
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = await _fileUtility.ReadFileAsync("/Manufacturer/" + item.Id.ToString(), item.ImageName, cancellationToken);
+                var buffer = await _fileUtility.ReadFileAsync("Manufacturer/" + item.Id.ToString(), item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -215,10 +212,21 @@ namespace Catalog.API.Controllers
 
             if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
 
+            string oldImageName = item.ImageName;
+
+            #region Mapping
+
+            item.ImageName = updateModel.ImageName;
+            item.Description = updateModel.Description;
+            item.Name = updateModel.Name;
+
+            #endregion
             // Update current product
             _catalogContext.Manufacturers.Update(item);
 
             await _catalogContext.SaveChangesAsync(cancellationToken);
+
+            _fileUtility.DeleteFile("Manufacturer/" + updateModel.Id.ToString(), oldImageName);
             await InsertManufacturerImage(updateModel, cancellationToken, id);
 
             return CreatedAtAction(nameof(UpdateManufacturer), new { id = item.Id }, null);

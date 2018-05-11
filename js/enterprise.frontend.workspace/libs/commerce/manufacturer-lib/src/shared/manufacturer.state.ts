@@ -19,7 +19,9 @@ import {
   UpdateManufacturer,
   ManufacturerUpdated,
   FetchSingleManufacturer,
-  SingleManufacturerFetched
+  SingleManufacturerFetched,
+  ClearSelectedManufacturer,
+  SelectedManufacturerCleared
 } from './../shared/manufacturer.actions';
 import {
   Manufacturer,
@@ -70,17 +72,18 @@ export class ManufacturerState {
     { dispatch }: StateContext<ManufacturerStateModel>,
     { payload }: FetchSingleManufacturer
   ) {
+    // Register Loading Overlay
+    dispatch(new RegisterLoadingOverlay());
+
     // call manufacturer service
     return this.manufacturerService
       .apiV1ManufacturerByIdGet(+payload)
       .subscribe(
         manufacturer => {
-          // Register Loading Overlay
-          dispatch(new RegisterLoadingOverlay());
-          dispatch(new SingleManufacturerFetched(manufacturer));
+          dispatch(new SingleManufacturerFetched((<any>manufacturer).result));
         },
-        (err: Error) => dispatch(new ErrorOccured(err.message)),
-        () => dispatch(new ResolveLoadingOverlay())
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+        () => { dispatch([new ResolveLoadingOverlay(), new ResolveLoadingOverlay()]) }
       );
   }
 
@@ -90,8 +93,6 @@ export class ManufacturerState {
     { patchState, dispatch }: StateContext<ManufacturerStateModel>,
     { payload }: SingleManufacturerFetched
   ) {
-    //TODO: Navigate to Manufacturer Edit Manufacturer
-    // dispatch(new Navigate(''))
     patchState({
       selectedManufacturer: payload
     });
@@ -100,14 +101,16 @@ export class ManufacturerState {
   /** Effects Fetch Manufacturer API */
   @Action(FetchManufacturers, { cancelUncompleted: true })
   fetchManufacturers({ dispatch }: StateContext<ManufacturerStateModel>) {
+    // Register Loading Overlay
+    dispatch(new RegisterLoadingOverlay());
+
     // call manufacturer service
     return this.manufacturerService.apiV1ManufacturerGet().subscribe(
       manufacturers => {
         // Register Loading Overlay
-        dispatch(new RegisterLoadingOverlay());
         dispatch(new ManufacturersFetched(manufacturers));
       },
-      (err: Error) => dispatch(new ErrorOccured(err.message)),
+      (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
       () => dispatch(new ResolveLoadingOverlay())
     );
   }
@@ -124,24 +127,20 @@ export class ManufacturerState {
   /** Manufacturer Added Event */
   @Action(ManufacturerAdded)
   manufacturerAdded({ dispatch }: StateContext<ManufacturerStateModel>) {
-    //TODO: Navigate to Manufacturer LIST
-    // dispatch(new Navigate(''))
-    console.log('TODO Navigate to List');
+    dispatch(new Navigate({ commands: ['/manufacturer/list'] }))
   }
 
   /** Add Manufacturer Command*/
   @Action(AddManufacturer, { cancelUncompleted: true })
   addManufacturer({ dispatch }: StateContext<ManufacturerStateModel>, { payload }: AddManufacturer) {
+    // Register Loading Overlay
+    dispatch(new RegisterLoadingOverlay());
+
     // call manufacturer service
     return this.manufacturerService.apiV1ManufacturerPost(payload).pipe(
       tap(
-        () => {
-          // Register Loading Overlay
-          dispatch(new RegisterLoadingOverlay());
-        },
-        (err:HttpErrorResponse) => {
-          dispatch(new ErrorOccured(err.error['Manufacturer name'][0]))
-        },
+        () => { },
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
         () => dispatch([new ResolveLoadingOverlay(), new ManufacturerAdded()])
       )
     );
@@ -153,26 +152,25 @@ export class ManufacturerState {
     { dispatch }: StateContext<ManufacturerStateModel>,
     { payload }: DeleteManufacturer
   ) {
+    // Register Loading Overlay
+    dispatch(new RegisterLoadingOverlay());
+
     return (
       this.manufacturerService
         .apiV1ManufacturerByIdDelete(+payload)
         .subscribe(() => {
-          // Register Loading Overlay
-          dispatch(new RegisterLoadingOverlay());
           dispatch(new ManufacturerDeleted());
         }),
       // tslint:disable-next-line:no-unused-expression
-      (err: Error) => dispatch(new ErrorOccured(err.message)),
-      () => dispatch(new ResolveLoadingOverlay())
+      (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+      () => dispatch([ResolveLoadingOverlay, ManufacturerDeleted])
     );
   }
 
   /** Manufacturer Deleted Event */
   @Action(ManufacturerDeleted)
   manufacturerDeleted({ dispatch }: StateContext<ManufacturerStateModel>) {
-    //TODO: Navigate to Manufacturer LIST
-    // dispatch(new Navigate(''))
-    console.log('TODO Navigate to List');
+    dispatch(new FetchManufacturers());
   }
 
   /** Update Manufacturer Command */
@@ -181,26 +179,37 @@ export class ManufacturerState {
     { dispatch }: StateContext<ManufacturerStateModel>,
     { payload }: UpdateManufacturer
   ) {
+    // Register Loading Overlay
+    dispatch(new RegisterLoadingOverlay());
+
     return (
       this.manufacturerService
         .apiV1ManufacturerByIdPut(payload.id, payload)
-        .subscribe(() => {
-          // Register Loading Overlay
-          dispatch(new RegisterLoadingOverlay());
-          dispatch(new ManufacturerUpdated());
-        }),
-      // tslint:disable-next-line:no-unused-expression
-      (err: Error) => dispatch(new ErrorOccured(err.message)),
-      () => dispatch(new ResolveLoadingOverlay())
+        .pipe(tap(() => { },
+          // tslint:disable-next-line:no-unused-expression
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch([ResolveLoadingOverlay, ManufacturerUpdated]))
+        )
     );
   }
 
   /** Manufacturer Updated Event */
   @Action(ManufacturerUpdated)
   manufacturerUpdated({ dispatch }: StateContext<ManufacturerStateModel>) {
-    //TODO: Navigate to Manufacturer LIST
-    // dispatch(new Navigate(''))
-    console.log('TODO Navigate to List');
+    dispatch(new Navigate({ commands: ['/manufacturer/list'] }))
+  }
+
+  @Action(ClearSelectedManufacturer)
+  clearSelectedManufacturer({ dispatch, patchState }: StateContext<ManufacturerStateModel>) {
+    patchState({
+      selectedManufacturer: {}
+    })
+    dispatch(SelectedManufacturerCleared);
+  }
+
+  @Action(SelectedManufacturerCleared)
+  selectedManufacturerCleared({ dispatch }: StateContext<ManufacturerStateModel>) {
+    
   }
   //#endregion
 }

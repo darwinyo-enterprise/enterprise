@@ -9,6 +9,7 @@ import { ManufacturerState, ManufacturersMock } from '@enterprise/commerce';
 import { ManufacturerService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
 
 export class ManufacturerFormPage extends BaseTestPage<
   ManufacturerFormComponent
@@ -68,7 +69,7 @@ describe('ManufacturerFormComponent', () => {
 
   describe('Functionality Tests', () => {
     it('should populate value in input when manufacturer input provided', () => {
-      component.manufacturer = ManufacturersMock[0];
+      component.manufacturer$ = of(ManufacturersMock[0]);
       component.ngOnChanges();
       fixture.detectChanges();
 

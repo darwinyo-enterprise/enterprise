@@ -150,7 +150,7 @@ export class AppState {
   @Action(Confirm)
   confirm(
     { patchState, dispatch }: StateContext<AppStateModel>,
-    { payload }: Confirm
+    { payload, handler }: Confirm
   ) {
     patchState({
       confirmModel: payload
@@ -160,6 +160,7 @@ export class AppState {
       .afterClosed()
       .subscribe((accept: boolean) => {
         dispatch(new Confirmed(accept));
+        handler.next(accept);
       });
   }
 

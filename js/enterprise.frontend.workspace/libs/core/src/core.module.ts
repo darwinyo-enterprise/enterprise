@@ -11,6 +11,8 @@ import { RouterState } from './router.state';
 import { AppState } from './app.state';
 
 import { SharedModule } from '@enterprise/shared';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 @NgModule({
   imports: [
@@ -21,6 +23,7 @@ import { SharedModule } from '@enterprise/shared';
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot()
   ],
-  exports: [SharedModule]
+  exports: [SharedModule,PageNotFoundComponent, NotAuthorizedComponent],
+  declarations: [PageNotFoundComponent, NotAuthorizedComponent]
 })
-export class CoreModule {}
+export class CoreModule { }

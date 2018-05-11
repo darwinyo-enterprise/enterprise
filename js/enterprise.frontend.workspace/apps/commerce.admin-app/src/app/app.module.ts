@@ -6,19 +6,18 @@ import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 
 import { CatalogModule } from './catalog/catalog.module';
-import * as cc from '@enterprise/commerce/core';
-import * as ci from '@enterprise/commerce/catalog-lib';
+import { CoreModule } from './core/core.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({
       appId: 'enterprise-commerce-admin-app'
     }),
-    cc.CoreModule,
-    ci.ApiModule,
+    CoreModule,
     CatalogModule,
     NxModule.forRoot(),
-    RouterModule.forRoot([], { initialNavigation: 'enabled' })
+    AppRoutingModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

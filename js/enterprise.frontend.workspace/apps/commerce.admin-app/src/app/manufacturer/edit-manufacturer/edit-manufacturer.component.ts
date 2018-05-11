@@ -3,9 +3,11 @@ import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 import { Store, Select } from '@ngxs/store';
 import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
 import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+
   selector: 'eca-edit-manufacturer',
   templateUrl: './edit-manufacturer.component.html',
   styleUrls: ['./edit-manufacturer.component.scss']
@@ -13,16 +15,21 @@ import { Observable } from 'rxjs/Observable';
 /** TODO: Remove Mock manufacturer */
 export class EditManufacturerComponent implements OnInit {
   title: string;
-  @Select(ManufacturerState.getSelectedManufacturer)
-  manufacturer$: Observable<Manufacturer>;
   nameSaveButton: string;
-
-  constructor(private store: Store) {
+  constructor(private store: Store, private route: ActivatedRoute,
+    private router: Router) {
     this.title = 'Edit Manufacturer';
     this.nameSaveButton = 'Update';
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.store.dispatch(new FetchSingleManufacturer(params.get('id')));
+        return params.get('id');
+      })
+    ).subscribe();
+  }
   onManufacturerUpdate(manufacturer: Manufacturer) {
     this.store.dispatch(new UpdateManufacturer(manufacturer));
   }

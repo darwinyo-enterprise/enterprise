@@ -8,9 +8,15 @@ import { EditManufacturerComponent } from './edit-manufacturer/edit-manufacturer
 import { ManufacturerLibModule } from '@enterprise/commerce/manufacturer-lib';
 import { ListItemActionsModule } from '@enterprise/material/list-item-actions';
 import { NgxsModule } from '@ngxs/store';
+import { ManufacturerRoutingModule } from './manufacturer-routing.module';
 
 @NgModule({
-  imports: [CommonModule, ManufacturerLibModule, ListItemActionsModule],
+  imports: [
+    CommonModule,
+    ManufacturerRoutingModule,
+    ManufacturerLibModule,
+    ListItemActionsModule
+  ],
   declarations: [
     AddManufacturerComponent,
     ListManufacturerComponent,

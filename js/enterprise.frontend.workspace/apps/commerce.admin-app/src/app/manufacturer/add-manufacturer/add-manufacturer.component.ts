@@ -4,17 +4,19 @@ import {
   ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
-import { AddManufacturer, ManufacturersMock } from '@enterprise/commerce';
+import { AddManufacturer, ManufacturersMock, ClearSelectedManufacturer } from '@enterprise/commerce';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
+import { ClearFileUpload } from '@enterprise/material/file-upload';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+
   selector: 'eca-add-manufacturer',
   templateUrl: './add-manufacturer.component.html',
   styleUrls: ['./add-manufacturer.component.scss']
 })
 export class AddManufacturerComponent implements OnInit {
   title: string;
-  manufacturer: Manufacturer;
   nameSaveButton: string;
 
   constructor(
@@ -23,10 +25,10 @@ export class AddManufacturerComponent implements OnInit {
   ) {
     this.title = 'Add New Manufacturer';
     this.nameSaveButton = 'Add';
-    this.manufacturer = <Manufacturer>{};
   }
 
   ngOnInit() {
+    this.store.dispatch([ClearSelectedManufacturer,ClearFileUpload]);
   }
   onAddNewManufacturer(manufacturer: Manufacturer) {
     // mock id. though it will be decided on server.

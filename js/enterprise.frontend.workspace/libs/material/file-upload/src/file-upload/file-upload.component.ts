@@ -2,14 +2,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 import { Select, Store } from "@ngxs/store";
 import { FileUploadState } from "@enterprise/material/file-upload/src/shared/file-upload.state";
-import { ValidateFileUpload, DeleteFileImage, AddFileImage } from "@enterprise/material/file-upload/src/shared/file-upload.actions";
+import { ValidateFileUpload, DeleteFileImage, AddFileImage, ClearFileUpload } from "@enterprise/material/file-upload/src/shared/file-upload.actions";
+import { Observable } from "rxjs";
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: "em-file-upload",
   templateUrl: "./file-upload.component.html",
   styleUrls: ["./file-upload.component.scss"]
 })
+
 /** TODO : REFACTOR CODE NEEDED */
 /** Can Receive All Types of File. */
 export class FileUploadComponent implements OnInit {

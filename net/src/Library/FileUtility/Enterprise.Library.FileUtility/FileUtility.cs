@@ -88,7 +88,7 @@ namespace Enterprise.Library.FileUtility
         public async Task<byte[]> ReadFileAsync(string folderName, string fileName, CancellationToken cancellationToken)
         {
             var webRoot = _hostingEnvironment.WebRootPath;
-            var path = webRoot + folderName + "/" + fileName;
+            var path = webRoot + "/" + folderName + "/" + fileName;
             return await File.ReadAllBytesAsync(path, cancellationToken);
         }
 

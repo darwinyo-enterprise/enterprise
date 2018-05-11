@@ -3,14 +3,15 @@ import {
   AppState,
   AppStateModel,
   SetUsername,
-  Navigate
+  Navigate,
+  RoutingModel
 } from '@enterprise/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Select } from '@ngxs/store';
 import { TdLoadingService, LoadingType, LoadingMode } from '@covalent/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+
   selector: 'enterprise-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * TODO:
@@ -36,6 +37,8 @@ export class AppComponent implements OnInit {
    * @param username user name
    */
   setUserName(username: string) {
-    this.store.dispatch([new SetUsername(username), new Navigate('dashboard')]);
+    this.store.dispatch([new SetUsername(username), new Navigate(<RoutingModel>{
+      commands: ['dashboard']
+    })]);
   }
 }
