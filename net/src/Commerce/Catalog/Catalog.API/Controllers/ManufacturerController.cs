@@ -160,7 +160,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]
-        public async Task<IActionResult> GetManufacturerImage(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetManufacturerImageAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
 
@@ -196,11 +196,11 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
         [ProducesResponseType((int) HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateManufacturer(int id, [FromBody] Manufacturer updateModel,
+        public async Task<IActionResult> UpdateManufacturerAsync(int id, [FromBody] Manufacturer updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Manufacturers
-                .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
+                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
             if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
             if (string.IsNullOrEmpty(updateModel.ImageName) || string.IsNullOrEmpty(updateModel.ImageUrl))
@@ -223,7 +223,7 @@ namespace Catalog.API.Controllers
             _fileUtility.DeleteFile("Manufacturer/" + updateModel.Id, oldImageName);
             await InsertManufacturerImage(updateModel, cancellationToken, id);
 
-            return CreatedAtAction(nameof(UpdateManufacturer), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(UpdateManufacturerAsync), new {id = item.Id}, null);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
         [ProducesResponseType((int) HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteManufacturerAsync(int id, CancellationToken cancellationToken)
         {
             try
             {

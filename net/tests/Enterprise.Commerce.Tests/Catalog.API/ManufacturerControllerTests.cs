@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Catalog.API;
 using Catalog.API.Controllers;
 using Catalog.API.Helpers;
@@ -67,15 +68,25 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             return new List<Manufacturer>
             {
-                new Manufacturer {Name = "Microsoft", Description = "None", ImageName = "Microsoft.png"},
-                new Manufacturer {Name = "Asus", Description = "None", ImageName = "Asus.png"},
-                new Manufacturer {Name = "Apple", Description = "None", ImageName = "Apple.png"},
-                new Manufacturer {Name = "Google", Description = "None", ImageName = "Google.png"},
-                new Manufacturer {Name = "Docker", Description = "None", ImageName = "Docker.png"},
-                new Manufacturer {Name = "Sony", Description = "None", ImageName = "Sony.png"}
+                new Manufacturer {Name = "Microsoft", Description = "None", ImageName = "Microsoft.png",ImageUrl = "TestUrl"},
+                new Manufacturer {Name = "Asus", Description = "None", ImageName = "Asus.png",ImageUrl = "TestUrl"},
+                new Manufacturer {Name = "Apple", Description = "None", ImageName = "Apple.png",ImageUrl = "TestUrl"},
+                new Manufacturer {Name = "Google", Description = "None", ImageName = "Google.png",ImageUrl = "TestUrl"},
+                new Manufacturer {Name = "Docker", Description = "None", ImageName = "Docker.png",ImageUrl = "TestUrl"},
+                new Manufacturer {Name = "Sony", Description = "None", ImageName = "Sony.png",ImageUrl = "TestUrl"}
             };
         }
 
+        private Manufacturer GetTestManufacturerEmptyImage()
+        {
+            return new Manufacturer()
+            {
+                Description = "Test",
+                ImageUrl = "",
+                ImageName = "",
+                Name = "Test Manufacturer"
+            };
+        }
         private Manufacturer GetTestManufacturer()
         {
             return new Manufacturer()
@@ -90,9 +101,13 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private async Task CleanManufacturer()
         {
-            _catalogContextFixture.Context.Manufacturers.RemoveRange(await _catalogContextFixture.Context
-               .Manufacturers.ToListAsync());
-            await _catalogContextFixture.Context.SaveChangesAsync();
+            var list = await _catalogContextFixture.Context
+                .Manufacturers.ToListAsync();
+            if (list.Count > 0)
+            {
+                _catalogContextFixture.Context.Manufacturers.RemoveRange(list);
+                await _catalogContextFixture.Context.SaveChangesAsync();
+            }
         }
 
         #endregion
@@ -100,46 +115,17 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         #region Get
 
         [Fact]
-        public async Task Get_manufacturer_by_id_response_bad_request_when_id_less_or_equals_zero()
+        public async Task Get_manufacturer_by_id_response_bad_request_with_message_when_id_less_or_equals_zero()
         {
             var id = 0;
             var cancellationToken = new CancellationToken();
-            // Arrange
-            await SeedManufacturer(cancellationToken);
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
             var response = await manufacturerController.GetManufacturerByIdAsync(id, cancellationToken);
-            Assert.IsType<BadRequestResult>(response);
-        }
-
-        [Fact]
-        public async Task Get_manufacturer_by_id_response_complete_url_image()
-        {
-            var id = 1;
-            var cancellationToken = new CancellationToken();
-            // Arrange
-            var expectedManufacturer = await SeedManufacturer(cancellationToken);
-
-            var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer[0],
-                _settings.Value.ManufacturerImageBaseUrl,
-                _settings.Value.AzureStorageEnabled);
-
-            // Act
-            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.GetManufacturerByIdAsync(id, cancellationToken);
-            var okResponse = Assert.IsType<OkObjectResult>(response);
-
-            var modelResponse = Assert.IsType<Manufacturer>(okResponse.Value);
-
-            // Assert
-            Assert.Equal(modelResponse.Name, expectedResult.Name);
-            Assert.Equal(modelResponse.Description, expectedResult.Description);
-            Assert.Equal(modelResponse.ImageName, expectedResult.ImageName);
-            Assert.Equal(_settings.Value.ManufacturerImageBaseUrl + modelResponse.Id + "/" + modelResponse.ImageName,
-                expectedResult.ImageUrl);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
         }
 
         [Fact]
@@ -147,8 +133,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             var cancellationToken = new CancellationToken();
             // Arrange
-            var expectedManufacturer = await SeedManufacturer(cancellationToken);
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
@@ -162,18 +152,17 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         }
 
         [Fact]
-        public async Task Get_manufacturer_image_by_id_response_bad_request_when_id_less_or_equals_zero()
+        public async Task Get_manufacturer_image_by_id_response_bad_request_with_message_when_id_less_or_equals_zero()
         {
             var id = 0;
             var cancellationToken = new CancellationToken();
-            // Arrange
-            await SeedManufacturer(cancellationToken);
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.GetManufacturerImage(id, cancellationToken);
-            Assert.IsType<BadRequestResult>(response);
+            var response = await manufacturerController.GetManufacturerImageAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
         }
 
         [Fact]
@@ -181,7 +170,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             var cancellationToken = new CancellationToken();
             // Arrange
-            var expectedManufacturer = await SeedManufacturer(cancellationToken);
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
 
             Assert.NotEmpty(expectedManufacturer);
 
@@ -191,69 +185,271 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.GetManufacturerImage(id, cancellationToken);
+            var response = await manufacturerController.GetManufacturerImageAsync(id, cancellationToken);
             Assert.IsType<NotFoundResult>(response);
         }
 
-        [Fact]
-        public async Task Get_manufacturers_response_complete_url_image()
-        {
-            var cancellationToken = new CancellationToken();
-            // Arrange
-            var expectedManufacturer = await SeedManufacturer(cancellationToken);
+        //[Fact]
+        //public async Task Get_manufacturer_by_id_response_complete_url_image()
+        //{
+        //    var id = 1;
+        //    var cancellationToken = new CancellationToken();
+        //    // Arrange
+        //    var expectedManufacturer = await SeedManufacturer(cancellationToken);
 
-            var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer,
-                _settings.Value.ManufacturerImageBaseUrl,
-                _settings.Value.AzureStorageEnabled);
+        //    var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer[0],
+        //        _settings.Value.ManufacturerImageBaseUrl,
+        //        _settings.Value.AzureStorageEnabled);
 
-            // Act
-            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.GetAllManufacturersAsync(cancellationToken);
-            var okResponse = Assert.IsType<OkObjectResult>(response);
+        //    // Act
+        //    var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+        //        _fileUtilityFixture.FileUtility, _settings);
+        //    var response = await manufacturerController.GetManufacturerByIdAsync(id, cancellationToken);
+        //    var okResponse = Assert.IsType<OkObjectResult>(response);
 
-            var modelResponse = Assert.IsType<List<Manufacturer>>(okResponse.Value);
-            Assert.Equal(expectedResult.Count, modelResponse.Count);
+        //    var modelResponse = Assert.IsType<Manufacturer>(okResponse.Value);
 
-            // Assert
-            Assert.Equal(modelResponse[0].Name, expectedResult[0].Name);
-            Assert.Equal(modelResponse[0].Description, expectedResult[0].Description);
-            Assert.Equal(modelResponse[0].ImageName, expectedResult[0].ImageName);
-            Assert.Equal(
-                _settings.Value.ManufacturerImageBaseUrl + modelResponse[0].Id + "/" + modelResponse[0].ImageName,
-                expectedResult[0].ImageUrl);
-        }
+        //    // Assert
+        //    Assert.Equal(modelResponse.Name, expectedResult.Name);
+        //    Assert.Equal(modelResponse.Description, expectedResult.Description);
+        //    Assert.Equal(modelResponse.ImageName, expectedResult.ImageName);
+        //    Assert.Equal(_settings.Value.ManufacturerImageBaseUrl + modelResponse.Id + "/" + modelResponse.ImageName,
+        //        expectedResult.ImageUrl);
+        //}
+
+        //[Fact]
+        //public async Task Get_manufacturer_image_by_id_response_bad_request_when_id_less_or_equals_zero()
+        //{
+        //    var id = 0;
+        //    var cancellationToken = new CancellationToken();
+        //    // Arrange
+        //    await SeedManufacturer(cancellationToken);
+
+        //    // Act
+        //    var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+        //        _fileUtilityFixture.FileUtility, _settings);
+        //    var response = await manufacturerController.GetManufacturerImage(id, cancellationToken);
+        //    Assert.IsType<BadRequestResult>(response);
+        //}
+
+        //[Fact]
+        //public async Task Get_manufacturer_image_by_id_response_not_found_when_item_not_exists()
+        //{
+        //    var cancellationToken = new CancellationToken();
+        //    // Arrange
+        //    var expectedManufacturer = await SeedManufacturer(cancellationToken);
+
+        //    Assert.NotEmpty(expectedManufacturer);
+
+        //    // ReSharper disable once PossibleNullReferenceException
+        //    var id = expectedManufacturer.LastOrDefault().Id++;
+
+        //    // Act
+        //    var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+        //        _fileUtilityFixture.FileUtility, _settings);
+        //    var response = await manufacturerController.GetManufacturerImage(id, cancellationToken);
+        //    Assert.IsType<NotFoundResult>(response);
+        //}
+
+        //[Fact]
+        //public async Task Get_manufacturers_response_complete_url_image()
+        //{
+        //    var cancellationToken = new CancellationToken();
+        //    // Arrange
+        //    var expectedManufacturer = await SeedManufacturer(cancellationToken);
+
+        //    var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer,
+        //        _settings.Value.ManufacturerImageBaseUrl,
+        //        _settings.Value.AzureStorageEnabled);
+
+        //    // Act
+        //    var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+        //        _fileUtilityFixture.FileUtility, _settings);
+        //    var response = await manufacturerController.GetAllManufacturersAsync(cancellationToken);
+        //    var okResponse = Assert.IsType<OkObjectResult>(response);
+
+        //    var modelResponse = Assert.IsType<List<Manufacturer>>(okResponse.Value);
+        //    Assert.Equal(expectedResult.Count, modelResponse.Count);
+
+        //    // Assert
+        //    Assert.Equal(modelResponse[0].Name, expectedResult[0].Name);
+        //    Assert.Equal(modelResponse[0].Description, expectedResult[0].Description);
+        //    Assert.Equal(modelResponse[0].ImageName, expectedResult[0].ImageName);
+        //    Assert.Equal(
+        //        _settings.Value.ManufacturerImageBaseUrl + modelResponse[0].Id + "/" + modelResponse[0].ImageName,
+        //        expectedResult[0].ImageUrl);
+        //}
 
         #endregion
 
         #region Post
-
         [Fact]
-        public async Task Post_manufacturer_response_complete_url_image()
+        public async Task Post_manufacturer_response_bad_request_with_message_when_manufacturer_null()
         {
             var cancellationToken = new CancellationToken();
-            // Arrange
-            await CleanManufacturer();
-            var expectedManufacturer = await SeedManufacturer(cancellationToken);
-
-            var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer,
-                _settings.Value.ManufacturerImageBaseUrl,
-                _settings.Value.AzureStorageEnabled);
-
-            // Expect to be clean
-            Assert.Equal(expectedResult.Count, GetPreconfiguredManufacturer().Count());
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.AddNewManufacturer(GetTestManufacturer(), cancellationToken);
-            var okResponse = Assert.IsType<CreatedAtActionResult>(response);
-            
+            var response = await manufacturerController.AddNewManufacturer(null, cancellationToken);
+            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", badRequestResponse.Value.ToString());
+        }
+        [Fact]
+        public async Task Post_manufacturer_response_bad_request_with_message_when_manufacturer_image_is_empty()
+        {
+            var cancellationToken = new CancellationToken();
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.AddNewManufacturer(GetTestManufacturerEmptyImage(), cancellationToken);
+            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", badRequestResponse.Value.ToString());
+        }
+        [Fact]
+        public async Task Post_manufacturer_response_bad_request_with_message_when_manufacturer_exists()
+        {
+            var cancellationToken = new CancellationToken();
+            //Arrange
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
+
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.AddNewManufacturer(expectedManufacturer[0], cancellationToken);
+            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", badRequestResponse.Value.ToString());
+        }
+
+        //[Fact]
+        //public async Task Post_manufacturer_response_bad_request_with_message()
+        //{
+        //    var cancellationToken = new CancellationToken();
+        //    // Arrange
+        //    await CleanManufacturer();
+        //    var expectedManufacturer = await SeedManufacturer(cancellationToken);
+
+        //    var expectedResult = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(expectedManufacturer,
+        //        _settings.Value.ManufacturerImageBaseUrl,
+        //        _settings.Value.AzureStorageEnabled);
+
+        //    // Expect to be clean
+        //    Assert.Equal(expectedResult.Count, GetPreconfiguredManufacturer().Count());
+
+        //    // Act
+        //    var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+        //        _fileUtilityFixture.FileUtility, _settings);
+        //    var response = await manufacturerController.AddNewManufacturer(GetTestManufacturer(), cancellationToken);
+        //    var okResponse = Assert.IsType<CreatedAtActionResult>(response);
+        //}
+
+        #endregion
+
+        #region Put
+
+        [Fact]
+        public async Task Update_manufacturer_response_not_found_with_message_when_item_not_exists()
+        {
+            var cancellationToken = new CancellationToken();
+            // Arrange
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedManufacturer);
+
+            // ReSharper disable once PossibleNullReferenceException
+            var id = expectedManufacturer.LastOrDefault().Id++;
+
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                    _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.UpdateManufacturerAsync(id, expectedManufacturer[0], cancellationToken);
+            var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
+
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        [Fact]
+        public async Task Update_manufacturer_response_bad_request_with_message_when_item_image_url_or_image_name_is_not_provided()
+        {
+            var cancellationToken = new CancellationToken();
+            // Arrange
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedManufacturer);
+
+            // ReSharper disable once PossibleNullReferenceException
+            var id = expectedManufacturer[0].Id;
+            expectedManufacturer[0].ImageName = "";
+            expectedManufacturer[0].ImageUrl = "";
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.UpdateManufacturerAsync(id, expectedManufacturer[0], cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+
+            Assert.Contains("Message", responseMessage.Value.ToString());
         }
 
         #endregion
 
+        #region Delete
 
+        [Fact]
+        public async Task Delete_manufacturer_response_bad_request_with_message_when_id_less_or_equals_zero()
+        {
+            var id = 0;
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.DeleteManufacturerAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        [Fact]
+        public async Task Delete_manufacturer_response_not_found_with_message_when_item_not_found()
+        {
+            var cancellationToken = new CancellationToken();
+            // Arrange
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedManufacturer);
+
+            // ReSharper disable once PossibleNullReferenceException
+            var id = expectedManufacturer.LastOrDefault().Id++;
+
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.DeleteManufacturerAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
+
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        #endregion
         //[Fact]
         //public async Task Put_manufacturers_response_complete_url_image()
         //{
