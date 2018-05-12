@@ -59,7 +59,7 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 
             public static string ManufacturerImageById(string manufacturerId)
             {
-                return "api/v1/manufacturer/image" + manufacturerId;
+                return "api/v1/manufacturer/image/" + manufacturerId;
             }
 
             #endregion
@@ -125,14 +125,12 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
             #region Manufacturer
 
             public static string AddManufacturer => $"api/v1/manufacturer";
-            public static string AddManufacturerImage => $"api/v1/manufacturer/image";
 
             #endregion
 
             #region Category
 
             public static string AddCategory => $"api/v1/category";
-            public static string AddCategoryImage => $"api/v1/category/image";
 
             #endregion
 
@@ -140,7 +138,6 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 
             public static string AddRate => $"api/v1/product/rate";
             public static string AddProduct => $"api/v1/product";
-            public static string AddProductImage => $"api/v1/product/image";
 
             #endregion
         }
@@ -188,9 +185,6 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
             {
                 return $"api/v1/manufacturer/{id}";
             }
-
-            public static string DeleteManufacturerImage => $"api/v1/manufacturer/image";
-
             #endregion
 
             #region Category
@@ -199,9 +193,6 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
             {
                 return $"api/v1/category/{id}";
             }
-
-            public static string DeleteCategoryImage => $"api/v1/category/image";
-
             #endregion
 
             #region Product
@@ -210,9 +201,6 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
             {
                 return $"api/v1/product/{id}";
             }
-
-            public static string DeleteProductImage => $"api/v1/product/image";
-
             #endregion
         }
     }

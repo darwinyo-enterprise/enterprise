@@ -8,8 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
+using Enterprise.Commerce.IntegrationTests.Attributes;
 using Enterprise.Commerce.IntegrationTests.Catalog.API;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -17,6 +20,7 @@ using Xunit;
 
 namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 {
+    [TestCaseOrderer(TestCollectionOrderer.TypeName, TestCollectionOrderer.AssembyName)]
     public class ManufacturerScenarios : CatalogScenarioBase
     {
         #region Utility
@@ -33,10 +37,30 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             };
         }
 
+        private async Task<Manufacturer> SeedTestManufacturerAsync(CatalogContext ctx, TestServer server)
+        {
+            var verifyManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
+            if (verifyManufacturer != null)
+            {
+                ctx.Manufacturers.Remove(verifyManufacturer);
+                await ctx.SaveChangesAsync();
+            }
+
+            var content = new StringContent(JsonConvert.SerializeObject(GetTestManufacturer()), Encoding.UTF8, "application/json");
+
+            var response = await server.CreateClient()
+                .PostAsync(Post.AddManufacturer, content);
+
+            response.EnsureSuccessStatusCode();
+
+            var insertedManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
+
+            return insertedManufacturer;
+        }
         #endregion
 
         #region Get
-        [Fact]
+        [Fact, TestPriority(1)]
         public async Task Get_manufacturer_response_ok_status_code_should_return_all_manufacturers()
         {
             using (var server = CreateServer())
@@ -52,7 +76,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(actual.Count, result.Count);
             }
         }
-        [Fact]
+        [Fact, TestPriority(2)]
         public async Task Get_manufacturer_response_ok_status_code_with_http_urls()
         {
             using (var server = CreateServer())
@@ -65,7 +89,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Contains("http", result[0].ImageUrl);
             }
         }
-        [Fact]
+        [Fact, TestPriority(3)]
         public async Task Get_manufacturer_by_id_response_ok_status_code()
         {
             var searchedManufacturerId = 1;
@@ -77,7 +101,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact]
+        [Fact, TestPriority(4)]
         public async Task Get_manufacturers_response_ok_status_code()
         {
             using (var server = CreateServer())
@@ -99,7 +123,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact]
+        [Fact, TestPriority(5)]
         public async Task Get_manufacturers_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
@@ -122,11 +146,25 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
+        [Fact, TestPriority(6)]
+        public async Task Get_manufacturers_image_response_file_result()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerImageById(actual.Id.ToString()));
+                Assert.IsType<StreamContent>(response.Content);
+            }
+        }
+
         #endregion
 
         #region Post
 
-        [Fact]
+        [Fact, TestPriority(7)]
         public async Task Add_manufacturer_response_ok_status_code_should_add_file_in_directory()
         {
             using (var server = CreateServer())
@@ -152,21 +190,136 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var insertedManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
                 var targetDir = hostingEnvironment.WebRootPath + "\\Manufacturer\\" + insertedManufacturer.Id + "\\" + insertedManufacturer.ImageName;
 
-                 Assert.True(File.Exists(targetDir));
+                Assert.True(File.Exists(targetDir));
+            }
+        }
+
+
+        [Fact, TestPriority(8)]
+        public async Task Add_manufacturer_response_ok_status_code_should_persisted_in_db()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var verifyManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
+                if (verifyManufacturer != null)
+                {
+                    ctx.Manufacturers.Remove(verifyManufacturer);
+                    await ctx.SaveChangesAsync();
+                }
+
+                var content = new StringContent(JsonConvert.SerializeObject(GetTestManufacturer()), Encoding.UTF8, "application/json");
+
+                var response = await server.CreateClient()
+                    .PostAsync(Post.AddManufacturer, content);
+
+                response.EnsureSuccessStatusCode();
+
+                var insertedManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
+
+                Assert.NotNull(insertedManufacturer);
+            }
+        }
+        #endregion
+
+        #region Put
+
+        [Fact, TestPriority(9)]
+        public async Task Update_manufacturer_response_ok_status_code_should_replace_file_in_directory()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var manufacturerToUpdate = await ctx.Manufacturers.FirstOrDefaultAsync();
+
+                manufacturerToUpdate.Description = "Test";
+                manufacturerToUpdate.ImageName = "test.png";
+                manufacturerToUpdate.ImageUrl = GetTestManufacturer().ImageUrl;
+
+                var content = new StringContent(JsonConvert.SerializeObject(manufacturerToUpdate), Encoding.UTF8, "application/json");
+
+                var response = await server.CreateClient()
+                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.Id), content);
+
+                response.EnsureSuccessStatusCode();
+
+                var hostingEnvironment = server.Host.Services.GetRequiredService<IHostingEnvironment>();
+
+                var insertedManufacturer = await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == manufacturerToUpdate.Name);
+                var targetDir = hostingEnvironment.WebRootPath + "\\Manufacturer\\" + insertedManufacturer.Id + "\\" + insertedManufacturer.ImageName;
+
+                Assert.True(File.Exists(targetDir));
+            }
+        }
+
+
+        [Fact, TestPriority(10)]
+        public async Task Update_manufacturer_response_ok_status_code_should_persisted_in_db()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var manufacturerToUpdate = await ctx.Manufacturers.FirstOrDefaultAsync();
+
+                manufacturerToUpdate.Name = "Test";
+                manufacturerToUpdate.Description = "Test1";
+                manufacturerToUpdate.ImageName = "test1.png";
+                manufacturerToUpdate.ImageUrl = GetTestManufacturer().ImageUrl;
+
+                var content = new StringContent(JsonConvert.SerializeObject(manufacturerToUpdate), Encoding.UTF8, "application/json");
+
+                var response = await server.CreateClient()
+                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.Id), content);
+
+                response.EnsureSuccessStatusCode();
+
+                var insertedManufacturer =
+                    await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == manufacturerToUpdate.Name);
+                Assert.NotNull(insertedManufacturer);
             }
         }
 
         #endregion
 
-        #region Put
-
-
-
-        #endregion
-
         #region Delete
 
+        [Fact, TestPriority(11)]
+        public async Task Delete_manufacturer_should_delete_file_and_folder_in_directory()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var manufacturerToDelete = await SeedTestManufacturerAsync(ctx, server);
 
+                var response = await server.CreateClient()
+                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.Id));
+
+                var hostingEnvironment = server.Host.Services.GetRequiredService<IHostingEnvironment>();
+
+                var targetDir = hostingEnvironment.WebRootPath + "\\Manufacturer\\" + manufacturerToDelete.Id + "\\" + manufacturerToDelete.ImageName;
+
+                Assert.False(File.Exists(targetDir));
+            }
+        }
+
+
+        [Fact, TestPriority(12)]
+        public async Task Delete_manufacturer_should_properly_delete_record_in_db()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var manufacturerToDelete = await SeedTestManufacturerAsync(ctx, server);
+
+                var response = await server.CreateClient()
+                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.Id));
+
+                var deletedManufacturer =
+                    await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == manufacturerToDelete.Name);
+                Assert.Null(deletedManufacturer);
+            }
+        }
 
         #endregion
     }
