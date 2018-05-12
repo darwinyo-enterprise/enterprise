@@ -39,7 +39,7 @@ namespace Catalog.API.Controllers
         /// <returns>list of Manufacturers</returns>
         // GET api/v1/Manufacturer
         [HttpGet] // DONE
-        [ProducesResponseType(typeof(List<Manufacturer>), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllManufacturersAsync(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Manufacturers.ToListAsync(cancellationToken);
@@ -58,12 +58,12 @@ namespace Catalog.API.Controllers
         /// <returns>Manufacturer</returns>
         // GET api/v1/Manufacturer/5
         [HttpGet("{id}")] //Done
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Manufacturer), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetManufacturerByIdAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer id."});
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer id." });
 
             var result = await _catalogContext.Manufacturers.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -71,7 +71,7 @@ namespace Catalog.API.Controllers
             if (result != null)
             {
                 var withUrl =
-                    UrlImageHelper<Manufacturer>.GetImageBase64UrlAsync(result, _fileUtility, "Manufacturer",
+                   await UrlImageHelper<Manufacturer>.GetImageBase64UrlAsync(result, _fileUtility, "Manufacturer",
                         cancellationToken);
                 return Ok(withUrl);
             }
@@ -97,23 +97,23 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Manufacturer
         [HttpPost] //Done
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewManufacturer([FromBody] Manufacturer manufacturer,
             CancellationToken cancellationToken)
         {
             #region Validations
 
             if (manufacturer == null)
-                return BadRequest(new {Message = $"Cant Create Empty Manufacturer."});
+                return BadRequest(new { Message = $"Cant Create Empty Manufacturer." });
 
             if (string.IsNullOrEmpty(manufacturer.ImageUrl))
-                return BadRequest(new {Message = $"Cant Create Manufacturer without image ."});
+                return BadRequest(new { Message = $"Cant Create Manufacturer without image ." });
 
             var existManufacturer = await _catalogContext.Manufacturers.Where(x => x.Name == manufacturer.Name)
                 .ToListAsync(cancellationToken);
             if (existManufacturer.Count > 0)
-                return BadRequest(new {Message = $"Manufacturer with Name {manufacturer.Name} existed."});
+                return BadRequest(new { Message = $"Manufacturer with Name {manufacturer.Name} existed." });
 
             #endregion
 
@@ -135,7 +135,7 @@ namespace Catalog.API.Controllers
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewManufacturer), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(AddNewManufacturer), new { id = item.Id }, null);
         }
 
         private async Task InsertManufacturerImage(Manufacturer manufacturer, CancellationToken cancellationToken,
@@ -157,12 +157,12 @@ namespace Catalog.API.Controllers
         ///     return file to download
         /// </returns>
         [HttpGet("image/{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetManufacturerImageAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer Id." });
 
             var item = await _catalogContext.Manufacturers
                 .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
@@ -193,18 +193,18 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Manufacturer/5
         [HttpPut("{id}")] // Done
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateManufacturerAsync(int id, [FromBody] Manufacturer updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Manufacturers
                 .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
-            if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
             if (string.IsNullOrEmpty(updateModel.ImageName) || string.IsNullOrEmpty(updateModel.ImageUrl))
-                return BadRequest(new {Message = $"Image is empty."});
+                return BadRequest(new { Message = $"Image is empty." });
             var oldImageName = item.ImageName;
 
             #region Mapping
@@ -223,7 +223,7 @@ namespace Catalog.API.Controllers
             _fileUtility.DeleteFile("Manufacturer/" + updateModel.Id, oldImageName);
             await InsertManufacturerImage(updateModel, cancellationToken, id);
 
-            return CreatedAtAction(nameof(UpdateManufacturerAsync), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(UpdateManufacturerAsync), new { id = item.Id }, null);
         }
 
         /// <summary>
@@ -236,14 +236,14 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // DELETE api/v1/Manufacturer/5
         [HttpDelete("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteManufacturerAsync(int id, CancellationToken cancellationToken)
         {
             try
             {
-                if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
+                if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer Id." });
 
                 var item = await _catalogContext.Manufacturers
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
@@ -257,15 +257,15 @@ namespace Catalog.API.Controllers
                     return NoContent();
                 }
 
-                return NotFound(new {Message = $"Manufacturer not found."});
+                return NotFound(new { Message = $"Manufacturer not found." });
             }
             catch (FileNotFoundException)
             {
-                return NotFound(new {Message = $"Manufacturer image not found."});
+                return NotFound(new { Message = $"Manufacturer image not found." });
             }
             catch (Exception)
             {
-                return BadRequest(new {Message = $"Something bad happened, please contact your admin."});
+                return BadRequest(new { Message = $"Something bad happened, please contact your admin." });
             }
         }
     }

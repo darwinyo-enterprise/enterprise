@@ -770,7 +770,8 @@ namespace Catalog.API.Infrastructure
             var subdir = directory.GetDirectories(id).FirstOrDefault();
             var fileToInsert = subdir?.GetFiles(imageName).FirstOrDefault();
             if (fileToInsert != null && fileToInsert.Exists) fileToInsert.Delete();
-            file?.CopyTo(picturePath + "/" + id);
+            
+            File.Copy(picturePath + "/" +file.Name, picturePath+"/"+id+"/"+file.Name,true);
         }
 
         private void DeleteAllFilesWithinDir(string directoryPath)

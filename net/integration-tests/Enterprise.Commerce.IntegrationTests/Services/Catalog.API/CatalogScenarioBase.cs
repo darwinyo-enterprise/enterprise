@@ -17,9 +17,10 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
         public TestServer CreateServer()
         {
             var webHostBuilder = WebHost.CreateDefaultBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API")
+                .UseWebRoot("Pic")
                 .UseConfiguration(new ConfigurationBuilder()
-                    .AddJsonFile(Directory.GetCurrentDirectory() + @"\Catalog.API\appsettings.json")
+                    .AddJsonFile(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API\\appsettings.json")
                     .Build()
                 )
                 .UseStartup<Startup>();

@@ -1,5 +1,11 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Catalog.API.Infrastructure;
+using Catalog.API.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Enterprise.Commerce.IntegrationTests.Catalog.API
@@ -10,54 +16,10 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
     public class CatalogScenarios
         : CatalogScenarioBase
     {
-        [Fact]
-        public async Task Get_manufacturer_by_id_response_bad_request_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(int.MinValue));
 
-                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-            }
-        }
+        
 
-        [Fact]
-        public async Task Get_manufacturer_by_id_response_not_found_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(int.MaxValue));
-
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
-        }
-
-        [Fact]
-        public async Task Get_manufacturer_by_id_response_ok_status_code()
-        {
-            var searchedManufacturerId = 1;
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(searchedManufacturerId));
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Fact]
-        public async Task Get_manufacturers_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.Manufacturers);
-
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
+       
 
         //[Fact]
         //public async Task Get_catalog_types_response_ok_status_code()

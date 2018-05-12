@@ -83,7 +83,7 @@ export class ManufacturerState {
       .pipe(
         tap(
           (manufacturer) => patchState({
-            selectedManufacturer: (<any>manufacturer).result
+            selectedManufacturer: manufacturer
           }),
           (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/manufacturer/list'] })]),
           () => { dispatch(SingleManufacturerFetched) }
