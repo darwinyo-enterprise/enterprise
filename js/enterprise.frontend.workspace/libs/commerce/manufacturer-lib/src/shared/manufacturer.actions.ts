@@ -13,7 +13,7 @@ export class FetchSingleManufacturer {
 /** Single Manufacturers Fetched Event */
 export class SingleManufacturerFetched {
   static readonly type = '[COMMERCE] SINGLE MANUFACTURERS FETCHED';
-  constructor(public payload: Manufacturer) {}
+  constructor() {}
 }
 
 /** Fetch All Manufacturers Command */
@@ -25,7 +25,7 @@ export class FetchManufacturers {
 /** All Manufacturers Fetched Event */
 export class ManufacturersFetched {
   static readonly type = '[COMMERCE] MANUFACTURERS FETCHED';
-  constructor(public payload: Manufacturer[]) {}
+  constructor() {}
 }
 
 /** Add Manufacturer Command */

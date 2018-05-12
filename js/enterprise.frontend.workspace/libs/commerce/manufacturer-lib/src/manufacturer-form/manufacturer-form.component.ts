@@ -83,7 +83,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
       (err) => alert(err),
       () => {
         if (manufacturer != null) {
-          this.store.dispatch([new ClearFileUpload(), new AddFileImage(
+          this.store.dispatch([ClearFileUpload, new AddFileImage(
             {
               id: manufacturer.id.toString(),
               fileName: manufacturer.imageName.toString(),

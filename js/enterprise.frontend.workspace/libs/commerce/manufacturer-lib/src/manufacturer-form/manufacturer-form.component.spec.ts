@@ -34,7 +34,7 @@ export class ManufacturerFormPage extends BaseTestPage<
   }
 }
 
-describe('ManufacturerFormComponent', () => {
+fdescribe('ManufacturerFormComponent', () => {
   let component: ManufacturerFormComponent;
   let fixture: ComponentFixture<ManufacturerFormComponent>;
   let manufacturerFormPage: ManufacturerFormPage;

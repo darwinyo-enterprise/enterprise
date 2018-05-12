@@ -6,7 +6,8 @@ import {
   Navigate,
   AppState,
   RegisterLinearLoadingOverlay,
-  ProgressLinearLoadingOverlay
+  ProgressLinearLoadingOverlay,
+  Alert
 } from '@enterprise/core';
 
 import {
@@ -66,70 +67,74 @@ export class ManufacturerState {
 
   //#region Commands and Event
 
+  // DOne
   /** Command Fetch Single Manufacturer API */
   @Action(FetchSingleManufacturer, { cancelUncompleted: true })
   fetchSingleManufacturer(
-    { dispatch }: StateContext<ManufacturerStateModel>,
+    { patchState, dispatch }: StateContext<ManufacturerStateModel>,
     { payload }: FetchSingleManufacturer
   ) {
     // Register Loading Overlay
-    dispatch(new RegisterLoadingOverlay());
+    dispatch(RegisterLoadingOverlay);
 
     // call manufacturer service
     return this.manufacturerService
       .apiV1ManufacturerByIdGet(+payload)
-      .subscribe(
-        manufacturer => {
-          dispatch(new SingleManufacturerFetched((<any>manufacturer).result));
-        },
-        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-        () => { dispatch([new ResolveLoadingOverlay(), new ResolveLoadingOverlay()]) }
+      .pipe(
+        tap(
+          (manufacturer) => patchState({
+            selectedManufacturer: (<any>manufacturer).result
+          }),
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/manufacturer/list'] })]),
+          () => { dispatch(SingleManufacturerFetched) }
+        )
       );
   }
 
+  // Done
   /** Single Manufacturer Fetched Event */
   @Action(SingleManufacturerFetched)
   singleManufacturerFetched(
-    { patchState, dispatch }: StateContext<ManufacturerStateModel>,
-    { payload }: SingleManufacturerFetched
+    { dispatch }: StateContext<ManufacturerStateModel>
   ) {
-    patchState({
-      selectedManufacturer: payload
-    });
+    dispatch(ResolveLoadingOverlay);
   }
 
+  // Done
   /** Effects Fetch Manufacturer API */
   @Action(FetchManufacturers, { cancelUncompleted: true })
-  fetchManufacturers({ dispatch }: StateContext<ManufacturerStateModel>) {
+  fetchManufacturers({ patchState, dispatch }: StateContext<ManufacturerStateModel>) {
     // Register Loading Overlay
     dispatch(new RegisterLoadingOverlay());
 
     // call manufacturer service
-    return this.manufacturerService.apiV1ManufacturerGet().subscribe(
-      manufacturers => {
-        // Register Loading Overlay
-        dispatch(new ManufacturersFetched(manufacturers));
-      },
-      (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-      () => dispatch(new ResolveLoadingOverlay())
-    );
+    return this.manufacturerService.apiV1ManufacturerGet()
+      .pipe(
+        tap(
+          (manufacturers) => patchState({ manufacturers: manufacturers }),
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch(ManufacturersFetched)
+        )
+      );
   }
 
+  // Done
   /** Manufacturer Fetched Event */
   @Action(ManufacturersFetched)
   manufacturersFetched(
-    { patchState }: StateContext<ManufacturerStateModel>,
-    { payload }: ManufacturersFetched
+    { dispatch }: StateContext<ManufacturerStateModel>
   ) {
-    patchState({ manufacturers: payload });
+    dispatch(ResolveLoadingOverlay);
   }
 
+  // Done
   /** Manufacturer Added Event */
   @Action(ManufacturerAdded)
   manufacturerAdded({ dispatch }: StateContext<ManufacturerStateModel>) {
-    dispatch(new Navigate({ commands: ['/manufacturer/list'] }))
+    dispatch([ResolveLoadingOverlay, new Navigate({ commands: ['/manufacturer/list'] }), new Alert("Manufacturer Added")])
   }
 
+  // Done
   /** Add Manufacturer Command*/
   @Action(AddManufacturer, { cancelUncompleted: true })
   addManufacturer({ dispatch }: StateContext<ManufacturerStateModel>, { payload }: AddManufacturer) {
@@ -141,11 +146,12 @@ export class ManufacturerState {
       tap(
         () => { },
         (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-        () => dispatch([new ResolveLoadingOverlay(), new ManufacturerAdded()])
+        () => dispatch(ManufacturerAdded)
       )
     );
   }
 
+  //Done
   /** Delete Manufacturer Command */
   @Action(DeleteManufacturer)
   deleteManufacturer(
@@ -155,24 +161,25 @@ export class ManufacturerState {
     // Register Loading Overlay
     dispatch(new RegisterLoadingOverlay());
 
-    return (
-      this.manufacturerService
-        .apiV1ManufacturerByIdDelete(+payload)
-        .subscribe(() => {
-          dispatch(new ManufacturerDeleted());
-        }),
-      // tslint:disable-next-line:no-unused-expression
-      (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-      () => dispatch([ResolveLoadingOverlay, ManufacturerDeleted])
-    );
+    return this.manufacturerService
+      .apiV1ManufacturerByIdDelete(+payload)
+      .pipe(
+        tap(
+          () => { },
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, FetchManufacturers]),
+          () => dispatch(ManufacturerDeleted)
+        )
+      );
   }
 
+  // Done
   /** Manufacturer Deleted Event */
   @Action(ManufacturerDeleted)
   manufacturerDeleted({ dispatch }: StateContext<ManufacturerStateModel>) {
-    dispatch(new FetchManufacturers());
+    dispatch([FetchManufacturers, ResolveLoadingOverlay, new Alert("Manufacturer Deleted")]);
   }
 
+  // DONE
   /** Update Manufacturer Command */
   @Action(UpdateManufacturer)
   updateManufacturer(
@@ -182,21 +189,21 @@ export class ManufacturerState {
     // Register Loading Overlay
     dispatch(new RegisterLoadingOverlay());
 
-    return (
-      this.manufacturerService
-        .apiV1ManufacturerByIdPut(payload.id, payload)
-        .pipe(tap(() => { },
-          // tslint:disable-next-line:no-unused-expression
+    return this.manufacturerService
+      .apiV1ManufacturerByIdPut(payload.id, payload)
+      .pipe(
+        tap(
+          () => { },
           (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-          () => dispatch([ResolveLoadingOverlay, ManufacturerUpdated]))
-        )
-    );
+          () => dispatch(ManufacturerUpdated))
+      );
   }
 
+  // Done
   /** Manufacturer Updated Event */
   @Action(ManufacturerUpdated)
   manufacturerUpdated({ dispatch }: StateContext<ManufacturerStateModel>) {
-    dispatch(new Navigate({ commands: ['/manufacturer/list'] }))
+    dispatch([ResolveLoadingOverlay, new Navigate({ commands: ['/manufacturer/list'] }), new Alert("Manufacturer Updated")])
   }
 
   @Action(ClearSelectedManufacturer)
@@ -209,7 +216,7 @@ export class ManufacturerState {
 
   @Action(SelectedManufacturerCleared)
   selectedManufacturerCleared({ dispatch }: StateContext<ManufacturerStateModel>) {
-    
+
   }
   //#endregion
 }

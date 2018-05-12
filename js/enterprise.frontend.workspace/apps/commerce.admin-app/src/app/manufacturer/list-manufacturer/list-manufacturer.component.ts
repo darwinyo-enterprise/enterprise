@@ -48,7 +48,7 @@ export class ListManufacturerComponent implements OnInit {
 
   /** call manufacturer service to get manufacturers */
   fetchManufacturers() {
-    this.store.dispatch(new FetchManufacturers());
+    this.store.dispatch(FetchManufacturers);
   }
 
   /** Navigate when manufacturer add button clicked */
@@ -63,7 +63,7 @@ export class ListManufacturerComponent implements OnInit {
 
   /** Navigate to edit manufacturer form when clicked */
   onEditManufacturer(id: string) {
-    this.store.dispatch([new RegisterLoadingOverlay(), new Navigate({
+    this.store.dispatch([new Navigate({
       extras: {
         relativeTo: this.route
       },
@@ -76,11 +76,9 @@ export class ListManufacturerComponent implements OnInit {
     this.selectedId = id;
     this.deleteSubject$.pipe(take(1)).subscribe(confirmation => {
       if (confirmation) {
-        // this.store.dispatch(new DeleteManufacturer(this.selectedId))
+        this.store.dispatch(new DeleteManufacturer(this.selectedId))
       }
-    }
-
-    );
+    });
     this.store.dispatch(new Confirm(this.confirmModel, this.deleteSubject$))
 
   }

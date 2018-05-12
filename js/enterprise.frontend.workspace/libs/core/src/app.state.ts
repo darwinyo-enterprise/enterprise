@@ -16,11 +16,13 @@ import {
   ResolveLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
   Confirm,
-  Confirmed
+  Confirmed,
+  Alert
 } from './app.actions';
 
 export interface AppStateModel {
   username: string;
+  alertMessage:string;
   errorMessage: string;
   progressLoading: number;
   confirmModel: IConfirmConfig;
@@ -31,6 +33,7 @@ export interface AppStateModel {
 
 const defaults: AppStateModel = {
   username: '',
+  alertMessage:'',
   errorMessage: '',
   progressLoading: 0,
   confirmModel: null,
@@ -71,6 +74,10 @@ export class AppState {
   @Selector()
   static errorMessage(state: AppStateModel) {
     return state.errorMessage;
+  }
+  @Selector()
+  static alertMessage(state: AppStateModel) {
+    return state.alertMessage;
   }
   @Selector()
   static isLoading(state: AppStateModel) {
@@ -132,7 +139,7 @@ export class AppState {
     patchState({ errorMessage: payload, isError: true });
     this.dialogService.openAlert({
       message: payload,
-      title: 'Alert', //OPTIONAL, hides if not provided
+      title: 'Error Occured', //OPTIONAL, hides if not provided
       closeButton: 'Close', //OPTIONAL, defaults to 'CLOSE'
       width: '400px' //OPTIONAL, defaults to 400px
     });
@@ -171,6 +178,22 @@ export class AppState {
   ) {
     patchState({
       confirmation: payload
+    });
+  }
+
+  @Action(Alert)
+  alert(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: Alert
+  ) {
+    patchState({
+      alertMessage: payload
+    });
+    this.dialogService.openAlert({
+      message: payload,
+      title: 'Alert', //OPTIONAL, hides if not provided
+      closeButton: 'OK', //OPTIONAL, defaults to 'CLOSE'
+      width: '400px' //OPTIONAL, defaults to 400px
     });
   }
 }
