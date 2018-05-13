@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Catalog.API;
 using Catalog.API.Infrastructure;
@@ -15,28 +16,31 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 {
     public class CatalogScenarioBase
     {
-        private string GetAppConfigPath(string currDir)
-        {
-            var dirs = currDir.Split("\\");
-            var targetDir = dirs.TakeWhile(x => !x.Contains("bin"));
-            string result = "";
-            foreach (var s in targetDir)
-            {
-                result += s+"\\";
-            }
-
-            result += "Services\\Catalog.API";
-            return result;
-        }
         public TestServer CreateServer()
         {
+            var dict = new Dictionary<string, string>
+            {
+                {
+                    "ConnectionString",
+                    "Server=tcp:127.0.0.1,5433;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd"
+                },
+                {"UseCustomizationData", "true"},
+                {"AzureServiceBusEnabled", "false"},
+                {"AzureStorageEnabled", "false"},
+                {"EventBusConnection", "localhost"},
+                {"SubscriptionClientName", "Catalog"},
+                {"EventBusRetryCount", "5"},
+                {"ManufacturerImageBaseUrl", "http,//localhost,5101/api/v1/manufacturer/image/"},
+                {"ProductImageBaseUrl", "http,//localhost,5101/api/v1/product/image/"},
+                {"CategoryImageBaseUrl", "http,//localhost,5101/api/v1/category/image/"}
+            };
+
             var dir = Directory.GetCurrentDirectory();
             var webHostBuilder = WebHost.CreateDefaultBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API")
                 .UseWebRoot("Pic")
                 .UseConfiguration(new ConfigurationBuilder()
-                    .AddJsonFile(GetAppConfigPath(Directory.GetCurrentDirectory())+"\\appsettings.json")
-
+                    .AddInMemoryCollection(dict)
                     //.AddJsonFile(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API\\appsettings.json")
                     .Build()
                 )
