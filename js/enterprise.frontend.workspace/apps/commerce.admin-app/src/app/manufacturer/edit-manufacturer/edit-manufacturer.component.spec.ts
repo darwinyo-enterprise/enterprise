@@ -11,7 +11,8 @@ import {
   UpdateManufacturer,
   ManufacturerState,
   SingleManufacturerFetched,
-  FetchSingleManufacturer
+  FetchSingleManufacturer,
+  ManufacturerServiceMock
 } from '@enterprise/commerce';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,7 +45,7 @@ describe('EditManufacturerComponent', () => {
           EditManufacturerComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
-          ManufacturerService,
+          { provide: ManufacturerService, useValue: ManufacturerServiceMock },
           {
             provide: ActivatedRoute,
             useValue: {

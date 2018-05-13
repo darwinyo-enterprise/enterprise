@@ -43,11 +43,6 @@ export class ListManufacturerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchManufacturers();
-  }
-
-  /** call manufacturer service to get manufacturers */
-  fetchManufacturers() {
     this.store.dispatch(FetchManufacturers);
   }
 

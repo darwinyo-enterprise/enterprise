@@ -13,7 +13,8 @@ import {
   ManufacturerState,
   ManufacturersMock,
   AddManufacturer,
-  ClearSelectedManufacturer
+  ClearSelectedManufacturer,
+  ManufacturerServiceMock
 } from '@enterprise/commerce';
 
 describe('AddManufacturerComponent', () => {
@@ -32,7 +33,7 @@ describe('AddManufacturerComponent', () => {
         ],
         declarations: [AddManufacturerComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [ManufacturerService]
+        providers: [ { provide: ManufacturerService, useValue: ManufacturerServiceMock },]
       }).compileComponents();
     })
   );
