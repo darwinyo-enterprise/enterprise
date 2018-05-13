@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Enterprise.Commerce.IntegrationTests.Attributes;
-using Enterprise.Commerce.IntegrationTests.Catalog.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using Catalog.API;
 using Catalog.API.Infrastructure;
 using Enterprise.Library.IntegrationEventLog;
@@ -12,36 +10,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Enterprise.Commerce.IntegrationTests.Catalog.API
+namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 {
     public class CatalogScenarioBase
     {
         public TestServer CreateServer()
         {
-            var dict = new Dictionary<string, string>
-            {
-                {
-                    "ConnectionString",
-                    "Server=tcp:127.0.0.1,5433;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd"
-                },
-                {"UseCustomizationData", "true"},
-                {"AzureServiceBusEnabled", "false"},
-                {"AzureStorageEnabled", "false"},
-                {"EventBusConnection", "localhost"},
-                {"SubscriptionClientName", "Catalog"},
-                {"EventBusRetryCount", "5"},
-                {"ManufacturerImageBaseUrl", "http://localhost:5101/api/v1/manufacturer/image/"},
-                {"ProductImageBaseUrl", "http://localhost:5101/api/v1/product/image/"},
-                {"CategoryImageBaseUrl", "http://localhost:5101/api/v1/category/image/"}
-            };
-
-            var dir = Directory.GetCurrentDirectory();
             var webHostBuilder = WebHost.CreateDefaultBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory() + "/Services/Catalog.API")
                 .UseWebRoot("Pic")
                 .UseConfiguration(new ConfigurationBuilder()
-                    .AddInMemoryCollection(dict)
-                    //.AddJsonFile(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API\\appsettings.json")
+                    .AddJsonFile(Directory.GetCurrentDirectory() + "/Services/Catalog.API/appsettings.json")
                     .Build()
                 )
                 .UseStartup<Startup>();

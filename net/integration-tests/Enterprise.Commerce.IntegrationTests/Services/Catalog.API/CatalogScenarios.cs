@@ -1,14 +1,4 @@
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using Catalog.API.Infrastructure;
-using Catalog.API.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Xunit;
-
-namespace Enterprise.Commerce.IntegrationTests.Catalog.API
+namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 {
     /// <summary>
     ///     TODO: Make test for file manipulations
