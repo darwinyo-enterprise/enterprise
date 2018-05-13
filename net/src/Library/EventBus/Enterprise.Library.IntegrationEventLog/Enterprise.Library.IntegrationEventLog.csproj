@@ -2,16 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Darwin Yo</Authors>
-    <PackageReleaseNotes>1.0.0
-- Added Integration Event Log.
-- Added Log EF Context.</PackageReleaseNotes>
-    <Company>Enterprise</Company>
-    <Description>Integration Event Log Library</Description>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Projects\Enterprise Libraries\C#\Enterprise.Packages\IntegrationEventLog\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,5 +16,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Enterprise.Library.EventBus\Enterprise.Library.EventBus.csproj" />
   </ItemGroup>
-
 </Project>

@@ -77,4 +77,40 @@ describe('EditManufacturerComponent', () => {
       );
     });
   });
+  describe('State Tests', () => {
+    describe('Update Manufacturer and Manufacturer Updated', () => {
+      it('should dispatch register loading overlay when dispatched', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch resolve loading when update manufacturer fetched', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch error occured and resolved overlay loading when error occured', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch manufacturer fetched when complete', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch navigate and alert on complete', () => {
+        expect(false).toBeTruthy();
+      })
+    })
+    describe('Fetch Single Manufacturer and Single Manufacturer Fetched', () => {
+      it('should dispatch register loading overlay when fetch single manufacturer dispatched', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch resolve loading when single manufacturer fetched', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should patch state to manufacturer state on success case', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch error occured and resolved overlay loading when error occured', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch manufacturer fetched when complete', () => {
+        expect(false).toBeTruthy();
+      })
+    })
+  })
 });

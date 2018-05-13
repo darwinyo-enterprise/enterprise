@@ -120,13 +120,13 @@ describe('ListManufacturerComponent', () => {
       it('should dispatch resolve overlay when fetch manufacturer done', () => {
         expect(false).toBeTruthy();
       })
-      it('should dispatch error occured when fetch manufacturer error', () => {
-        expect(false).toBeTruthy();
-      })
-      it('should display error correctly when fetch manufacturer error', () => {
+      it('should dispatch error occured and resolved loading when fetch manufacturer error', () => {
         expect(false).toBeTruthy();
       })
       it('should patch manufacturer state when manufacturer fetched', () => {
+        expect(false).toBeTruthy();
+      })
+      it('should dispatch manufacturerFetched on complete', () => {
         expect(false).toBeTruthy();
       })
     })
@@ -134,16 +134,13 @@ describe('ListManufacturerComponent', () => {
       it('should dispatch register overlay when delete manufacturer', () => {
         expect(false).toBeTruthy();
       })
-      it('should dispatch resolve overlay when delete manufacturer done', () => {
+      it('should dispatch error occured and resolved loading when delete manufacturer error', () => {
         expect(false).toBeTruthy();
       })
-      it('should dispatch error occured when delete manufacturer error', () => {
+      it('should dispatch fetch manufacturer, resolve overlay, and alert when manufacturer deleted', () => {
         expect(false).toBeTruthy();
       })
-      it('should display error correctly when delete manufacturer error', () => {
-        expect(false).toBeTruthy();
-      })
-      it('should dispatch fetch manufacturer when manufacturer deleted', () => {
+      it('should dispatch manufacturer fetched on complete', () => {
         expect(false).toBeTruthy();
       })
     })

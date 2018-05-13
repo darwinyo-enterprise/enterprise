@@ -27,6 +27,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\EventBus\Enterprise.Library.EventBus.RabbitMQ\Enterprise.Library.EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\Library\EventBus\Enterprise.Library.EventBus.ServiceBus\Enterprise.Library.EventBus.ServiceBus.csproj" />
+    <ProjectReference Include="..\..\..\Library\FileUtility\Enterprise.Library.FileUtility\Enterprise.Library.FileUtility.csproj" />
+    <ProjectReference Include="..\..\..\Library\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\Library\HealthChecks\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj" />
   </ItemGroup>
 

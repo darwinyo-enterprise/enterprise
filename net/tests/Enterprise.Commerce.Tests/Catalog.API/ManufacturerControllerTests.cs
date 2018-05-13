@@ -87,17 +87,6 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
         }
 
-        private async Task CleanManufacturer()
-        {
-            var list = await _catalogContextFixture.Context
-                .Manufacturers.ToListAsync();
-            if (list.Count > 0)
-            {
-                _catalogContextFixture.Context.Manufacturers.RemoveRange(list);
-                await _catalogContextFixture.Context.SaveChangesAsync();
-            }
-        }
-
         #endregion
 
         #region Get

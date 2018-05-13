@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\HealthChecks\Enterprise.Extensions.HealthChecks.SqlServer\Enterprise.Extensions.HealthChecks.SqlServer.csproj" />
-    <ProjectReference Include="..\..\Library\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\Library\HealthChecks\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj" />
     <ProjectReference Include="..\..\Library\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj" />
   </ItemGroup>

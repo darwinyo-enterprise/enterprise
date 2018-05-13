@@ -24,14 +24,6 @@ import { ManufacturerState } from './../shared/manufacturer.state';
 
 /**TODO: Make Interaction with backend with progress bar */
 export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
-  //#region Selectors
-  /** identify if current state is loading then shouldn't register another loading overlay.
-   *  doesn't make sense to have multiple overlay at once.
-   */
-  @Select(AppState.isLoading) isLoading$: Observable<boolean>;
-
-  /** constant for manufacturer */
-  @Select(FileUploadState.isMultiple) multiple: boolean;
 
   @Select(FileUploadState.getFileImages)
   fileImages: Observable<UploadFileModel[]>;

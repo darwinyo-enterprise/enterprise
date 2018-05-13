@@ -55,7 +55,7 @@ namespace Enterprise.Library.FileUtility
         /// </summary>
         /// <param name="folderName"></param>
         /// <returns></returns>
-        public async Task CleanImageFilesAsync(string folderName)
+        public void CleanImageFiles(string folderName)
         {
             var webRootPath = _hostingEnvironment.WebRootPath;
             var newPath = Path.Combine(webRootPath, folderName);

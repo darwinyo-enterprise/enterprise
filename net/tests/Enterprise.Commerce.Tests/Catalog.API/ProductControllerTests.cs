@@ -1,15 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Catalog.API;
-using Catalog.API.Controllers;
-using Catalog.API.Helpers;
-using Catalog.API.Models;
+﻿using Catalog.API;
 using Enterprise.Commerce.IntegrationTests.Fixture;
 using Enterprise.Commerce.Tests.Fixture;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;

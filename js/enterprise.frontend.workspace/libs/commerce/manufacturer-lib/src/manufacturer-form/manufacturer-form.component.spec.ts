@@ -10,6 +10,7 @@ import { ManufacturerService, UploadFileModel } from '@enterprise/commerce/catal
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { ManufacturerServiceMock } from '@enterprise/commerce/manufacturer-lib/src/mocks/manufacturer-service.mock';
 
 export class ManufacturerFormPage extends BaseTestPage<
   ManufacturerFormComponent
@@ -34,7 +35,7 @@ export class ManufacturerFormPage extends BaseTestPage<
   }
 }
 
-fdescribe('ManufacturerFormComponent', () => {
+describe('ManufacturerFormComponent', () => {
   let component: ManufacturerFormComponent;
   let fixture: ComponentFixture<ManufacturerFormComponent>;
   let manufacturerFormPage: ManufacturerFormPage;
@@ -51,7 +52,7 @@ fdescribe('ManufacturerFormComponent', () => {
         ],
         declarations: [ManufacturerFormComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [ManufacturerService]
+        providers: [  {provide: ManufacturerService, useValue: ManufacturerServiceMock }]
       }).compileComponents();
     })
   );
@@ -179,11 +180,10 @@ fdescribe('ManufacturerFormComponent', () => {
   });
   describe('State Tests',()=>{
     it('should populate value in input when selected manufacturer state exists', () => {
-      component.manufacturer$ = store.dispatch(new FetchSingleManufacturer(ManufacturersMock[0].id.toString()));
+      store.dispatch(new FetchSingleManufacturer(ManufacturersMock[0].id.toString()));
       component.ngOnChanges();
       fixture.detectChanges();
 
-      console.log(component.manufacturerForm);
       expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
     });
   })

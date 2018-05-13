@@ -4,9 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="9.1.1" />
   </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />

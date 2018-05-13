@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\common\Guard.cs" Link="Guard.cs" />
   </ItemGroup>
@@ -18,5 +17,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />
   </ItemGroup>
-
 </Project>
