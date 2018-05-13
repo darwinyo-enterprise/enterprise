@@ -30,14 +30,14 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
                 {"EventBusConnection", "localhost"},
                 {"SubscriptionClientName", "Catalog"},
                 {"EventBusRetryCount", "5"},
-                {"ManufacturerImageBaseUrl", "http,//localhost,5101/api/v1/manufacturer/image/"},
-                {"ProductImageBaseUrl", "http,//localhost,5101/api/v1/product/image/"},
-                {"CategoryImageBaseUrl", "http,//localhost,5101/api/v1/category/image/"}
+                {"ManufacturerImageBaseUrl", "http://localhost:5101/api/v1/manufacturer/image/"},
+                {"ProductImageBaseUrl", "http://localhost:5101/api/v1/product/image/"},
+                {"CategoryImageBaseUrl", "http://localhost:5101/api/v1/category/image/"}
             };
 
             var dir = Directory.GetCurrentDirectory();
             var webHostBuilder = WebHost.CreateDefaultBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API")
+                .UseContentRoot(Directory.GetCurrentDirectory() + "/Services/Catalog.API")
                 .UseWebRoot("Pic")
                 .UseConfiguration(new ConfigurationBuilder()
                     .AddInMemoryCollection(dict)
