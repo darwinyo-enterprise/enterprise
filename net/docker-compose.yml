@@ -71,10 +71,3 @@ services:
   #   build:
   #     context: .
   #     dockerfile: src/HealthCheck/WebStatus/Dockerfile
-
-  enterprise.commerce.integrationtests:
-    image: enterprisecommerceintegrationtests
-    build:
-      context: .
-      dockerfile: integration-tests/Enterprise.Commerce.IntegrationTests/Dockerfile
-
