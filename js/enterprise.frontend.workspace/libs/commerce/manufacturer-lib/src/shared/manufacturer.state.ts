@@ -105,7 +105,7 @@ export class ManufacturerState {
   @Action(FetchManufacturers, { cancelUncompleted: true })
   fetchManufacturers({ patchState, dispatch }: StateContext<ManufacturerStateModel>) {
     // Register Loading Overlay
-    dispatch(new RegisterLoadingOverlay());
+    dispatch(RegisterLoadingOverlay);
 
     // call manufacturer service
     return this.manufacturerService.apiV1ManufacturerGet()

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Catalog.API;
 using Catalog.API.Infrastructure;
 using Enterprise.Library.IntegrationEventLog;
@@ -14,13 +15,29 @@ namespace Enterprise.Commerce.IntegrationTests.Catalog.API
 {
     public class CatalogScenarioBase
     {
+        private string GetAppConfigPath(string currDir)
+        {
+            var dirs = currDir.Split("\\");
+            var targetDir = dirs.TakeWhile(x => !x.Contains("bin"));
+            string result = "";
+            foreach (var s in targetDir)
+            {
+                result += s+"\\";
+            }
+
+            result += "Services\\Catalog.API";
+            return result;
+        }
         public TestServer CreateServer()
         {
+            var dir = Directory.GetCurrentDirectory();
             var webHostBuilder = WebHost.CreateDefaultBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API")
                 .UseWebRoot("Pic")
                 .UseConfiguration(new ConfigurationBuilder()
-                    .AddJsonFile(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API\\appsettings.json")
+                    .AddJsonFile(GetAppConfigPath(Directory.GetCurrentDirectory())+"\\appsettings.json")
+
+                    //.AddJsonFile(Directory.GetCurrentDirectory() + "\\Services\\Catalog.API\\appsettings.json")
                     .Build()
                 )
                 .UseStartup<Startup>();

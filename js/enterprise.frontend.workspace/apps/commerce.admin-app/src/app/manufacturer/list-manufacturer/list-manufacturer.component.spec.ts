@@ -21,7 +21,7 @@ import { AddManufacturerComponent } from '../add-manufacturer/add-manufacturer.c
 import { EditManufacturerComponent } from '../edit-manufacturer/edit-manufacturer.component';
 import { Location } from "@angular/common";
 import { Navigate, RegisterLoadingOverlay, Confirm } from '@enterprise/core';
-import { ManufacturerServiceMock } from '@enterprise/commerce/manufacturer-lib';
+import { ManufacturerServiceMock, ManufacturerStateModel } from '@enterprise/commerce/manufacturer-lib';
 
 fdescribe('ListManufacturerComponent', () => {
   let component: ListManufacturerComponent;
@@ -105,7 +105,9 @@ fdescribe('ListManufacturerComponent', () => {
   describe('State Tests', () => {
     describe('Fetch Manufacturers And Manufacturers Fetched', () => {
       it('should dispatch register overlay when fetch manufacturer', () => {
-        expect(false).toBeTruthy();
+        store.dispatch(FetchManufacturers);
+       
+        expect(storeSpy).toHaveBeenCalledWith(RegisterLoadingOverlay);
       })
       it('should dispatch resolve overlay when fetch manufacturer done', () => {
         expect(false).toBeTruthy();
