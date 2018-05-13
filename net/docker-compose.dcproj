@@ -9,6 +9,10 @@
     <DockerServiceName>catalogapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose-ci.override.yml" />
+    <None Include="docker-compose-ci.yml" />
+    <None Include="docker-compose-external.override.yml" />
+    <None Include="docker-compose-external.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

@@ -1,4 +1,4 @@
-import { Manufacturer } from '@enterprise/commerce/catalog-lib';
+import { Manufacturer, ManufacturerService } from '@enterprise/commerce/catalog-lib';
 
 export const ManufacturersMock: Manufacturer[] = [
   <Manufacturer>{
@@ -86,3 +86,7 @@ export const ManufacturersMock: Manufacturer[] = [
     imageUrl: 'http://mock-image/'
   }
 ];
+
+export class ManufacturerServiceMock extends ManufacturerService{
+  
+}

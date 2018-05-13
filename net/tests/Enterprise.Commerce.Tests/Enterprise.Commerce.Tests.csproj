@@ -19,10 +19,4 @@
     <ProjectReference Include="..\..\src\Commerce\Catalog\Catalog.API\Catalog.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\..\..\..\Users\Darwin Yo\.nuget\packages\moq\4.8.1\lib\netstandard1.3\Moq.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

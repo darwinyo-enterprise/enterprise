@@ -5,7 +5,7 @@ import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage } from '@enterprise/material/file-upload';
-import { ManufacturerState, ManufacturersMock } from '@enterprise/commerce';
+import { ManufacturerState, ManufacturersMock, FetchSingleManufacturer } from '@enterprise/commerce';
 import { ManufacturerService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -68,14 +68,7 @@ fdescribe('ManufacturerFormComponent', () => {
   });
 
   describe('Functionality Tests', () => {
-    it('should populate value in input when manufacturer input provided', () => {
-      component.manufacturer$ = of(ManufacturersMock[0]);
-      component.ngOnChanges();
-      fixture.detectChanges();
-
-      console.log(component.manufacturerForm);
-      expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
-    });
+    
     it('should populate value to image url in form when file upload changed', () => {
       const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       expect(
@@ -184,4 +177,14 @@ fdescribe('ManufacturerFormComponent', () => {
       expect(manufacturerFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
     });
   });
+  describe('State Tests',()=>{
+    it('should populate value in input when selected manufacturer state exists', () => {
+      component.manufacturer$ = store.dispatch(new FetchSingleManufacturer(ManufacturersMock[0].id.toString()));
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+      console.log(component.manufacturerForm);
+      expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
+    });
+  })
 });

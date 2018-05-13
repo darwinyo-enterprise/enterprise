@@ -24,9 +24,6 @@ import { ManufacturerState } from './../shared/manufacturer.state';
 
 /**TODO: Make Interaction with backend with progress bar */
 export class ManufacturerFormComponent implements OnInit, OnChanges, OnDestroy {
-  /** identifier for linear loading overlay as upload progress */
-  progress: number;
-
   //#region Selectors
   /** identify if current state is loading then shouldn't register another loading overlay.
    *  doesn't make sense to have multiple overlay at once.

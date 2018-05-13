@@ -243,21 +243,24 @@ namespace Catalog.API.Controllers
         {
             try
             {
-                if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer Id." });
+                if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
 
                 var item = await _catalogContext.Manufacturers
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
                 if (item != null)
                 {
-                    _fileUtility.DeleteFile("Manufacturer/" + item.Id, item.ImageName);
-
                     _catalogContext.Manufacturers.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
+                    _fileUtility.DeleteFile("Manufacturer/" + item.Id, item.ImageName);
                     return NoContent();
                 }
 
-                return NotFound(new { Message = $"Manufacturer not found." });
+                return NotFound(new {Message = $"Manufacturer not found."});
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(new { Message = $"Please remove all products that related to this manufacturer first." });
             }
             catch (FileNotFoundException)
             {
