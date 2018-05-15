@@ -16,19 +16,15 @@ import { switchMap } from 'rxjs/operators';
 export class EditManufacturerComponent implements OnInit {
   title: string;
   nameSaveButton: string;
-  constructor(private store: Store, private route: ActivatedRoute,
-    private router: Router) {
+  constructor(private store: Store, private route: ActivatedRoute) {
     this.title = 'Edit Manufacturer';
     this.nameSaveButton = 'Update';
   }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        this.store.dispatch(new FetchSingleManufacturer(params.get('id')));
-        return params.get('id');
-      })
-    ).subscribe();
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.store.dispatch(new FetchSingleManufacturer(params.get('id')))
+    });
   }
   onManufacturerUpdate(manufacturer: Manufacturer) {
     this.store.dispatch(new UpdateManufacturer(manufacturer));

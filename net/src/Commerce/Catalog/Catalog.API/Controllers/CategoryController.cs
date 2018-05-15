@@ -39,7 +39,7 @@ namespace Catalog.API.Controllers
         /// <returns>list of Categories</returns>
         // GET api/v1/Category
         [HttpGet] // DONE
-        [ProducesResponseType(typeof(List<Category>), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Category>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllCategoriesAsync(CancellationToken cancellationToken)
         {
             var result = await _catalogContext.Categories.ToListAsync(cancellationToken);
@@ -58,12 +58,12 @@ namespace Catalog.API.Controllers
         /// <returns>Category</returns>
         // GET api/v1/Category/5
         [HttpGet("{id}")] //Done
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Category), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Category), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new {Message = $"Invalid Category id."});
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Category id." });
 
             var result = await _catalogContext.Categories.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -71,7 +71,7 @@ namespace Catalog.API.Controllers
             if (result != null)
             {
                 var withUrl =
-                    UrlImageHelper<Category>.GetImageBase64UrlAsync(result, _fileUtility, "Category",
+                   await UrlImageHelper<Category>.GetImageBase64UrlAsync(result, _fileUtility, "Category",
                         cancellationToken);
                 return Ok(withUrl);
             }
@@ -97,23 +97,23 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Category
         [HttpPost] //Done
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewCategory([FromBody] Category category,
             CancellationToken cancellationToken)
         {
             #region Validations
 
             if (category == null)
-                return BadRequest(new {Message = $"Cant Create Empty Category."});
+                return BadRequest(new { Message = $"Cant Create Empty Category." });
 
             if (string.IsNullOrEmpty(category.ImageUrl))
-                return BadRequest(new {Message = $"Cant Create Category without image ."});
+                return BadRequest(new { Message = $"Cant Create Category without image ." });
 
             var existCategory = await _catalogContext.Categories.Where(x => x.Name == category.Name)
                 .ToListAsync(cancellationToken);
             if (existCategory.Count > 0)
-                return BadRequest(new {Message = $"Category with Name {category.Name} existed."});
+                return BadRequest(new { Message = $"Category with Name {category.Name} existed." });
 
             #endregion
 
@@ -135,7 +135,7 @@ namespace Catalog.API.Controllers
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewCategory), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(AddNewCategory), new { id = item.Id }, null);
         }
 
         private async Task InsertCategoryImage(Category category, CancellationToken cancellationToken,
@@ -157,12 +157,12 @@ namespace Catalog.API.Controllers
         ///     return file to download
         /// </returns>
         [HttpGet("image/{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(File), (int) HttpStatusCode.OK)]
-        public async Task<IActionResult> GetCategoryImage(int id, CancellationToken cancellationToken)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetCategoryImageAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new {Message = $"Invalid Category Id."});
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Category Id." });
 
             var item = await _catalogContext.Categories
                 .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
@@ -193,18 +193,18 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Category/5
         [HttpPut("{id}")] // Done
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category updateModel,
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> UpdateCategoryAsync(int id, [FromBody] Category updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Categories
-                .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
+                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
-            if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
             if (string.IsNullOrEmpty(updateModel.ImageName) || string.IsNullOrEmpty(updateModel.ImageUrl))
-                return BadRequest(new {Message = $"Image is empty."});
+                return BadRequest(new { Message = $"Image is empty." });
             var oldImageName = item.ImageName;
 
             #region Mapping
@@ -223,7 +223,7 @@ namespace Catalog.API.Controllers
             _fileUtility.DeleteFile("Category/" + updateModel.Id, oldImageName);
             await InsertCategoryImage(updateModel, cancellationToken, id);
 
-            return CreatedAtAction(nameof(UpdateCategory), new {id = item.Id}, null);
+            return CreatedAtAction(nameof(UpdateCategoryAsync), new { id = item.Id }, null);
         }
 
         /// <summary>
@@ -236,36 +236,39 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // DELETE api/v1/Category/5
         [HttpDelete("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> DeleteCategoryAsync(int id, CancellationToken cancellationToken)
         {
             try
             {
-                if (id <= 0) return BadRequest(new {Message = $"Invalid Category Id."});
+                if (id <= 0) return BadRequest(new { Message = $"Invalid Category Id." });
 
                 var item = await _catalogContext.Categories
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
                 if (item != null)
                 {
-                    _fileUtility.DeleteFile("Category/" + item.Id, item.ImageName);
-
                     _catalogContext.Categories.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
+                    _fileUtility.DeleteFile("Category/" + item.Id, item.ImageName);
                     return NoContent();
                 }
 
-                return NotFound(new {Message = $"Category not found."});
+                return NotFound(new { Message = $"Category not found." });
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(new { Message = $"Please remove all products that related to this Category first." });
             }
             catch (FileNotFoundException)
             {
-                return NotFound(new {Message = $"Category image not found."});
+                return NotFound(new { Message = $"Category image not found." });
             }
             catch (Exception)
             {
-                return BadRequest(new {Message = $"Something bad happened, please contact your admin."});
+                return BadRequest(new { Message = $"Something bad happened, please contact your admin." });
             }
         }
     }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManufacturerFormComponent } from './manufacturer-form.component';
+import { CategoryFormComponent } from './category-form.component';
 import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage } from '@enterprise/material/file-upload';
-import { ManufacturerState, ManufacturersMock, FetchSingleManufacturer } from '@enterprise/commerce';
-import { ManufacturerService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
+import { CategoryState, CategorysMock, FetchSingleCategory } from '@enterprise/commerce';
+import { CategoryService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 
-export class ManufacturerFormPage extends BaseTestPage<
-  ManufacturerFormComponent
+export class CategoryFormPage extends BaseTestPage<
+  CategoryFormComponent
   > {
-  constructor(public fixture: ComponentFixture<ManufacturerFormComponent>) {
+  constructor(public fixture: ComponentFixture<CategoryFormComponent>) {
     super(fixture);
   }
   get saveBtn() {
@@ -34,39 +34,39 @@ export class ManufacturerFormPage extends BaseTestPage<
   }
 }
 
-describe('ManufacturerFormComponent', () => {
-  let component: ManufacturerFormComponent;
-  let fixture: ComponentFixture<ManufacturerFormComponent>;
-  let manufacturerFormPage: ManufacturerFormPage;
+describe('CategoryFormComponent', () => {
+  let component: CategoryFormComponent;
+  let fixture: ComponentFixture<CategoryFormComponent>;
+  let categoryFormPage: CategoryFormPage;
   let store: Store;
-  let service: ManufacturerService;
+  let service: CategoryService;
   let serviceSpy: jasmine.Spy;
-  const title = 'Test Manufacturer';
+  const title = 'Test Category';
   const btnName = 'Add';
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        providers: [ManufacturerService],
+        providers: [CategoryService],
         imports: [
           HttpClientModule,
           ReactiveFormsModule,
-          NgxsModule.forRoot([FileUploadState, ManufacturerState])
+          NgxsModule.forRoot([FileUploadState, CategoryState])
         ],
-        declarations: [ManufacturerFormComponent],
+        declarations: [CategoryFormComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManufacturerFormComponent);
+    fixture = TestBed.createComponent(CategoryFormComponent);
     component = fixture.componentInstance;
     component.nameSaveButton = btnName;
     component.title = title;
 
-    manufacturerFormPage = new ManufacturerFormPage(fixture);
-    service = TestBed.get(ManufacturerService);
-    serviceSpy = spyOn(service, 'apiV1ManufacturerByIdGet').and.callFake((id: number) => of(ManufacturersMock.filter(x => x.id === id)[0]));
+    categoryFormPage = new CategoryFormPage(fixture);
+    service = TestBed.get(CategoryService);
+    serviceSpy = spyOn(service, 'apiV1CategoryByIdGet').and.callFake((id: number) => of(CategorysMock.filter(x => x.id === id)[0]));
 
     store = TestBed.get(Store);
     fixture.detectChanges();
@@ -77,18 +77,18 @@ describe('ManufacturerFormComponent', () => {
     it('should populate value to image url in form when file upload changed', () => {
       const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       expect(
-        component.manufacturerForm.controls['imageUrl'].value
+        component.categoryForm.controls['imageUrl'].value
       ).not.toContain(uploadFileModel.fileUrl);
       expect(
-        component.manufacturerForm.controls['imageName'].value
+        component.categoryForm.controls['imageName'].value
       ).not.toContain(uploadFileModel.fileName);
 
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(
+      expect(component.categoryForm.controls['imageUrl'].value).toContain(
         uploadFileModel.fileUrl
       );
-      expect(component.manufacturerForm.controls['imageName'].value).toContain(
+      expect(component.categoryForm.controls['imageName'].value).toContain(
         uploadFileModel.fileName
       );
     });
@@ -96,67 +96,67 @@ describe('ManufacturerFormComponent', () => {
       const uploadFileModel: UploadFileModel = FileUploadMocks[0];
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.manufacturerForm.controls['imageUrl'].value).toContain(
+      expect(component.categoryForm.controls['imageUrl'].value).toContain(
         uploadFileModel.fileUrl
       );
-      expect(component.manufacturerForm.controls['imageName'].value).toContain(
+      expect(component.categoryForm.controls['imageName'].value).toContain(
         uploadFileModel.fileName
       );
 
       store.dispatch(new DeleteFileImage(uploadFileModel.fileName));
 
       expect(
-        component.manufacturerForm.controls['imageUrl'].value
+        component.categoryForm.controls['imageUrl'].value
       ).not.toContain(uploadFileModel.fileUrl);
       expect(
-        component.manufacturerForm.controls['imageName'].value
+        component.categoryForm.controls['imageName'].value
       ).not.toContain(uploadFileModel.fileName);
     });
   });
 
   describe('UI Tests', () => {
     it('should render correct Title', () => {
-      expect(manufacturerFormPage.title.innerText).toContain(title);
+      expect(categoryFormPage.title.innerText).toContain(title);
     });
     it('should render correct save button name', () => {
-      expect(manufacturerFormPage.saveBtn.innerText).toContain(btnName);
+      expect(categoryFormPage.saveBtn.innerText).toContain(btnName);
     });
     it('should disabled save button when form pristine', () => {
       expect(
-        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+        categoryFormPage.saveBtn.hasAttribute('disabled')
       ).toBeTruthy();
     });
     it('should disabled save button when form invalid', () => {
       // Name Field Null => invalid
       expect(
-        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+        categoryFormPage.saveBtn.hasAttribute('disabled')
       ).toBeTruthy();
-      component.manufacturerForm.markAsTouched();
-      component.manufacturerForm.markAsDirty();
+      component.categoryForm.markAsTouched();
+      component.categoryForm.markAsDirty();
 
       fixture.detectChanges();
       expect(
-        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+        categoryFormPage.saveBtn.hasAttribute('disabled')
       ).toBeTruthy();
     });
     it('should render validation error message when input error', () => {
-      component.manufacturerForm.patchValue({
+      component.categoryForm.patchValue({
         name: 'Test'
       });
       component.nameControl.markAsDirty();
       component.nameControl.markAsTouched();
       fixture.detectChanges();
-      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(1);
+      expect(categoryFormPage.nameInputGroup.children.length).toEqual(1);
 
-      component.manufacturerForm.patchValue({
+      component.categoryForm.patchValue({
         name: ''
       });
 
       fixture.detectChanges();
       console.log(fixture.nativeElement);
-      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(2);
+      expect(categoryFormPage.nameInputGroup.children.length).toEqual(2);
       expect(
-        manufacturerFormPage.nameInputGroup.children.item(1)
+        categoryFormPage.nameInputGroup.children.item(1)
       ).toBeDefined();
     });
     it('should not render validation error message when input is pristine', () => {
@@ -164,31 +164,31 @@ describe('ManufacturerFormComponent', () => {
       expect(component.nameControl.invalid).toBeTruthy();
       fixture.detectChanges();
 
-      expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(1);
-      expect(manufacturerFormPage.nameInputGroup.children.item(1)).toBeNull();
+      expect(categoryFormPage.nameInputGroup.children.length).toEqual(1);
+      expect(categoryFormPage.nameInputGroup.children.item(1)).toBeNull();
     });
     it('should enabled save button when form valid', () => {
       // Name Field Null => invalid
       expect(
-        manufacturerFormPage.saveBtn.hasAttribute('disabled')
+        categoryFormPage.saveBtn.hasAttribute('disabled')
       ).toBeTruthy();
 
       // Name Field Inputed
-      component.manufacturerForm.patchValue({
+      component.categoryForm.patchValue({
         name: 'Test'
       });
 
       fixture.detectChanges();
-      expect(manufacturerFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
+      expect(categoryFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
     });
   });
   describe('State Tests', () => {
-    it('should populate value in input when selected manufacturer state exists', () => {
-      store.dispatch(new FetchSingleManufacturer(ManufacturersMock[0].id.toString()));
+    it('should populate value in input when selected category state exists', () => {
+      store.dispatch(new FetchSingleCategory(CategorysMock[0].id.toString()));
       component.ngOnChanges();
       fixture.detectChanges();
 
-      expect(component.manufacturerForm.value).toEqual(ManufacturersMock[0]);
+      expect(component.categoryForm.value).toEqual(CategorysMock[0]);
     });
   })
 });

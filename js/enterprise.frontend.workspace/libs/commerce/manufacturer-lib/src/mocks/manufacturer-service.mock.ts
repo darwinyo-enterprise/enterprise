@@ -90,52 +90,48 @@ export const ManufacturersMock: Manufacturer[] = [
   }
 ];
 
-export class ManufacturerServiceMock extends ManufacturerService {
-
-  public apiV1ManufacturerByIdDelete(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-  public apiV1ManufacturerByIdDelete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-  public apiV1ManufacturerByIdDelete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-  public apiV1ManufacturerByIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
-    return null;
-  }
-
-
-  public apiV1ManufacturerByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<Manufacturer>;
-  public apiV1ManufacturerByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Manufacturer>>;
-  public apiV1ManufacturerByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Manufacturer>>;
-  public apiV1ManufacturerByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
-
-    return of(ManufacturersMock.filter(x => x.id === id)[0]);
-  }
+export class ManufacturerServiceMock {
+  
+  // public apiV1ManufacturerByIdDelete(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  // public apiV1ManufacturerByIdDelete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  // public apiV1ManufacturerByIdDelete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  // public apiV1ManufacturerByIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  //   return of(ManufacturersMock);
+  // }
 
 
-  public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
-  public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-  public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-  public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  // public apiV1ManufacturerByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<Manufacturer>;
+  // public apiV1ManufacturerByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Manufacturer>>;
+  // public apiV1ManufacturerByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Manufacturer>>;
+  // public apiV1ManufacturerByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  //   console.log('im called');
+  //   return of(ManufacturersMock.filter(x => x.id === id)[0]);
+  // }
 
-    return null;
-  }
 
-  public apiV1ManufacturerGet(observe?: 'body', reportProgress?: boolean): Observable<Array<Manufacturer>>;
-  public apiV1ManufacturerGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Manufacturer>>>;
-  public apiV1ManufacturerGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Manufacturer>>>;
-  public apiV1ManufacturerGet(observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  // public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  // public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  // public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  // public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  //   return of(ManufacturersMock);
+  // }
+
+   apiV1ManufacturerGet(): Observable<Manufacturer[]> {
 
     return of(ManufacturersMock);
   }
 
-  public apiV1ManufacturerImageByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-  public apiV1ManufacturerImageByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-  public apiV1ManufacturerImageByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-  public apiV1ManufacturerImageByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
-    return null;
-  }
+  // public apiV1ManufacturerImageByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  // public apiV1ManufacturerImageByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  // public apiV1ManufacturerImageByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  // public apiV1ManufacturerImageByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  //   return of(ManufacturersMock);
+  // }
 
-  public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
-  public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-  public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-  public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
-    return null;
-  }
+  // public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  // public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  // public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  // public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+  //   return of(ManufacturersMock);
+  // }
 }
