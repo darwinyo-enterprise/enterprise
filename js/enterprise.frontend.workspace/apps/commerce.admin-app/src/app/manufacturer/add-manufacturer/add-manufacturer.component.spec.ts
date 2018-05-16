@@ -13,8 +13,7 @@ import {
   ManufacturerState,
   ManufacturersMock,
   AddManufacturer,
-  ClearSelectedManufacturer,
-  ManufacturerServiceMock
+  ClearSelectedManufacturer
 } from '@enterprise/commerce';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';

@@ -153,7 +153,6 @@ describe('ManufacturerFormComponent', () => {
       });
 
       fixture.detectChanges();
-      console.log(fixture.nativeElement);
       expect(manufacturerFormPage.nameInputGroup.children.length).toEqual(2);
       expect(
         manufacturerFormPage.nameInputGroup.children.item(1)

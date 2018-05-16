@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { CatalogModule } from './catalog/catalog.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from '@enterprise/shared';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
       appId: 'enterprise-commerce-admin-app'
     }),
     CoreModule,
+    SharedModule,
     CatalogModule,
     NxModule.forRoot(),
     AppRoutingModule,

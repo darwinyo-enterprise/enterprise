@@ -5,15 +5,15 @@ import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage } from '@enterprise/material/file-upload';
-import { CategoryState, CategorysMock, FetchSingleCategory } from '@enterprise/commerce';
 import { CategoryService, UploadFileModel } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { CategoryState } from '../shared/category.state';
+import { CategoriesMock } from '../mocks/category-service.mock';
+import { FetchSingleCategory } from '../shared/category.actions';
 
-export class CategoryFormPage extends BaseTestPage<
-  CategoryFormComponent
-  > {
+export class CategoryFormPage extends BaseTestPage<CategoryFormComponent> {
   constructor(public fixture: ComponentFixture<CategoryFormComponent>) {
     super(fixture);
   }
@@ -66,7 +66,7 @@ describe('CategoryFormComponent', () => {
 
     categoryFormPage = new CategoryFormPage(fixture);
     service = TestBed.get(CategoryService);
-    serviceSpy = spyOn(service, 'apiV1CategoryByIdGet').and.callFake((id: number) => of(CategorysMock.filter(x => x.id === id)[0]));
+    serviceSpy = spyOn(service, 'apiV1CategoryByIdGet').and.callFake((id: number) => of(CategoriesMock.filter(x => x.id === id)[0]));
 
     store = TestBed.get(Store);
     fixture.detectChanges();
@@ -153,7 +153,6 @@ describe('CategoryFormComponent', () => {
       });
 
       fixture.detectChanges();
-      console.log(fixture.nativeElement);
       expect(categoryFormPage.nameInputGroup.children.length).toEqual(2);
       expect(
         categoryFormPage.nameInputGroup.children.item(1)
@@ -184,11 +183,11 @@ describe('CategoryFormComponent', () => {
   });
   describe('State Tests', () => {
     it('should populate value in input when selected category state exists', () => {
-      store.dispatch(new FetchSingleCategory(CategorysMock[0].id.toString()));
+      store.dispatch(new FetchSingleCategory(CategoriesMock[0].id.toString()));
       component.ngOnChanges();
       fixture.detectChanges();
 
-      expect(component.categoryForm.value).toEqual(CategorysMock[0]);
+      expect(component.categoryForm.value).toEqual(CategoriesMock[0]);
     });
   })
 });

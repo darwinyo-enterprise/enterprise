@@ -1,6 +1,3 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { takeUntil } from 'rxjs/operators/takeUntil';
@@ -14,6 +11,8 @@ import { Manufacturer, UploadFileModel } from '@enterprise/commerce/catalog-lib'
 import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload } from '@enterprise/material/file-upload';
 import { take } from 'rxjs/operators';
 import { ManufacturerState } from './../shared/manufacturer.state';
+import { OnInit, OnChanges, OnDestroy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
 
 @Component({
 

@@ -7,7 +7,26 @@ import {
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatIconModule,
+  MatListModule,
+  MatMenuModule,
+  MatButtonToggleModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatDialogModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatSidenavModule,
+  MatTooltipModule,
+  MatRippleModule,
+  MatRadioModule,
+  MatGridListModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSliderModule,
+  MatAutocompleteModule
 } from '@angular/material';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +46,30 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+    MatMenuModule,
+    MatInputModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatRippleModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatAutocompleteModule,
     //#endregion
 
     //#region Covalent Imports
@@ -44,6 +87,30 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+    MatMenuModule,
+    MatInputModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatRippleModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatAutocompleteModule,
     //#endregion
 
     //#region Covalent Imports
@@ -52,4 +119,4 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
     //#endregion
   ]
 })
-export class SharedModule {}
+export class SharedModule { }

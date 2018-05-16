@@ -9,8 +9,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   imports: [
     CommonModule,
     cc.CoreModule,
-    ci.ApiModule,],
+    ci.ApiModule
+  ],
   declarations: [DashboardComponent],
-  exports: [DashboardComponent]
+  exports: [cc.CoreModule,DashboardComponent]
 })
 export class CoreModule { }

@@ -21,7 +21,7 @@ import { AddManufacturerComponent } from '../add-manufacturer/add-manufacturer.c
 import { EditManufacturerComponent } from '../edit-manufacturer/edit-manufacturer.component';
 import { Location } from "@angular/common";
 import { Navigate, RegisterLoadingOverlay, Confirm } from '@enterprise/core';
-import { ManufacturerServiceMock, ManufacturerStateModel, ManufacturersMock } from '@enterprise/commerce/manufacturer-lib';
+import { ManufacturerStateModel, ManufacturersMock } from '@enterprise/commerce/manufacturer-lib';
 import { Observable } from 'rxjs';
 
 describe('ListManufacturerComponent', () => {

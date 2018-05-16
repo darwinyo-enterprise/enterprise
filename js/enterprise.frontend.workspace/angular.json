@@ -105,14 +105,14 @@
       }
     },
     "commerce.admin-app-e2e": {
-      "root": "",
+      "root": "./apps/commerce.admin-app/e2e",
       "sourceRoot": "",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
+            "protractorConfig": "./apps/commerce.admin-app/e2e/protractor.conf.js",
             "devServerTarget": "commerce.admin-app:serve"
           }
         },
@@ -120,8 +120,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "apps/commerce.admin-app/e2e/tsconfig.e2e.json",
-              "apps/commerce.client-app/e2e/tsconfig.e2e.json"
+              "apps/commerce.admin-app/e2e/tsconfig.e2e.json"
             ],
             "exclude": [
               "**/node_modules/**"
