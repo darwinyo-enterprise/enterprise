@@ -1,0 +1,1 @@
+vs_community.exe --layout C:\vs2017offline --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.NetCoreTools --add Component.GitHub.VisualStudio --includeOptional

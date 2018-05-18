@@ -1,5 +1,20 @@
-import { Manufacturer } from "@enterprise/commerce/catalog-lib";
+import {
+  UploadFileModel,
+  Manufacturer
+} from '@enterprise/commerce/catalog-lib';
 
+/** Fetch Single Manufacturers Command */
+export class FetchSingleManufacturer {
+  static readonly type = '[COMMERCE] FETCH SINGLE MANUFACTURERS';
+  /** Manufacturer Id */
+  constructor(public payload: string) {}
+}
+
+/** Single Manufacturers Fetched Event */
+export class SingleManufacturerFetched {
+  static readonly type = '[COMMERCE] SINGLE MANUFACTURERS FETCHED';
+  constructor() {}
+}
 
 /** Fetch All Manufacturers Command */
 export class FetchManufacturers {
@@ -10,7 +25,7 @@ export class FetchManufacturers {
 /** All Manufacturers Fetched Event */
 export class ManufacturersFetched {
   static readonly type = '[COMMERCE] MANUFACTURERS FETCHED';
-  constructor(public payload: Manufacturer[]) {}
+  constructor() {}
 }
 
 /** Add Manufacturer Command */
@@ -51,4 +66,14 @@ export class DeleteManufacturer {
 export class ManufacturerDeleted {
   static readonly type = '[COMMERCE] MANUFACTURER DELETED';
   constructor() {}
+}
+
+export class ClearSelectedManufacturer{
+  static  readonly type='[COMMERCE] CLEAR SELECTED MANUFACTURER'
+  constructor(){}
+}
+
+export class SelectedManufacturerCleared{
+  static  readonly type='[COMMERCE] SELECTED MANUFACTURER CLEARED'
+  constructor(){}
 }

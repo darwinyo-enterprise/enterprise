@@ -1,78 +1,39 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { OnInit, Component } from '@angular/core';
 import {
   Manufacturer,
-  ManufacturerService,
-  UploadFileModel
+  ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
-import { takeUntil } from 'rxjs/operators/takeUntil';
-import {
-  RegisterLinearLoadingOverlay,
-  ProgressLinearLoadingOverlay,
-  AppState
-} from '@enterprise/core';
+import { Store } from '@ngxs/store';
+import { AddManufacturer, ManufacturersMock, ClearSelectedManufacturer } from '@enterprise/commerce';
 import { Observable } from 'rxjs/Observable';
-import { Select, Store } from '@ngxs/store';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { HttpEventType } from '@angular/common/http';
+import { of } from 'rxjs';
+import { ClearFileUpload } from '@enterprise/material/file-upload';
 
 @Component({
+
   selector: 'eca-add-manufacturer',
   templateUrl: './add-manufacturer.component.html',
   styleUrls: ['./add-manufacturer.component.scss']
 })
-export class AddManufacturerComponent implements OnInit, OnDestroy {
-  /** when this triggered.
-   *  all subscription must be unsubscribed.
-   */
-  unsubsribe$: ReplaySubject<boolean>;
+export class AddManufacturerComponent implements OnInit {
   title: string;
-  manufacturer: Manufacturer;
-
-  /** identifier for linear loading overlay as upload progress */
-  progress: number;
-
-  /** identify if current state is loading then shouldn't register another loading overlay.
-   *  doesn't make sense to have multiple overlay at once.
-   */
-  @Select(AppState.isLoading) isLoading$: Observable<boolean>;
+  nameSaveButton: string;
 
   constructor(
     private manufacturerService: ManufacturerService,
     private store: Store
   ) {
     this.title = 'Add New Manufacturer';
-    this.manufacturer = <Manufacturer>{};
-    // buffer size 1.
-    this.unsubsribe$ = new ReplaySubject(1);
+    this.nameSaveButton = 'Add';
   }
 
-  ngOnInit() {}
-
-  ngOnDestroy(): void {
-    this.unsubsribe$.next(false);
-    this.unsubsribe$.complete();
+  ngOnInit() {
+    this.store.dispatch([ClearSelectedManufacturer,ClearFileUpload]);
   }
-
-  onFileUpload(uploadFiles: UploadFileModel[]) {
-    console.log(uploadFiles);
-    this.manufacturerService
-      .apiV1ManufacturerImagePost(uploadFiles[0])
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.isLoading$.pipe(takeUntil(this.unsubsribe$)).subscribe(x => {
-            if (!x) {
-              this.store.dispatch([new RegisterLinearLoadingOverlay()]);
-            }
-          });
-          this.progress = Math.round(100 * event.loaded / event.total);
-          this.store.dispatch([
-            new ProgressLinearLoadingOverlay(this.progress)
-          ]);
-        } else if (event.type === HttpEventType.Response)
-          console.log(event.body.toString());
-      });
-  }
-  onFileDelete(id: string) {
-    console.log('DO SOMETHING FOR Delete');
+  onAddNewManufacturer(manufacturer: Manufacturer) {
+    // mock id. though it will be decided on server.
+    // API Cant get model properly if id is null
+    manufacturer.id = 1;
+    this.store.dispatch(new AddManufacturer(manufacturer));
   }
 }

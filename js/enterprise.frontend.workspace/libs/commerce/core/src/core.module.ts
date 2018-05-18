@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
-import { ManufacturerService } from '@enterprise/commerce/manufacturer-lib';
-
-import * as ec from '@enterprise/core';
-
+import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
+import * as core from '@enterprise/core';
 @NgModule({
-  imports: [ec.CoreModule],
-  exports: [ec.CoreModule],
-  providers: [ManufacturerService]
+  imports: [core.CoreModule],
+  providers: [ManufacturerService],
+  exports:[core.CoreModule]
 })
-export class CoreModule {}
+export class CoreModule { }

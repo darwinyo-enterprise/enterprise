@@ -12,9 +12,10 @@
 
 
 export interface Manufacturer {
-    id?: number;
     name?: string;
     description?: string;
-    imageUrl?: string;
     timestamp?: string;
+    id?: number;
+    imageUrl?: string;
+    imageName?: string;
 }

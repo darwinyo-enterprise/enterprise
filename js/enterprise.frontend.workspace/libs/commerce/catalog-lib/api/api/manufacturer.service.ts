@@ -19,7 +19,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { Manufacturer } from '../model/manufacturer';
-import { UploadFileModel } from '../model/uploadFileModel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -115,9 +114,7 @@ export class ManufacturerService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
+            'application/json'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -142,14 +139,14 @@ export class ManufacturerService {
      * 
      * 
      * @param id 
-     * @param value 
+     * @param updateModel 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerByIdPut(id: number, value?: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerByIdPut(id: number, value?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerByIdPut(id: number, value?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerByIdPut(id: number, value?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1ManufacturerByIdPut(id: number, updateModel?: Manufacturer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiV1ManufacturerByIdPut.');
         }
@@ -177,7 +174,7 @@ export class ManufacturerService {
         }
 
         return this.httpClient.put<any>(`${this.basePath}/api/v1/Manufacturer/${encodeURIComponent(String(id))}`,
-            value,
+            updateModel,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -202,9 +199,7 @@ export class ManufacturerService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
+            'application/json'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -228,19 +223,23 @@ export class ManufacturerService {
     /**
      * 
      * 
-     * @param uploadFileModel 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1ManufacturerImagePost(uploadFileModel?: UploadFileModel, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1ManufacturerImageByIdGet(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1ManufacturerImageByIdGet(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1ManufacturerImageByIdGet(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1ManufacturerImageByIdGet(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiV1ManufacturerImageByIdGet.');
+        }
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -249,18 +248,9 @@ export class ManufacturerService {
 
         // to determine the Content-Type header
         let consumes: string[] = [
-            'application/json-patch+json',
-            'application/json',
-            'text/json',
-            'application/_*+json'
         ];
-        let httpContentTypeSelected:string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set("Content-Type", httpContentTypeSelected);
-        }
 
-        return this.httpClient.post<any>(`${this.basePath}/api/v1/Manufacturer/image`,
-            uploadFileModel,
+        return this.httpClient.get<any>(`${this.basePath}/api/v1/Manufacturer/image/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

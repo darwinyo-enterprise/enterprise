@@ -1,30 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
+import { Store, Select } from '@ngxs/store';
+import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
+
   selector: 'eca-edit-manufacturer',
   templateUrl: './edit-manufacturer.component.html',
   styleUrls: ['./edit-manufacturer.component.scss']
 })
+/** TODO: Remove Mock manufacturer */
 export class EditManufacturerComponent implements OnInit {
   title: string;
-  manufacturer: Manufacturer;
-
-  constructor() {
+  nameSaveButton: string;
+  constructor(private store: Store, private route: ActivatedRoute) {
     this.title = 'Edit Manufacturer';
-    this.manufacturer = <Manufacturer>{
-      id:1,
-      name:'Samsung',
-      description:'Mobile Manufacturer'
-    };
+    this.nameSaveButton = 'Update';
   }
 
-  ngOnInit() { }
-
-  onFileDelete(formFile: FormData) {
-    console.log('DO SOMETHING FOR DELETE');
+  ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.store.dispatch(new FetchSingleManufacturer(params.get('id')))
+    });
   }
-  onFileUpload(id: string) {
-    console.log('DO SOMETHING FOR UPLOAD');
+  onManufacturerUpdate(manufacturer: Manufacturer) {
+    this.store.dispatch(new UpdateManufacturer(manufacturer));
   }
 }
