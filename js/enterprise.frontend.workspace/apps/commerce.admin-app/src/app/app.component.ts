@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   AppState,
   AppStateModel,
   SetUsername,
   Navigate,
-  RoutingModel
+  RoutingModel,
+  RouteLinkModel
 } from '@enterprise/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Select } from '@ngxs/store';
-import { TdLoadingService, LoadingType, LoadingMode } from '@covalent/core';
+import { TdLoadingService, LoadingType, LoadingMode, TdMediaService, TdDigitsPipe, TdLayoutManageListComponent, TdRotateAnimation } from '@covalent/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material';
 
 @Component({
 
@@ -19,18 +22,27 @@ import { TdLoadingService, LoadingType, LoadingMode } from '@covalent/core';
 export class AppComponent implements OnInit {
   @Select((state: AppStateModel) => state.username)
   username$;
-
-  constructor(private store: Store, private loadingService: TdLoadingService) {
+  name: string = 'Enterprise';
+  constructor(private store: Store, private loadingService: TdLoadingService, public media: TdMediaService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _iconRegistry: MatIconRegistry,
+    private _domSanitizer: DomSanitizer) {
     this.loadingService.create({
       name: 'loading-facade',
       type: LoadingType.Circular,
       mode: LoadingMode.Indeterminate,
       color: 'accent'
     });
+    this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
+      this._domSanitizer.bypassSecurityTrustResourceUrl
+        ('https://raw.githubusercontent.com/Teradata/covalent-quickstart/develop/src/assets/icons/covalent.svg'));
   }
 
-  ngOnInit() { }
-
+  ngOnInit() {
+    // broadcast to all listener observables when loading the page
+    this.media.broadcast();
+    this._changeDetectorRef.detectChanges();
+  }
   /**
    * TODO:
    * Write Unit test, implementation hasn't done.
@@ -41,4 +53,56 @@ export class AppComponent implements OnInit {
       commands: ['dashboard']
     })]);
   }
+  onNavigateBtnClicked(item: RouteLinkModel) {
+    this.store.dispatch(new Navigate(<RoutingModel>{
+      commands: [item.route]
+    }));
+  }
+  onAppNavigateBtnClicked(item: RouteLinkModel) {
+    window.location.href = item.route;
+  }
+
+  routes: RouteLinkModel[] = [{
+    title: 'Dashboards',
+    route: '/',
+    icon: 'dashboard',
+  }, {
+    title: 'Manufacturer',
+    route: '/manufacturer',
+    icon: 'insert_chart',
+  }, {
+    title: 'Category',
+    route: '/category',
+    icon: 'insert_chart',
+  }, {
+    title: 'Product',
+    route: '/product',
+    icon: 'insert_chart',
+  }, {
+    title: 'Inventory',
+    route: '/inventory',
+    icon: 'insert_chart',
+  }
+  ];
+  usermenu: RouteLinkModel[] = [{
+    title: 'Profile',
+    route: '/',
+    icon: 'account_box',
+  }, {
+    title: 'Settings',
+    route: '/',
+    icon: 'settings',
+  },
+  ];
+  appmenu: RouteLinkModel[] = [{
+    title: 'Commerce Management',
+    route: 'http://localhost:4200',
+    icon: 'account_box',
+  }, {
+    title: 'Commerce',
+    route: 'http://localhost:4201',
+    icon: 'settings',
+  },
+  ];
+
 }

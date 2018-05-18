@@ -1,22 +1,25 @@
 <td-layout>
-    <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:teradata" name="Firstname Lastname" email="firstname.lastname@company.com">
-        <mat-nav-list>
-            <a mat-list-item>
-                <mat-icon>home</mat-icon>Home</a>
+    <td-navigation-drawer flex [sidenavTitle]="name" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+        <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
+            <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
+                <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
         </mat-nav-list>
         <div td-navigation-drawer-menu>
             <mat-nav-list>
-                <a mat-list-item>
-                    <mat-icon>account_box</mat-icon>Profile</a>
+                <a *ngFor="let item of usermenu" mat-list-item>
+                    <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
             </mat-nav-list>
         </div>
     </td-navigation-drawer>
-    <td-layout-nav-list logo="assets:teradata" toolbarTitle="Covalent" navigationRoute="/" opened="true" mode="side">
+    <td-layout-nav-list [toolbarTitle]="(media.registerQuery('gt-xs') | async) ? 'Dashboard' : ''" logo="assets:covalent" navigationRoute="/">
         <button mat-icon-button td-menu-button tdLayoutToggle>
             <mat-icon>menu</mat-icon>
         </button>
         <div td-sidenav-content>
-            Sidenav content here
+            <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
+                <a *ngFor="let item of routes" mat-list-item (click)="onNavigateBtnClicked(item)">
+                    <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+            </mat-nav-list>
         </div>
         <div td-toolbar-content>
             <button mat-button tdLayoutNavListToggle>
@@ -24,5 +27,12 @@
             </button>
         </div>
         <router-outlet></router-outlet>
+        <td-layout-footer>
+            <div layout="row" layout-align="start center">
+                <span class="mat-caption">Made with
+                    <mat-icon class="text-md">favorite</mat-icon> using
+                    <a href="http://getcovalent.com" class="text-nodecoration tc-teal-600">Covalent</a>, built on Angular v4 + Angular Material + NGX-Charts.</span>
+            </div>
+        </td-layout-footer>
     </td-layout-nav-list>
 </td-layout>

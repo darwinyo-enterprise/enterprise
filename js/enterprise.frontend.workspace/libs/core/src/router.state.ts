@@ -4,6 +4,11 @@ export interface RoutingModel {
   commands: any[];
   extras?: NavigationExtras;
 }
+export interface RouteLinkModel {
+  title: string;
+  route: string;
+  icon: string;
+}
 export class Navigate {
   static readonly type = '[ROUTER] NAVIGATE';
   constructor(public payload: RoutingModel) { }
@@ -19,7 +24,7 @@ export class RouterState {
   @Action(Navigate)
   async changeRoute(context: StateContext<string>, action: Navigate) {
     const path = action.payload;
-    await this.router.navigate(path.commands,path.extras);
+    await this.router.navigate(path.commands, path.extras);
     context.setState(path.commands.toString());
   }
 }

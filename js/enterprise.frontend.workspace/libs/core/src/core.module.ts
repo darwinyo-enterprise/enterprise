@@ -13,7 +13,11 @@ import { AppState } from './app.state';
 import { SharedModule } from '@enterprise/shared';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
-import { CovalentLayoutModule } from '@covalent/core';
+import {
+  CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
+  CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
+  CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule
+} from '@covalent/core';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,13 +25,17 @@ import { CovalentLayoutModule } from '@covalent/core';
     NgxsModule.forRoot([RouterState, AppState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
-    
-    CovalentLayoutModule,
+
+    CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
+    CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
+    CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule
   ],
   exports: [SharedModule,
     PageNotFoundComponent,
     NotAuthorizedComponent,
-    CovalentLayoutModule],
+    CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
+    CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
+    CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule],
   declarations: [PageNotFoundComponent, NotAuthorizedComponent]
 })
 export class CoreModule { }
