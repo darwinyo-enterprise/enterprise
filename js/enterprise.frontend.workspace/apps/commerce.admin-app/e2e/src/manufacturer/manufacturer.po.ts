@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, WebElement, $, $$ } from 'protractor';
 
 export class ManufacturerPage {
     navigateToList() {
@@ -10,31 +10,51 @@ export class ManufacturerPage {
     navigateToEdit(id: number) {
         return browser.get('/manufacturer/edit/' + id);
     }
-    title() {
-        return browser.findElement(by.css('.form-card__title')).getText();
+
+    prompt(){
+        return $('mat-dialog-container');
+    }
+    promptOkButton(){
+        return $('mat-dialog-container button.mat-button.mat-accent');
+    }
+    promptCancelButton(){
+        return $('mat-dialog-container button.mat-button');
+    }
+
+    popupCloseButton(){
+        return $('mat-dialog-container button')
+    }
+    
+    listItemNames(){
+        return $$('.list-item-actions__item__name');
     }
     listItemActions() {
-        return browser.findElements(by.css('.list-item-actions__item'));
+        return $$('.list-item-actions__item');
+    }
+    lastListItemAction() {
+        return this.listItemActions().last();
+    }
+    lastDeleteBtn() {
+        return this.lastListItemAction().element(by.css('.list-item-actions__item__delete > button'));
+    }
+    lastEditBtn() {
+        return this.lastListItemAction().element(by.css('.list-item-actions__item__edit > button'));
     }
     listItemBtnAdd() {
-        return browser.findElement(by.css('.li-addBtn')).getInnerHtml();
+        return $('#li-addBtn');
     }
+
     fileUploadDropZone() {
-        return browser.findElement(by.css('.file-upload__drop-zone')).getInnerHtml();
+        return $('.file-upload__drop-zone input[type=file]');
     }
-    fileUploadDropZoneBtn(){
-        return browser.findElement(by.css('.file-upload__drop-zone__button')).getInnerHtml();
+
+    formNameTxtbox() {
+        return $('#name-txtbox input');
     }
-    fileUploadInfoCards(){
-        return browser.findElements(by.css('.file-upload-info__card'));
+    formDescriptionTxtbox() {
+        return $('#description textarea');
     }
-    formNameTxtbox(){
-        return browser.findElement(by.css('#name-txtbox')).getInnerHtml();
-    }
-    formDescriptionTxtbox(){
-        return browser.findElement(by.css('#description')).getInnerHtml();
-    }
-    formSubmitBtn(){
-        return browser.findElement(by.css('#save-button')).getInnerHtml();
+    formSubmitBtn() {
+        return $('#save-button');
     }
 }

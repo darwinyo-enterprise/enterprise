@@ -12,7 +12,10 @@ namespace Catalog.API.Migrations
                     AS
                     BEGIN
                         SET NOCOUNT ON;
-                        DBCC CHECKIDENT (@TableName, RESEED, 0); 
+                        IF  IDENT_CURRENT(@TableName)  IS NOT NULL
+						BEGIN
+						    DBCC CHECKIDENT (@TableName, RESEED, 0); 
+						END
                     END";
 
             migrationBuilder.Sql(sp);
