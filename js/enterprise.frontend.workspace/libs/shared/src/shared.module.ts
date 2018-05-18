@@ -2,31 +2,121 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { ListItemActionsComponent } from './list-item-actions/list-item-actions.component';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatIconModule,
+  MatListModule,
+  MatMenuModule,
+  MatButtonToggleModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatDialogModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatSidenavModule,
+  MatTooltipModule,
+  MatRippleModule,
+  MatRadioModule,
+  MatGridListModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSliderModule,
+  MatAutocompleteModule
+} from '@angular/material';
+
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
 
     //#region Material Imports
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+    MatMenuModule,
+    MatInputModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatRippleModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatAutocompleteModule,
+    //#endregion
+
+    //#region Covalent Imports
+    CovalentLoadingModule,
+    CovalentDialogsModule
     //#endregion
   ],
   exports: [
-    ListItemActionsComponent,
-    
+    ReactiveFormsModule,
+    HttpClientModule,
+
     //#region Material Imports
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
+    MatCardModule,
+    MatMenuModule,
+    MatInputModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatRippleModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatAutocompleteModule,
     //#endregion
-  ],
-  declarations: [ListItemActionsComponent]
+
+    //#region Covalent Imports
+    CovalentLoadingModule,
+    CovalentDialogsModule
+    //#endregion
+  ]
 })
 export class SharedModule { }

@@ -1,0 +1,24 @@
+Id,Name,Description,ImageName
+1,Microsoft,None,microsoft.png
+2,Asus,None,asus.png
+3,Apple,None,apple.png
+4,Google,None,google.png
+5,Docker,None,docker.png
+6,Sony,None,sony.png
+7,Samsung,None,samsung.png
+8,Acer,None,acer.png
+9,Dell,None,dell.png
+10,Xiaomi,None,xiaomi.png
+11,Lenovo,None,lenovo.png
+12,Huawei,None,huawei.png
+13,Nokia,None,nokia.png
+14,Corsair,None,corsair.png
+15,Intel,None,intel.png
+16,Nvidia,None,nvidia.png
+17,MSI,None,msi.png
+18,AMD,None,amd.png
+19,Cool Master,None,coolmaster.png
+20,Zotac,None,zotac.png
+21,Gigabyte,None,gigabyte.png
+22,IBM,None,ibm.png
+23,HP,None,hp.png

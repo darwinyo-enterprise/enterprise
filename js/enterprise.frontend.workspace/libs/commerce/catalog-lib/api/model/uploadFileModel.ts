@@ -14,5 +14,5 @@
 export interface UploadFileModel {
     id?: string;
     fileName?: string;
-    fileBase64?: string;
+    fileUrl?: string;
 }

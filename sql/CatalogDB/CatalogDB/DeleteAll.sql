@@ -1,0 +1,8 @@
+USE [Enterprise.Commerce.Services.CatalogDb]
+DELETE	[ProductColor]
+DELETE	[ProductImage]
+DELETE	[ProductRating]
+DELETE	[User]
+DELETE	[Product]
+DELETE	[Category]
+DELETE	[Manufacturer]

@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgxsModule } from '@ngxs/store';
+import { TdLoadingService, TdLoadingFactory } from '@covalent/core';
+import { Overlay } from '@angular/cdk/overlay';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -10,8 +13,9 @@ describe('AppComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [AppComponent]
+        imports: [RouterTestingModule, NgxsModule.forRoot()],
+        declarations: [AppComponent],
+        providers:[TdLoadingService,TdLoadingFactory,Overlay]
       }).compileComponents();
     })
   );

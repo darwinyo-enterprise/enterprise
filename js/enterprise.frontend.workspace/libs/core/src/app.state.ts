@@ -4,7 +4,8 @@ import {
   TdLoadingService,
   TdDialogService,
   LoadingType,
-  LoadingMode
+  LoadingMode,
+  IConfirmConfig
 } from '@covalent/core';
 import {
   RegisterLoadingOverlay,
@@ -13,21 +14,30 @@ import {
   SetUsername,
   RegisterLinearLoadingOverlay,
   ResolveLinearLoadingOverlay,
-  ProgressLinearLoadingOverlay
+  ProgressLinearLoadingOverlay,
+  Confirm,
+  Confirmed,
+  Alert
 } from './app.actions';
 
 export interface AppStateModel {
   username: string;
+  alertMessage:string;
   errorMessage: string;
   progressLoading: number;
+  confirmModel: IConfirmConfig;
+  confirmation: boolean;
   isError: boolean;
   isLoading: boolean;
 }
 
 const defaults: AppStateModel = {
   username: '',
+  alertMessage:'',
   errorMessage: '',
   progressLoading: 0,
+  confirmModel: null,
+  confirmation: false,
   isError: false,
   isLoading: false
 };
@@ -53,9 +63,8 @@ export class AppState {
       name: this.linearLoadingAppName,
       mode: LoadingMode.Determinate,
       type: LoadingType.Linear,
-      color: 'accent',
+      color: 'accent'
     });
-
   }
   //#region Selectors
   @Selector()
@@ -67,6 +76,10 @@ export class AppState {
     return state.errorMessage;
   }
   @Selector()
+  static alertMessage(state: AppStateModel) {
+    return state.alertMessage;
+  }
+  @Selector()
   static isLoading(state: AppStateModel) {
     return state.isError;
   }
@@ -74,11 +87,17 @@ export class AppState {
   static progressLoading(state: AppStateModel) {
     return state.progressLoading;
   }
+  @Selector()
+  static confirmation(state: AppStateModel) {
+    return state.confirmation;
+  }
   //#endregion
 
   @Action(ProgressLinearLoadingOverlay)
-  progressLinearLoadingOverlay({ patchState }: StateContext<AppStateModel>,
-    { payload }: ProgressLinearLoadingOverlay) {
+  progressLinearLoadingOverlay(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: ProgressLinearLoadingOverlay
+  ) {
     patchState({ isLoading: true, progressLoading: payload });
     this.loadingService.setValue(this.linearLoadingAppName, payload);
   }
@@ -91,7 +110,12 @@ export class AppState {
 
   @Action(ResolveLinearLoadingOverlay)
   resolveLinearLoadingOverlay({ patchState }: StateContext<AppStateModel>) {
-    patchState({ isLoading: false, isError: false, errorMessage: '', progressLoading: 0 });
+    patchState({
+      isLoading: false,
+      isError: false,
+      errorMessage: '',
+      progressLoading: 0
+    });
     this.loadingService.resolve(this.linearLoadingAppName);
   }
 
@@ -115,7 +139,7 @@ export class AppState {
     patchState({ errorMessage: payload, isError: true });
     this.dialogService.openAlert({
       message: payload,
-      title: 'Alert', //OPTIONAL, hides if not provided
+      title: 'Error Occured', //OPTIONAL, hides if not provided
       closeButton: 'Close', //OPTIONAL, defaults to 'CLOSE'
       width: '400px' //OPTIONAL, defaults to 400px
     });
@@ -128,5 +152,48 @@ export class AppState {
     { payload }: SetUsername
   ) {
     patchState({ username: payload });
+  }
+
+  @Action(Confirm)
+  confirm(
+    { patchState, dispatch }: StateContext<AppStateModel>,
+    { payload, handler }: Confirm
+  ) {
+    patchState({
+      confirmModel: payload
+    });
+    this.dialogService
+      .openConfirm(payload)
+      .afterClosed()
+      .subscribe((accept: boolean) => {
+        dispatch(new Confirmed(accept));
+        handler.next(accept);
+      });
+  }
+
+  @Action(Confirmed)
+  confirmed(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: Confirmed
+  ) {
+    patchState({
+      confirmation: payload
+    });
+  }
+
+  @Action(Alert)
+  alert(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: Alert
+  ) {
+    patchState({
+      alertMessage: payload
+    });
+    this.dialogService.openAlert({
+      message: payload,
+      title: 'Alert', //OPTIONAL, hides if not provided
+      closeButton: 'OK', //OPTIONAL, defaults to 'CLOSE'
+      width: '400px' //OPTIONAL, defaults to 400px
+    });
   }
 }

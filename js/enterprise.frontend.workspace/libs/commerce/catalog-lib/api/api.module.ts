@@ -3,16 +3,18 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './configuration';
 
+import { CategoryService } from './api/category.service';
 import { ManufacturerService } from './api/manufacturer.service';
-import { PicService } from './api/pic.service';
+import { ProductService } from './api/product.service';
 
 @NgModule({
   imports:      [ CommonModule, HttpClientModule ],
   declarations: [],
   exports:      [],
   providers: [
+    CategoryService,
     ManufacturerService,
-    PicService ]
+    ProductService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

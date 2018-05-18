@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Services\Catalog.API\Setup\Category.csv" />
+    <None Remove="Services\Catalog.API\Setup\Category.zip" />
+    <None Remove="Services\Catalog.API\Setup\Manufacturer.csv" />
+    <None Remove="Services\Catalog.API\Setup\Manufacturer.zip" />
+    <None Remove="Services\Catalog.API\Setup\Product.csv" />
+    <None Remove="Services\Catalog.API\Setup\ProductColor.csv" />
+    <None Remove="Services\Catalog.API\Setup\ProductImage.csv" />
+    <None Remove="Services\Catalog.API\Setup\ProductImage.zip" />
+    <None Remove="Services\Catalog.API\Setup\ProductRating.csv" />
+    <None Remove="Services\Catalog.API\Setup\User.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\src\Commerce\Catalog\Catalog.API\appsettings.json" Link="Services\Catalog.API\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\Category.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\Manufacturer.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\Manufacturer.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\Product.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\ProductColor.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\ProductImage.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\ProductImage.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\ProductRating.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Catalog.API\Setup\User.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Moq" Version="4.8.1" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.1" />
+    <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
+    <PackageReference Include="StackExchange.Redis.strongname" Version="1.2.6" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Catalog.API\Setup\Category.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Commerce\Basket\Basket.API\Basket.API.csproj" />
+    <ProjectReference Include="..\..\src\Commerce\Catalog\Catalog.API\Catalog.API.csproj" />
+  </ItemGroup>
+
+</Project>

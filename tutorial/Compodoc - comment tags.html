@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://compodoc.github.io/website/guides/jsdoc-tags.html -->
+<html lang="" class="mdl-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://compodoc.github.io/website/guides/favicon.ico" rel="shortcut icon" type="image/ico">
+    <title>Compodoc - The missing documentation tool for your Angular application</title>
+
+
+    <link rel="shortcut icon" href="https://compodoc.github.io/website/assets/ico/favicon.ico">
+    <!-- Material Design icons -->
+    <link rel="stylesheet" href="./Compodoc - tags_files/icon">
+    <link href="./Compodoc - tags_files/css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="./Compodoc - tags_files/material.min.css">
+
+    <link rel="stylesheet" href="./Compodoc - tags_files/guides.css">
+    </head>
+
+    <body>
+        <div class="mdl-layout__container"><div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer is-upgraded" data-upgraded=",MaterialLayout">
+    <header class="mdl-layout__header is-casting-shadow"><div aria-expanded="false" role="button" tabindex="0" class="mdl-layout__drawer-button"><i class="material-icons"></i></div>
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">
+                    <a class="site-header mdl-navigation__link--title" href="https://compodoc.github.io/website/">
+                        <img src="./Compodoc - tags_files/compodoc-vectorise-inverted.svg" alt="">
+                    </a>
+                </span>
+            <input type="checkbox" id="site-nav-checkbox" class="visuallyhidden">
+            <div class="top-nav-wrapper">
+                <label for="site-nav-checkbox">SITE MENU</label>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/getting-started.html">Guides</a>
+                    <a class="mdl-navigation__link" href="https://github.com/compodoc/compodoc/blob/develop/CHANGELOG.md" target="_blank">Change Log</a>
+                    <a class="mdl-navigation__link" href="https://github.com/compodoc/compodoc/issues" target="_blank">Report issues</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer" aria-hidden="true">
+        <span class="mdl-layout-title">Guides</span>
+        <nav class="mdl-navigation">
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/getting-started.html">
+                    1 - getting started
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/features.html">
+                    2 - features
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/demo.html">
+                    3 - demo
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/installation.html">
+                    4 - installation
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/tutorial.html">
+                    5 - tutorial
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/usage.html">
+                    6 - usage
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/themes.html">
+                    7 - themes
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/comments.html">
+                    8 - comments
+                </a>
+            
+                <a class="mdl-navigation__link selected" href="https://compodoc.github.io/website/guides/jsdoc-tags.html">
+                    9 - jsdoc tags
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/routing.html">
+                    10 - routing
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/documentation-coverage.html">
+                    11 - documentation coverage
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/tips-and-tricks.html">
+                    12 - tips and tricks
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/extensions.html">
+                    13 - extensions
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/miscellaneous.html">
+                    14 - miscellaneous
+                </a>
+            
+                <a class="mdl-navigation__link" href="https://compodoc.github.io/website/guides/live-example-tab.html">
+                    15 - live example tab
+                </a>
+            
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <header class="hero-background">
+            <section class="section mdl-grid mdl-grid--no-spacing">
+                <div class="mdl-cell">
+                    <h4 class="mt1 page-title">JSDoc tags</h4>
+                </div>
+            </section>
+        </header>
+        <div class="page-content markdown-doc">
+            <h1>JSDoc tags</h1><p>Currently Compodoc only support these JSDoc tags (due to <a href="https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript">TypeScript compiler limitations</a>) :</p>
+<ul>
+<li><code>@returns {Type} Description</code></li>
+</ul>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">/**
+ * @param {string} target  The target to process
+ * @returns The processed target number
+ */</span>
+<span class="token keyword">function</span> <span class="token function">processTarget</span><span class="token punctuation">(</span>target<span class="token punctuation">:</span>string<span class="token punctuation">)</span><span class="token punctuation">:</span>number<span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li><code>@ignore</code></li>
+</ul>
+<p>The @ignore tag indicates that a symbol in your code should never appear in the documentation.</p>
+<p>It works inside a class, component or injectable, but also for the entire component.</p>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">/**
+ * @ignore
+ */</span>
+@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'app-root'</span><span class="token punctuation">,</span>
+    templateUrl<span class="token punctuation">:</span> <span class="token string">'./app.component.html'</span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./app.component.css'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppComponent</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">/**
+ * Footer component
+ */</span>
+@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'the-footer'</span><span class="token punctuation">,</span>
+    templateUrl<span class="token punctuation">:</span> <span class="token string">'./footer.component.html'</span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./footer.component.css'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">FooterComponent</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * @ignore
+     */</span>
+    ignoredProperty<span class="token punctuation">:</span> string<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @ignore
+     */</span>
+    @<span class="token function">Input</span><span class="token punctuation">(</span><span class="token punctuation">)</span> ignoredInput<span class="token punctuation">:</span> string<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @ignore
+     */</span>
+    @<span class="token function">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span> ignoredOutput<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @ignore
+     */</span>
+    <span class="token function">ignoredFunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>@param {Type} Name Description</code></li>
+</ul>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">/**
+ * @example
+ * This is a good example
+ * processTarget('yo')
+ *
+ * @param {string} target  The target to process see {@link Todo}
+ * @returns The processed target number
+ */</span>
+<span class="token keyword">function</span> <span class="token function">processTarget</span><span class="token punctuation">(</span>target<span class="token punctuation">:</span>string<span class="token punctuation">)</span><span class="token punctuation">:</span>number<span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li><code>@link</code> : you can use these three syntax like JSDoc:</li>
+</ul>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">//for an internal reference</span>
+
+<span class="token punctuation">{</span>@link Todo<span class="token punctuation">}</span>
+<span class="token punctuation">[</span>Todo<span class="token punctuation">]</span><span class="token punctuation">{</span>@link Todo<span class="token punctuation">}</span>
+<span class="token punctuation">{</span>@link Todo<span class="token operator">|</span>TodoClass<span class="token punctuation">}</span>
+
+Anchors are supported <span class="token punctuation">:</span> <span class="token punctuation">[</span>Todo<span class="token punctuation">]</span><span class="token punctuation">{</span>@link Todo#myproperty<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//for an external link</span>
+
+<span class="token punctuation">[</span>Google<span class="token punctuation">]</span><span class="token punctuation">{</span>@link http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>www<span class="token punctuation">.</span>google<span class="token punctuation">.</span>com<span class="token punctuation">}</span>
+<span class="token punctuation">{</span>@link http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>www<span class="token punctuation">.</span>apple<span class="token punctuation">.</span>com<span class="token operator">|</span>Apple<span class="token punctuation">}</span>
+<span class="token punctuation">{</span>@link https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>github<span class="token punctuation">.</span>com GitHub<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>@example</code> : for giving an example on directives, components and pipes decorators, use @example or markdown :</li>
+</ul>
+<p><strong>INDENTATION WARNING</strong> : TypeScript has an internal margin for new lines, if you want to keep a level of indentation, put a minimum of 13 space characters like in the next example.</p>
+<pre class=" language-js"><code class=" language-js"><span class="token comment" spellcheck="true">/**
+ * Shows all events on a given day. Example usage:
+ *
+ * `` `
+ * &amp;lt;mwl-calendar-day-view
+ *             [viewDate]="viewDate"
+ *             [events]="events"&amp;gt;
+ * &amp;lt;/mwl-calendar-day-view&amp;gt;
+ * `` `
+ */</span>
+
+ <span class="token comment" spellcheck="true">/**
+  * Shows all events on a given day. Example usage:
+  *
+  * @example
+  * &lt;mwl-calendar-day-view
+  *             [viewDate]="viewDate"
+  *             [events]="events"&gt;
+  * &lt;/mwl-calendar-day-view&gt;
+  */</span>
+</code></pre>
+
+        </div>
+        <footer>
+    <div class="mdl-mega-footer--bottom-section">
+        <p class="mdl-typography--font-light center badges">
+            <a href="https://opencollective.com/compodoc#support"><img src="./Compodoc - tags_files/badge.svg"></a>
+            <a href="https://opencollective.com/compodoc#support"><img src="./Compodoc - tags_files/badge(1).svg"></a>
+            <a href="https://travis-ci.org/compodoc/compodoc"><img src="./Compodoc - tags_files/passing.svg" alt="Build Status"></a>
+            <a href="https://ci.appveyor.com/project/vogloblinsky/compodoc/branch/develop"><img src="./Compodoc - tags_files/develop" alt="Build Status"></a>
+            <a href="https://codecov.io/gh/compodoc/compodoc"><img src="./Compodoc - tags_files/badge(2).svg" alt="Codecov"></a>
+            <a href="https://www.npmjs.com/package/@compodoc/compodoc"><img src="./Compodoc - tags_files/@compodoc%2Fcompodoc.svg" alt="npm badge"></a>
+            <a href="https://david-dm.org/compodoc/compodoc"><img src="./Compodoc - tags_files/compodoc.svg" alt="npm dependencies"></a>
+            <a href="https://david-dm.org/compodoc/compodoc?type=dev"><img src="./Compodoc - tags_files/dev-status.svg" alt="npm devDependencies"></a>
+            <a href="http://opensource.org/licenses/MIT"><img src="./Compodoc - tags_files/license-MIT-brightgreen.svg" alt="MIT badge"></a>
+        </p>
+        <p class="mdl-typography--font-light center"> Powered by <a href="http://www.vincentogloblinsky.com/" target="_blank">Vincent Ogloblinsky</a> ©2016-2017. Code licensed under an <a href="https://compodoc.github.io/license.html">MIT-style License</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    </div>
+</footer>
+
+    </main>
+<div class="mdl-layout__obfuscator"></div></div></div>
+        <script async="" src="./Compodoc - tags_files/analytics.js.download"></script><script src="./Compodoc - tags_files/material.min.js.download"></script>
+    
+
+    <script src="./Compodoc - tags_files/prism.js.download"></script>
+
+    <script async="" src="./Compodoc - tags_files/analytics.js.download"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-89693051-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    
+</body></html>
