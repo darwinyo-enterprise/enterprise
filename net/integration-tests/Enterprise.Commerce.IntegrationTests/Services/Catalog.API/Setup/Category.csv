@@ -1,0 +1,21 @@
+Id,Name,Description,ImageName
+1,Mobile,None,mobile.jpg
+2,Software,None,software.jpg
+3,Laptop,None,laptop.jpg
+4,Console,None,console.jpg
+5,Tablet,None,tablet.jpg
+6,CPU,None,cpu.jpeg
+7,Motherboard,None,motherboard.jpg
+8,Heat Sink,None,heatsink.jpg
+9,Thermal Paste,None,thermalpaste.jpg
+10,VGA,None,vga.jpg
+11,Keyboard,None,keyboard.jpg
+12,Mouse,None,mouse.jpg
+13,PC Case,None,pccase.jpg
+14,SSD,None,ssd.jpg
+15,Ram,None,ram.jpg
+16,Harddisk,None,harddisk.jpg
+17,Monitor,None,monitor.jpg
+18,PSU,None,psu.jpg
+19,Network Card,None,networkcard.jpg
+20,Headset,None,headset.jpg

@@ -1,0 +1,59 @@
+@import './../../../../../../../sass/enterprise.globalstyle/src/base/_variables.scss';
+@media screen and (max-width: $mobile-screen-l) {
+  .file-upload-info {
+    &__card {
+      width: 140px !important;
+      height: 140px !important;
+      margin: 5px !important;
+    }
+  }
+}
+@media screen and (max-width: $mobile-screen-m) {
+  .file-upload-info {
+    &__card {
+      width: 100px !important;
+      height: 100px !important;
+    }
+  }
+}
+@media screen and (max-width: $mobile-screen-s) {
+  .file-upload-info {
+    &__card {
+      width: 200px !important;
+      height: 200px !important;
+    }
+  }
+}
+
+.file-upload-info {
+  &__card {
+    width: 150px;
+    height: 150px;
+    border-radius: 1rem;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    &__img {
+      align-self: center;
+      & img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+    &__delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  }
+  &__container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}

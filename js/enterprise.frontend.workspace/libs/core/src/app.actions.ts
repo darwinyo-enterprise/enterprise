@@ -1,3 +1,6 @@
+import { IConfirmConfig } from '@covalent/core';
+import { Subject } from 'rxjs';
+
 /** Register Linear Loading Overlay Command */
 export class RegisterLinearLoadingOverlay {
   static readonly type = '[APP] REGISTER LINEAR LOADING OVERLAY';
@@ -29,6 +32,15 @@ export class ResolveLoadingOverlay {
   constructor() { }
 }
 
+export class Confirm {
+  static readonly type = '[APP] CONFIRM';
+  constructor(public payload: IConfirmConfig, public handler: Subject<boolean>) { }
+}
+export class Confirmed {
+  static readonly type = '[APP] CONFIRMED';
+  constructor(public payload: boolean) { }
+}
+
 /** Error Occured Event */
 export class ErrorOccured {
   static readonly type = '[APP] ERROR OCCURED';
@@ -36,6 +48,11 @@ export class ErrorOccured {
    *
    * @param payload Error Message
    */
+  constructor(public payload: string) { }
+}
+
+export class Alert {
+  static readonly type = '[APP] ALERT';
   constructor(public payload: string) { }
 }
 

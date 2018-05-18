@@ -1,8 +1,10 @@
 <div class="file-upload-info__container">
   <mat-card class="file-upload-info__card" *ngFor="let item of filesUpload">
-    <div class="file-upload-info__card__delete-btn" (click)="onDelete(item.name)"></div>
+    <div class="file-upload-info__card__delete-btn" (click)="onDelete(item)">
+      <img src="assets/Close.svg" alt="" srcset="">
+    </div>
     <div class="file-upload-info__card__img">
-      <img src="{{item.imgUrl}}" alt="" srcset="">
+      <img [src]="item.fileUrl" alt="" srcset="">
     </div>
   </mat-card>
 </div>
