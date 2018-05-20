@@ -6,6 +6,7 @@ import { NgModule } from "@angular/core";
 const appRoutes: Routes = [
     { path: 'manufacturer', loadChildren:'./manufacturer/manufacturer.module#ManufacturerModule' },
     { path: 'category', loadChildren:'./category/category.module#CategoryModule' },
+    { path: 'product', loadChildren:'./product/product.module#ProductModule' },
     { path: 'dashboard', component: DashboardComponent },
 
     { path: 'not-authorized', component: NotAuthorizedComponent },

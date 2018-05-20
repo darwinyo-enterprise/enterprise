@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
+using Catalog.API.ViewModels;
 using Enterprise.Commerce.IntegrationTests.Attributes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -329,6 +331,28 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                                 insertedCategory.ImageName;
 
                 Assert.True(File.Exists(targetDir));
+            }
+        }
+
+        [Fact]
+        [TestPriority(13)]
+        public async Task Get_manufacturer_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.CategoryListPaginatedItem());
+                response.EnsureSuccessStatusCode();
+                var result =
+                    JsonConvert.DeserializeObject<PaginatedListViewModel<ItemViewModel>>(await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var actual = await ctx.Categories.ToListAsync();
+                Assert.Equal(actual.Count, result.Count);
+                Assert.Equal(Get.PageIndex, result.PageIndex);
+                Assert.Equal(Get.PageSize, result.PageSize);
+                Assert.Equal(Get.PageSize, result.ListData.Count());
             }
         }
     }

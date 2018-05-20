@@ -12,7 +12,7 @@ namespace Catalog.API.Migrations
                     AS
                     BEGIN
                         SET NOCOUNT ON;
-                        IF  IDENT_CURRENT(@TableName)  IS NOT NULL
+                        IF  IDENT_CURRENT(@TableName)  <> 1
 						BEGIN
 						    DBCC CHECKIDENT (@TableName, RESEED, 0); 
 						END

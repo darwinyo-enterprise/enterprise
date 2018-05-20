@@ -1,6 +1,5 @@
 import { State, StateContext, Selector, Action } from "@ngxs/store";
 
-import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 import {
   FileImageAdded,
   FileImageDeleted,
@@ -11,6 +10,7 @@ import {
   ValidateFileUpload,
   SetModeFileUpload
 } from "./file-upload.actions";
+import { UploadFileModel } from "@enterprise/material/file-upload";
 
 export interface FileUploadStateModel {
   /** File for show */

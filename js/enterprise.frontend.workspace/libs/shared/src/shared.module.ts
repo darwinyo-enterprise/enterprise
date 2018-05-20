@@ -31,7 +31,7 @@ import {
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
+import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule } from '@covalent/core';
 
 @NgModule({
   imports: [
@@ -74,7 +74,8 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
     //#region Covalent Imports
     CovalentLoadingModule,
-    CovalentDialogsModule
+    CovalentDialogsModule,
+    CovalentChipsModule,
     //#endregion
   ],
   exports: [
@@ -115,7 +116,8 @@ import { CovalentLoadingModule, CovalentDialogsModule } from '@covalent/core';
 
     //#region Covalent Imports
     CovalentLoadingModule,
-    CovalentDialogsModule
+    CovalentDialogsModule,
+    CovalentChipsModule,
     //#endregion
   ]
 })

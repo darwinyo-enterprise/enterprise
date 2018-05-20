@@ -1,13 +1,14 @@
-import { CategoryState, FetchCategories, DeleteCategory } from '@enterprise/commerce/category-lib';
+import { CategoryState, FetchCategories, DeleteCategory, FetchPaginatedCategoriesList } from '@enterprise/commerce/category-lib';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
-import { Category, CategoryService } from '@enterprise/commerce/catalog-lib';
+import { Category, CategoryService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { IConfirmConfig } from '@covalent/core';
+import { IConfirmConfig, IPageChangeEvent } from '@covalent/core';
 import { Component, OnInit } from '@angular/core';
+import { ListItemActionState } from '@enterprise/material/list-item-actions/src/shared/list-item-actions.state';
 
 @Component({
   selector: 'eca-list-category',
@@ -23,11 +24,15 @@ export class ListCategoryComponent implements OnInit {
     title: 'Delete Confirmation',
     message: 'Are you sure want to delete this category?'
   };
+
+  @Select(ListItemActionState.getPageInfo)
+  pageInfo$: Observable<IPageChangeEvent>;
+
   /** Selector Categories List
    *  This Comes from State Management.
    */
-  @Select(CategoryState.getCategories)
-  categories$: Observable<Category[]>;
+  @Select(CategoryState.getPaginatedCategory)
+  categories$: Observable<PaginatedListViewModelItemViewModel>;
 
   /** Executed when Confirmation OK triggered */
   deleteSubject$: Subject<boolean>;
@@ -42,7 +47,7 @@ export class ListCategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(FetchCategories);
+    this.store.dispatch(new FetchPaginatedCategoriesList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }));
   }
 
   /** Navigate when category add button clicked */
@@ -74,6 +79,14 @@ export class ListCategoryComponent implements OnInit {
       }
     });
     this.store.dispatch(new Confirm(this.confirmModel, this.deleteSubject$))
+
+  }
+
+  /** paging changes will fetch category api */
+  onPaginationChanged() {
+    this.pageInfo$.pipe(take(1)).subscribe(x => {
+      this.store.dispatch(new FetchPaginatedCategoriesList(x));
+    })
 
   }
 }

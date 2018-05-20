@@ -1,4 +1,5 @@
-import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
+import { UploadFileModel } from "@enterprise/material/file-upload";
+
 
 /** Set Multiple Mode File Upload Command */
 export class SetModeFileUpload {

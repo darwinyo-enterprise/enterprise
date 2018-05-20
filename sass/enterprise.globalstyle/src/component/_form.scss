@@ -40,6 +40,11 @@
     width: 100%;
   }
   &--half-width {
-    width: 50%;
+    width: 48%;
   }
+}
+
+.form-row{
+  display: flex;
+  justify-content: space-between;
 }

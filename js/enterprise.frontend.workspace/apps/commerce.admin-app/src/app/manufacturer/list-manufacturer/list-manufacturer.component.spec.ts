@@ -12,7 +12,7 @@ import {
   AddManufacturer,
   DeleteManufacturer
 } from '@enterprise/commerce';
-import { ManufacturerService, Manufacturer } from '@enterprise/commerce/catalog-lib';
+import { ManufacturerService, Manufacturer, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,8 +21,12 @@ import { AddManufacturerComponent } from '../add-manufacturer/add-manufacturer.c
 import { EditManufacturerComponent } from '../edit-manufacturer/edit-manufacturer.component';
 import { Location } from "@angular/common";
 import { Navigate, RegisterLoadingOverlay, Confirm } from '@enterprise/core';
-import { ManufacturerStateModel, ManufacturersMock } from '@enterprise/commerce/manufacturer-lib';
+import { ManufacturerStateModel, ManufacturersMock, FetchPaginatedManufacturersList, PaginatedManufacturersListFetched } from '@enterprise/commerce/manufacturer-lib';
 import { Observable } from 'rxjs';
+import { ChangePagination } from '@enterprise/material/list-item-actions';
+import { IPageChangeEvent } from '@covalent/core';
+import { timeout, take } from 'rxjs/operators';
+import { PaginatedManufacturersMock } from '@enterprise/commerce/manufacturer-lib/src/mocks/manufacturer-service.mock';
 
 describe('ListManufacturerComponent', () => {
   let component: ListManufacturerComponent;
@@ -50,9 +54,9 @@ describe('ListManufacturerComponent', () => {
         providers: [
           {
             provide: ManufacturerService, useValue: {
-              apiV1ManufacturerGet(): Observable<Manufacturer[]> {
+              apiV1ManufacturerListGet(): Observable<PaginatedListViewModelItemViewModel> {
 
-                return of(ManufacturersMock);
+                return of(PaginatedManufacturersMock);
               }
             }
           },
@@ -103,45 +107,20 @@ describe('ListManufacturerComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith(new DeleteManufacturer('1'));
     });
 
-    it('should dispatch fetch manufacturers when component on init', () => {
+    it('should dispatch fetch first paginated manufacturers when component on init', () => {
       component.ngOnInit();
-      expect(store.dispatch).toHaveBeenCalledWith(FetchManufacturers);
+      expect(store.dispatch).toHaveBeenCalledWith(new FetchPaginatedManufacturersList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }));
+    });
+
+    it('should dispatch fetch paginated manufacturers when pagination changed', () => {
+      var pageInfo: IPageChangeEvent = { page: 1, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 };
+
+      component.onPaginationChanged();
+      component.pageInfo$.pipe(take(1)).subscribe(x => {
+        expect(store.dispatch).toHaveBeenCalledWith(new FetchPaginatedManufacturersList(x));
+      })
+
+      store.dispatch(new ChangePagination(pageInfo));
     });
   });
-
-  // describe('State Tests', () => {
-  //   describe('Fetch Manufacturers And Manufacturers Fetched', () => {
-  //     it('should dispatch register overlay when fetch manufacturer', () => {
-  //       let manufacturerState = new ManufacturerState(services);
-  //       manufacturerState.fetchManufacturers({patchState,dispatch}TestBed.get(StateContext<ManufacturerStateModel>))
-  //       expect(storeSpy).toHaveBeenCalledWith(RegisterLoadingOverlay);
-  //     })
-  //     it('should dispatch resolve overlay when fetch manufacturer done', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved loading when fetch manufacturer error', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should patch manufacturer state when manufacturer fetched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch manufacturerFetched on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  //   describe('Delete Manufacturer and Manufacturer Deleted', () => {
-  //     it('should dispatch register overlay when delete manufacturer', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved loading when delete manufacturer error', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch fetch manufacturer, resolve overlay, and alert when manufacturer deleted', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch manufacturer fetched on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  // })
 });

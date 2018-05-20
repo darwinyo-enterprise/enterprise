@@ -1,7 +1,7 @@
 import {
-  UploadFileModel,
   Manufacturer
 } from '@enterprise/commerce/catalog-lib';
+import { IPageChangeEvent } from '@covalent/core';
 
 /** Fetch Single Manufacturers Command */
 export class FetchSingleManufacturer {
@@ -27,6 +27,24 @@ export class ManufacturersFetched {
   static readonly type = '[COMMERCE] MANUFACTURERS FETCHED';
   constructor() {}
 }
+
+
+/** Fetch paginated Manufacturers List Command
+ *  Used for Admin
+ */
+export class FetchPaginatedManufacturersList {
+  static readonly type = '[COMMERCE] FETCH PAGINATED MANUFACTURERS LIST';
+  constructor(public payload:IPageChangeEvent) {}
+}
+
+/** paginated Manufacturers List Fetched Event
+ * Used for Admin
+ */
+export class PaginatedManufacturersListFetched {
+  static readonly type = '[COMMERCE] PAGINATED MANUFACTURERS LIST FETCHED';
+  constructor() {}
+}
+
 
 /** Add Manufacturer Command */
 export class AddManufacturer {

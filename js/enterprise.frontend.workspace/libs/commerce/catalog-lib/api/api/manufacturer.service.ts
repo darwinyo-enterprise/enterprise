@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { Manufacturer } from '../model/manufacturer';
+import { PaginatedListViewModelItemViewModel } from '../model/paginatedListViewModelItemViewModel';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -252,6 +253,53 @@ export class ManufacturerService {
 
         return this.httpClient.get<any>(`${this.basePath}/api/v1/Manufacturer/image/${encodeURIComponent(String(id))}`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * 
+     * @param pageSize 
+     * @param pageIndex 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiV1ManufacturerListGet(pageSize?: number, pageIndex?: number, observe?: 'body', reportProgress?: boolean): Observable<PaginatedListViewModelItemViewModel>;
+    public apiV1ManufacturerListGet(pageSize?: number, pageIndex?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PaginatedListViewModelItemViewModel>>;
+    public apiV1ManufacturerListGet(pageSize?: number, pageIndex?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PaginatedListViewModelItemViewModel>>;
+    public apiV1ManufacturerListGet(pageSize?: number, pageIndex?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (pageSize !== undefined) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+        if (pageIndex !== undefined) {
+            queryParameters = queryParameters.set('pageIndex', <any>pageIndex);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<PaginatedListViewModelItemViewModel>(`${this.basePath}/api/v1/Manufacturer/list`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Catalog.API.Helpers;
 using Catalog.API.Infrastructure;
 using Catalog.API.Models;
+using Catalog.API.ViewModels;
 using Enterprise.Library.FileUtility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,24 @@ namespace Catalog.API.Controllers
                               throw new ArgumentNullException(nameof(catalogContext));
             _fileUtility = fileUtility;
             _settings = settings.Value;
+        }
+
+        private PaginatedListViewModel<ItemViewModel> CreatePaginatedListViewModel(int pageSize,
+            int pageIndex, long totalItems, List<Category> list)
+        {
+            var page = new List<ItemViewModel>();
+            list.ForEach(x =>
+            {
+                page.Add(new ItemViewModel
+                {
+                    Id = x.Id.ToString(),
+                    Name = x.Name
+                });
+            });
+
+            var model = new PaginatedListViewModel<ItemViewModel>(
+                pageIndex, pageSize, totalItems, page);
+            return model;
         }
 
         /// <summary>
@@ -77,6 +96,41 @@ namespace Catalog.API.Controllers
             }
 
             return NotFound();
+        }
+
+        /// <summary>
+        ///     Fetch All Categories Used for Admin Management.
+        ///     TODO: Implement Authorization
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns>Category</returns>
+        // GET api/v1/Category/list
+        [HttpGet("list")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetListCategories(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
+            [FromQuery] int pageIndex = 0)
+        {
+            if (pageIndex < 0 || pageSize <= 0)
+            {
+                return BadRequest(new { Message = $"Invalid pagination request." });
+            }
+            var root = (IQueryable<Category>)_catalogContext.Categories;
+
+            var totalItems = await root
+                .LongCountAsync(cancellationToken);
+
+            var list = await root
+                .OrderBy(c => c.Name)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            var model = CreatePaginatedListViewModel(pageSize, pageIndex, totalItems, list);
+
+            return Ok(model);
         }
 
         /// <summary>

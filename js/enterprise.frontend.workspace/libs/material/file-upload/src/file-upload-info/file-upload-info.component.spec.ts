@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { BaseTestPage } from "@enterprise/core/testing";
-import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 
 import { FileUploadInfoComponent } from "./file-upload-info.component";
 import { FileUploadMocks } from "../mocks/file-upload.mocks";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { UploadFileModel } from "@enterprise/material/file-upload";
 
 export class FileUploadInfoPage extends BaseTestPage<FileUploadInfoComponent> {
   constructor(public fixture: ComponentFixture<FileUploadInfoComponent>) {

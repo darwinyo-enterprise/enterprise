@@ -3,7 +3,7 @@
 
 const { makeSureNoAppIsSelected } = require('@nrwl/schematics/src/utils/cli-config-utils');
 // Nx only supports running unit tests for all apps and libs.
-makeSureNoAppIsSelected();
+// makeSureNoAppIsSelected();
 
 module.exports = function (config) {
   config.set({

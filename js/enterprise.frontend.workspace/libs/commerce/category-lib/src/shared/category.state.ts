@@ -22,25 +22,31 @@ import {
   FetchSingleCategory,
   SingleCategoryFetched,
   ClearSelectedCategory,
-  SelectedCategoryCleared
+  SelectedCategoryCleared,
+  FetchPaginatedCategoriesList,
+  PaginatedCategoriesListFetched
 } from './../shared/category.actions';
 import {
   Category,
-  CategoryService
+  CategoryService,
+  PaginatedListViewModelItemViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
+import { ListItemActionState, ListItemActionStateModel, ChangePagination, ResetPagination } from '@enterprise/material/list-item-actions';
 
 export interface CategoryStateModel {
   categories: Category[];
+  paginatedCategories: PaginatedListViewModelItemViewModel;
   selectedCategory: Category;
 }
 
 const defaults: CategoryStateModel = {
-  categories: [],
+  categories: null,
+  paginatedCategories: null,
   selectedCategory: null
 };
 
@@ -51,9 +57,6 @@ const defaults: CategoryStateModel = {
 export class CategoryState {
   constructor(private categoryService: CategoryService) { }
   //#region Selectors
-  @Select(AppState.isLoading) private isLoading$: Observable<boolean>;
-
-  private progress: number;
   @Selector()
   static getCategories(state: CategoryStateModel) {
     return state.categories;
@@ -62,6 +65,11 @@ export class CategoryState {
   @Selector()
   static getSelectedCategory(state: CategoryStateModel) {
     return state.selectedCategory;
+  }
+
+  @Selector()
+  static getPaginatedCategory(state: CategoryStateModel) {
+    return state.paginatedCategories;
   }
   //#endregion
 
@@ -175,8 +183,11 @@ export class CategoryState {
   // Done
   /** Category Deleted Event */
   @Action(CategoryDeleted)
-  categoryDeleted({ dispatch }: StateContext<CategoryStateModel>) {
-    dispatch([FetchCategories, ResolveLoadingOverlay, new Alert("Category Deleted")]);
+  categoryDeleted(
+    { dispatch }: StateContext<CategoryStateModel>) {
+    dispatch([
+      new FetchPaginatedCategoriesList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }),
+       ResolveLoadingOverlay, new Alert("Category Deleted")]);
   }
 
   // DONE
@@ -206,6 +217,7 @@ export class CategoryState {
     dispatch([ResolveLoadingOverlay, new Navigate({ commands: ['/category/list'] }), new Alert("Category Updated")])
   }
 
+  /** Clear Selected Category */
   @Action(ClearSelectedCategory)
   clearSelectedCategory({ dispatch, patchState }: StateContext<CategoryStateModel>) {
     patchState({
@@ -217,6 +229,33 @@ export class CategoryState {
   @Action(SelectedCategoryCleared)
   selectedCategoryCleared({ dispatch }: StateContext<CategoryStateModel>) {
 
+  }
+
+  /** fetch category list  */
+  @Action(FetchPaginatedCategoriesList)
+  fetchCategoriesList(
+    { dispatch, patchState }: StateContext<CategoryStateModel>,
+    { payload }: FetchPaginatedCategoriesList) {
+    // Register Loading Overlay
+    dispatch(RegisterLoadingOverlay);
+
+    return this.categoryService
+      .apiV1CategoryListGet(payload.pageSize, payload.page)
+      .pipe(
+        tap(
+          (x) => {
+            patchState({
+              paginatedCategories: x
+            })
+          },
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch(PaginatedCategoriesListFetched))
+      );
+  }
+
+  @Action(PaginatedCategoriesListFetched)
+  paginatedCategoriesListFetched({ dispatch }: StateContext<CategoryStateModel>) {
+    dispatch(ResolveLoadingOverlay);
   }
   //#endregion
 }

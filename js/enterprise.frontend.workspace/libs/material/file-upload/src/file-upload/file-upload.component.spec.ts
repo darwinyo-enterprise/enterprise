@@ -4,7 +4,6 @@ import { FileUploadComponent } from "./file-upload.component";
 import { BaseTestPage } from "@enterprise/core";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
 import {
   SetModeFileUpload,
   ValidateFileUpload,
@@ -13,7 +12,7 @@ import {
   } from "../shared/file-upload.actions";
 import { FileUploadMocks } from "../mocks/file-upload.mocks";
 import { Store, NgxsModule } from "@ngxs/store";
-import { FileUploadState } from "@enterprise/material/file-upload";
+import { FileUploadState, UploadFileModel } from "@enterprise/material/file-upload";
 
 export class FileUploadPage extends BaseTestPage<FileUploadComponent> {
   constructor(public fixture: ComponentFixture<FileUploadComponent>) {

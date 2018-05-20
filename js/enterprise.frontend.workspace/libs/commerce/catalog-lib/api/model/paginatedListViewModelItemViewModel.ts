@@ -9,10 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ItemViewModel } from './itemViewModel';
 
 
-export interface UploadFileModel {
-    id?: string;
-    fileName?: string;
-    fileUrl?: string;
+export interface PaginatedListViewModelItemViewModel {
+    listData?: Array<ItemViewModel>;
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
 }

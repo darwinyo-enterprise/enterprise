@@ -22,11 +22,14 @@ import {
   FetchSingleManufacturer,
   SingleManufacturerFetched,
   ClearSelectedManufacturer,
-  SelectedManufacturerCleared
+  SelectedManufacturerCleared,
+  FetchPaginatedManufacturersList,
+  PaginatedManufacturersListFetched
 } from './../shared/manufacturer.actions';
 import {
   Manufacturer,
-  ManufacturerService
+  ManufacturerService,
+  PaginatedListViewModelItemViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
@@ -35,12 +38,14 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 
 export interface ManufacturerStateModel {
-  manufacturers: Manufacturer[];
+  manufacturers: PaginatedListViewModelItemViewModel;
+  paginatedManufacturers: PaginatedListViewModelItemViewModel;
   selectedManufacturer: Manufacturer;
 }
 
 const defaults: ManufacturerStateModel = {
-  manufacturers: [],
+  manufacturers: null,
+  paginatedManufacturers: null,
   selectedManufacturer: null
 };
 
@@ -51,9 +56,6 @@ const defaults: ManufacturerStateModel = {
 export class ManufacturerState {
   constructor(private manufacturerService: ManufacturerService) { }
   //#region Selectors
-  @Select(AppState.isLoading) private isLoading$: Observable<boolean>;
-
-  private progress: number;
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {
     return state.manufacturers;
@@ -62,6 +64,11 @@ export class ManufacturerState {
   @Selector()
   static getSelectedManufacturer(state: ManufacturerStateModel) {
     return state.selectedManufacturer;
+  }
+
+  @Selector()
+  static getPaginatedManufacturer(state: ManufacturerStateModel) {
+    return state.paginatedManufacturers;
   }
   //#endregion
 
@@ -108,7 +115,7 @@ export class ManufacturerState {
     dispatch(RegisterLoadingOverlay);
 
     // call manufacturer service
-    return this.manufacturerService.apiV1ManufacturerGet()
+    return this.manufacturerService.apiV1ManufacturerListGet()
       .pipe(
         tap(
           (manufacturers) => patchState({ manufacturers: manufacturers }),
@@ -176,7 +183,9 @@ export class ManufacturerState {
   /** Manufacturer Deleted Event */
   @Action(ManufacturerDeleted)
   manufacturerDeleted({ dispatch }: StateContext<ManufacturerStateModel>) {
-    dispatch([FetchManufacturers, ResolveLoadingOverlay, new Alert("Manufacturer Deleted")]);
+    dispatch([
+      new FetchPaginatedManufacturersList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }),
+      ResolveLoadingOverlay, new Alert("Manufacturer Deleted")]);
   }
 
   // DONE
@@ -217,6 +226,34 @@ export class ManufacturerState {
   @Action(SelectedManufacturerCleared)
   selectedManufacturerCleared({ dispatch }: StateContext<ManufacturerStateModel>) {
 
+  }
+
+
+  /** fetch manufacturer list  */
+  @Action(FetchPaginatedManufacturersList)
+  fetchManufacturersList(
+    { dispatch, patchState }: StateContext<ManufacturerStateModel>,
+    { payload }: FetchPaginatedManufacturersList) {
+    // Register Loading Overlay
+    dispatch(RegisterLoadingOverlay);
+
+    return this.manufacturerService
+      .apiV1ManufacturerListGet(payload.pageSize, payload.page)
+      .pipe(
+        tap(
+          (x) => {
+            patchState({
+              paginatedManufacturers: x
+            })
+          },
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch(PaginatedManufacturersListFetched))
+      );
+  }
+
+  @Action(PaginatedManufacturersListFetched)
+  paginatedManufacturersListFetched({ dispatch }: StateContext<ManufacturerStateModel>) {
+    dispatch(ResolveLoadingOverlay);
   }
   //#endregion
 }

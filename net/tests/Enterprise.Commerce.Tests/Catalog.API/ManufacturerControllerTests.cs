@@ -166,6 +166,19 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.IsType<NotFoundResult>(response);
         }
 
+        [Fact]
+        public async Task Get_manufacturer_list_response_bad_request_with_message_when_pagination_index_is_negative_or_page_size_zero_or_negative()
+        {
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await manufacturerController.GetListManufacturers(cancellationToken, 0, -10);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
         #endregion
 
         #region Post
@@ -276,9 +289,18 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         [Fact]
         public async Task Delete_manufacturer_response_bad_request_with_message_when_manufacturer_hooked_with_product()
         {
-            var id = (await _catalogContextFixture.Context.Manufacturers.FirstOrDefaultAsync()).Id;
             var cancellationToken = new CancellationToken();
 
+            var expectedManufacturer = await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
+
+            if (expectedManufacturer.IsNullOrEmpty())
+            {
+                expectedManufacturer = await SeedManufacturer(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedManufacturer);
+
+            var id = (await _catalogContextFixture.Context.Manufacturers.FirstOrDefaultAsync(cancellationToken: cancellationToken)).Id;
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);

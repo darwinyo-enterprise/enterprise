@@ -10,8 +10,8 @@ import { Select, Store } from '@ngxs/store';
 
 import { AppState } from '@enterprise/core';
 import { Guid } from '@enterprise/shared';
-import { Category, UploadFileModel } from '@enterprise/commerce/catalog-lib';
-import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload } from '@enterprise/material/file-upload';
+import { Category } from '@enterprise/commerce/catalog-lib';
+import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload, UploadFileModel } from '@enterprise/material/file-upload';
 import { take } from 'rxjs/operators';
 import { CategoryState } from './../shared/category.state';
 

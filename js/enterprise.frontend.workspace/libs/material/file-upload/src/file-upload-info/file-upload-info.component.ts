@@ -4,7 +4,7 @@ import {
   Input,
   EventEmitter,
   Output } from "@angular/core";
-import { UploadFileModel } from "@enterprise/commerce/catalog-lib";
+import { UploadFileModel } from "./../models/upload-file.model";
 
 @Component({
   

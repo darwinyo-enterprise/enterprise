@@ -1,0 +1,61 @@
+<form [formGroup]="productForm">
+  <mat-card class="form-card">
+    <div class="form-card__title">
+      {{title}}
+    </div>
+    <div class="form-card__content">
+      <div class="form-container">
+        <div class="form-row">
+          <mat-form-field id="name-txtbox" class="form-control--half-width">
+            <input matInput placeholder="Name" formControlName="name">
+            <mat-error *ngIf="!nameControl.pristine && nameControl.hasError('required')">
+              Name is
+              <strong>required</strong>.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field id="price-txtbox" class="form-control--half-width">
+            <input matInput type="number" placeholder="Price" formControlName="price" min="0">
+            <mat-error *ngIf="!priceControl.pristine && priceControl.hasError('required')">
+              Price is
+              <strong>required</strong>.
+            </mat-error>
+            <mat-error *ngIf="!priceControl.pristine && priceControl.hasError('min-length')">
+              Price is
+              <strong>non negative value</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="form-control--half-width">
+            <mat-select formControlName="categoryId" placeholder="Select Category">
+              <mat-option *ngFor="let category of categories$ | async" [value]="category.id" selected="category.id == product.categoryId">
+                {{category.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="form-control--half-width">
+            <mat-select formControlName="manufacturerId" placeholder="Select Manufacturer">
+              <mat-option *ngFor="let manufacturer of manufacturers$ | async" [value]="manufacturer.id" selected="manufacturer.id == product.manufacturerId">
+                {{manufacturer.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <td-chips color="warn" placeholder="Enter any color" (inputChange)="onChipInputChanged()" #ColorChips></td-chips>
+
+        <mat-form-field id="description" class="form-control--full-width">
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <em-file-upload [parentId]="product.id"></em-file-upload>
+    </div>
+    <div class="form-card__footer">
+      <button id="save-button" mat-button class="ok" [disabled]="productForm.invalid" type="button" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
+    </div>
+  </mat-card>
+</form>
+<p>{{productForm.value| json }}</p>

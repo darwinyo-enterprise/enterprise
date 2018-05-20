@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, StateContext } from '@ngxs/store';
 import { FileUploadState } from '@enterprise/material/file-upload';
-import { CategoryService, Category } from '@enterprise/commerce/catalog-lib';
+import { CategoryService, Category, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,8 +14,12 @@ import { AddCategoryComponent } from '../add-category/add-category.component';
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
 import { Location } from "@angular/common";
 import { Navigate, RegisterLoadingOverlay, Confirm } from '@enterprise/core';
-import { CategoryStateModel, CategoriesMock, CategoryState, DeleteCategory, FetchCategories } from '@enterprise/commerce/category-lib';
+import { CategoryStateModel, CategoriesMock, CategoryState, DeleteCategory, FetchCategories, FetchPaginatedCategoriesList } from '@enterprise/commerce/category-lib';
 import { Observable } from 'rxjs';
+import { PaginatedCategoriesMock } from '@enterprise/commerce/category-lib/src/mocks/category-service.mock';
+import { IPageChangeEvent } from '@covalent/core';
+import { take } from 'rxjs/operators';
+import { ChangePagination } from '@enterprise/material/list-item-actions';
 
 describe('ListCategoryComponent', () => {
   let component: ListCategoryComponent;
@@ -43,9 +47,9 @@ describe('ListCategoryComponent', () => {
         providers: [
           {
             provide: CategoryService, useValue: {
-              apiV1CategoryGet(): Observable<Category[]> {
+              apiV1CategoryListGet(): Observable<PaginatedListViewModelItemViewModel> {
 
-                return of(CategoriesMock);
+                return of(PaginatedCategoriesMock);
               }
             }
           },
@@ -96,45 +100,20 @@ describe('ListCategoryComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith(new DeleteCategory('1'));
     });
 
-    it('should dispatch fetch categories when component on init', () => {
+    it('should dispatch fetch first paginated categories when component on init', () => {
       component.ngOnInit();
-      expect(store.dispatch).toHaveBeenCalledWith(FetchCategories);
+      expect(store.dispatch).toHaveBeenCalledWith(new FetchPaginatedCategoriesList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }));
+    });
+
+    it('should dispatch fetch paginated categories when pagination changed', () => {
+      var pageInfo: IPageChangeEvent = { page: 1, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 };
+
+      component.onPaginationChanged();
+      component.pageInfo$.pipe(take(1)).subscribe(x => {
+        expect(store.dispatch).toHaveBeenCalledWith(new FetchPaginatedCategoriesList(x));
+      })
+
+      store.dispatch(new ChangePagination(pageInfo));
     });
   });
-
-  // describe('State Tests', () => {
-  //   describe('Fetch Categories And Categories Fetched', () => {
-  //     it('should dispatch register overlay when fetch category', () => {
-  //       let categoryState = new CategoryState(services);
-  //       categoryState.fetchCategories({patchState,dispatch}TestBed.get(StateContext<CategoryStateModel>))
-  //       expect(storeSpy).toHaveBeenCalledWith(RegisterLoadingOverlay);
-  //     })
-  //     it('should dispatch resolve overlay when fetch category done', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved loading when fetch category error', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should patch category state when category fetched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch categoryFetched on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  //   describe('Delete Category and Category Deleted', () => {
-  //     it('should dispatch register overlay when delete category', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved loading when delete category error', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch fetch category, resolve overlay, and alert when category deleted', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch category fetched on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  // })
 });

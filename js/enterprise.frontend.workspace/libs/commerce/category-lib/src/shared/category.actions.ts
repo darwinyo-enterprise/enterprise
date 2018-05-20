@@ -1,7 +1,7 @@
 import {
-  UploadFileModel,
   Category
 } from '@enterprise/commerce/catalog-lib';
+import { IPageChangeEvent } from '@covalent/core';
 
 /** Fetch Single Categories Command */
 export class FetchSingleCategory {
@@ -27,6 +27,23 @@ export class CategoriesFetched {
   static readonly type = '[COMMERCE] CATEGORIES FETCHED';
   constructor() {}
 }
+
+/** Fetch paginated Categories List Command
+ *  Used for Admin
+ */
+export class FetchPaginatedCategoriesList {
+  static readonly type = '[COMMERCE] FETCH PAGINATED CATEGORIES LIST';
+  constructor(public payload:IPageChangeEvent) {}
+}
+
+/** paginated Categories List Fetched Event
+ * Used for Admin
+ */
+export class PaginatedCategoriesListFetched {
+  static readonly type = '[COMMERCE] PAGINATED CATEGORIES LIST FETCHED';
+  constructor() {}
+}
+
 
 /** Add Category Command */
 export class AddCategory {
