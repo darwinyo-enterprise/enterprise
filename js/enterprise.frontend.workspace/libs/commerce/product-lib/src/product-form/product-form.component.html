@@ -20,15 +20,11 @@
               Price is
               <strong>required</strong>.
             </mat-error>
-            <mat-error *ngIf="!priceControl.pristine && priceControl.hasError('min-length')">
-              Price is
-              <strong>non negative value</strong>.
-            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-row">
-          <mat-form-field class="form-control--half-width">
+          <mat-form-field id="category-select" class="form-control--half-width">
             <mat-select formControlName="categoryId" placeholder="Select Category">
               <mat-option *ngFor="let category of categories$ | async" [value]="category.id" selected="category.id == product.categoryId">
                 {{category.name}}
@@ -36,7 +32,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field class="form-control--half-width">
+          <mat-form-field id="manufacturer-select"  class="form-control--half-width">
             <mat-select formControlName="manufacturerId" placeholder="Select Manufacturer">
               <mat-option *ngFor="let manufacturer of manufacturers$ | async" [value]="manufacturer.id" selected="manufacturer.id == product.manufacturerId">
                 {{manufacturer.name}}

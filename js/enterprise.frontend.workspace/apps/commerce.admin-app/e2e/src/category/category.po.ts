@@ -1,14 +1,14 @@
 import { browser, by, element, WebElement, $, $$ } from 'protractor';
 
-export class ManufacturerPage {
+export class CategoryPage {
     navigateToList() {
-        return browser.get('/manufacturer/list');
+        return browser.get('/category/list');
     }
     navigateToAdd() {
-        return browser.get('/manufacturer/add');
+        return browser.get('/category/add');
     }
     navigateToEdit(id: number) {
-        return browser.get('/manufacturer/edit/' + id);
+        return browser.get('/category/edit/' + id);
     }
 
     prompt() {

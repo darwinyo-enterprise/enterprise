@@ -1,26 +1,26 @@
-import { ManufacturerPage } from "./manufacturer.po";
+import { CategoryPage } from "./category.po";
 import { browser } from "protractor";
 
-describe('Manufacturer Scenario', () => {
-    let page: ManufacturerPage
+describe('Category Scenario', () => {
+    let page: CategoryPage
     let path = require('path');
 
     beforeEach(() => {
-        page = new ManufacturerPage();
+        page = new CategoryPage();
     })
-    describe('display list manufacturer scenario', () => {
+    describe('display list category scenario', () => {
         beforeEach(async () => {
             await page.navigateToList();
             await browser.sleep(1000);
         })
-        it('should navigate to add manufacturer when add button clicked', async () => {
+        it('should navigate to add category when add button clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:4200/manufacturer/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:4200/category/add');
         })
-        it('should add manufacturer when add button clicked', async () => {
+        it('should add category when add button clicked', async () => {
             let testName = 'zzz';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
@@ -30,7 +30,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.formNameTxtbox().sendKeys(testName);
             await page.formDescriptionTxtbox().sendKeys('test Description');
-            await page.fileUploadDropZone().sendKeys(path.resolve(__dirname, '../assets/test-manufacturer.png'));
+            await page.fileUploadDropZone().sendKeys(path.resolve(__dirname, '../assets/test-category.jpg'));
 
             await page.formSubmitBtn().click();
             await browser.sleep(1000);
@@ -42,14 +42,14 @@ describe('Manufacturer Scenario', () => {
             let element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
-        it('should navigate edit manufacturer when edit button clicked', async () => {
+        it('should navigate edit category when edit button clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:4200/manufacturer/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:4200/category/edit');
         })
-        it('should change manufacturer when form edit submitted', async () => {
+        it('should change category when form edit submitted', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             let testName = 'zzz1';
             await page.lastPaginationBtn().click();
@@ -69,7 +69,7 @@ describe('Manufacturer Scenario', () => {
             let element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
-        it('should display list of manufacturers', async () => {
+        it('should display list of categories', async () => {
             expect(await page.listItemActions().count()).toBeGreaterThan(1);
         })
         it('should pop up prompt when delete button clicked', async () => {
@@ -79,7 +79,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             expect(await page.prompt()).toBeTruthy();
         })
-        it('should not delete manufacturer when prompt cancel is clicked', async () => {
+        it('should not delete category when prompt cancel is clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
@@ -95,7 +95,7 @@ describe('Manufacturer Scenario', () => {
             expect(await page.listItemActions().count()).toBe(lst);
 
         })
-        it('should delete manufacturer when prompt ok is clicked', async () => {
+        it('should delete category when prompt ok is clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
