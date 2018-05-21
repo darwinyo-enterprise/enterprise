@@ -24,8 +24,8 @@ namespace Catalog.API.Controllers
         private readonly IFileUtility _fileUtility;
         private readonly CatalogSettings _settings;
 
-        public ProductController(CatalogContext catalogContext, IOptionsSnapshot<CatalogSettings> settings,
-            IFileUtility fileUtility)
+        public ProductController(CatalogContext catalogContext,
+            IFileUtility fileUtility, IOptionsSnapshot<CatalogSettings> settings)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
@@ -33,6 +33,7 @@ namespace Catalog.API.Controllers
             _settings = settings.Value;
         }
 
+        #region Rating, Inventory, etc
 
         /// <summary>
         ///     store file upload to directory specified.
@@ -46,7 +47,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateInventory(string id, int amount,
+        public async Task<IActionResult> UpdateInventoryAsync(string id, int amount,
             CancellationToken cancellationToken)
         {
             try
@@ -62,7 +63,7 @@ namespace Catalog.API.Controllers
                     product.AddStock(amount);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
 
-                    return CreatedAtAction(nameof(UpdateInventory), product.Name + " Inventory Updated.");
+                    return CreatedAtAction(nameof(UpdateInventoryAsync), product.Name + " Inventory Updated.");
                 }
 
                 return NotFound();
@@ -85,7 +86,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> RateProduct([FromBody] ProductRateViewModel productRateViewModel,
+        public async Task<IActionResult> RateProductAsync([FromBody] ProductRateViewModel productRateViewModel,
             CancellationToken cancellationToken)
         {
             try
@@ -112,7 +113,7 @@ namespace Catalog.API.Controllers
 
                     await _catalogContext.SaveChangesAsync(cancellationToken);
 
-                    return CreatedAtAction(nameof(RateProduct), product.Name + " Rated.");
+                    return CreatedAtAction(nameof(RateProductAsync), product.Name + " Rated.");
                 }
 
                 return NotFound();
@@ -122,6 +123,8 @@ namespace Catalog.API.Controllers
                 return Json("Rate Product Failed: " + ex.Message);
             }
         }
+
+        #endregion
 
         #region Queries
 
@@ -135,7 +138,7 @@ namespace Catalog.API.Controllers
         // GET api/v1/Product[?pageSize=3&pageIndex=10]
         [HttpGet]
         [ProducesResponseType(typeof(PaginatedCatalogViewModel<CatalogItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetPaginatedCatalog(CancellationToken cancellationToken,
+        public async Task<IActionResult> GetPaginatedCatalogAsync(CancellationToken cancellationToken,
             [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
         {
             var totalItems = await _catalogContext.Products
@@ -162,7 +165,7 @@ namespace Catalog.API.Controllers
         // GET api/v1/Product/query/Mac[?pageSize=3&pageIndex=10]
         [HttpGet("query/{name:minlength(1)}")]
         [ProducesResponseType(typeof(PaginatedCatalogViewModel<CatalogItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetPaginatedCatalogByName(CancellationToken cancellationToken, string name,
+        public async Task<IActionResult> GetPaginatedCatalogByNameAsync(CancellationToken cancellationToken, string name,
             [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
         {
             var totalItems = await _catalogContext.Products
@@ -192,7 +195,7 @@ namespace Catalog.API.Controllers
         // GET api/v1/Product/query/catagory/null/manufacturer/3[?pageSize=3&pageIndex=10]
         [HttpGet("query/category/{idCategory}/manufacturer/{idManufacturer}")]
         [ProducesResponseType(typeof(PaginatedCatalogViewModel<CatalogItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetPaginatedCatalogByCategoryOrManufacturer(
+        public async Task<IActionResult> GetPaginatedCatalogByCategoryOrManufacturerAsync(
             CancellationToken cancellationToken, int? idCategory, int? idManufacturer, [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
@@ -280,9 +283,9 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetProductById(string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProductByIdAsync(string id, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest();
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -304,7 +307,7 @@ namespace Catalog.API.Controllers
         [HttpGet("list")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetListProducts(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
+        public async Task<IActionResult> GetListProductsAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
             if (pageIndex < 0 || pageSize <= 0)
@@ -343,7 +346,7 @@ namespace Catalog.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> AddNewProduct([FromBody] ProductViewModel product,
+        public async Task<IActionResult> AddNewProductAsync([FromBody] ProductViewModel product,
             CancellationToken cancellationToken)
         {
             try
@@ -426,11 +429,11 @@ namespace Catalog.API.Controllers
 
                 await _catalogContext.Products.AddAsync(item, cancellationToken);
                 await _catalogContext.SaveChangesAsync(cancellationToken);
-                return CreatedAtAction(nameof(AddNewProduct), new { id = item.Id }, null);
+                return CreatedAtAction(nameof(AddNewProductAsync), new { id = item.Id }, null);
             }
             catch (Exception e)
             {
-                return BadRequest(new {e.Message });
+                return BadRequest(new { e.Message });
             }
 
         }
@@ -448,26 +451,29 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product updateModel,
+        public async Task<IActionResult> UpdateProductAsync(string id, [FromBody] ProductViewModel updateModel,
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Products
-                .SingleOrDefaultAsync(i => i.Id == updateModel.Id, cancellationToken);
+                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
             if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
+            else if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
+                return BadRequest(new { Message = $"Cant update Product when category and manufacturer is not assign." });
+            else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
+                return BadRequest(new { Message = "Cant update product with 0 image" });
 
             #region Mapping
 
             item.Description = updateModel.Description;
-            // TODO: Replace this to proper value.
-            item.LastUpdatedBy = "1";
+            item.LastUpdatedBy = updateModel.ActorId;
             item.LastUpdated = DateTime.Now;
             item.Name = updateModel.Name;
             item.CategoryId = updateModel.CategoryId;
             item.ManufacturerId = updateModel.ManufacturerId;
             item.Price = updateModel.Price;
-
-            if (updateModel.ProductColors.Count > 0) item.ProductColors = updateModel.ProductColors;
+            item.ProductImages = updateModel.ProductImages;
+            item.ProductColors = updateModel.ProductColors;
 
             #endregion
 
@@ -476,7 +482,7 @@ namespace Catalog.API.Controllers
 
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            return CreatedAtAction(nameof(UpdateProduct), new
+            return CreatedAtAction(nameof(UpdateProductAsync), new
             {
                 id = item.Id
             }, null);
@@ -493,11 +499,11 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteProductAsync(string id, CancellationToken cancellationToken)
         {
             try
             {
-                if (string.IsNullOrEmpty(id)) return BadRequest();
+                if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Invalid Delete Product Request." });
 
                 var item = await _catalogContext.Products
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
@@ -525,15 +531,11 @@ namespace Catalog.API.Controllers
                     return NoContent();
                 }
 
-                return NotFound();
-            }
-            catch (FileNotFoundException)
-            {
-                return NotFound();
+                return NotFound(new { Message = $"Product with id {id} is not found." });
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(new { Message = $"Something bad happened. Please contact your administrator." });
             }
         }
 
@@ -556,9 +558,9 @@ namespace Catalog.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetImage(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProductImageAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) return BadRequest(new { Message = "invalid Image Request" });
 
             var item = await _catalogContext.ProductImages
                 .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);

@@ -79,7 +79,7 @@ namespace Catalog.API.Controllers
         [HttpGet("list")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetListManufacturers(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
+        public async Task<IActionResult> GetListManufacturersAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
             if (pageIndex < 0 || pageSize <= 0)
@@ -153,7 +153,7 @@ namespace Catalog.API.Controllers
         [HttpPost] //Done
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> AddNewManufacturer([FromBody] Manufacturer manufacturer,
+        public async Task<IActionResult> AddNewManufacturerAsync([FromBody] Manufacturer manufacturer,
             CancellationToken cancellationToken)
         {
             #region Validations
@@ -185,14 +185,14 @@ namespace Catalog.API.Controllers
 
             var insertedManufacturer =
                 await _catalogContext.Manufacturers.SingleOrDefaultAsync(x => x.Name == item.Name, cancellationToken);
-            await InsertManufacturerImage(manufacturer, cancellationToken, insertedManufacturer.Id);
+            await InsertManufacturerImageAsync(manufacturer, cancellationToken, insertedManufacturer.Id);
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewManufacturer), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(AddNewManufacturerAsync), new { id = item.Id }, null);
         }
 
-        private async Task InsertManufacturerImage(Manufacturer manufacturer, CancellationToken cancellationToken,
+        private async Task InsertManufacturerImageAsync(Manufacturer manufacturer, CancellationToken cancellationToken,
             int id)
         {
             var file = manufacturer.ImageUrl.Split("base64,")[1];
@@ -275,7 +275,7 @@ namespace Catalog.API.Controllers
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
             _fileUtility.DeleteFile("Manufacturer/" + updateModel.Id, oldImageName);
-            await InsertManufacturerImage(updateModel, cancellationToken, id);
+            await InsertManufacturerImageAsync(updateModel, cancellationToken, id);
 
             return CreatedAtAction(nameof(UpdateManufacturerAsync), new { id = item.Id }, null);
         }

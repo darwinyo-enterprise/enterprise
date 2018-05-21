@@ -110,7 +110,7 @@ namespace Catalog.API.Controllers
         [HttpGet("list")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetListCategories(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
+        public async Task<IActionResult> GetListCategoriesAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
             if (pageIndex < 0 || pageSize <= 0)
@@ -153,7 +153,7 @@ namespace Catalog.API.Controllers
         [HttpPost] //Done
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> AddNewCategory([FromBody] Category category,
+        public async Task<IActionResult> AddNewCategoryAsync([FromBody] Category category,
             CancellationToken cancellationToken)
         {
             #region Validations
@@ -185,14 +185,14 @@ namespace Catalog.API.Controllers
 
             var insertedCategory =
                 await _catalogContext.Categories.SingleOrDefaultAsync(x => x.Name == item.Name, cancellationToken);
-            await InsertCategoryImage(category, cancellationToken, insertedCategory.Id);
+            await InsertCategoryImageAsync(category, cancellationToken, insertedCategory.Id);
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewCategory), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(AddNewCategoryAsync), new { id = item.Id }, null);
         }
 
-        private async Task InsertCategoryImage(Category category, CancellationToken cancellationToken,
+        private async Task InsertCategoryImageAsync(Category category, CancellationToken cancellationToken,
             int id)
         {
             var file = category.ImageUrl.Split("base64,")[1];
@@ -275,7 +275,7 @@ namespace Catalog.API.Controllers
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
             _fileUtility.DeleteFile("Category/" + updateModel.Id, oldImageName);
-            await InsertCategoryImage(updateModel, cancellationToken, id);
+            await InsertCategoryImageAsync(updateModel, cancellationToken, id);
 
             return CreatedAtAction(nameof(UpdateCategoryAsync), new { id = item.Id }, null);
         }

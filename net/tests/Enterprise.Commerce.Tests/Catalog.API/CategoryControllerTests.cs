@@ -173,7 +173,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.GetListCategories(cancellationToken, 0, -10);
+            var response = await categoryController.GetListCategoriesAsync(cancellationToken, 0, -10);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
@@ -188,7 +188,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.AddNewCategory(null, cancellationToken);
+            var response = await categoryController.AddNewCategoryAsync(null, cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
@@ -199,7 +199,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.AddNewCategory(GetTestCategoryEmptyImage(), cancellationToken);
+            var response = await categoryController.AddNewCategoryAsync(GetTestCategoryEmptyImage(), cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
@@ -218,7 +218,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.AddNewCategory(expectedCategory[0], cancellationToken);
+            var response = await categoryController.AddNewCategoryAsync(expectedCategory[0], cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }

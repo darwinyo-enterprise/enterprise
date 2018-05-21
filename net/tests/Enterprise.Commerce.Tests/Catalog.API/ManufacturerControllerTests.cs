@@ -174,7 +174,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.GetListManufacturers(cancellationToken, 0, -10);
+            var response = await manufacturerController.GetListManufacturersAsync(cancellationToken, 0, -10);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
@@ -190,7 +190,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.AddNewManufacturer(null, cancellationToken);
+            var response = await manufacturerController.AddNewManufacturerAsync(null, cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
@@ -201,7 +201,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.AddNewManufacturer(GetTestManufacturerEmptyImage(), cancellationToken);
+            var response = await manufacturerController.AddNewManufacturerAsync(GetTestManufacturerEmptyImage(), cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
@@ -220,7 +220,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await manufacturerController.AddNewManufacturer(expectedManufacturer[0], cancellationToken);
+            var response = await manufacturerController.AddNewManufacturerAsync(expectedManufacturer[0], cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
