@@ -1,1 +1,4 @@
-minikube start --vm-driver hyperv --hyperv-virtual-switch "Kubernetes Virtual Switch"
+minikube start --vm-driver hyperv --hyperv-virtual-switch "Kubernetes Virtual Switch" --cpus 8 --memory 4096
+
+--verify pods
+kubectl get pods -n kube-system

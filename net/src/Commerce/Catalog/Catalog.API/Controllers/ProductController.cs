@@ -145,10 +145,12 @@ namespace Catalog.API.Controllers
                 .LongCountAsync(cancellationToken);
 
             var list = await _catalogContext.Products
+                .Include(x => x.ProductImages)
                 .OrderBy(c => c.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
+
             var model = CreatePaginatedCatalogViewModel(pageSize, pageIndex, totalItems, list);
 
             return Ok(model);
@@ -274,6 +276,8 @@ namespace Catalog.API.Controllers
 
         /// <summary>
         ///     Fetch Single Product by Product id
+        ///     used for Admin
+        ///     TODO: Implement Authorization
         /// </summary>
         /// <param name="id">Product id</param>
         /// <param name="cancellationToken"></param>
@@ -282,8 +286,57 @@ namespace Catalog.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductByIdAsync(string id, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
+
+            var result = await _catalogContext.Products.Where(x => x.Id == id)
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductColors)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (result != null)
+            {
+                var imagesWithUrl = new List<ProductImage>();
+                foreach (var img in result.ProductImages.ToList())
+                {
+                    var imgWithUrl = await UrlImageHelper<ProductImage>.GetImageBase64UrlAsync(img, _fileUtility, "ProductImage",
+                        cancellationToken);
+                    imagesWithUrl.Add(imgWithUrl);
+                }
+
+                var productViewModel = new ProductViewModel
+                {
+                    CategoryId = result.CategoryId,
+                    ManufacturerId = result.ManufacturerId,
+                    Description = result.Description,
+                    Id = result.Id,
+                    Name = result.Name,
+                    Price = result.Price,
+                    ProductColors = result.ProductColors.ToArray(),
+                    ProductImages = imagesWithUrl.ToArray()
+                };
+                return Ok(productViewModel);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        ///     Fetch Single Product by Product id
+        ///     used for display product info anonymously
+        ///     TODO: Change Implementation this not ready yet
+        /// </summary>
+        /// <param name="id">Product id</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Product</returns>
+        // GET api/v1/Product/5
+        [HttpGet("info/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetProductInfoByIdAsync(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
 
@@ -359,7 +412,8 @@ namespace Catalog.API.Controllers
                     return BadRequest(new { Message = $"Cant Create Product when category and manufacturer is not assign." });
 
                 var productInsert = await _catalogContext.Products.SingleOrDefaultAsync(x =>
-                      x.CategoryId == product.CategoryId && x.ManufacturerId == product.ManufacturerId &&
+                      x.CategoryId == product.CategoryId &&
+                      x.ManufacturerId == product.ManufacturerId &&
                       x.Name == product.Name, cancellationToken);
 
                 if (productInsert != null)
@@ -381,8 +435,7 @@ namespace Catalog.API.Controllers
                         ImageName = image.ImageName,
                         ProductId = product.Id
                     });
-                    var file = image.ImageUrl.Split("base64,")[1];
-                    await _fileUtility.UploadFileAsync(@"ProductImage/" + image.ProductId, image.ImageName, file, cancellationToken);
+                    await InsertProductImageAsync(product, cancellationToken, image);
                 }
 
                 #endregion
@@ -438,6 +491,13 @@ namespace Catalog.API.Controllers
 
         }
 
+        private async Task InsertProductImageAsync(ProductViewModel product, CancellationToken cancellationToken,
+            ProductImage image)
+        {
+            var file = image.ImageUrl.Split("base64,")[1];
+            await _fileUtility.UploadFileAsync(@"ProductImage/" + product.Id, image.ImageName, file, cancellationToken);
+        }
+
         /// <summary>
         ///     Update Product Data.
         ///     Image Upload Validation will be in frontend.
@@ -447,45 +507,69 @@ namespace Catalog.API.Controllers
         /// <param name="updateModel">Product to update</param>
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Product/5
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> UpdateProductAsync(string id, [FromBody] ProductViewModel updateModel,
             CancellationToken cancellationToken)
         {
-            var item = await _catalogContext.Products
-                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
-
-            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
-            else if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
-                return BadRequest(new { Message = $"Cant update Product when category and manufacturer is not assign." });
-            else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
-                return BadRequest(new { Message = "Cant update product with 0 image" });
-
-            #region Mapping
-
-            item.Description = updateModel.Description;
-            item.LastUpdatedBy = updateModel.ActorId;
-            item.LastUpdated = DateTime.Now;
-            item.Name = updateModel.Name;
-            item.CategoryId = updateModel.CategoryId;
-            item.ManufacturerId = updateModel.ManufacturerId;
-            item.Price = updateModel.Price;
-            item.ProductImages = updateModel.ProductImages;
-            item.ProductColors = updateModel.ProductColors;
-
-            #endregion
-
-            // Update current product
-            _catalogContext.Products.Update(item);
-
-            await _catalogContext.SaveChangesAsync(cancellationToken);
-
-            return CreatedAtAction(nameof(UpdateProductAsync), new
+            try
             {
-                id = item.Id
-            }, null);
+                var item = await _catalogContext.Products
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.ProductColors)
+                    .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
+
+                if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
+                else if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
+                    return BadRequest(new { Message = $"Cant update Product when category and manufacturer is not assign." });
+                else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
+                    return BadRequest(new { Message = "Cant update product with 0 image" });
+                
+                #region Clean all Images and colors
+
+                _catalogContext.ProductImages.RemoveRange(item.ProductImages);
+                _catalogContext.ProductColors.RemoveRange(item.ProductColors);
+
+                await _catalogContext.SaveChangesAsync(cancellationToken);
+
+                foreach (var image in item.ProductImages)
+                {
+                    _fileUtility.DeleteFile("ProductImage/" + updateModel.Id, image.ImageName);
+                    await InsertProductImageAsync(updateModel, cancellationToken, image);
+                }
+                #endregion
+
+                #region Mapping
+
+                item.Description = updateModel.Description;
+                item.LastUpdatedBy = updateModel.ActorId;
+                item.LastUpdated = DateTime.Now;
+                item.Name = updateModel.Name;
+                item.CategoryId = updateModel.CategoryId;
+                item.ManufacturerId = updateModel.ManufacturerId;
+                item.Price = updateModel.Price;
+                item.ProductImages = updateModel.ProductImages;
+                item.ProductColors = updateModel.ProductColors;
+
+                #endregion
+
+                // Update current product
+                _catalogContext.Products.Update(item);
+
+                await _catalogContext.SaveChangesAsync(cancellationToken);
+
+                return CreatedAtAction(nameof(UpdateProductAsync), new
+                {
+                    id = item.Id
+                }, null);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         /// <summary>
@@ -570,7 +654,7 @@ namespace Catalog.API.Controllers
                 var imageFileExtension = Path.GetExtension(item.ImageName);
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-                var buffer = await _fileUtility.ReadFileAsync(item.ProductId, item.ImageName, cancellationToken);
+                var buffer = await _fileUtility.ReadFileAsync("ProductImage/" + item.ProductId, item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }

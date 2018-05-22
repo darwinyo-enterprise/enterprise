@@ -213,7 +213,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
         [Fact]
         [TestPriority(6)]
-        public async Task Get_manufacturers_image_response_file_result()
+        public async Task Get_manufacturer_image_by_id_response_file_result()
         {
             using (var server = CreateServer())
             {
@@ -228,7 +228,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
         [Fact]
         [TestPriority(4)]
-        public async Task Get_manufacturers_response_ok_status_code()
+        public async Task Get_manufacturer_by_id_response_ok_status_code_with_correct_result()
         {
             using (var server = CreateServer())
             {
@@ -251,7 +251,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
         [Fact]
         [TestPriority(5)]
-        public async Task Get_manufacturers_response_ok_status_code_return_base64_instead_of_http_url()
+        public async Task Get_manufacturer_by_id_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
             {

@@ -98,7 +98,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 return "api/v1/product/list" + Paginated(PageIndex, PageSize);
             }
 
-            public static string ItemById(int id)
+            public static string ItemById(string id)
             {
                 return $"api/v1/product/{id}";
             }
@@ -180,7 +180,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 return $"api/v1/product/inventory?id={id}&amount={amount}";
             }
 
-            public static string UpdateProduct(int id)
+            public static string UpdateProduct(string id)
             {
                 return $"api/v1/product/{id}";
             }
