@@ -526,7 +526,7 @@ namespace Catalog.API.Controllers
                     return BadRequest(new { Message = $"Cant update Product when category and manufacturer is not assign." });
                 else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
                     return BadRequest(new { Message = "Cant update product with 0 image" });
-                
+
                 #region Clean all Images and colors
 
                 _catalogContext.ProductImages.RemoveRange(item.ProductImages);
@@ -590,28 +590,27 @@ namespace Catalog.API.Controllers
                 if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Invalid Delete Product Request." });
 
                 var item = await _catalogContext.Products
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.ProductRatings)
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
                 if (item != null)
                 {
-                    var imagesToDelete = await _catalogContext.ProductImages.Where(x => x.ProductId == item.Id)
-                        .ToListAsync(cancellationToken);
-                    var ratingsToDelete = await _catalogContext.ProductRatings.Where(x => x.ProductId == item.Id)
-                        .ToListAsync(cancellationToken);
-                    var colorsToDelete = await _catalogContext.ProductColors.Where(x => x.ProductId == item.Id)
-                        .ToListAsync(cancellationToken);
-
                     // Delete Foreach image in directory and eventually delete folder when its empty.
-                    imagesToDelete.ForEach(image => _fileUtility.DeleteFile(image.ProductId, image.ImageName));
+                    foreach (var image in item.ProductImages)
+                    {
+                        _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
+                    }
+                    
+                    _catalogContext.ProductImages.RemoveRange(item.ProductImages);
+                    _catalogContext.ProductRatings.RemoveRange(item.ProductRatings);
+                    _catalogContext.ProductColors.RemoveRange(item.ProductColors);
+                    await _catalogContext.SaveChangesAsync(cancellationToken);
 
-                    // remove all product image from db
-                    _catalogContext.ProductImages.RemoveRange(imagesToDelete);
-                    _catalogContext.ProductRatings.RemoveRange(ratingsToDelete);
-                    _catalogContext.ProductColors.RemoveRange(colorsToDelete);
-
-                    // remove product from db
                     _catalogContext.Products.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
+                    
                     return NoContent();
                 }
 
