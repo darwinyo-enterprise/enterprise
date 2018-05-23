@@ -22,13 +22,16 @@ import {
   FetchSingleProduct,
   SingleProductFetched,
   ClearSelectedProduct,
-  SelectedProductCleared
+  SelectedProductCleared,
+  FetchPaginatedProductsList,
+  PaginatedProductsListFetched
 } from './../shared/product.actions';
 import {
   Product,
   ProductService,
   ProductViewModel,
-  PaginatedListViewModelItemViewModel
+  PaginatedListViewModelItemViewModel,
+  PaginatedCatalogViewModelCatalogItemViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
@@ -37,12 +40,14 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 
 export interface ProductStateModel {
-  products: PaginatedListViewModelItemViewModel;
+  products: PaginatedCatalogViewModelCatalogItemViewModel;
+  paginatedProducts:PaginatedListViewModelItemViewModel;
   selectedProduct: Product;
 }
 
 const defaults: ProductStateModel = {
   products: null,
+  paginatedProducts:null,
   selectedProduct: null
 };
 
@@ -110,7 +115,7 @@ export class ProductState {
     dispatch(RegisterLoadingOverlay);
 
     // call product service
-    return this.productService.apiV1ProductListGet()
+    return this.productService.apiV1ProductGet()
       .pipe(
         tap(
           (products) => patchState({ products: products }),
@@ -219,6 +224,33 @@ export class ProductState {
   @Action(SelectedProductCleared)
   selectedProductCleared({ dispatch }: StateContext<ProductStateModel>) {
 
+  }
+
+  /** fetch product list  */
+  @Action(FetchPaginatedProductsList)
+  fetchProductsList(
+    { dispatch, patchState }: StateContext<ProductStateModel>,
+    { payload }: FetchPaginatedProductsList) {
+    // Register Loading Overlay
+    dispatch(RegisterLoadingOverlay);
+
+    return this.productService
+      .apiV1ProductListGet(payload.pageSize, payload.page)
+      .pipe(
+        tap(
+          (x) => {
+            patchState({
+              paginatedProducts: x
+            })
+          },
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch(PaginatedProductsListFetched))
+      );
+  }
+
+  @Action(PaginatedProductsListFetched)
+  paginatedProductsListFetched({ dispatch }: StateContext<ProductStateModel>) {
+    dispatch(ResolveLoadingOverlay);
   }
   //#endregion
 }

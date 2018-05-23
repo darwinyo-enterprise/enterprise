@@ -1,15 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ProductFormComponent } from "./product-form.component";
+import { BaseTestPage } from "@enterprise/core/testing";
+import { ComponentFixture, async, TestBed } from "@angular/core/testing";
+import { Store, NgxsModule } from "@ngxs/store";
+import { ProductService, ManufacturerService, Manufacturer, CategoryService, Category, ProductViewModel, ProductImage } from "@enterprise/commerce/catalog-lib";
+import { Observable } from "rxjs/Observable";
+import { ManufacturersMock, ManufacturerState, FetchManufacturers } from "@enterprise/commerce/manufacturer-lib";
+import { of } from "rxjs/observable/of";
+import { CategoriesMock, CategoryState, FetchCategories } from "@enterprise/commerce/category-lib";
+import { HttpClientModule } from "@angular/common/http";
+import { ReactiveFormsModule } from "@angular/forms";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { FileUploadState, UploadFileModel, FileUploadMocks, AddFileImage, DeleteFileImage, SetModeFileUpload } from "@enterprise/material/file-upload";
+import { ProductState, ProductViewModelsMock, FetchSingleProduct } from "@enterprise/commerce/product-lib";
 
-import { ProductFormComponent } from './product-form.component';
-import { BaseTestPage } from '@enterprise/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgxsModule, Store } from '@ngxs/store';
-import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage, UploadFileModel } from '@enterprise/material/file-upload';
-import { ProductState, FetchSingleProduct, ProductViewModelsMock } from '@enterprise/commerce/product-lib';
-import { ProductService } from '@enterprise/commerce/catalog-lib';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-import { of } from 'rxjs';
 
 export class ProductFormPage extends BaseTestPage<
   ProductFormComponent
@@ -41,8 +44,8 @@ export class ProductFormPage extends BaseTestPage<
   get manufacturerInputGroup() {
     return this.query<HTMLElement>('#manufacturer-select');
   }
-  get manufacturerInputControl(): HTMLInputElement {
-    return <HTMLInputElement>this.manufacturerInputGroup.children.item(0);
+  get manufacturerInputControl(): HTMLSelectElement {
+    return <HTMLSelectElement>this.manufacturerInputGroup.children.item(0);
   }
   get chipColorInputControl(): HTMLInputElement {
     return <HTMLInputElement>this.query<HTMLElement>('td-chips');
@@ -60,6 +63,7 @@ describe('ProductFormComponent', () => {
   let fixture: ComponentFixture<ProductFormComponent>;
   let productFormPage: ProductFormPage;
   let store: Store;
+  let storeSpy: jasmine.Spy;
   let service: ProductService;
   let serviceSpy: jasmine.Spy;
   const title = 'Test Product';
@@ -67,11 +71,26 @@ describe('ProductFormComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        providers: [ProductService],
+        providers: [ProductService,
+          {
+            provide: ManufacturerService, useValue: {
+              apiV1ManufacturerGet(): Observable<Manufacturer[]> {
+
+                return of(ManufacturersMock);
+              }
+            }
+          }, {
+            provide: CategoryService, useValue: {
+              apiV1CategoryGet(): Observable<Category[]> {
+
+                return of(CategoriesMock);
+              }
+            }
+          }],
         imports: [
           HttpClientModule,
           ReactiveFormsModule,
-          NgxsModule.forRoot([FileUploadState, ProductState])
+          NgxsModule.forRoot([FileUploadState, ProductState, ManufacturerState, CategoryState])
         ],
         declarations: [ProductFormComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -92,49 +111,90 @@ describe('ProductFormComponent', () => {
         of(ProductViewModelsMock.filter(x => x.id === id.toString())[0]));
 
     store = TestBed.get(Store);
+
+    store.dispatch(new FetchSingleProduct(ProductViewModelsMock[0].id));
+    storeSpy = spyOn(store, 'dispatch').and.callThrough();
     fixture.detectChanges();
   });
 
   describe('Functionality Tests', () => {
-
     it('should populate value to image url in form when file upload changed', () => {
-      const uploadFileModel: UploadFileModel = FileUploadMocks[0];
-      expect(
-        component.productForm.controls['imageUrl'].value
-      ).not.toContain(uploadFileModel.fileUrl);
-      expect(
-        component.productForm.controls['imageName'].value
-      ).not.toContain(uploadFileModel.fileName);
+      const uploadFileModel: UploadFileModel[] = FileUploadMocks;
+      expect(component.imagesFormArray.length).toBe(0);
 
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.productForm.controls['imageUrl'].value).toContain(
-        uploadFileModel.fileUrl
+      expect(component.imagesFormArray.length).toBe(uploadFileModel.length);
+      var images: ProductImage[] = component.imagesFormArray.value;
+      expect(images[0].imageName).toContain(
+        uploadFileModel[0].fileName
       );
-      expect(component.productForm.controls['imageName'].value).toContain(
-        uploadFileModel.fileName
+      expect(images[0].imageUrl).toContain(
+        uploadFileModel[0].fileUrl
       );
     });
     it('should remove image url in form value when image deleted', () => {
-      const uploadFileModel: UploadFileModel = FileUploadMocks[0];
+      expect(component.imagesFormArray.length).toBe(0);
+
+      const uploadFileModel: UploadFileModel[] = FileUploadMocks;
       store.dispatch(new AddFileImage(uploadFileModel));
 
-      expect(component.productForm.controls['imageUrl'].value).toContain(
-        uploadFileModel.fileUrl
+      expect(component.imagesFormArray.length).toBe(uploadFileModel.length);
+
+      expect(component.imagesFormArray.value[0].imageName).toContain(
+        uploadFileModel[0].fileName
       );
-      expect(component.productForm.controls['imageName'].value).toContain(
-        uploadFileModel.fileName
+      expect(component.imagesFormArray.value[0].imageUrl).toContain(
+        uploadFileModel[0].fileUrl
       );
 
-      store.dispatch(new DeleteFileImage(uploadFileModel.fileName));
+      store.dispatch(new DeleteFileImage(uploadFileModel[0].fileName));
 
-      expect(
-        component.productForm.controls['imageUrl'].value
-      ).not.toContain(uploadFileModel.fileUrl);
-      expect(
-        component.productForm.controls['imageName'].value
-      ).not.toContain(uploadFileModel.fileName);
+      expect(component.imagesFormArray.length).toBe(uploadFileModel.length - 1);
+      expect(component.imagesFormArray.value[0].imageName).not.toContain(
+        uploadFileModel[0].fileName
+      );
     });
+    it('should dispatch fetch categories and manufacturers for select controls on init', () => {
+      component.ngOnInit();
+      expect(store.dispatch).toHaveBeenCalledWith([FetchCategories, FetchManufacturers]);
+    })
+    it('should populate product Form correctly when product selected has value', () => {
+      component.ngOnInit();
+      component.ngOnChanges();
+      let actual: ProductViewModel = component.productForm.value;
+      let expectation: ProductViewModel = ProductViewModelsMock[0];
+      expect(actual.name).toBe(expectation.name);
+      expect(actual.productColors.length).toBe(expectation.productColors.length);
+      expect(actual.productImages.length).toBe(expectation.productImages.length);
+      expect(actual.price).toBe(expectation.price);
+      expect(actual.description).toBe(expectation.description);
+      expect(actual.actorId).toBe(expectation.actorId);
+      expect(actual.manufacturerId).toBe(expectation.manufacturerId);
+      expect(actual.manufacturerName).toBe(expectation.manufacturerName);
+      expect(actual.categoryId).toBe(expectation.categoryId);
+      expect(actual.categoryName).toBe(expectation.categoryName);
+    })
+    it('should populate File image state when product selected defined', () => {
+      component.productViewModel$.subscribe(x => {
+        expect(x.productImages.length).toBe(ProductViewModelsMock[0].productImages.length);
+        expect(x.productImages[0].imageName).toBe(ProductViewModelsMock[0].productImages[0].imageName);
+        expect(x.productImages[0].imageUrl).toBe(ProductViewModelsMock[0].productImages[0].imageUrl);
+      })
+      component.ngOnInit();
+    })
+    it('should dispatch file upload mode to multiple', () => {
+      expect(store.dispatch).toHaveBeenCalledWith(new SetModeFileUpload(true));
+    })
+    it('should emit save event when save btn clicked', () => {
+      component.save.subscribe(x => expect(true).toBeTruthy());
+      productFormPage.saveBtn.click();
+    })
+
+    it('should emit save event with correct product form value when save btn clicked', () => {
+      component.save.subscribe(x => expect(x).toBeTruthy(component.productForm.value));
+      productFormPage.saveBtn.click();
+    })
   });
 
   describe('UI Tests', () => {
@@ -197,12 +257,30 @@ describe('ProductFormComponent', () => {
 
       // Name Field Inputed
       component.productForm.patchValue({
-        name: 'Test'
+        name: 'Test',
+        categoryId: "1",
+        manufacturerId: "1",
+        price: 200
       });
 
       fixture.detectChanges();
       expect(productFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
     });
+
+    it('should display correct colors when populated', () => {
+      expect(component.colorChips.value).toBe(component.colors);
+    })
+    it('should render validation error message when price control is null', () => {
+      productFormPage.priceInputControl.value = "";
+      component.nameControl.markAsDirty();
+      component.nameControl.markAsTouched();
+      fixture.detectChanges();
+
+      expect(productFormPage.nameInputGroup.children.length).toEqual(2);
+      expect(
+        productFormPage.nameInputGroup.children.item(1)
+      ).toBeDefined();
+    })
   });
   describe('State Tests', () => {
     it('should populate value in input when selected product state exists', () => {

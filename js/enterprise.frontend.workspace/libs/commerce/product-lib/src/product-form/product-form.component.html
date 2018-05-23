@@ -25,15 +25,15 @@
 
         <div class="form-row">
           <mat-form-field id="category-select" class="form-control--half-width">
-            <mat-select formControlName="categoryId" placeholder="Select Category">
+            <mat-select placeholder="Select Category"  [value]="productForm.value.categoryId">
               <mat-option *ngFor="let category of categories$ | async" [value]="category.id" selected="category.id == product.categoryId">
                 {{category.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field id="manufacturer-select"  class="form-control--half-width">
-            <mat-select formControlName="manufacturerId" placeholder="Select Manufacturer">
+          <mat-form-field id="manufacturer-select" class="form-control--half-width">
+            <mat-select placeholder="Select Manufacturer" [value]="productForm.value.manufacturerId">
               <mat-option *ngFor="let manufacturer of manufacturers$ | async" [value]="manufacturer.id" selected="manufacturer.id == product.manufacturerId">
                 {{manufacturer.name}}
               </mat-option>
@@ -41,17 +41,16 @@
           </mat-form-field>
         </div>
 
-        <td-chips color="warn" placeholder="Enter any color" (inputChange)="onChipInputChanged()" #ColorChips></td-chips>
+        <td-chips color="warn" placeholder="Enter any color" [value]="colors" (inputChange)="onChipInputChanged()" #ColorChips></td-chips>
 
         <mat-form-field id="description" class="form-control--full-width">
           <textarea matInput placeholder="Description" formControlName="description"></textarea>
         </mat-form-field>
       </div>
-      <em-file-upload [parentId]="product.id"></em-file-upload>
+      <em-file-upload [parentId]="product?.id"></em-file-upload>
     </div>
     <div class="form-card__footer">
       <button id="save-button" mat-button class="ok" [disabled]="productForm.invalid" type="button" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
     </div>
   </mat-card>
 </form>
-<p>{{productForm.value| json }}</p>

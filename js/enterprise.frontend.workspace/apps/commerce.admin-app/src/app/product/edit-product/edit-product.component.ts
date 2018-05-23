@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '@enterprise/commerce/catalog-lib';
+import { Product, ProductViewModel } from '@enterprise/commerce/catalog-lib';
 import { Store, Select } from '@ngxs/store';
 import { UpdateProduct, ProductViewModelsMock, FetchSingleProduct, ProductState } from '@enterprise/commerce/product-lib';
 import { Observable } from 'rxjs/Observable';
@@ -26,7 +26,7 @@ export class EditProductComponent implements OnInit {
       this.store.dispatch(new FetchSingleProduct(params.get('id')))
     });
   }
-  onProductUpdate(product: Product) {
+  onProductUpdate(product: ProductViewModel) {
     this.store.dispatch(new UpdateProduct(product));
   }
 }

@@ -38,7 +38,7 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 
 export interface ManufacturerStateModel {
-  manufacturers: PaginatedListViewModelItemViewModel;
+  manufacturers: Manufacturer[];
   paginatedManufacturers: PaginatedListViewModelItemViewModel;
   selectedManufacturer: Manufacturer;
 }
@@ -115,7 +115,7 @@ export class ManufacturerState {
     dispatch(RegisterLoadingOverlay);
 
     // call manufacturer service
-    return this.manufacturerService.apiV1ManufacturerListGet()
+    return this.manufacturerService.apiV1ManufacturerGet()
       .pipe(
         tap(
           (manufacturers) => patchState({ manufacturers: manufacturers }),

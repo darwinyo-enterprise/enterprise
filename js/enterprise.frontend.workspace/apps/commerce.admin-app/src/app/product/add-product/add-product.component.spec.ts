@@ -71,31 +71,4 @@ describe('AddProductComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith([ClearSelectedProduct, ClearFileUpload]);
     })
   });
-  // describe('State Tests', () => {
-  //   describe('Clear Selected Product and Selected Product Cleared', () => {
-  //     it('should clean selected product state when dispatched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch selected product cleared when complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  //   describe('Add Product and Product Added', () => {
-  //     it('should dispatch register loading overlay when fetch add product dispatched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch resolve loading when product added', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved overlay loading when error occured', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch product fetched when complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch navigate and alert on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  // })
 });

@@ -71,31 +71,4 @@ describe('AddManufacturerComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith([ClearSelectedManufacturer, ClearFileUpload]);
     })
   });
-  // describe('State Tests', () => {
-  //   describe('Clear Selected Manufacturer and Selected Manufacturer Cleared', () => {
-  //     it('should clean selected manufacturer state when dispatched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch selected manufacturer cleared when complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  //   describe('Add Manufacturer and Manufacturer Added', () => {
-  //     it('should dispatch register loading overlay when fetch add manufacturer dispatched', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch resolve loading when manufacturer added', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch error occured and resolved overlay loading when error occured', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch manufacturer fetched when complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //     it('should dispatch navigate and alert on complete', () => {
-  //       expect(false).toBeTruthy();
-  //     })
-  //   })
-  // })
 });

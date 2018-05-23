@@ -12,7 +12,7 @@ import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload, Uplo
 import { take } from 'rxjs/operators';
 import { ProductState } from './../shared/product.state';
 import { OnInit, OnChanges, OnDestroy, Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, AbstractControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl, Validators, FormArray } from '@angular/forms';
 import { ProductViewModel } from '@enterprise/commerce/catalog-lib/api/model/productViewModel';
 import { FetchCategories, CategoryState } from '@enterprise/commerce/category-lib';
 import { FetchManufacturers, ManufacturerState } from '@enterprise/commerce';
@@ -31,7 +31,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   colorChips: TdChipsComponent;
 
   @Select(FileUploadState.getFileImages)
-  fileImages: Observable<UploadFileModel[]>;
+  fileImages$: Observable<UploadFileModel[]>;
 
   @Select(ProductState.getSelectedProduct)
   productViewModel$: Observable<ProductViewModel>;
@@ -57,13 +57,13 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
 
   //#endregion
 
-  filesUpload$: Observable<UploadFileModel[]>;
-
   productForm: FormGroup;
 
   unsubscribe$: ReplaySubject<boolean>;
 
   product: ProductViewModel;
+
+  colors: string[];
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createForm();
@@ -76,7 +76,6 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.product.id = '1';
     // Fetch all categories and manufacturers for select input
     this.store.dispatch([FetchCategories, FetchManufacturers]);
 
@@ -88,11 +87,12 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
       (err) => alert(err),
       () => {
         if (this.product != null) {
-          const images: UploadFileModel[] = this.product.productImages.map(x => <UploadFileModel>{
-            id: x.id.toString(),
-            fileName: x.imageName,
-            fileUrl: x.imageUrl
-          })
+          const images: UploadFileModel[] = this.product.productImages
+            .map(x => <UploadFileModel>{
+              id: x.id.toString(),
+              fileName: x.imageName,
+              fileUrl: x.imageUrl
+            })
           this.store.dispatch([ClearFileUpload, new AddFileImage(images)]);
           this.rebuildForm();
         }
@@ -101,7 +101,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     // Set Multiple to true
     this.store.dispatch(new SetModeFileUpload(true));
 
-    this.fileImages
+    this.fileImages$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(x => this.onFileInputChanged(x));
   }
@@ -141,6 +141,11 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     return this.productForm.controls['description'];
   }
 
+  /** Product Image Form Array Getter */
+  get imagesFormArray(): FormArray {
+    return <FormArray>this.productForm.controls['productImages'];
+  }
+
   /** Create Product Form By form builder */
   createForm() {
     this.productForm = this.fb.group({
@@ -165,17 +170,19 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     }, (err) => {
       alert('error')
     }, () => {
-      this.productForm.reset({
-        id: this.product.id || '',
-        name: this.product.name || '',
-        description: this.product.description || '',
-        price: this.product.price || '',
-        manufacturerId: this.product.manufacturerId || '',
-        categoryId: this.product.categoryId || '',
-        productColors: this.product.productColors || [],
-        actorId: this.product.actorId || '',
-        productImages: this.product.productImages || [],
-      });
+      if (this.product !== null) {
+        this.productForm.reset({
+          id: this.product.id || '',
+          name: this.product.name || '',
+          description: this.product.description || '',
+          price: this.product.price || '',
+          manufacturerId: this.product.manufacturerId || '',
+          categoryId: this.product.categoryId || '',
+          actorId: this.product.actorId || ''
+        });
+        this.setProductColor(this.product.productColors)
+        this.setProductImage(this.product.productImages)
+      }
     })
   }
 
@@ -186,12 +193,12 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     const imageFormArray = this.fb.array(imageFGs);
     this.productForm.setControl('productImages', imageFormArray);
   }
-  setProductColor(colors: string[]) {
-    const colorFGs = colors.map(color => this.fb.group(<ProductColor>{
-      name: color
-    }));
+  setProductColor(colors: ProductColor[]) {
+    const colorFGs = colors.map(color => this.fb.group(color));
     const colorFormArray = this.fb.array(colorFGs);
     this.productForm.setControl('productColors', colorFormArray);
+
+    this.colors = (<ProductColor[]>this.productColorsControl.value).map(x => x.name);
   }
 
   //#endregion
@@ -220,6 +227,9 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
 
   /**Will update value of product color */
   onChipInputChanged(): void {
-    this.setProductColor(this.colorChips.value);
+    let colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
+      name: x
+    })
+    this.setProductColor(colors);
   }
 }

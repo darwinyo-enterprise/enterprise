@@ -1,4 +1,4 @@
-import { Product, ProductService, ProductViewModel, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
+import { Product, ProductService, ProductViewModel, PaginatedListViewModelItemViewModel, ProductColor } from '@enterprise/commerce/catalog-lib';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse, HttpEvent } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';
@@ -13,7 +13,7 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
         actorId: '1',
         manufacturerId: 1,
         categoryId: 1,
-        productColors: ['Yellow', 'Red'],
+        productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
         productImages: [
           {
             imageName: 'intel.png',
@@ -29,7 +29,7 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
         actorId: '1',
         manufacturerId: 1,
         categoryId: 1,
-        productColors: ['Yellow', 'Red'],
+        productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
         productImages: [
           {
             imageName: 'intel.png',
@@ -45,7 +45,7 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
         actorId: '1',
         manufacturerId: 1,
         categoryId: 1,
-        productColors: ['Yellow', 'Red'],
+        productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
         productImages: [
           {
             imageName: 'intel.png',
@@ -61,7 +61,7 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
         actorId: '1',
         manufacturerId: 1,
         categoryId: 1,
-        productColors: ['Yellow', 'Red'],
+        productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
         productImages: [
           {
             imageName: 'intel.png',
@@ -77,7 +77,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
         actorId: '1',
         manufacturerId: 1,
         categoryId: 1,
-        productColors: ['Yellow', 'Red'],
+        productColors: [<ProductColor>{
+          name: 'Yellow'
+        }, <ProductColor>{
+          name: 'Red'
+        }, <ProductColor>{
+          name: 'Blue'
+        }],
         productImages: [
           {
             imageName: 'intel.png',
@@ -100,7 +106,13 @@ export const ProductViewModelsMock: ProductViewModel[] = [
     actorId: '1',
     manufacturerId: 1,
     categoryId: 1,
-    productColors: ['Yellow', 'Red'],
+    productColors: [<ProductColor>{
+      name: 'Yellow'
+    }, <ProductColor>{
+      name: 'Red'
+    }, <ProductColor>{
+      name: 'Blue'
+    }],
     productImages: [
       {
         imageName: 'intel.png',
@@ -116,7 +128,7 @@ export const ProductViewModelsMock: ProductViewModel[] = [
     actorId: '1',
     manufacturerId: 1,
     categoryId: 1,
-    productColors: ['Yellow', 'Red'],
+    productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
     productImages: [
       {
         imageName: 'intel.png',
@@ -132,7 +144,7 @@ export const ProductViewModelsMock: ProductViewModel[] = [
     actorId: '1',
     manufacturerId: 1,
     categoryId: 1,
-    productColors: ['Yellow', 'Red'],
+    productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
     productImages: [
       {
         imageName: 'intel.png',
@@ -148,7 +160,7 @@ export const ProductViewModelsMock: ProductViewModel[] = [
     actorId: '1',
     manufacturerId: 1,
     categoryId: 1,
-    productColors: ['Yellow', 'Red'],
+    productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
     productImages: [
       {
         imageName: 'intel.png',
@@ -164,7 +176,7 @@ export const ProductViewModelsMock: ProductViewModel[] = [
     actorId: '1',
     manufacturerId: 1,
     categoryId: 1,
-    productColors: ['Yellow', 'Red'],
+    productColors: [<ProductColor>{ name: 'Yellow' }, <ProductColor>{ name: 'Red' }, <ProductColor>{ name: 'Blue' }],
     productImages: [
       {
         imageName: 'intel.png',

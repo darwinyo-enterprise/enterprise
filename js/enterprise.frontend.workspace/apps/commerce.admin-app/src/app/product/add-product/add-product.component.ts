@@ -32,7 +32,6 @@ export class AddProductComponent implements OnInit {
     this.store.dispatch([ClearSelectedProduct, ClearFileUpload]);
   }
   onAddNewProduct(product: ProductViewModel) {
-    console.log(product);
     this.store.dispatch(new AddProduct(product));
   }
 }

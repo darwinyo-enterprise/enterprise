@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductState, FetchProducts, DeleteProduct } from '@enterprise/commerce/product-lib';
+import { ProductState, FetchProducts, DeleteProduct, FetchPaginatedProductsList } from '@enterprise/commerce/product-lib';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
@@ -7,8 +7,8 @@ import { Product, ProductService, PaginatedListViewModelItemViewModel } from '@e
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { IConfirmConfig } from '@covalent/core';
-import { ListItemActionState } from '@enterprise/material/list-item-actions/src/shared/list-item-actions.state';
+import { IConfirmConfig, IPageChangeEvent } from '@covalent/core';
+import { ListItemActionState } from '@enterprise/material/list-item-actions';
 
 @Component({
 
@@ -25,6 +25,10 @@ export class ListProductComponent implements OnInit {
     title: 'Delete Confirmation',
     message: 'Are you sure want to delete this product?'
   };
+
+  @Select(ListItemActionState.getPageInfo)
+  pageInfo$: Observable<IPageChangeEvent>;
+
   /** Selector Products List
    *  This Comes from State Management.
    */
@@ -50,7 +54,7 @@ export class ListProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(FetchProducts);
+    this.store.dispatch(new FetchPaginatedProductsList({ page: 0, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 }));
   }
 
   /** Navigate when product add button clicked */
@@ -85,8 +89,11 @@ export class ListProductComponent implements OnInit {
 
   }
 
-  onPagingChanged(){
-    this.pageSize$.subscribe(x=>console.log(x));
-    this.currPage$.subscribe(x=>console.log(x));
+  /** paging changes will fetch manufacturer api */
+  onPaginationChanged() {
+    this.pageInfo$.pipe(take(1)).subscribe(x => {
+      this.store.dispatch(new FetchPaginatedProductsList(x));
+    })
+
   }
 }
