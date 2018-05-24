@@ -194,11 +194,14 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     this.productForm.setControl('productImages', imageFormArray);
   }
   setProductColor(colors: ProductColor[]) {
-    const colorFGs = colors.map(color => this.fb.group(color));
-    const colorFormArray = this.fb.array(colorFGs);
-    this.productForm.setControl('productColors', colorFormArray);
+    if (colors === undefined) {
+      const colorFGs = colors.map(color => this.fb.group(color));
+      const colorFormArray = this.fb.array(colorFGs);
+      this.productForm.setControl('productColors', colorFormArray);
 
-    this.colors = (<ProductColor[]>this.productColorsControl.value).map(x => x.name);
+      this.colors = (<ProductColor[]>this.productColorsControl.value).map(x => x.name);
+    }
+
   }
 
   //#endregion
@@ -227,6 +230,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
 
   /**Will update value of product color */
   onChipInputChanged(): void {
+    console.log(this.colorChips.value);
     let colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
       name: x
     })

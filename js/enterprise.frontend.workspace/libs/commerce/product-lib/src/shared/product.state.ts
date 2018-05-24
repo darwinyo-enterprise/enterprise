@@ -58,9 +58,6 @@ const defaults: ProductStateModel = {
 export class ProductState {
   constructor(private productService: ProductService) { }
   //#region Selectors
-  @Select(AppState.isLoading)
-  private isLoading$: Observable<boolean>;
-
   @Selector()
   static getProducts(state: ProductStateModel) {
     return state.products;
@@ -69,6 +66,10 @@ export class ProductState {
   @Selector()
   static getSelectedProduct(state: ProductStateModel) {
     return state.selectedProduct;
+  }
+  @Selector()
+  static getPaginatedProduct(state: ProductStateModel) {
+    return state.paginatedProducts;
   }
   //#endregion
 

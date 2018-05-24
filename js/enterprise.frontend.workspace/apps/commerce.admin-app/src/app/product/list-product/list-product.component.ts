@@ -32,14 +32,8 @@ export class ListProductComponent implements OnInit {
   /** Selector Products List
    *  This Comes from State Management.
    */
-  @Select(ProductState.getProducts)
+  @Select(ProductState.getPaginatedProduct)
   products$: Observable<PaginatedListViewModelItemViewModel>;
-
-  @Select(ListItemActionState.getPage)
-  currPage$: Observable<number>;
-
-  @Select(ListItemActionState.getPageSize)
-  pageSize$: Observable<number>;
 
   /** Executed when Confirmation OK triggered */
   deleteSubject$: Subject<boolean>;
