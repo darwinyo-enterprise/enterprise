@@ -1,7 +1,7 @@
-FROM node:9.11-alpine
+FROM node:8.11.2-alpine
 WORKDIR /app
 COPY package.json /app
-# RUN npm install
+RUN npm install
 COPY . /app
 CMD npm run serve:universal
 EXPOSE 8081
