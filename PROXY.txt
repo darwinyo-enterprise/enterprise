@@ -1,6 +1,8 @@
 -- npm proxy
 npm config set proxy http://darwin.yo:123456789@10.88.88.15:8080
-npm config set https-proxy http://<username>:<password>@<proxy-server-url>:<port>
+npm config set https-proxy http://darwin.yo:123456789@10.88.88.15:8080
+npm config rm proxy
+npm config rm https-proxy
 
 -- git proxy
 git config --global http.proxy http://darwin.yo:123456789@10.88.88.15:8080
@@ -9,3 +11,8 @@ git config --global --unset http.proxy
 -- ubuntu terminal
 export http_proxy="http://darwin.yo:123456789@10.88.88.15:8080"
 export https_proxy="https://darwin.yo:123456789@10.88.88.15:8080"
+
+--chocolatey (powershell)
+$env:chocolateyProxyLocation = 'http://10.88.88.15:8080'
+$env:chocolateyProxyUser = 'darwin.yo'
+$env:chocolateyProxyPassword = '123456789'
