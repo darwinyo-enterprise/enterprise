@@ -1,0 +1,5 @@
+kubectl exec -it `kubectl get pods --selector=app=enterprise-jenkins --output=jsonpath={.items..metadata.name}` cat /root/.jenkins/secrets/initialAdminPassword
+
+printf $(kubectl get secret --namespace enterprise-jenkins enterprise-jenkins -o jsonpath=”{.data.jenkins-admin-password}” | base64 -- decode);echo
+user:admin
+pass:bk91JtwFcg

@@ -75,7 +75,7 @@ Persistence:
   ## If defined, PVC must be created manually before volume will be bound
   # ExistingClaim:
   ## jenkins data Persistent Volume Storage Class
-  StorageClass: jenkins-pv
+  StorageClass: enterprise-jenkins-pv
 
   Annotations: {}
   AccessMode: ReadWriteOnce
@@ -102,4 +102,4 @@ rbac:
   # RBAC api version (currently either v1beta1 or v1alpha1)
   apiVersion: v1beta1
   # Cluster role reference
-  roleRef: cluster-admin
+roleRef: cluster-admin

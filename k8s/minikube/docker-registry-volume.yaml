@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: enterprise-registry-pv
+  namespace: enterprise-registry
+spec:
+  storageClassName: enterprise-registry-pv
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/enterprise-registry-volume/

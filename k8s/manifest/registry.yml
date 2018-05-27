@@ -1,28 +1,35 @@
-kind: PersistentVolume
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: registry
-  labels:
-    type: local
+  name: enterprise-registry
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: enterprise-registry-pv
+  namespace: enterprise-registry
 spec:
-  capacity:
-    storage: 4Gi
+  storageClassName: enterprise-registry-pv
   accessModes:
     - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: "/data/registry/"
+    path: /data/enterprise-registry-volume/
 
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: registry-claim
+  name: enterprise-registry-pv-claim
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 4Gi
+      storage: 10Gi
 ---
 
 apiVersion: v1
@@ -76,12 +83,12 @@ spec:
         tier: registry
     spec:
       containers:
-      - image: registry:2
+      - image: registry
         name: registry
         volumeMounts:
         - name: docker
           mountPath: /var/run/docker.sock
-        - name: registry-persistent-storage
+        - name: enterprise-registry-pv
           mountPath: /var/lib/registry
         ports:
         - containerPort: 5000
@@ -99,6 +106,6 @@ spec:
       - name: docker
         hostPath:
           path: /var/run/docker.sock
-      - name: registry-persistent-storage
+      - name: enterprise-registry-pv
         persistentVolumeClaim:
-claimName: registry-claim
+        claimName: enterprise-registry-pv-claim
