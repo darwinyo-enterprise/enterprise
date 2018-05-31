@@ -13,5 +13,6 @@ commerce_build_images:
   stage: build
   script:
     - cd ./net/
-    - ls
-    - docker-compose build
+    # Install Docker Compose
+    - apk add --update py-pip && pip install docker-compose
+    - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
