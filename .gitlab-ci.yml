@@ -8,19 +8,9 @@ services:
 before_script:
   - docker info
   - docker run --rm hello-world
-after_script:
-variables:
-cache:
-types:
-stages:
 
 commerce_build_images:
   stage:build
   script:
     - cd ./net/
-    - docker-compose build 
-library_unit_test:
-commerce_catalog_unit_test:
-commerce_integration_test:
-commerce_admin_app_unit_test:
-commerce_admin_e2e_test:
+    - docker-compose build
