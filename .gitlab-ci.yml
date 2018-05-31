@@ -8,20 +8,19 @@ services:
 before_script:
   - docker info
   - docker run --rm hello-world
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+after_script:
+variables:
+cache:
+types:
+stages:
 
-build-master:
-  stage: build
+commerce_build_images:
+  stage:build
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-  only:
-    - master
-
-build:
-  stage: build
-  script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-  except:
-    - master
+    - cd ./net/
+    - docker-compose build 
+library_unit_test:
+commerce_catalog_unit_test:
+commerce_integration_test:
+commerce_admin_app_unit_test:
+commerce_admin_e2e_test:
