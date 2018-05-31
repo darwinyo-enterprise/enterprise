@@ -12,6 +12,6 @@ before_script:
 commerce_build_images:
   stage: build
   script:
-    - ls
     - cd ./net/
+    - ls
     - docker-compose build
