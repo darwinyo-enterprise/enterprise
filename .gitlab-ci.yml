@@ -39,7 +39,6 @@ commerce_catalog_unit_test:
 
 commerce_catalog_integration_test:
   stage: test
-  image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
   cache:
     untracked: true
     paths:
