@@ -9,7 +9,7 @@ before_script:
 ci_docker_image_build:
   stage: build
   script:
-    - docker build ./images/aspnetcore-build-ci/. -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
+    - docker build ./images/aspnetcore-build-ci/. -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
     - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
 commerce_library_unit_test:
