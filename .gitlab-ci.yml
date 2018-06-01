@@ -39,15 +39,13 @@ before_script:
 
 commerce_catalog_integration_test:
   stage: test
+  image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
   cache:
     untracked: true
     paths:
       - bin/
   script:
-    - docker run -d -it -v /var/run/docker.sock:/var/run/docker.sock --name dotnet-ci "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
-    - docker cp . dotnet-ci:/app
-    - docker exec dotnet-ci bash
-    - cd ./app/net
+    - cd ./net
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
     - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
@@ -57,5 +55,6 @@ commerce_catalog_integration_test:
 commerce_build_ci_images:
   stage: build
   script:
+    - cd ./images/aspnetcore-build-ci
     - docker build -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
