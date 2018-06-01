@@ -14,7 +14,7 @@ RUN add-apt-repository \
    $(lsb_release -cs) \
    stable"
 RUN apt-get update
-RUN apt install docker-ce
+RUN apt install -y docker-ce
 # docker-compose installation
 RUN curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
