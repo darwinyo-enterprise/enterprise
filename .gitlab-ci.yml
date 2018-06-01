@@ -57,4 +57,4 @@ commerce_build_ci_images:
   script:
     - cd ./images/aspnetcore-build-ci
     - docker build -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
