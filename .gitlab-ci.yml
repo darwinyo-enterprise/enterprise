@@ -5,7 +5,7 @@ services:
 
 before_script:
   - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
-  - https://dot.net/v1/dotnet-install.sh
+  - sh ./script/dotnet-install.sh
 
 commerce_library_unit_test:
   stage: test
