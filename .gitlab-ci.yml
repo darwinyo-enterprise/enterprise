@@ -21,6 +21,7 @@ commerce_library_unit_test:
 
 commerce_catalog_unit_test:
   stage: test
+  image: microsoft/aspnetcore-build:2.0
   script:
     - cd ./net/tests/Enterprise.Commerce.Tests
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
