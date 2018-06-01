@@ -4,7 +4,8 @@ services:
   - docker:dind
 
 before_script:
-  # - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   
 # ci_docker_image_build:
 #   stage: build
@@ -12,49 +13,29 @@ before_script:
 #     - docker build ./images/aspnetcore-build-ci/. -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 #     - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
-# commerce_library_unit_test:
-#   stage: test
-#   # image: microsoft/aspnetcore-build:2.0
-#   cache:
-#     untracked: true
-#     paths:
-#     - bin/
-#   script:
-#     - cd ./net/tests/Enterprise.Library.EventBus.Tests
-#     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
-#     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
-#     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
+ commerce_library_unit_test:
+   stage: test
+   image: microsoft/aspnetcore-build:2.0
+   cache:
+     untracked: true
+     paths:
+     - bin/
+   script:
+     - cd ./net/tests/Enterprise.Library.EventBus.Tests
+     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
+     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
+     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
 commerce_catalog_unit_test:
   stage: test
-  image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
     paths:
     - bin/
   script:
-    # Docker Installation
-    - apt-get update
-    - apt-get install -y \
-      apt-transport-https \
-      ca-certificates \
-      curl \
-      gnupg2 \
-      software-properties-common
-    - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-    - apt-key fingerprint 0EBFCD88
-    - add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) \
-      stable"
-    - apt-get update
-    - apt install -y docker-ce
-    # Docker-compose Installation
-    - curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
-    - docker-compose -f ./net/docker-compose-external.yml -f ./net/docker-compose-external.override.yml up
-    - cd ./net/tests/Enterprise.Commerce.Tests
-    
+    - cd ./net
+    - docker-compose -f ./docker-compose-external.yml -f ./docker-compose-external.override.yml
+    - cd ./tests/Enterprise.Commerce.Tests
     - dotnet restore ./Enterprise.Commerce.Tests.csproj
     - dotnet build ./Enterprise.Commerce.Tests.csproj
     - dotnet test ./Enterprise.Commerce.Tests.csproj
