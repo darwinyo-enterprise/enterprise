@@ -35,9 +35,9 @@ commerce_catalog_unit_test:
 commerce_catalog_integration_test:
   stage: test
   cache:
-  untracked: true
-  paths:
-    - bin/
+    untracked: true
+    paths:
+      - bin/
   script:
     - cd ./net/integration-tests/Enterprise.Commerce.IntegrationTests
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
