@@ -3,10 +3,14 @@ image: docker:latest
 services:
   - docker:dind
 
-# before_script:
-#   - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
-#   - chmod +x ./script/dotnet-install.sh
-#   - ./script/dotnet-install.sh
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+ci_docker_image_build:
+  stage: build
+  script:
+    - docker build ./images/aspnetcore-build-ci/. -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
+    - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
 commerce_library_unit_test:
   stage: test
