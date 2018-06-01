@@ -51,8 +51,7 @@ commerce_catalog_integration_test:
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
     - docker ps
-    - ifconfig
-    - ping 172.17.0.4 -c 5
+    - docker inspect net_rabbitmq_1
     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
 
 # commerce_build_ci_images:
