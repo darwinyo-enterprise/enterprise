@@ -72,7 +72,7 @@ namespace Catalog.API.Controllers
                 return Json("Upload Failed: " + ex.Message);
             }
         }
-        
+
         /// <summary>
         ///     store file upload to directory specified.
         ///     this only used for updating Product.
@@ -530,20 +530,21 @@ namespace Catalog.API.Controllers
 
                 _catalogContext.ProductImages.RemoveRange(item.ProductImages);
                 _catalogContext.ProductColors.RemoveRange(item.ProductColors);
-
-                await _catalogContext.SaveChangesAsync(cancellationToken);
-
+                
                 foreach (var image in item.ProductImages)
                 {
                     _fileUtility.DeleteFile("ProductImage/" + updateModel.Id, image.ImageName);
                     await InsertProductImageAsync(updateModel, cancellationToken, image);
                 }
+
+                await _catalogContext.SaveChangesAsync(cancellationToken);
                 #endregion
 
                 #region Mapping
 
                 item.Description = updateModel.Description;
-                item.LastUpdatedBy = updateModel.ActorId;
+                // TODO: Replace this with real identity
+                item.LastUpdatedBy = "1";
                 item.LastUpdated = DateTime.Now;
                 item.Name = updateModel.Name;
                 item.CategoryId = updateModel.CategoryId;
@@ -601,7 +602,7 @@ namespace Catalog.API.Controllers
                     {
                         _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
                     }
-                    
+
                     _catalogContext.ProductImages.RemoveRange(item.ProductImages);
                     _catalogContext.ProductRatings.RemoveRange(item.ProductRatings);
                     _catalogContext.ProductColors.RemoveRange(item.ProductColors);
@@ -609,7 +610,7 @@ namespace Catalog.API.Controllers
 
                     _catalogContext.Products.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
-                    
+
                     return NoContent();
                 }
 

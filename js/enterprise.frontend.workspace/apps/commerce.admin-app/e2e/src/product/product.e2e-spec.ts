@@ -137,7 +137,7 @@ describe('Product Scenario', () => {
             await page.formNameTxtbox().clear();
             await page.formNameTxtbox().sendKeys(testName);
             await page.formSubmitBtn().click();
-            await browser.sleep(1000);
+            await browser.sleep(100000);
             await page.popupCloseButton().click();
             await browser.sleep(2000);
             await page.lastPaginationBtn().click();
