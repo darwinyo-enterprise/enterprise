@@ -10,8 +10,7 @@ before_script:
 
 commerce_library_unit_test:
   stage: test
-  services: 
-    - microsoft/aspnetcore-build:2.0
+  image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
     paths:
@@ -22,38 +21,38 @@ commerce_library_unit_test:
     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
-# commerce_catalog_unit_test:
-#   stage: test
-#   image: microsoft/aspnetcore-build:2.0
-#   services:
-#   - docker:dind
-#   cache:
-#     untracked: true
-#     paths:
-#     - bin/
-#   script:
-#     # Install Docker Compose
-#     - pip install docker-compose
-#     - cd ./net/tests/Enterprise.Commerce.Tests
-#     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
-#     - dotnet restore ./Enterprise.Commerce.Tests.csproj
-#     - dotnet build ./Enterprise.Commerce.Tests.csproj
-#     - dotnet test ./Enterprise.Commerce.Tests.csproj
+commerce_catalog_unit_test:
+  stage: test
+  image: microsoft/aspnetcore-build:2.0
+  services:
+  - python:latest
+  cache:
+    untracked: true
+    paths:
+    - bin/
+  script:
+    # Install Docker Compose
+    - pip install docker-compose
+    - cd ./net/tests/Enterprise.Commerce.Tests
+    - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
+    - dotnet restore ./Enterprise.Commerce.Tests.csproj
+    - dotnet build ./Enterprise.Commerce.Tests.csproj
+    - dotnet test ./Enterprise.Commerce.Tests.csproj
 
-# commerce_catalog_integration_test:
-#   stage: test
-#   image: microsoft/aspnetcore-build:2.0
-#   services:
-#   - docker:dind
-#   cache:
-#     untracked: true
-#     paths:
-#     - bin/
-#   script:
-#     # Install Docker Compose
-#     - apk add --update py-pip && pip install docker-compose
-#     - cd ./net/integration-tests/Enterprise.Commerce.IntegrationTests
-#     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
-#     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
-#     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
-#     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
+commerce_catalog_integration_test:
+  stage: test
+  image: microsoft/aspnetcore-build:2.0
+  services:
+  - python:latest
+  cache:
+    untracked: true
+    paths:
+    - bin/
+  script:
+    # Install Docker Compose
+    - pip install docker-compose
+    - cd ./net/integration-tests/Enterprise.Commerce.IntegrationTests
+    - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
+    - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
+    - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
+    - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
