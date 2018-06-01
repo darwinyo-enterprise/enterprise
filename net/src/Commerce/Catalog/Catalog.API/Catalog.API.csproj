@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="%2a%2a\**" />
+    <Content Remove="%2a%2a\**" />
+    <EmbeddedResource Remove="%2a%2a\**" />
+    <None Remove="%2a%2a\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Setup\Category.csv" />
     <None Remove="Setup\Category.zip" />
     <None Remove="Setup\Manufacturer.csv" />
@@ -16,10 +23,6 @@
     <None Remove="Setup\ProductImage.zip" />
     <None Remove="Setup\ProductRating.csv" />
     <None Remove="Setup\User.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -36,8 +36,7 @@ namespace Catalog.API.Controllers
         #region Rating, Inventory, etc
 
         /// <summary>
-        ///     store file upload to directory specified.
-        ///     this only used for updating Product.
+        ///     used for update inventory stock
         /// </summary>
         /// <returns>
         ///     json response
@@ -73,7 +72,7 @@ namespace Catalog.API.Controllers
                 return Json("Upload Failed: " + ex.Message);
             }
         }
-
+        
         /// <summary>
         ///     store file upload to directory specified.
         ///     this only used for updating Product.

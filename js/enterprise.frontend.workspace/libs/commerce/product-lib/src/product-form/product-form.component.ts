@@ -63,7 +63,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
 
   product: ProductViewModel;
 
-  colors: string[];
+  colors: string[] = [];
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createForm();
@@ -86,7 +86,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     },
       (err) => alert(err),
       () => {
-        if (this.product != null) {
+        if (this.product !== undefined) {
           const images: UploadFileModel[] = this.product.productImages
             .map(x => <UploadFileModel>{
               id: x.id.toString(),
@@ -153,8 +153,8 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]],
       description: '',
-      manufacturerId: ['', Validators.required],
-      categoryId: ['', Validators.required],
+      manufacturerId: [''],
+      categoryId: [''],
       productColors: this.fb.array([]),
       actorId: '',
       productImages: this.fb.array([]),
@@ -189,12 +189,14 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   //#region reset Form array values
 
   setProductImage(images: ProductImage[]) {
-    const imageFGs = images.map(image => this.fb.group(image));
-    const imageFormArray = this.fb.array(imageFGs);
-    this.productForm.setControl('productImages', imageFormArray);
+    if (images !== undefined) {
+      const imageFGs = images.map(image => this.fb.group(image));
+      const imageFormArray = this.fb.array(imageFGs);
+      this.productForm.setControl('productImages', imageFormArray);
+    }
   }
   setProductColor(colors: ProductColor[]) {
-    if (colors === undefined) {
+    if (colors !== undefined) {
       const colorFGs = colors.map(color => this.fb.group(color));
       const colorFormArray = this.fb.array(colorFGs);
       this.productForm.setControl('productColors', colorFormArray);
@@ -231,9 +233,12 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   /**Will update value of product color */
   onChipInputChanged(): void {
     console.log(this.colorChips.value);
-    let colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
-      name: x
-    })
-    this.setProductColor(colors);
+    if (this.colorChips.value !== undefined) {
+      let colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
+        name: x
+      })
+      this.setProductColor(colors);
+    }
+
   }
 }

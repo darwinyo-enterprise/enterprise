@@ -24,6 +24,21 @@ describe('Manufacturer Scenario', () => {
             let testName = 'zzz';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
+
+            //#region Verify
+            const verifyItem = await page.listItemActions().last().getText();
+            // test item already there
+            if (verifyItem.includes(testName)) {
+                await browser.sleep(1000);
+                //clean up
+                await page.lastDeleteBtn().click();
+                await browser.sleep(1000);
+
+                await page.promptCancelButton().click();
+                await browser.sleep(1000);
+            }
+            //#endregion
+
             expect(await page.listItemActions().last().getText()).not.toContain(testName);
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
@@ -54,6 +69,21 @@ describe('Manufacturer Scenario', () => {
             let testName = 'zzz1';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
+
+            //#region Verify
+            const verifyItem = await page.listItemActions().last().getText();
+            // test item already there
+            if (verifyItem.includes(testName)) {
+                await browser.sleep(1000);
+                //clean up
+                await page.lastDeleteBtn().click();
+                await browser.sleep(1000);
+
+                await page.promptCancelButton().click();
+                await browser.sleep(1000);
+            }
+            //#endregion
+            
             expect(await page.listItemActions().last().getText()).not.toContain(testName);
             await browser.sleep(1000);
             await page.lastEditBtn().click();
