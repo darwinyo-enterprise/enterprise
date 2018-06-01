@@ -24,6 +24,8 @@ commerce_library_unit_test:
 commerce_catalog_unit_test:
   stage: test
   image: microsoft/aspnetcore-build:2.0
+  services:
+  - docker:dind
   cache:
     untracked: true
     paths:
@@ -40,6 +42,8 @@ commerce_catalog_unit_test:
 commerce_catalog_integration_test:
   stage: test
   image: microsoft/aspnetcore-build:2.0
+  services:
+  - docker:dind
   cache:
     untracked: true
     paths:
