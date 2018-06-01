@@ -16,29 +16,28 @@ commerce_library_unit_test:
     paths:
     - bin/
   script:
-    # docker-compose installation
-    - whoami
-    - curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
-    - docker-compose --version
     - cd ./net/tests/Enterprise.Library.EventBus.Tests
     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
-# commerce_catalog_unit_test:
-#   stage: test
-#   image: microsoft/aspnetcore-build:2.0
-#   cache:
-#     untracked: true
-#     paths:
-#     - bin/
-#   script:
-#     - cd ./net/tests/Enterprise.Commerce.Tests
-#     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
-#     - dotnet restore ./Enterprise.Commerce.Tests.csproj
-#     - dotnet build ./Enterprise.Commerce.Tests.csproj
-#     - dotnet test ./Enterprise.Commerce.Tests.csproj
+commerce_catalog_unit_test:
+  stage: test
+  image: microsoft/aspnetcore-build:2.0
+  cache:
+    untracked: true
+    paths:
+    - bin/
+  script:
+    # docker-compose installation
+    - curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+    - docker-compose --version
+    - cd ./net/tests/Enterprise.Commerce.Tests
+    - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
+    - dotnet restore ./Enterprise.Commerce.Tests.csproj
+    - dotnet build ./Enterprise.Commerce.Tests.csproj
+    - dotnet test ./Enterprise.Commerce.Tests.csproj
 
 # commerce_catalog_integration_test:
 #   stage: test
