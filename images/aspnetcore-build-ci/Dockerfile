@@ -32,6 +32,7 @@ RUN apk add --no-cache \
         tzdata \
         userspace-rcu \
         zlib \
+        curl \
     && apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
         lttng-ust
 
