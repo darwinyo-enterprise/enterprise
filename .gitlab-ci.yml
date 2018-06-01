@@ -12,18 +12,18 @@ before_script:
 #     - docker build ./images/aspnetcore-build-ci/. -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 #     - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
-commerce_library_unit_test:
-  stage: test
-  # image: microsoft/aspnetcore-build:2.0
-  cache:
-    untracked: true
-    paths:
-    - bin/
-  script:
-    - cd ./net/tests/Enterprise.Library.EventBus.Tests
-    - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
-    - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
-    - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
+# commerce_library_unit_test:
+#   stage: test
+#   # image: microsoft/aspnetcore-build:2.0
+#   cache:
+#     untracked: true
+#     paths:
+#     - bin/
+#   script:
+#     - cd ./net/tests/Enterprise.Library.EventBus.Tests
+#     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
+#     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
+#     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
 commerce_catalog_unit_test:
   stage: test
@@ -33,12 +33,15 @@ commerce_catalog_unit_test:
     paths:
     - bin/
   script:
-    - docker-compose -f ./net/docker-compose-external.yml -f ./net/docker-compose-external.override.yml up
-    - cd ./net/tests/Enterprise.Commerce.Tests
+    # - docker-compose -f ./net/docker-compose-external.yml -f ./net/docker-compose-external.override.yml up
+    # - cd ./net/tests/Enterprise.Commerce.Tests
     
-    - dotnet restore ./Enterprise.Commerce.Tests.csproj
-    - dotnet build ./Enterprise.Commerce.Tests.csproj
-    - dotnet test ./Enterprise.Commerce.Tests.csproj
+    # - dotnet restore ./Enterprise.Commerce.Tests.csproj
+    # - dotnet build ./Enterprise.Commerce.Tests.csproj
+    # - dotnet test ./Enterprise.Commerce.Tests.csproj
+    - docker ps
+    - docker-compose
+    - dotnet
 
 # commerce_catalog_integration_test:
 #   stage: test
