@@ -9,7 +9,7 @@ variables:
 
 before_script:
  # - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
- # - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+ - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 # commerce_library_unit_test:
 #   stage: test
@@ -53,3 +53,9 @@ commerce_catalog_integration_test:
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
+
+commerce_build_ci_images:
+  stage: build
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
