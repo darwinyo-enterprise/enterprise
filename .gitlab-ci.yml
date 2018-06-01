@@ -6,13 +6,15 @@ services:
   - docker:dind
 
 before_script:
-  # Install Docker Compose
-  - apk add --update py-pip && pip install docker-compose
   
 
 commerce_library_unit_test:
   stage: test
   image: microsoft/aspnetcore-build:2.0
+  cache:
+    untracked: true
+    paths:
+    - bin/
   script:
     - cd ./net/tests/Enterprise.Library.EventBus.Tests
     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
@@ -22,7 +24,13 @@ commerce_library_unit_test:
 commerce_catalog_unit_test:
   stage: test
   image: microsoft/aspnetcore-build:2.0
+  cache:
+    untracked: true
+    paths:
+    - bin/
   script:
+    # Install Docker Compose
+    - apk add --update py-pip && pip install docker-compose
     - cd ./net/tests/Enterprise.Commerce.Tests
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
     - dotnet restore ./Enterprise.Commerce.Tests.csproj
