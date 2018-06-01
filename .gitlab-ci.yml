@@ -45,10 +45,10 @@ commerce_catalog_integration_test:
     paths:
       - bin/
   script:
-    - uname -r
-    - docker version
-    - docker-compose version
-    - cd ./net
+    - docker run -d -it -v /var/run/docker.sock:/var/run/docker.sock "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" --name dotnet-ci
+    - docker cp . dotnet-ci:/app
+    - docker exec -it dotnet-ci bash
+    - cd ./app/net
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
     - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
