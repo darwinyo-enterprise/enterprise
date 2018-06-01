@@ -28,7 +28,7 @@ commerce_catalog_unit_test:
     - bin/
   script:
     - cd ./net
-    - docker-compose -f ./docker-compose-external.yml -f ./docker-compose-external.override.yml
+    - docker-compose -f ./docker-compose-external.yml -f ./docker-compose-external.override.yml up
     - cd ./tests/Enterprise.Commerce.Tests
     - dotnet restore ./Enterprise.Commerce.Tests.csproj
     - dotnet build ./Enterprise.Commerce.Tests.csproj
