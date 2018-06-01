@@ -12,6 +12,7 @@ before_script:
 
 commerce_library_unit_test:
   stage: test
+  image: microsoft/aspnetcore:2.0
   script:
     - cd ./net/tests/Enterprise.Library.EventBus.Tests
     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
