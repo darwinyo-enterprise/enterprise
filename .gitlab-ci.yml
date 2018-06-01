@@ -1,11 +1,11 @@
-image: docker
+image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
 services:
   - docker:dind
 
 before_script:
   # - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-
+  - bash
 # ci_docker_image_build:
 #   stage: build
 #   script:
@@ -40,7 +40,8 @@ commerce_catalog_unit_test:
     # - dotnet build ./Enterprise.Commerce.Tests.csproj
     # - dotnet test ./Enterprise.Commerce.Tests.csproj
     - docker ps
-    - uname -r
+    - docker-compose
+    - dotnet
 
 # commerce_catalog_integration_test:
 #   stage: test
