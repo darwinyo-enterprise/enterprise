@@ -50,11 +50,12 @@ commerce_catalog_integration_test:
     - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
+    - docker ps
     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
 
-commerce_build_ci_images:
-  stage: build
-  script:
-    - cd ./images/aspnetcore-build-ci
-    - docker build -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
-    - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
+# commerce_build_ci_images:
+#   stage: build
+#   script:
+#     - cd ./images/aspnetcore-build-ci
+#     - docker build -t "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1" .
+#     - docker push "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
