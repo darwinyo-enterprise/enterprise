@@ -9,7 +9,6 @@ before_script:
 
 commerce_library_unit_test:
   stage: test
-  image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
     paths:
