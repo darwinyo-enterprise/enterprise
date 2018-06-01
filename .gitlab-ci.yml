@@ -5,8 +5,7 @@ services:
 
 before_script:
   # - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  - ls
-  - bash
+  - uname -r
 # ci_docker_image_build:
 #   stage: build
 #   script:
@@ -40,9 +39,9 @@ commerce_catalog_unit_test:
     # - dotnet restore ./Enterprise.Commerce.Tests.csproj
     # - dotnet build ./Enterprise.Commerce.Tests.csproj
     # - dotnet test ./Enterprise.Commerce.Tests.csproj
+    - dotnet
     - docker ps
     - docker-compose
-    - dotnet
 
 # commerce_catalog_integration_test:
 #   stage: test
