@@ -3,18 +3,23 @@ image: docker:latest
 services:
   - docker:dind
 
-before_script:
-  - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
-  - chmod +x ./script/dotnet-install.sh
-  - ./script/dotnet-install.sh
+# before_script:
+#   - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
+#   - chmod +x ./script/dotnet-install.sh
+#   - ./script/dotnet-install.sh
 
 commerce_library_unit_test:
   stage: test
+  image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
     paths:
     - bin/
   script:
+    # docker-compose installation
+    - sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    - sudo chmod +x /usr/local/bin/docker-compose
+    - docker-compose --version
     - cd ./net/tests/Enterprise.Library.EventBus.Tests
     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
