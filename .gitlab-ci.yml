@@ -6,16 +6,9 @@ services:
   - docker:dind
 
 before_script:
-  - docker info
-  - docker run --rm hello-world
+  # Install Docker Compose
+  - apk add --update py-pip && pip install docker-compose
   
-commerce_build_images:
-  stage: build
-  script:
-    - cd ./net/
-    # Install Docker Compose
-    - apk add --update py-pip && pip install docker-compose
-    - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 
 commerce_library_unit_test:
   stage: test
@@ -24,6 +17,12 @@ commerce_library_unit_test:
     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
+
+# commerce_build_images:
+#   stage: build
+#   script:
+#     - cd ./net/
+#     - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
 
 # commerce_catalog_unit_test:
 #   stage: test
