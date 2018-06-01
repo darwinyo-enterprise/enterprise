@@ -19,15 +19,11 @@ commerce_library_unit_test:
     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
-# commerce_build_images:
-#   stage: build
-#   script:
-#     - cd ./net/
-#     - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
-
-# commerce_catalog_unit_test:
-#   stage: test
-#   script:
-#     - cd ./net/
-#     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
-#     - 
+commerce_catalog_unit_test:
+  stage: test
+  script:
+    - cd ./net/tests/Enterprise.Commerce.Tests
+    - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up
+    - dotnet restore ./Enterprise.Commerce.Tests.csproj
+    - dotnet build ./Enterprise.Commerce.Tests.csproj
+    - dotnet test ./Enterprise.Commerce.Tests.csproj
