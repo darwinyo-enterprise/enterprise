@@ -1,7 +1,7 @@
-image: docker:latest
+image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
-services:
-  - docker:dind
+# services:
+#   - docker:dind
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
@@ -14,7 +14,7 @@ before_script:
 
 commerce_library_unit_test:
   stage: test
-  image: microsoft/aspnetcore-build:2.0
+  # image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
     paths:
@@ -27,7 +27,7 @@ commerce_library_unit_test:
 
 commerce_catalog_unit_test:
   stage: test
-  image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
+  # image: 
   cache:
     untracked: true
     paths:
