@@ -33,6 +33,9 @@ RUN apk add --no-cache \
         userspace-rcu \
         zlib \
         curl \
+        python \
+        python-dev \
+        py-pip \
     && apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
         lttng-ust
 
@@ -73,8 +76,7 @@ ENV DOTNET_USE_POLLING_FILE_WATCHER=true \
 RUN dotnet help
 
 # docker-compose installation
-RUN curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose
+RUN pip install 'docker-compose==1.19.0'
 
 # check docker
 RUN docker -v
