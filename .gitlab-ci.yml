@@ -39,8 +39,9 @@ commerce_catalog_integration_test:
     paths:
       - bin/
   script:
-    - cd ./net/integration-tests/Enterprise.Commerce.IntegrationTests
+    - cd ./net
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
+    - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
