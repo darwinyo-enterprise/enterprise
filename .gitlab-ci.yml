@@ -1,10 +1,10 @@
-image: docker:latest
+image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
 
 services:
   - docker:dind
 
 before_script:
-  - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
+ # - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 commerce_library_unit_test:
@@ -39,8 +39,9 @@ commerce_catalog_integration_test:
     paths:
       - bin/
   script:
-    - cd ./net/integration-tests/Enterprise.Commerce.IntegrationTests
+    - cd ./net
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
+    - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet restore ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet build ./Enterprise.Commerce.IntegrationTests.csproj
     - dotnet test ./Enterprise.Commerce.IntegrationTests.csproj
