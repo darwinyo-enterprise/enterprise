@@ -22,3 +22,21 @@ services:
       - "15672:15672"
       - "5672:5672"
 
+  enterprise.commerce.integrationtests:
+    environment:
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd}
+      - ManufacturerImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/manufacturer/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - ProductImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/product/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - CategoryImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/category/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}         
+      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
+      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5101:80"

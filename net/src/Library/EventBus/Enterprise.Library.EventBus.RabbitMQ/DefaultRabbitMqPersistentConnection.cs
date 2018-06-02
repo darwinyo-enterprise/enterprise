@@ -91,14 +91,8 @@ namespace Enterprise.Library.EventBus.RabbitMQ
 
                 policy.Execute(() =>
                 {
-                    try
-                    {
-                        _connection = _connectionFactory
-                            .CreateConnection();
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    _connection = _connectionFactory
+                        .CreateConnection();
                 });
 
                 if (IsConnected)

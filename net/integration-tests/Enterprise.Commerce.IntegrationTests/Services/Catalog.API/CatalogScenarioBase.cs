@@ -23,6 +23,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     .AddJsonFile(Directory.GetCurrentDirectory() + "/Services/Catalog.API/appsettings.json")
                     .Build()
                 )
+                .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
                 .UseStartup<Startup>();
 
             var testServer = new TestServer(webHostBuilder);

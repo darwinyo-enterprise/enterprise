@@ -12,7 +12,6 @@ services:
       
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
-
   
   enterprise.commerce.integrationtests:
     image: enterprise-commerce-integration-tests
