@@ -526,17 +526,23 @@ namespace Catalog.API.Controllers
                 else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
                     return BadRequest(new { Message = "Cant update product with 0 image" });
 
+                updateModel.Id = id;
                 #region Clean all Images and colors
 
                 _catalogContext.ProductImages.RemoveRange(item.ProductImages);
                 _catalogContext.ProductColors.RemoveRange(item.ProductColors);
                 
+                // Delete Previous Images
                 foreach (var image in item.ProductImages)
                 {
-                    _fileUtility.DeleteFile("ProductImage/" + updateModel.Id, image.ImageName);
-                    await InsertProductImageAsync(updateModel, cancellationToken, image);
+                    _fileUtility.DeleteFile("ProductImage/" + id, image.ImageName);
                 }
 
+                // Insert new images
+                foreach (var image in updateModel.ProductImages)
+                {
+                    await InsertProductImageAsync(updateModel, cancellationToken, image);
+                }
                 await _catalogContext.SaveChangesAsync(cancellationToken);
                 #endregion
 
