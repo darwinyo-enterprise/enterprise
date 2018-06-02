@@ -52,6 +52,8 @@ commerce_catalog_integration_test:
     - echo $DOCKER_HOST
     # - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
     - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
+    - dotnet restore
+    - dotnet build
     - dotnet test
 
 # commerce_build_ci_images:
