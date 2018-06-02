@@ -9,13 +9,13 @@ services:
     ports:
       - "5433:1433"
 
-  nosql.data:
-    ports:
-      - "27017:27017"
+  # nosql.data:
+  #   ports:
+  #     - "27017:27017"
 
-  basket.data:
-    ports:
-      - "6379:6379"
+  # basket.data:
+  #   ports:
+  #     - "6379:6379"
       
   rabbitmq:
     ports:
