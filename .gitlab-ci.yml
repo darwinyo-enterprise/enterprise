@@ -47,6 +47,9 @@ commerce_catalog_integration_test:
   script:
     - cd ./net
     - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
+    - docker inspect net_rabbitmq_1
+    - docker inspect net_default
+    - ping 127.0.0.1:5672
     # - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
     - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
     - dotnet test
