@@ -13,13 +13,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
 
-    
+  
   enterprise.commerce.integrationtests:
-    image: enterprisecommerceintegrationtests
+    image: enterprise-commerce-integration-tests
     build:
       context: .
       dockerfile: integration-tests/Enterprise.Commerce.IntegrationTests/Dockerfile
+    entrypoint: dotnet test
     depends_on:
       - sql.data
       - rabbitmq
+    
 
