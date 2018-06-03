@@ -46,15 +46,8 @@ commerce_catalog_integration_test:
       - bin/
   script:
     - cd ./net
-    - docker-compose -f docker-compose-external.yml -f docker-compose-external.override.yml up -d
-    - docker inspect net_rabbitmq_1
-    - docker inspect net_default
-    - echo $DOCKER_HOST
-    # - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
-    - cd ./integration-tests/Enterprise.Commerce.IntegrationTests
-    - dotnet restore
-    - dotnet build
-    - dotnet test
+    - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
+    
 
 # commerce_build_ci_images:
 #   stage: build

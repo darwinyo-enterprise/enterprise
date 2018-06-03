@@ -166,40 +166,40 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact]
-        [TestPriority(8)]
-        public async Task Add_product_response_ok_status_code_should_persisted_in_db()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var productViewModel = await GetTestProductVIewModelAsync(ctx);
+        //[Fact]
+        //[TestPriority(8)]
+        //public async Task Add_product_response_ok_status_code_should_persisted_in_db()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var productViewModel = await GetTestProductVIewModelAsync(ctx);
 
-                var verifyProduct =
-                    await ctx.Products.Include(x => x.ProductImages)
-                        .Include(x => x.ProductColors).Include(x => x.ProductRatings)
-                        .SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
+        //        var verifyProduct =
+        //            await ctx.Products.Include(x => x.ProductImages)
+        //                .Include(x => x.ProductColors).Include(x => x.ProductRatings)
+        //                .SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
 
-                if (verifyProduct != null)
-                {
-                    await server.CreateClient()
-                        .DeleteAsync(Delete.DeleteProduct(verifyProduct.Id));
-                }
+        //        if (verifyProduct != null)
+        //        {
+        //            await server.CreateClient()
+        //                .DeleteAsync(Delete.DeleteProduct(verifyProduct.Id));
+        //        }
 
-                var content = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
-                    "application/json");
+        //        var content = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
+        //            "application/json");
 
-                var response = await server.CreateClient()
-                    .PostAsync(Post.AddProduct, content);
+        //        var response = await server.CreateClient()
+        //            .PostAsync(Post.AddProduct, content);
 
-                response.EnsureSuccessStatusCode();
+        //        response.EnsureSuccessStatusCode();
 
-                var insertedProduct =
-                    await ctx.Products.SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
+        //        var insertedProduct =
+        //            await ctx.Products.SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
 
-                Assert.NotNull(insertedProduct);
-            }
-        }
+        //        Assert.NotNull(insertedProduct);
+        //    }
+        //}
 
         [Fact]
         [TestPriority(11)]
@@ -228,265 +228,265 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
 
-        [Fact]
-        [TestPriority(12)]
-        public async Task Delete_product_should_properly_delete_record_in_db()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //[Fact]
+        //[TestPriority(12)]
+        //public async Task Delete_product_should_properly_delete_record_in_db()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
 
-                var productToDelete = await SeedTestProductAsync(ctx, server);
+        //        var productToDelete = await SeedTestProductAsync(ctx, server);
 
-                await server.CreateClient()
-                    .DeleteAsync(Delete.DeleteProduct(productToDelete.Id));
+        //        await server.CreateClient()
+        //            .DeleteAsync(Delete.DeleteProduct(productToDelete.Id));
 
-                var deletedProduct =
-                    await ctx.Products.SingleOrDefaultAsync(x => x.Id == productToDelete.Id);
-                Assert.Null(deletedProduct);
-            }
-        }
+        //        var deletedProduct =
+        //            await ctx.Products.SingleOrDefaultAsync(x => x.Id == productToDelete.Id);
+        //        Assert.Null(deletedProduct);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(3)]
-        public async Task Get_product_by_id_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var searchedProductId = (await ctx.Products.FirstAsync()).Id;
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemById(searchedProductId));
-                response.EnsureSuccessStatusCode();
-            }
-        }
+        //[Fact]
+        //[TestPriority(3)]
+        //public async Task Get_product_by_id_response_ok_status_code()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var searchedProductId = (await ctx.Products.FirstAsync()).Id;
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ItemById(searchedProductId));
+        //        response.EnsureSuccessStatusCode();
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(5)]
-        public async Task Get_product_by_id_response_ok_status_code_return_base64_instead_of_http_url()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var actual = await ctx.Products.FirstOrDefaultAsync();
+        //[Fact]
+        //[TestPriority(5)]
+        //public async Task Get_product_by_id_response_ok_status_code_return_base64_instead_of_http_url()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var actual = await ctx.Products.FirstOrDefaultAsync();
 
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemById(actual.Id));
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ItemById(actual.Id));
 
-                response.EnsureSuccessStatusCode();
+        //        response.EnsureSuccessStatusCode();
 
-                var result =
-                    JsonConvert.DeserializeObject<ProductViewModel>(await response.Content.ReadAsStringAsync());
+        //        var result =
+        //            JsonConvert.DeserializeObject<ProductViewModel>(await response.Content.ReadAsStringAsync());
 
-                foreach (var image in result.ProductImages) Assert.Contains("base64", image.ImageUrl);
-            }
-        }
+        //        foreach (var image in result.ProductImages) Assert.Contains("base64", image.ImageUrl);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(4)]
-        public async Task Get_Product_by_id_response_ok_status_code_with_correct_result()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var productSelected = await ctx.Products
-                    .Include(x => x.ProductImages)
-                    .Include(x => x.ProductColors).FirstOrDefaultAsync();
+        //[Fact]
+        //[TestPriority(4)]
+        //public async Task Get_Product_by_id_response_ok_status_code_with_correct_result()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var productSelected = await ctx.Products
+        //            .Include(x => x.ProductImages)
+        //            .Include(x => x.ProductColors).FirstOrDefaultAsync();
 
-                var productViewModel = new ProductViewModel
-                {
-                    CategoryId = productSelected.CategoryId,
-                    ManufacturerId = productSelected.ManufacturerId,
-                    Description = productSelected.Description,
-                    Id = productSelected.Id,
-                    Name = productSelected.Name,
-                    Price = productSelected.Price,
-                    ProductColors = productSelected.ProductColors.ToArray(),
-                    ProductImages = productSelected.ProductImages.ToArray()
-                };
+        //        var productViewModel = new ProductViewModel
+        //        {
+        //            CategoryId = productSelected.CategoryId,
+        //            ManufacturerId = productSelected.ManufacturerId,
+        //            Description = productSelected.Description,
+        //            Id = productSelected.Id,
+        //            Name = productSelected.Name,
+        //            Price = productSelected.Price,
+        //            ProductColors = productSelected.ProductColors.ToArray(),
+        //            ProductImages = productSelected.ProductImages.ToArray()
+        //        };
 
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemById(productViewModel.Id));
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ItemById(productViewModel.Id));
 
-                response.EnsureSuccessStatusCode();
+        //        response.EnsureSuccessStatusCode();
 
-                var result =
-                    JsonConvert.DeserializeObject<ProductViewModel>(await response.Content.ReadAsStringAsync());
+        //        var result =
+        //            JsonConvert.DeserializeObject<ProductViewModel>(await response.Content.ReadAsStringAsync());
 
-                Assert.Equal(productViewModel.CategoryId, result.CategoryId);
-                Assert.Equal(productViewModel.ManufacturerId, result.ManufacturerId);
-                Assert.Equal(productViewModel.Price, result.Price);
-                Assert.Equal(productViewModel.Name, result.Name);
-                Assert.Equal(productViewModel.Description, result.Description);
-                Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
-                Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
-                Assert.Equal(productViewModel.Id, result.Id);
-            }
-        }
+        //        Assert.Equal(productViewModel.CategoryId, result.CategoryId);
+        //        Assert.Equal(productViewModel.ManufacturerId, result.ManufacturerId);
+        //        Assert.Equal(productViewModel.Price, result.Price);
+        //        Assert.Equal(productViewModel.Name, result.Name);
+        //        Assert.Equal(productViewModel.Description, result.Description);
+        //        Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
+        //        Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
+        //        Assert.Equal(productViewModel.Id, result.Id);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(6)]
-        public async Task Get_product_image_by_id_response_file_result()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var actual = await ctx.ProductImages.FirstOrDefaultAsync();
+        //[Fact]
+        //[TestPriority(6)]
+        //public async Task Get_product_image_by_id_response_file_result()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var actual = await ctx.ProductImages.FirstOrDefaultAsync();
 
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ImageByProductImageId(actual.Id.ToString()));
-                Assert.IsType<StreamContent>(response.Content);
-            }
-        }
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ImageByProductImageId(actual.Id.ToString()));
+        //        Assert.IsType<StreamContent>(response.Content);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(13)]
-        public async Task Get_product_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ProductListPaginatedItem());
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedListViewModel<ItemViewModel>>(
-                        await response.Content.ReadAsStringAsync());
+        //[Fact]
+        //[TestPriority(13)]
+        //public async Task Get_product_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ProductListPaginatedItem());
+        //        response.EnsureSuccessStatusCode();
+        //        var result =
+        //            JsonConvert.DeserializeObject<PaginatedListViewModel<ItemViewModel>>(
+        //                await response.Content.ReadAsStringAsync());
 
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
 
-                var actual = await ctx.Products.ToListAsync();
-                Assert.Equal(actual.Count, result.Count);
-                Assert.Equal(Get.PageIndex, result.PageIndex);
-                Assert.Equal(Get.PageSize, result.PageSize);
-                Assert.Equal(Get.PageSize, result.ListData.Count());
-            }
-        }
+        //        var actual = await ctx.Products.ToListAsync();
+        //        Assert.Equal(actual.Count, result.Count);
+        //        Assert.Equal(Get.PageIndex, result.PageIndex);
+        //        Assert.Equal(Get.PageSize, result.PageSize);
+        //        Assert.Equal(Get.PageSize, result.ListData.Count());
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(1)]
-        public async Task Get_product_response_ok_status_code_should_return_all_products()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ProductPaginatedItem());
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
-                        await response.Content.ReadAsStringAsync());
+        //[Fact]
+        //[TestPriority(1)]
+        //public async Task Get_product_response_ok_status_code_should_return_all_products()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ProductPaginatedItem());
+        //        response.EnsureSuccessStatusCode();
+        //        var result =
+        //            JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
+        //                await response.Content.ReadAsStringAsync());
 
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
 
-                var count = await ctx.Products.CountAsync();
+        //        var count = await ctx.Products.CountAsync();
 
-                Assert.Equal(count, result.Count);
-                Assert.Equal(Get.PageSize, result.Data.Count());
-                Assert.Equal(Get.PageSize, result.PageSize);
-                Assert.Equal(Get.PageIndex, result.PageIndex);
-            }
-        }
+        //        Assert.Equal(count, result.Count);
+        //        Assert.Equal(Get.PageSize, result.Data.Count());
+        //        Assert.Equal(Get.PageSize, result.PageSize);
+        //        Assert.Equal(Get.PageIndex, result.PageIndex);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(2)]
-        public async Task Get_product_response_ok_status_code_with_http_urls()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ProductPaginatedItem());
+        //[Fact]
+        //[TestPriority(2)]
+        //public async Task Get_product_response_ok_status_code_with_http_urls()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var response = await server.CreateClient()
+        //            .GetAsync(Get.ProductPaginatedItem());
 
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
-                        await response.Content.ReadAsStringAsync());
+        //        response.EnsureSuccessStatusCode();
+        //        var result =
+        //            JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
+        //                await response.Content.ReadAsStringAsync());
 
-                Assert.Contains("http", result.Data.First().ImageUrl);
-            }
-        }
+        //        Assert.Contains("http", result.Data.First().ImageUrl);
+        //    }
+        //}
 
-        [Fact]
-        [TestPriority(10)]
-        public async Task Update_product_response_ok_status_code_should_persisted_in_db()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var productViewModel = await GetTestProductVIewModelAsync(ctx);
-                var productNameToUpdate = "zzz";
+        //[Fact]
+        //[TestPriority(10)]
+        //public async Task Update_product_response_ok_status_code_should_persisted_in_db()
+        //{
+        //    using (var server = CreateServer())
+        //    {
+        //        var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+        //        var productViewModel = await GetTestProductVIewModelAsync(ctx);
+        //        var productNameToUpdate = "zzz";
 
-                #region Verify Product Tests case
+        //        #region Verify Product Tests case
 
-                var testProduct = await ctx.Products
-                    .Include(x => x.ProductImages)
-                    .Include(x => x.ProductColors)
-                    .Include(x => x.ProductRatings)
-                    .Where(x => x.Name == productNameToUpdate)
-                    .ToListAsync();
+        //        var testProduct = await ctx.Products
+        //            .Include(x => x.ProductImages)
+        //            .Include(x => x.ProductColors)
+        //            .Include(x => x.ProductRatings)
+        //            .Where(x => x.Name == productNameToUpdate)
+        //            .ToListAsync();
 
-                if (testProduct.Any())
-                {
-                    ctx.Products.RemoveRange(testProduct);
-                    await ctx.SaveChangesAsync();
-                }
+        //        if (testProduct.Any())
+        //        {
+        //            ctx.Products.RemoveRange(testProduct);
+        //            await ctx.SaveChangesAsync();
+        //        }
 
-                #endregion
+        //        #endregion
 
-                #region Verify Product To Edit
+        //        #region Verify Product To Edit
 
-                var verifyProduct =
-                    await ctx.Products
-                        .Include(x => x.ProductImages)
-                        .Include(x => x.ProductColors)
-                        .SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
+        //        var verifyProduct =
+        //            await ctx.Products
+        //                .Include(x => x.ProductImages)
+        //                .Include(x => x.ProductColors)
+        //                .SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
 
-                string id;
-                if (verifyProduct == null)
-                {
-                    var contentToAdd = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
-                        "application/json");
+        //        string id;
+        //        if (verifyProduct == null)
+        //        {
+        //            var contentToAdd = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
+        //                "application/json");
 
-                    var res = await server.CreateClient()
-                        .PostAsync(Post.AddProduct, contentToAdd);
+        //            var res = await server.CreateClient()
+        //                .PostAsync(Post.AddProduct, contentToAdd);
 
 
-                    id = res.Headers.Location.Query.Split('=')[1];
-                }
-                else
-                {
-                    id = verifyProduct.Id;
-                }
+        //            id = res.Headers.Location.Query.Split('=')[1];
+        //        }
+        //        else
+        //        {
+        //            id = verifyProduct.Id;
+        //        }
 
-                #endregion
+        //        #endregion
 
-                productViewModel.Name = productNameToUpdate;
-                productViewModel.Description = "Test";
+        //        productViewModel.Name = productNameToUpdate;
+        //        productViewModel.Description = "Test";
 
-                productViewModel.ProductImages = new[]
-                {
-                    new ProductImage
-                    {
-                        ImageName = "test1.png",
-                        ImageUrl = productViewModel.ProductImages.First().ImageUrl
-                    }
-                };
-                productViewModel.ProductColors = new ProductColor[0];
+        //        productViewModel.ProductImages = new[]
+        //        {
+        //            new ProductImage
+        //            {
+        //                ImageName = "test1.png",
+        //                ImageUrl = productViewModel.ProductImages.First().ImageUrl
+        //            }
+        //        };
+        //        productViewModel.ProductColors = new ProductColor[0];
 
-                var content = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
-                    "application/json");
+        //        var content = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
+        //            "application/json");
 
-                var response = await server.CreateClient()
-                    .PutAsync(Put.UpdateProduct(id), content);
+        //        var response = await server.CreateClient()
+        //            .PutAsync(Put.UpdateProduct(id), content);
 
-                response.EnsureSuccessStatusCode();
+        //        response.EnsureSuccessStatusCode();
 
-                var insertedId = response.Headers.Location.Segments[4];
+        //        var insertedId = response.Headers.Location.Segments[4];
 
-                var insertedProduct = await ctx.Products
-                    .FirstOrDefaultAsync(x => x.Id == insertedId);
+        //        var insertedProduct = await ctx.Products
+        //            .FirstOrDefaultAsync(x => x.Id == insertedId);
 
-                Assert.NotNull(insertedProduct);
-            }
-        }
+        //        Assert.NotNull(insertedProduct);
+        //    }
+        //}
 
         [Fact]
         [TestPriority(9)]
