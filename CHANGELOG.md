@@ -16,5 +16,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...HEAD
-[0.1.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.3.0...v1.0.0
+[Unreleased]: https://gitlab.com/darwinyo-enterprise/Enterprise/tree/dev/master
+[1.0.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
