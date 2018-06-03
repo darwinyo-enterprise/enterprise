@@ -267,9 +267,6 @@ describe('ProductFormComponent', () => {
       expect(productFormPage.saveBtn.hasAttribute('disabled')).toBeFalsy();
     });
 
-    it('should display correct colors when populated', () => {
-      expect(component.colorChips.value).toBe(component.colors);
-    })
     it('should render validation error message when price control is null', () => {
       productFormPage.priceInputControl.value = "";
       component.nameControl.markAsDirty();
