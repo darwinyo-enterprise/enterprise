@@ -91,11 +91,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Library.HealthCh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Extensions.HealthChecks", "src\Library\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj", "{942C1B1D-B879-4D71-BABA-DD4AB79E8EAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHost.Customization", "src\Library\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{9A64D488-C71E-428D-84DB-F663B3652220}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost.Customization", "src\Library\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj", "{9A64D488-C71E-428D-84DB-F663B3652220}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "src\Commerce\Catalog\Catalog.API\Catalog.API.csproj", "{2A5D170D-FE06-4F3E-9E8B-FA96DD1EE321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "src\Commerce\Catalog\Catalog.API\Catalog.API.csproj", "{2A5D170D-FE06-4F3E-9E8B-FA96DD1EE321}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enterprise.Commerce.Tests", "tests\Enterprise.Commerce.Tests\Enterprise.Commerce.Tests.csproj", "{F563DD3C-3066-4FC1-8B35-4DD47F09DE57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{A1E6AB29-FD36-425D-BCC2-76EF93FF5D88}"
+	ProjectSection(SolutionItems) = preProject
+		src\Library\HealthChecks\common\Guard.cs = src\Library\HealthChecks\common\Guard.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -246,6 +251,7 @@ Global
 		{9A64D488-C71E-428D-84DB-F663B3652220} = {15881293-21FD-4E51-8C7E-5F083F5A0EDE}
 		{2A5D170D-FE06-4F3E-9E8B-FA96DD1EE321} = {701DD8C3-ECB0-4A01-9ABE-25A4F38F0DAD}
 		{F563DD3C-3066-4FC1-8B35-4DD47F09DE57} = {D7CE7A34-6B26-4943-978E-BB8D46A56C43}
+		{A1E6AB29-FD36-425D-BCC2-76EF93FF5D88} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {848A472E-7567-47EF-B122-B016D364DC30}

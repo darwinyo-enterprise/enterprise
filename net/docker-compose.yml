@@ -71,5 +71,3 @@ services:
   #   build:
   #     context: .
   #     dockerfile: src/HealthCheck/WebStatus/Dockerfile
-
-

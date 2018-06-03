@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: integration-tests/Enterprise.Commerce.IntegrationTests/Dockerfile
-    entrypoint: dotnet test
+    entrypoint:  dotnet test
     depends_on:
       - sql.data
       - rabbitmq
