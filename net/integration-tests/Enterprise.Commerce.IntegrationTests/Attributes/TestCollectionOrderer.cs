@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Enterprise.Commerce.IntegrationTests.Attributes
 {
-    public class TestCollectionOrderer: ITestCaseOrderer
+    public class TestCollectionOrderer : ITestCaseOrderer
     {
         public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases) where TTestCase : ITestCase
         {
@@ -16,14 +16,11 @@ namespace Enterprise.Commerce.IntegrationTests.Attributes
             foreach (TTestCase testCase in testCases)
             {
                 IAttributeInfo attribute = testCase.TestMethod.Method.
-                    GetCustomAttributes((typeof(TestPriorityAttribute)
-                        .AssemblyQualifiedName)).FirstOrDefault();
+                    GetCustomAttributes(typeof(TestPriorityAttribute)
+                        .AssemblyQualifiedName).FirstOrDefault();
 
-                if (attribute != null)
-                {
-                    var priority = attribute.GetNamedArgument<int>("Priority");
-                    sortedMethods.Add(priority, testCase);
-                }
+                var priority = attribute.GetNamedArgument<int>("Priority");
+                sortedMethods.Add(priority, testCase);
             }
 
             return sortedMethods.Values;
