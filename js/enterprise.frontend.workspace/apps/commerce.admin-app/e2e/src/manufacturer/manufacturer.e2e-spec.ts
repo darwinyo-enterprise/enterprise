@@ -34,8 +34,9 @@ describe('Manufacturer Scenario', () => {
                 await page.lastDeleteBtn().click();
                 await browser.sleep(1000);
 
-                await page.promptCancelButton().click();
+                await page.promptOkButton().click();
                 await browser.sleep(1000);
+                await page.popupCloseButton().click();
             }
             //#endregion
 

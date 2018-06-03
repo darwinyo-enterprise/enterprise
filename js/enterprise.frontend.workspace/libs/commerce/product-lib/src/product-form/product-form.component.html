@@ -25,7 +25,7 @@
 
         <div class="form-row">
           <mat-form-field id="category-select" class="form-control--half-width">
-            <mat-select placeholder="Select Category"  [value]="productForm.value.categoryId">
+            <mat-select placeholder="Select Category" [value]="productForm.value.categoryId" (valueChange)="onCategorySelectChanged($event)">
               <mat-option *ngFor="let category of categories$ | async" [value]="category.id" selected="category.id == product.categoryId">
                 {{category.name}}
               </mat-option>
@@ -33,7 +33,7 @@
           </mat-form-field>
 
           <mat-form-field id="manufacturer-select" class="form-control--half-width">
-            <mat-select placeholder="Select Manufacturer" [value]="productForm.value.manufacturerId">
+            <mat-select placeholder="Select Manufacturer" [value]="productForm.value.manufacturerId" (valueChange)="onManufacturerSelectChanged($event)">
               <mat-option *ngFor="let manufacturer of manufacturers$ | async" [value]="manufacturer.id" selected="manufacturer.id == product.manufacturerId">
                 {{manufacturer.name}}
               </mat-option>
@@ -47,10 +47,12 @@
           <textarea matInput placeholder="Description" formControlName="description"></textarea>
         </mat-form-field>
       </div>
-      <em-file-upload [parentId]="product?.id"></em-file-upload>
+      <em-file-upload [parentId]="product?.id || parentId"></em-file-upload>
     </div>
     <div class="form-card__footer">
       <button id="save-button" mat-button class="ok" [disabled]="productForm.invalid" type="button" (click)="onSaveBtnClicked()">{{nameSaveButton}}</button>
     </div>
   </mat-card>
 </form>
+
+<p>Form value: {{ productForm.value | json }}</p>

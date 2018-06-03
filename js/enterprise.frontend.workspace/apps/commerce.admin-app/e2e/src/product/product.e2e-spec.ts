@@ -8,10 +8,10 @@ describe('Product Scenario', () => {
     beforeEach(() => {
         page = new ProductPage();
     })
-    fdescribe('display list product scenario', () => {
+    describe('display list product scenario', () => {
         beforeEach(async () => {
             await page.navigateToList();
-            await browser.sleep(1000);
+            await browser.sleep(2000);
         })
         //#region no data persists
         it('should navigate to add product when add button clicked', async () => {
@@ -70,7 +70,10 @@ describe('Product Scenario', () => {
                 await page.lastDeleteBtn().click();
                 await browser.sleep(1000);
 
-                await page.promptCancelButton().click();
+                await page.promptOkButton().click();
+                await browser.sleep(1000);
+                await page.popupCloseButton().click();
+                
                 await browser.sleep(1000);
             }
             //#endregion
@@ -98,9 +101,9 @@ describe('Product Scenario', () => {
 
             await page.fileUploadDropZone().sendKeys(path.resolve(__dirname, '../assets/test-product.png'));
 
-            await browser.sleep(10000);
-            await page.formSubmitBtn().click();
             await browser.sleep(1000);
+            await page.formSubmitBtn().click();
+            await browser.sleep(3000);
 
             await page.popupCloseButton().click();
             await browser.sleep(1000);
@@ -110,7 +113,7 @@ describe('Product Scenario', () => {
             expect(element).toContain(testName);
         })
 
-        fit('should change product when form edit submitted', async () => {
+        it('should change product when form edit submitted', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             let testName = 'zzz1';
             await page.lastPaginationBtn().click();
@@ -125,8 +128,9 @@ describe('Product Scenario', () => {
                 await page.lastDeleteBtn().click();
                 await browser.sleep(1000);
 
-                await page.promptCancelButton().click();
+                await page.promptOkButton().click();
                 await browser.sleep(1000);
+                await page.popupCloseButton().click();
             }
             //#endregion
 
@@ -137,7 +141,7 @@ describe('Product Scenario', () => {
             await page.formNameTxtbox().clear();
             await page.formNameTxtbox().sendKeys(testName);
             await page.formSubmitBtn().click();
-            await browser.sleep(100000);
+            await browser.sleep(2000);
             await page.popupCloseButton().click();
             await browser.sleep(2000);
             await page.lastPaginationBtn().click();

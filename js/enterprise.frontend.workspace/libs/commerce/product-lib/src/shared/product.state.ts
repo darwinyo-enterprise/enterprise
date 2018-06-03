@@ -198,7 +198,7 @@ export class ProductState {
     dispatch(new RegisterLoadingOverlay());
 
     return this.productService
-      .apiV1ProductByIdPut(+payload.id, payload)
+      .apiV1ProductByIdPut(payload.id, payload)
       .pipe(
         tap(
           () => { },

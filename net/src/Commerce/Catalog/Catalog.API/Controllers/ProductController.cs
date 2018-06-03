@@ -300,7 +300,7 @@ namespace Catalog.API.Controllers
                 var imagesWithUrl = new List<ProductImage>();
                 foreach (var img in result.ProductImages.ToList())
                 {
-                    var imgWithUrl = await UrlImageHelper<ProductImage>.GetImageBase64UrlAsync(img, _fileUtility, "ProductImage",
+                    var imgWithUrl = await UrlImageHelper<ProductImage>.GetImageBase64UrlAsync(img.ProductId, img, _fileUtility, "ProductImage",
                         cancellationToken);
                     imagesWithUrl.Add(imgWithUrl);
                 }
@@ -531,7 +531,7 @@ namespace Catalog.API.Controllers
 
                 _catalogContext.ProductImages.RemoveRange(item.ProductImages);
                 _catalogContext.ProductColors.RemoveRange(item.ProductColors);
-                
+
                 // Delete Previous Images
                 foreach (var image in item.ProductImages)
                 {
@@ -556,8 +556,8 @@ namespace Catalog.API.Controllers
                 item.CategoryId = updateModel.CategoryId;
                 item.ManufacturerId = updateModel.ManufacturerId;
                 item.Price = updateModel.Price;
-                item.ProductImages = updateModel.ProductImages;
-                item.ProductColors = updateModel.ProductColors;
+                item.ProductImages = updateModel.ProductImages.Select(x => new ProductImage() { ImageName = x.ImageName, ImageUrl = x.ImageUrl, ProductId = x.ProductId }).ToList();
+                item.ProductColors = updateModel.ProductColors.Select(x => new ProductColor() { Name = x.Name, ProductId = x.ProductId }).ToList();
 
                 #endregion
 

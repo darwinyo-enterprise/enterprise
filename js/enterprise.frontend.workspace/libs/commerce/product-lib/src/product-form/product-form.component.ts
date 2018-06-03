@@ -43,6 +43,11 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   categories$: Observable<Category[]>;
 
   //#endregion
+  selectedManufacturerId: string;
+  selectedCategoryId: string;
+
+  /** For Mock ParentId Backend cant recognized if this null */
+  parentId: string = '1';
 
   //#region Inputs Outputs
 
@@ -176,8 +181,8 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
           name: this.product.name || '',
           description: this.product.description || '',
           price: this.product.price || '',
-          manufacturerId: this.product.manufacturerId || '',
-          categoryId: this.product.categoryId || '',
+          manufacturerId: this.selectedManufacturerId || this.product.manufacturerId,
+          categoryId: this.selectedCategoryId || this.product.categoryId,
           actorId: this.product.actorId || ''
         });
         this.setProductColor(this.product.productColors)
@@ -212,7 +217,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   onFileInputChanged(uploadModel: UploadFileModel[]) {
     if (uploadModel.length > 0) {
       let images = uploadModel.map(x => <ProductImage>{
-        id: +x.id,
+        productId: this.parentId,
         imageName: x.fileName,
         imageUrl: x.fileUrl
       })
@@ -227,9 +232,25 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
    * edit should hit update api.
    */
   onSaveBtnClicked() {
+    if (this.productForm.value.manufacturerId === null && this.productForm.value.categoryId === null) {
+      this.productForm.patchValue({
+        manufacturerId: this.selectedManufacturerId,
+        categoryId: this.selectedCategoryId
+      })
+    }
+
     this.save.emit(this.productForm.value);
   }
-
+  onManufacturerSelectChanged(id: string) {
+    if (id !== undefined) {
+      this.selectedManufacturerId = id;
+    }
+  }
+  onCategorySelectChanged(id: string) {
+    if (id !== undefined) {
+      this.selectedCategoryId = id;
+    }
+  }
   /**Will update value of product color */
   onChipInputChanged(): void {
     console.log(this.colorChips.value);

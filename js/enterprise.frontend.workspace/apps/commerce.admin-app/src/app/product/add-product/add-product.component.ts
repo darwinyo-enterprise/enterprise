@@ -32,6 +32,9 @@ export class AddProductComponent implements OnInit {
     this.store.dispatch([ClearSelectedProduct, ClearFileUpload]);
   }
   onAddNewProduct(product: ProductViewModel) {
+    // this can help to eliminate null object in server side
+    product.id = '1';
+    product.actorId = '1';
     this.store.dispatch(new AddProduct(product));
   }
 }
