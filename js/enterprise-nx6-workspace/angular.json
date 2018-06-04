@@ -1,0 +1,532 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "commerce-admin-app": {
+      "root": "apps/commerce-admin-app/",
+      "sourceRoot": "apps/commerce-admin-app/src",
+      "projectType": "application",
+      "prefix": "eca",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/commerce-admin-app",
+            "index": "apps/commerce-admin-app/src/index.html",
+            "main": "apps/commerce-admin-app/src/main.ts",
+            "polyfills": "apps/commerce-admin-app/src/polyfills.ts",
+            "tsConfig": "apps/commerce-admin-app/tsconfig.app.json",
+            "assets": [
+              "apps/commerce-admin-app/src/favicon.ico",
+              "apps/commerce-admin-app/src/assets"
+            ],
+            "styles": [
+              "../../sass/enterprise.globalstyle/src/_main.scss",
+              "apps/commerce-admin-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-admin-app/src/environments/environment.ts",
+                  "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "commerce-admin-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "commerce-admin-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "commerce-admin-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/commerce-admin-app/src/test.ts",
+            "polyfills": "apps/commerce-admin-app/src/polyfills.ts",
+            "tsConfig": "apps/commerce-admin-app/tsconfig.spec.json",
+            "karmaConfig": "apps/commerce-admin-app/karma.conf.js",
+            "styles": [
+              "apps/commerce-admin-app/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/commerce-admin-app/src/favicon.ico",
+              "apps/commerce-admin-app/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/commerce-admin-app/tsconfig.app.json",
+              "apps/commerce-admin-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-admin-app-e2e": {
+      "root": "apps/commerce-admin-app-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/commerce-admin-app-e2e/protractor.conf.js",
+            "devServerTarget": "commerce-admin-app:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/commerce-admin-app-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-client-app": {
+      "root": "apps/commerce-client-app/",
+      "sourceRoot": "apps/commerce-client-app/src",
+      "projectType": "application",
+      "prefix": "eca",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/commerce-client-app",
+            "index": "apps/commerce-client-app/src/index.html",
+            "main": "apps/commerce-client-app/src/main.ts",
+            "polyfills": "apps/commerce-client-app/src/polyfills.ts",
+            "tsConfig": "apps/commerce-client-app/tsconfig.app.json",
+            "assets": [
+              "apps/commerce-client-app/src/favicon.ico",
+              "apps/commerce-client-app/src/assets"
+            ],
+            "styles": [
+              "apps/commerce-client-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-client-app/src/environments/environment.ts",
+                  "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "commerce-client-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "commerce-client-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "commerce-client-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/commerce-client-app/src/test.ts",
+            "polyfills": "apps/commerce-client-app/src/polyfills.ts",
+            "tsConfig": "apps/commerce-client-app/tsconfig.spec.json",
+            "karmaConfig": "apps/commerce-client-app/karma.conf.js",
+            "styles": [
+              "apps/commerce-client-app/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/commerce-client-app/src/favicon.ico",
+              "apps/commerce-client-app/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/commerce-client-app/tsconfig.app.json",
+              "apps/commerce-client-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-client-app-e2e": {
+      "root": "apps/commerce-client-app-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/commerce-client-app-e2e/protractor.conf.js",
+            "devServerTarget": "commerce-client-app:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/commerce-client-app-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "material-file-upload": {
+      "root": "libs/material/file-upload",
+      "sourceRoot": "libs/material/file-upload/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material/file-upload/src/test.ts",
+            "tsConfig": "libs/material/file-upload/tsconfig.spec.json",
+            "karmaConfig": "libs/material/file-upload/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material/file-upload/tsconfig.lib.json",
+              "libs/material/file-upload/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "material-list-item-actions": {
+      "root": "libs/material/list-item-actions",
+      "sourceRoot": "libs/material/list-item-actions/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material/list-item-actions/src/test.ts",
+            "tsConfig": "libs/material/list-item-actions/tsconfig.spec.json",
+            "karmaConfig": "libs/material/list-item-actions/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material/list-item-actions/tsconfig.lib.json",
+              "libs/material/list-item-actions/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "core": {
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
+      "projectType": "library",
+      "prefix": "ec",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/core/src/test.ts",
+            "tsConfig": "libs/core/tsconfig.spec.json",
+            "karmaConfig": "libs/core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/core/tsconfig.lib.json",
+              "libs/core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "core-testing": {
+      "root": "libs/core/testing",
+      "sourceRoot": "libs/core/testing/src",
+      "projectType": "library",
+      "prefix": "ec",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/core/testing/src/test.ts",
+            "tsConfig": "libs/core/testing/tsconfig.spec.json",
+            "karmaConfig": "libs/core/testing/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/core/testing/tsconfig.lib.json",
+              "libs/core/testing/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "shared": {
+      "root": "libs/shared",
+      "sourceRoot": "libs/shared/src",
+      "projectType": "library",
+      "prefix": "enterprise-nx6-workspace",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/shared/src/test.ts",
+            "tsConfig": "libs/shared/tsconfig.spec.json",
+            "karmaConfig": "libs/shared/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/tsconfig.lib.json",
+              "libs/shared/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-catalog-lib": {
+      "root": "libs/commerce/catalog-lib",
+      "sourceRoot": "libs/commerce/catalog-lib/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/catalog-lib/src/test.ts",
+            "tsConfig": "libs/commerce/catalog-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/catalog-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/catalog-lib/tsconfig.lib.json",
+              "libs/commerce/catalog-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-category-lib": {
+      "root": "libs/commerce/category-lib",
+      "sourceRoot": "libs/commerce/category-lib/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/category-lib/src/test.ts",
+            "tsConfig": "libs/commerce/category-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/category-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/category-lib/tsconfig.lib.json",
+              "libs/commerce/category-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-manufacturer-lib": {
+      "root": "libs/commerce/manufacturer-lib",
+      "sourceRoot": "libs/commerce/manufacturer-lib/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/manufacturer-lib/src/test.ts",
+            "tsConfig": "libs/commerce/manufacturer-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/manufacturer-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/manufacturer-lib/tsconfig.lib.json",
+              "libs/commerce/manufacturer-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-product-lib": {
+      "root": "libs/commerce/product-lib",
+      "sourceRoot": "libs/commerce/product-lib/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/product-lib/src/test.ts",
+            "tsConfig": "libs/commerce/product-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/product-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/product-lib/tsconfig.lib.json",
+              "libs/commerce/product-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-core": {
+      "root": "libs/commerce/core",
+      "sourceRoot": "libs/commerce/core/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/core/src/test.ts",
+            "tsConfig": "libs/commerce/core/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/core/tsconfig.lib.json",
+              "libs/commerce/core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/schematics"
+  },
+  "defaultProject": "commerce-admin-app"
+}
