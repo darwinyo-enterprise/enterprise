@@ -519,6 +519,34 @@
           }
         }
       }
+    },
+    "material-stars": {
+      "root": "libs/material/stars",
+      "sourceRoot": "libs/material/stars/src",
+      "projectType": "library",
+      "prefix": "enterprise-nx6-workspace",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material/stars/src/test.ts",
+            "tsConfig": "libs/material/stars/tsconfig.spec.json",
+            "karmaConfig": "libs/material/stars/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material/stars/tsconfig.lib.json",
+              "libs/material/stars/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

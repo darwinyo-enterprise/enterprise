@@ -42,6 +42,9 @@
     },
     "commerce-core": {
       "tags": []
+    },
+    "material-stars": {
+      "tags": []
     }
   }
 }

@@ -48,6 +48,9 @@
       ],
       "@enterprise/commerce/core": [
         "libs/commerce/core/src/index.ts"
+      ],
+      "@enterprise-nx6-workspace/material/stars": [
+        "libs/material/stars/src/index.ts"
       ]
     }
   },
