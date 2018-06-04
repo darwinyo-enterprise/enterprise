@@ -1,0 +1,16 @@
+<div class="file-upload__container">
+  <div class="file-upload__drop-zone" emFileDragNDrop [disabled]="disable | async" [fileMultiple]="multiple | async" (uploadFiles)="onDropFileChanged($event)">
+    <ng-template [ngIf]="!(disable | async)">
+      Drop files here...
+      <div class="file-upload__drop-zone__button">
+        or click here..
+        <input #file type="file" [multiple]="multiple | async" accept="image/*" (change)="onDropFileChanged(file.files)" />
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="disable | async">
+      Please remove below image first...
+    </ng-template>
+  </div>
+
+  <em-file-upload-info (deleteFile)="onFileDelete($event)" [filesUpload]="filesImage | async"></em-file-upload-info>
+</div>

@@ -1,0 +1,47 @@
+{
+  "npmScope": "enterprise-nx6-workspace",
+  "projects": {
+    "commerce-admin-app": {
+      "tags": []
+    },
+    "commerce-admin-app-e2e": {
+      "tags": []
+    },
+    "commerce-client-app": {
+      "tags": []
+    },
+    "commerce-client-app-e2e": {
+      "tags": []
+    },
+    "material-file-upload": {
+      "tags": []
+    },
+    "material-list-item-actions": {
+      "tags": []
+    },
+    "core": {
+      "tags": []
+    },
+    "core-testing": {
+      "tags": []
+    },
+    "shared": {
+      "tags": []
+    },
+    "commerce-catalog-lib": {
+      "tags": []
+    },
+    "commerce-category-lib": {
+      "tags": []
+    },
+    "commerce-manufacturer-lib": {
+      "tags": []
+    },
+    "commerce-product-lib": {
+      "tags": []
+    },
+    "commerce-core": {
+      "tags": []
+    }
+  }
+}

@@ -4,16 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 import { NgxsModule } from '@ngxs/store';
-import { TestState } from './state/test.state';
-import * as core from '@enterprise/core';
+import { AppRoutingModule } from 'apps/commerce.client-app/src/app/app-routing.module';
+import { SharedModule } from '@enterprise/shared';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({
+      appId: 'enterprise-commerce-client-app'
+    }),
+    CoreModule,
+    SharedModule,
     NxModule.forRoot(),
-    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
-    core.CoreModule,
-    NgxsModule.forFeature([TestState])
+    AppRoutingModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
