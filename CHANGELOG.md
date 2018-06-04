@@ -28,5 +28,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update Workspace to Nx@6
 - Update Angular material @6.2.0
 
+## [1.1.1] - 2018-03-06
+### Added
+- Add Cart Module
+- Add Catalog Module
+- Add Payment Module
+
+### Fixed
+- fix CHANGELOG
+
+### Changed
+
 [Unreleased]: https://gitlab.com/darwinyo-enterprise/Enterprise/tree/dev/master
 [1.0.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
+[1.1.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
+[1.1.1]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
