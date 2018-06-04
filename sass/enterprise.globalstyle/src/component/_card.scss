@@ -1,0 +1,134 @@
+////
+/// @author Darwin Yo
+////
+%font-placeholder {
+  font-family: $primary-font-family;
+  color: $primary-color;
+}
+
+%icon-placeholder {
+  color: $secondary-color;
+  display: block;
+  stroke: currentColor;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+%detail-position-placeholder {
+  font-size: $font-size-md;
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+%icon-position-placeholder {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+%icon-margin-placeholder {
+  margin-right: .4rem;
+  position: relative;
+}
+
+.card-container {
+  background-color: $primary-background-color;
+  margin: 1rem;
+  padding: 2rem;
+  &__title {
+    @extend %font-placeholder;
+    font-size: $font-size-bg;
+    border-bottom: $border;
+  }
+  &__content {
+    @extend %font-placeholder;
+    margin-top: 2rem;
+    font-size: $font-size-md;
+  }
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem;
+  }
+}
+
+.card-item {
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: .8px .9px 3px grey;
+    transition: all .6s ease-out;
+
+  }
+  background-color: $primary-background-color;
+  width: 250px;
+  display: flex;
+  &__image {
+    &>img {
+      width: 100%;
+    }
+  }
+  &__title {
+    @extend %font-placeholder;
+    @extend %detail-position-placeholder;
+    word-break: break-all;
+    color: $secondary-color;
+  }
+  &__detail {
+    @extend %font-placeholder;
+    @extend %detail-position-placeholder;
+    &__price {
+      padding: 0rem 0rem 0.5rem 0rem;
+      font-size: $font-size-md;
+      color: $alert-color;
+      font-weight: bold;
+    }
+    &__star-rate {
+      padding: 0rem 0rem 0.5rem 0rem;
+      display: flex;
+      align-items: center;
+      &__star-wrapper {
+        @extend %icon-margin-placeholder;
+      }
+      &__lit {
+        overflow: hidden;
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 1;
+      }
+      &__hollow-star {
+        @extend %icon-placeholder;
+        position: relative;
+      }
+      &__primary-star {
+        @extend %icon-placeholder;
+        position: absolute;
+      }
+      &__rate-count {
+        font-size: $font-size-sm;
+      }
+    }
+    &__favorite {
+      @extend %icon-position-placeholder;
+      &__icon {
+        @extend %icon-margin-placeholder;
+        @extend %icon-placeholder;
+      }
+    }
+    &__reviews {
+      @extend %icon-position-placeholder;
+      &__icon {
+        @extend %icon-margin-placeholder;
+        @extend %icon-placeholder;
+      }
+    }
+    &__row {
+      justify-content: space-around;
+      padding: 0.5rem 0rem 0.5rem 0rem;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}

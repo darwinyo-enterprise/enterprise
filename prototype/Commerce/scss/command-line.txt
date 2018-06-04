@@ -1,2 +1,0 @@
-generate sass doc
-- sassdoc ..\src\*.scss -c ../sassdoc-config.yaml

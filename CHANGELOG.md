@@ -40,6 +40,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 [Unreleased]: https://gitlab.com/darwinyo-enterprise/Enterprise/tree/dev/master
-[1.0.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
-[1.1.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
-[1.1.1]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
+[1.0.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags/Enterprise.Commerce-v.1.0.0
+[1.1.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags/Enterprise.Commerce-v.1.1.0
+[1.1.1]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags/Enterprise.Commerce-v.1.1.1
