@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Manufacturer } from '@enterprise/commerce/catalog-lib';
 import { Store, Select } from '@ngxs/store';
-import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce';
+import { UpdateManufacturer, ManufacturersMock, FetchSingleManufacturer, ManufacturerState } from '@enterprise/commerce/manufacturer-lib';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';

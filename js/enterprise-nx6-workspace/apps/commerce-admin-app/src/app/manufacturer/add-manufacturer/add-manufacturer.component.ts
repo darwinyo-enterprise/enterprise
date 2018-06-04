@@ -4,7 +4,7 @@ import {
   ManufacturerService
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
-import { AddManufacturer, ManufacturersMock, ClearSelectedManufacturer } from '@enterprise/commerce';
+import { AddManufacturer, ManufacturersMock, ClearSelectedManufacturer } from '@enterprise/commerce/manufacturer-lib';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs';
 import { ClearFileUpload } from '@enterprise/material/file-upload';

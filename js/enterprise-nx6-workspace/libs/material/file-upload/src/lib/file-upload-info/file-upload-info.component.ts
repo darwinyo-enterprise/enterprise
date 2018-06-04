@@ -3,11 +3,11 @@ import {
   OnInit,
   Input,
   EventEmitter,
-  Output } from "@angular/core";
+  Output
+} from "@angular/core";
 import { UploadFileModel } from "./../models/upload-file.model";
 
 @Component({
-  
   selector: "em-file-upload-info",
   templateUrl: "./file-upload-info.component.html",
   styleUrls: ["./file-upload-info.component.scss"]
@@ -27,7 +27,7 @@ export class FileUploadInfoComponent implements OnInit {
     this.deleteFile = new EventEmitter<UploadFileModel>();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onDelete(uploadFileModel: UploadFileModel) {
     this.deleteFile.emit(uploadFileModel);

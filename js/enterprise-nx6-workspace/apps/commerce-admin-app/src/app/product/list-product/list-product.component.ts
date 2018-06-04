@@ -3,7 +3,7 @@ import { ProductState, FetchProducts, DeleteProduct, FetchPaginatedProductsList 
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
-import { Product, ProductService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
+import { ProductService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -11,7 +11,6 @@ import { IConfirmConfig, IPageChangeEvent } from '@covalent/core';
 import { ListItemActionState } from '@enterprise/material/list-item-actions';
 
 @Component({
-
   selector: 'eca-list-product',
   templateUrl: './list-product.component.html',
   styleUrls: ['./list-product.component.scss']

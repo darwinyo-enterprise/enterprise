@@ -12,7 +12,7 @@ import {
   ManufacturerState,
   SingleManufacturerFetched,
   FetchSingleManufacturer
-} from '@enterprise/commerce';
+} from '@enterprise/commerce/manufacturer-lib';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadState } from '@enterprise/material/file-upload';

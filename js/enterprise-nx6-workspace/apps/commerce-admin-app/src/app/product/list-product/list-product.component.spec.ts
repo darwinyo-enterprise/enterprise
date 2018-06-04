@@ -13,7 +13,7 @@ import {
     DeleteProduct,
     FetchPaginatedProductsList
 } from '@enterprise/commerce/product-lib';
-import { ProductService, Product, ProductViewModel } from '@enterprise/commerce/catalog-lib';
+import { ProductService, ProductViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs/observable/of';
 import { RouterTestingModule } from '@angular/router/testing';

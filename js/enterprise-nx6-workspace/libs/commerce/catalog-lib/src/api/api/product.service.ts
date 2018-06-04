@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class ProductService {
 
-    protected basePath = 'https://localhost';
+    protected basePath = 'http://localhost:5101';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

@@ -1,4 +1,4 @@
-import { Product, ProductService, ProductViewModel, PaginatedListViewModelItemViewModel, ProductColor } from '@enterprise/commerce/catalog-lib';
+import { ProductService, ProductViewModel, PaginatedListViewModelItemViewModel, ProductColor } from '@enterprise/commerce/catalog-lib';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse, HttpEvent } from '@angular/common/http';
 import { of } from 'rxjs/observable/of';

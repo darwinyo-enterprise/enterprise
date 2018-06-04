@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { UploadFileModel } from "./../models/upload-file.model";
 import { Select, Store } from "@ngxs/store";
-import { FileUploadState } from "@enterprise/material/file-upload/src/shared/file-upload.state";
-import { ValidateFileUpload, DeleteFileImage, AddFileImage, ClearFileUpload } from "@enterprise/material/file-upload/src/shared/file-upload.actions";
+import { FileUploadState } from "../shared/file-upload.state";
+import { ValidateFileUpload, DeleteFileImage, AddFileImage, ClearFileUpload } from "../shared/file-upload.actions";
 import { Observable } from "rxjs";
 
 @Component({

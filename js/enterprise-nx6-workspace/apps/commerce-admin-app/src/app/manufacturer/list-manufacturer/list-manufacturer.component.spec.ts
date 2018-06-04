@@ -11,7 +11,7 @@ import {
   FetchManufacturers,
   AddManufacturer,
   DeleteManufacturer
-} from '@enterprise/commerce';
+} from '@enterprise/commerce/manufacturer-lib';
 import { ManufacturerService, Manufacturer, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs/observable/of';
@@ -26,7 +26,7 @@ import { Observable } from 'rxjs';
 import { ChangePagination } from '@enterprise/material/list-item-actions';
 import { IPageChangeEvent } from '@covalent/core';
 import { timeout, take } from 'rxjs/operators';
-import { PaginatedManufacturersMock } from '@enterprise/commerce/manufacturer-lib/src/mocks/manufacturer-service.mock';
+import { PaginatedManufacturersMock } from '@enterprise/commerce/manufacturer-lib';
 
 describe('ListManufacturerComponent', () => {
   let component: ListManufacturerComponent;

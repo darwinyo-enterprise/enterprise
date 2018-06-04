@@ -14,7 +14,7 @@ import {
   ManufacturersMock,
   AddManufacturer,
   ClearSelectedManufacturer
-} from '@enterprise/commerce';
+} from '@enterprise/commerce/manufacturer-lib';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
 

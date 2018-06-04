@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product, ProductViewModel } from '@enterprise/commerce/catalog-lib';
+import { ProductViewModel } from '@enterprise/commerce/catalog-lib';
 import { Store, Select } from '@ngxs/store';
 import { UpdateProduct, ProductViewModelsMock, FetchSingleProduct, ProductState } from '@enterprise/commerce/product-lib';
 import { Observable } from 'rxjs/Observable';

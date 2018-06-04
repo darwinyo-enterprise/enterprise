@@ -7,15 +7,15 @@ import { Select, Store } from '@ngxs/store';
 
 import { AppState } from '@enterprise/core';
 import { Guid } from '@enterprise/shared';
-import { Product, ProductImage, Manufacturer, Category, ProductColor } from '@enterprise/commerce/catalog-lib';
+import { ProductImage, Manufacturer, Category, ProductColor } from '@enterprise/commerce/catalog-lib';
 import { FileUploadState, SetModeFileUpload, AddFileImage, ClearFileUpload, UploadFileModel } from '@enterprise/material/file-upload';
 import { take } from 'rxjs/operators';
 import { ProductState } from './../shared/product.state';
 import { OnInit, OnChanges, OnDestroy, Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl, Validators, FormArray } from '@angular/forms';
-import { ProductViewModel } from '@enterprise/commerce/catalog-lib/api/model/productViewModel';
+import { ProductViewModel } from '@enterprise/commerce/catalog-lib';
 import { FetchCategories, CategoryState } from '@enterprise/commerce/category-lib';
-import { FetchManufacturers, ManufacturerState } from '@enterprise/commerce';
+import { FetchManufacturers, ManufacturerState } from '@enterprise/commerce/manufacturer-lib';
 import { TdChipsComponent } from '@covalent/core/chips';
 
 @Component({
@@ -47,7 +47,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   selectedCategoryId: string;
 
   /** For Mock ParentId Backend cant recognized if this null */
-  parentId: string = '1';
+  parentId = '1';
 
   //#region Inputs Outputs
 
@@ -216,7 +216,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   /** File Input Changed by Store Management */
   onFileInputChanged(uploadModel: UploadFileModel[]) {
     if (uploadModel.length > 0) {
-      let images = uploadModel.map(x => <ProductImage>{
+      const images = uploadModel.map(x => <ProductImage>{
         productId: this.parentId,
         imageName: x.fileName,
         imageUrl: x.fileUrl
@@ -255,7 +255,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   onChipInputChanged(): void {
     console.log(this.colorChips.value);
     if (this.colorChips.value !== undefined) {
-      let colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
+      const colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
         name: x
       })
       this.setProductColor(colors);

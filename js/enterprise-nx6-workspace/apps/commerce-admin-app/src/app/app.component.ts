@@ -15,14 +15,14 @@ import { MatIconRegistry } from '@angular/material';
 
 @Component({
 
-  selector: 'enterprise-root',
+  selector: 'eca-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   @Select((state: AppStateModel) => state.username)
   username$;
-  name: string = 'Enterprise';
+  name = 'Enterprise';
   constructor(private store: Store, private loadingService: TdLoadingService, public media: TdMediaService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _iconRegistry: MatIconRegistry,

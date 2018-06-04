@@ -8,7 +8,7 @@ import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IConfirmConfig, IPageChangeEvent } from '@covalent/core';
 import { Component, OnInit } from '@angular/core';
-import { ListItemActionState } from '@enterprise/material/list-item-actions/src/shared/list-item-actions.state';
+import { ListItemActionState } from '@enterprise/material/list-item-actions';
 
 @Component({
   selector: 'eca-list-category',

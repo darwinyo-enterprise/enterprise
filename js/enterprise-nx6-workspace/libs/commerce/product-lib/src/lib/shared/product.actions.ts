@@ -1,5 +1,5 @@
 import {
-  Product, ProductViewModel
+  ProductViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { IPageChangeEvent } from '@covalent/core';
 

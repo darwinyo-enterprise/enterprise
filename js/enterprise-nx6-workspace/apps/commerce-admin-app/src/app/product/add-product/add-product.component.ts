@@ -1,6 +1,5 @@
 import { OnInit, Component } from '@angular/core';
 import {
-  Product,
   ProductService,
   ProductViewModel
 } from '@enterprise/commerce/catalog-lib';

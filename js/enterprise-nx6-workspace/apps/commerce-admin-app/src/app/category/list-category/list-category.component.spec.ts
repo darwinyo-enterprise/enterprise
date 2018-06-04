@@ -16,7 +16,7 @@ import { Location } from "@angular/common";
 import { Navigate, RegisterLoadingOverlay, Confirm } from '@enterprise/core';
 import { CategoryStateModel, CategoriesMock, CategoryState, DeleteCategory, FetchCategories, FetchPaginatedCategoriesList } from '@enterprise/commerce/category-lib';
 import { Observable } from 'rxjs';
-import { PaginatedCategoriesMock } from '@enterprise/commerce/category-lib/src/mocks/category-service.mock';
+import { PaginatedCategoriesMock } from '@enterprise/commerce/category-lib';
 import { IPageChangeEvent } from '@covalent/core';
 import { take } from 'rxjs/operators';
 import { ChangePagination } from '@enterprise/material/list-item-actions';

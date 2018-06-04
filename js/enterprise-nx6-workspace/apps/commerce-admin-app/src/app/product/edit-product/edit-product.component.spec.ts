@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditProductComponent } from './edit-product.component';
 import { Store, NgxsModule } from '@ngxs/store';
 import {
-  Product,
   ProductService
 } from '@enterprise/commerce/catalog-lib';
 import {

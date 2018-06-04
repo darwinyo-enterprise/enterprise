@@ -27,7 +27,6 @@ import {
   PaginatedProductsListFetched
 } from './../shared/product.actions';
 import {
-  Product,
   ProductService,
   ProductViewModel,
   PaginatedListViewModelItemViewModel,
@@ -41,13 +40,13 @@ import { tap } from 'rxjs/operators';
 
 export interface ProductStateModel {
   products: PaginatedCatalogViewModelCatalogItemViewModel;
-  paginatedProducts:PaginatedListViewModelItemViewModel;
-  selectedProduct: Product;
+  paginatedProducts: PaginatedListViewModelItemViewModel;
+  selectedProduct: ProductViewModel;
 }
 
 const defaults: ProductStateModel = {
   products: null,
-  paginatedProducts:null,
+  paginatedProducts: null,
   selectedProduct: null
 };
 
@@ -81,7 +80,7 @@ export class ProductState {
   fetchSingleProduct(
     { patchState, dispatch }: StateContext<ProductStateModel>,
     { payload }: FetchSingleProduct
-  ) {
+    ) {
     // Register Loading Overlay
     dispatch(RegisterLoadingOverlay);
 
@@ -89,13 +88,13 @@ export class ProductState {
     return this.productService
       .apiV1ProductByIdGet(payload)
       .pipe(
-        tap(
-          (product) => patchState({
-            selectedProduct: product
-          }),
-          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/product/list'] })]),
-          () => { dispatch(SingleProductFetched) }
-        )
+      tap(
+        (product) => patchState({
+          selectedProduct: product
+        }),
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/product/list'] })]),
+        () => { dispatch(SingleProductFetched) }
+      )
       );
   }
 
@@ -104,7 +103,7 @@ export class ProductState {
   @Action(SingleProductFetched)
   singleProductFetched(
     { dispatch }: StateContext<ProductStateModel>
-  ) {
+    ) {
     dispatch(ResolveLoadingOverlay);
   }
 
@@ -118,11 +117,11 @@ export class ProductState {
     // call product service
     return this.productService.apiV1ProductGet()
       .pipe(
-        tap(
-          (products) => patchState({ products: products }),
-          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-          () => dispatch(ProductsFetched)
-        )
+      tap(
+        (products) => patchState({ products: products }),
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+        () => dispatch(ProductsFetched)
+      )
       );
   }
 
@@ -131,7 +130,7 @@ export class ProductState {
   @Action(ProductsFetched)
   productsFetched(
     { dispatch }: StateContext<ProductStateModel>
-  ) {
+    ) {
     dispatch(ResolveLoadingOverlay);
   }
 
@@ -165,18 +164,18 @@ export class ProductState {
   deleteProduct(
     { dispatch }: StateContext<ProductStateModel>,
     { payload }: DeleteProduct
-  ) {
+    ) {
     // Register Loading Overlay
     dispatch(new RegisterLoadingOverlay());
 
     return this.productService
       .apiV1ProductByIdDelete(payload)
       .pipe(
-        tap(
-          () => { },
-          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, FetchProducts]),
-          () => dispatch(ProductDeleted)
-        )
+      tap(
+        () => { },
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, FetchProducts]),
+        () => dispatch(ProductDeleted)
+      )
       );
   }
 
@@ -193,17 +192,17 @@ export class ProductState {
   updateProduct(
     { dispatch }: StateContext<ProductStateModel>,
     { payload }: UpdateProduct
-  ) {
+    ) {
     // Register Loading Overlay
     dispatch(new RegisterLoadingOverlay());
 
     return this.productService
       .apiV1ProductByIdPut(payload.id, payload)
       .pipe(
-        tap(
-          () => { },
-          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-          () => dispatch(ProductUpdated))
+      tap(
+        () => { },
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+        () => dispatch(ProductUpdated))
       );
   }
 
@@ -238,14 +237,14 @@ export class ProductState {
     return this.productService
       .apiV1ProductListGet(payload.pageSize, payload.page)
       .pipe(
-        tap(
-          (x) => {
-            patchState({
-              paginatedProducts: x
-            })
-          },
-          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-          () => dispatch(PaginatedProductsListFetched))
+      tap(
+        (x) => {
+          patchState({
+            paginatedProducts: x
+          })
+        },
+        (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+        () => dispatch(PaginatedProductsListFetched))
       );
   }
 
