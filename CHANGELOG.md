@@ -16,5 +16,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+## [1.1.0] - 2018-03-06
+### Added
+
+### Fixed
+- fix e2e test
+- fix frontend unit test
+- fix CHANGELOG
+
+### Changed
+- Update Workspace to Nx@6
+- Update Angular material @6.2.0
+
 [Unreleased]: https://gitlab.com/darwinyo-enterprise/Enterprise/tree/dev/master
 [1.0.0]: https://gitlab.com/darwinyo-enterprise/Enterprise/tags
