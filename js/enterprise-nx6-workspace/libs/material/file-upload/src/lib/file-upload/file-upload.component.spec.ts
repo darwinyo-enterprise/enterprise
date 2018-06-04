@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { FileUploadComponent } from "./file-upload.component";
-import { BaseTestPage } from "@enterprise/core";
+import { BaseTestPage } from "@enterprise/core/testing";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import {

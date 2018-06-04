@@ -5,11 +5,13 @@ import { BaseTestPage } from '@enterprise/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
 import { FileUploadState, AddFileImage, FileUploadMocks, DeleteFileImage, UploadFileModel } from '@enterprise/material/file-upload';
-import { ManufacturerState, ManufacturersMock, FetchSingleManufacturer } from '@enterprise/commerce';
+import { ManufacturerState } from '../shared/manufacturer.state';
 import { ManufacturerService } from '@enterprise/commerce/catalog-lib';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { ManufacturersMock } from '../mocks/manufacturer-service.mock';
+import { FetchSingleManufacturer } from '../shared/manufacturer.actions';
 
 export class ManufacturerFormPage extends BaseTestPage<
   ManufacturerFormComponent

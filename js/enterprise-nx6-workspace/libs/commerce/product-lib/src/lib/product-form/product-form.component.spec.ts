@@ -11,8 +11,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { FileUploadState, UploadFileModel, FileUploadMocks, AddFileImage, DeleteFileImage, SetModeFileUpload } from "@enterprise/material/file-upload";
-import { ProductState, ProductViewModelsMock, FetchSingleProduct } from "@enterprise/commerce/product-lib";
-
+import { ProductViewModelsMock } from "../mocks/product-service.mock";
+import { FetchSingleProduct } from "../shared/product.actions";
+import { ProductState } from "../shared/product.state";
 
 export class ProductFormPage extends BaseTestPage<
   ProductFormComponent

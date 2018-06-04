@@ -27,6 +27,7 @@
               "apps/commerce-admin-app/src/assets"
             ],
             "styles": [
+              "../../sass/enterprise.globalstyle/src/_main.scss",
               "apps/commerce-admin-app/src/styles.scss"
             ],
             "scripts": []
