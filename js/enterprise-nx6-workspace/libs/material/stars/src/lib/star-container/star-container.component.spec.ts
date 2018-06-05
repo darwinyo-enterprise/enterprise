@@ -58,6 +58,7 @@ describe('StarContainerComponent', () => {
     })
     it('should render correct rate count', () => {
       component.rateCount = 210;
+      fixture.detectChanges();
       expect(page.rate_count.innerHTML).toContain(component.rateCount.toString());
     })
   })
