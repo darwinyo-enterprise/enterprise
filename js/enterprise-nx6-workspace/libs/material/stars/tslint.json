@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "enterprise-nx6-workspace",
+      "em",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "enterprise-nx6-workspace",
+      "em",
       "kebab-case"
     ]
   }

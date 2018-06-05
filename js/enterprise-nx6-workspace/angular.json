@@ -524,7 +524,7 @@
       "root": "libs/material/stars",
       "sourceRoot": "libs/material/stars/src",
       "projectType": "library",
-      "prefix": "enterprise-nx6-workspace",
+      "prefix": "em",
       "architect": {
         "test": {
           "builder": "@angular-devkit/build-angular:karma",

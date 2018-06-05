@@ -1,0 +1,8 @@
+<div class="card-item__detail__star-rate">
+  <ng-template ngFor let-star [ngForOf]="starWidths">
+    <em-star [starWidth]="star"></em-star>
+  </ng-template>
+  <span class="card-item__detail__star-rate__rate-count">
+    ({{rateCount}})
+  </span>
+</div>
