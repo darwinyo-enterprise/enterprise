@@ -41,7 +41,7 @@ namespace Catalog.API.Controllers
             {
                 page.Add(new ItemViewModel
                 {
-                    Id = x.Id.ToString(),
+                    Id = x.ImageId.ToString(),
                     Name = x.Name
                 });
             });
@@ -84,7 +84,7 @@ namespace Catalog.API.Controllers
         {
             if (id <= 0) return BadRequest(new { Message = $"Invalid Category id." });
 
-            var result = await _catalogContext.Categories.Where(x => x.Id == id)
+            var result = await _catalogContext.Categories.Where(x => x.ImageId == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (result != null)
@@ -185,11 +185,11 @@ namespace Catalog.API.Controllers
 
             var insertedCategory =
                 await _catalogContext.Categories.SingleOrDefaultAsync(x => x.Name == item.Name, cancellationToken);
-            await InsertCategoryImageAsync(category, cancellationToken, insertedCategory.Id);
+            await InsertCategoryImageAsync(category, cancellationToken, insertedCategory.ImageId);
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewCategoryAsync), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(AddNewCategoryAsync), new { id = item.ImageId }, null);
         }
 
         private async Task InsertCategoryImageAsync(Category category, CancellationToken cancellationToken,
@@ -216,10 +216,10 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCategoryImageAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new { Message = $"Invalid Category Id." });
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Category ImageId." });
 
             var item = await _catalogContext.Categories
-                .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
 
             if (item != null)
             {
@@ -227,7 +227,7 @@ namespace Catalog.API.Controllers
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
                 var buffer =
-                    await _fileUtility.ReadFileAsync("Category/" + item.Id, item.ImageName, cancellationToken);
+                    await _fileUtility.ReadFileAsync("Category/" + item.ImageId, item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -254,9 +254,9 @@ namespace Catalog.API.Controllers
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Categories
-                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(i => i.ImageId == id, cancellationToken);
 
-            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.ImageId} not found." });
             if (string.IsNullOrEmpty(updateModel.ImageName) || string.IsNullOrEmpty(updateModel.ImageUrl))
                 return BadRequest(new { Message = $"Image is empty." });
             var oldImageName = item.ImageName;
@@ -274,10 +274,10 @@ namespace Catalog.API.Controllers
 
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            _fileUtility.DeleteFile("Category/" + updateModel.Id, oldImageName);
+            _fileUtility.DeleteFile("Category/" + updateModel.ImageId, oldImageName);
             await InsertCategoryImageAsync(updateModel, cancellationToken, id);
 
-            return CreatedAtAction(nameof(UpdateCategoryAsync), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(UpdateCategoryAsync), new { id = item.ImageId }, null);
         }
 
         /// <summary>
@@ -297,16 +297,16 @@ namespace Catalog.API.Controllers
         {
             try
             {
-                if (id <= 0) return BadRequest(new { Message = $"Invalid Category Id." });
+                if (id <= 0) return BadRequest(new { Message = $"Invalid Category ImageId." });
 
                 var item = await _catalogContext.Categories
-                    .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
+                    .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
 
                 if (item != null)
                 {
                     _catalogContext.Categories.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
-                    _fileUtility.DeleteFile("Category/" + item.Id, item.ImageName);
+                    _fileUtility.DeleteFile("Category/" + item.ImageId, item.ImageName);
                     return NoContent();
                 }
 

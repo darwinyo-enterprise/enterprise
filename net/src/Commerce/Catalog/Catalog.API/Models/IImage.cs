@@ -5,7 +5,7 @@
     /// </summary>
     public interface IImage
     {
-        int Id { get; set; }
+        int ImageId { get; set; }
 
         /// <summary>
         ///     Image Url is base64.

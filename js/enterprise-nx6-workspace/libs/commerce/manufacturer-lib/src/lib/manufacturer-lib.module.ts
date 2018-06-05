@@ -7,6 +7,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ManufacturerState } from './shared/manufacturer.state';
 import { ManufacturerFormComponent } from './manufacturer-form/manufacturer-form.component';
 import { FileUploadModule } from '@enterprise/material/file-upload';
+import { ManufacturerCardComponent } from './manufacturer-card/manufacturer-card.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { FileUploadModule } from '@enterprise/material/file-upload';
     FileUploadModule,
     NgxsModule.forFeature([ManufacturerState])
   ],
-  declarations: [ManufacturerFormComponent],
-  exports: [ManufacturerFormComponent]
+  declarations: [ManufacturerFormComponent, ManufacturerCardComponent],
+  exports: [ManufacturerFormComponent, ManufacturerCardComponent]
 })
 export class ManufacturerLibModule { }

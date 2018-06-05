@@ -41,7 +41,7 @@ namespace Catalog.API.Controllers
             {
                 page.Add(new ItemViewModel
                 {
-                    Id = x.Id.ToString(),
+                    Id = x.ImageId.ToString(),
                     Name = x.Name
                 });
             });
@@ -119,7 +119,7 @@ namespace Catalog.API.Controllers
         {
             if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer id." });
 
-            var result = await _catalogContext.Manufacturers.Where(x => x.Id == id)
+            var result = await _catalogContext.Manufacturers.Where(x => x.ImageId == id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (result != null)
@@ -185,11 +185,11 @@ namespace Catalog.API.Controllers
 
             var insertedManufacturer =
                 await _catalogContext.Manufacturers.SingleOrDefaultAsync(x => x.Name == item.Name, cancellationToken);
-            await InsertManufacturerImageAsync(manufacturer, cancellationToken, insertedManufacturer.Id);
+            await InsertManufacturerImageAsync(manufacturer, cancellationToken, insertedManufacturer.ImageId);
 
             #endregion
 
-            return CreatedAtAction(nameof(AddNewManufacturerAsync), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(AddNewManufacturerAsync), new { id = item.ImageId }, null);
         }
 
         private async Task InsertManufacturerImageAsync(Manufacturer manufacturer, CancellationToken cancellationToken,
@@ -216,10 +216,10 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(File), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetManufacturerImageAsync(int id, CancellationToken cancellationToken)
         {
-            if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer Id." });
+            if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer ImageId." });
 
             var item = await _catalogContext.Manufacturers
-                .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
 
             if (item != null)
             {
@@ -227,7 +227,7 @@ namespace Catalog.API.Controllers
                 var mimetype = FileHelper.GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
                 var buffer =
-                    await _fileUtility.ReadFileAsync("Manufacturer/" + item.Id, item.ImageName, cancellationToken);
+                    await _fileUtility.ReadFileAsync("Manufacturer/" + item.ImageId, item.ImageName, cancellationToken);
 
                 return File(buffer, mimetype);
             }
@@ -254,9 +254,9 @@ namespace Catalog.API.Controllers
             CancellationToken cancellationToken)
         {
             var item = await _catalogContext.Manufacturers
-                .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(i => i.ImageId == id, cancellationToken);
 
-            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.Id} not found." });
+            if (item == null) return NotFound(new { Message = $"Item with id {updateModel.ImageId} not found." });
             if (string.IsNullOrEmpty(updateModel.ImageName) || string.IsNullOrEmpty(updateModel.ImageUrl))
                 return BadRequest(new { Message = $"Image is empty." });
             var oldImageName = item.ImageName;
@@ -274,10 +274,10 @@ namespace Catalog.API.Controllers
 
             await _catalogContext.SaveChangesAsync(cancellationToken);
 
-            _fileUtility.DeleteFile("Manufacturer/" + updateModel.Id, oldImageName);
+            _fileUtility.DeleteFile("Manufacturer/" + updateModel.ImageId, oldImageName);
             await InsertManufacturerImageAsync(updateModel, cancellationToken, id);
 
-            return CreatedAtAction(nameof(UpdateManufacturerAsync), new { id = item.Id }, null);
+            return CreatedAtAction(nameof(UpdateManufacturerAsync), new { id = item.ImageId }, null);
         }
 
         /// <summary>
@@ -297,16 +297,16 @@ namespace Catalog.API.Controllers
         {
             try
             {
-                if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
+                if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer ImageId."});
 
                 var item = await _catalogContext.Manufacturers
-                    .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
+                    .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
 
                 if (item != null)
                 {
                     _catalogContext.Manufacturers.Remove(item);
                     await _catalogContext.SaveChangesAsync(cancellationToken);
-                    _fileUtility.DeleteFile("Manufacturer/" + item.Id, item.ImageName);
+                    _fileUtility.DeleteFile("Manufacturer/" + item.ImageId, item.ImageName);
                     return NoContent();
                 }
 

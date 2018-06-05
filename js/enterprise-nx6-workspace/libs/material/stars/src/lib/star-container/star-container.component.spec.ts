@@ -57,9 +57,9 @@ describe('StarContainerComponent', () => {
       expect(page.stars.length).toBe(component.starWidths.length);
     })
     it('should render correct rate count', () => {
-      component.rateCount = 210;
+      component.rate = 4.95;
       fixture.detectChanges();
-      expect(page.rate_count.innerHTML).toContain(component.rateCount.toString());
+      expect(page.rate_count.innerHTML).toContain(component.rate.toString());
     })
   })
 });

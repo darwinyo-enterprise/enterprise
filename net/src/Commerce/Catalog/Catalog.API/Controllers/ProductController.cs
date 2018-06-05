@@ -225,21 +225,27 @@ namespace Catalog.API.Controllers
             var page = new List<CatalogItemViewModel>();
             list.ForEach(x =>
             {
-                var id = x.ProductImages.FirstOrDefault()?.Id;
+                var id = x.ProductImages.FirstOrDefault()?.ImageId;
                 if (id != null)
+                {
+                    var totalRatingCount = x.ProductRatings.Count(y => y.ProductId == x.Id);
                     page.Add(new CatalogItemViewModel
                     {
                         CategoryId = x.CategoryId,
                         CatalogId = x.Id,
-                        Id = id.Value,
+                        ImageId = id.Value,
                         ImageName = x.ProductImages.FirstOrDefault()?.ImageName,
                         ManufacturerId = x.ManufacturerId,
+
                         Name = x.Name,
                         OverallRating = x.OverallRating,
                         Price = x.Price,
+
                         TotalFavorites = x.TotalFavorites,
-                        TotalReviews = x.TotalReviews
+                        TotalReviews = x.TotalReviews,
+                        TotalRatingCount = totalRatingCount
                     });
+                }
             });
 
 
@@ -288,7 +294,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductByIdAsync(string id, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "ImageId Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .Include(x => x.ProductImages)
@@ -337,7 +343,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductInfoByIdAsync(string id, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "ImageId Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -652,7 +658,7 @@ namespace Catalog.API.Controllers
             if (id <= 0) return BadRequest(new { Message = "invalid Image Request" });
 
             var item = await _catalogContext.ProductImages
-                .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
 
             if (item != null)
             {

@@ -128,9 +128,9 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                 {
                     Id = "1",
                     AvailableStock = 1,
-                    CategoryId = _catalogContextFixture.Context.Categories.First().Id,
+                    CategoryId = _catalogContextFixture.Context.Categories.First().ImageId,
                     Description = "Test",
-                    ManufacturerId = _catalogContextFixture.Context.Manufacturers.First().Id,
+                    ManufacturerId = _catalogContextFixture.Context.Manufacturers.First().ImageId,
                     Name = "product1",
                     Price = 100,
                     OverallRating = 0,
@@ -141,9 +141,9 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                 {
                     Id = "2",
                     AvailableStock = 1,
-                    CategoryId = _catalogContextFixture.Context.Categories.First().Id,
+                    CategoryId = _catalogContextFixture.Context.Categories.First().ImageId,
                     Description = "Test",
-                    ManufacturerId = _catalogContextFixture.Context.Manufacturers.First().Id,
+                    ManufacturerId = _catalogContextFixture.Context.Manufacturers.First().ImageId,
                     Name = "product2",
                     Price = 100,
                     OverallRating = 0,
@@ -248,7 +248,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         /// <summary>
         /// GET:
-        /// Product Id => ok
+        /// Product ImageId => ok
         /// Paginated Product List => ok
         /// Prouct Image => ok
         /// 
@@ -326,7 +326,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedProduct);
 
             var lastProduct = expectedProduct.LastOrDefault();
-            var lastProductImageId = lastProduct?.ProductImages.LastOrDefault()?.Id + 1;
+            var lastProductImageId = lastProduct?.ProductImages.LastOrDefault()?.ImageId + 1;
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
@@ -403,7 +403,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                 {
                     new ProductImage()
                     {
-                        Id = 1,
+                        ImageId = 1,
                         ImageName = "test"
                     }
                 }

@@ -166,7 +166,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  /** resposible for change form value. 
+  /** resposible for change form value.
    *  TODO: actor id should be set
   */
   rebuildForm() {

@@ -30,7 +30,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.Category", b =>
             {
-                b.Property<int>("Id")
+                b.Property<int>("ImageId")
                     .ValueGeneratedOnAdd()
                     .HasAnnotation("SqlServer:ValueGenerationStrategy",
                         SqlServerValueGenerationStrategy.IdentityColumn);
@@ -48,14 +48,14 @@ namespace Catalog.API.Migrations
                     .IsConcurrencyToken()
                     .ValueGeneratedOnAddOrUpdate();
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.ToTable("Category");
             });
 
             modelBuilder.Entity("Catalog.API.Models.Manufacturer", b =>
             {
-                b.Property<int>("Id")
+                b.Property<int>("ImageId")
                     .ValueGeneratedOnAdd()
                     .HasAnnotation("SqlServer:ValueGenerationStrategy",
                         SqlServerValueGenerationStrategy.IdentityColumn);
@@ -73,14 +73,14 @@ namespace Catalog.API.Migrations
                     .IsConcurrencyToken()
                     .ValueGeneratedOnAddOrUpdate();
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.ToTable("Manufacturer");
             });
 
             modelBuilder.Entity("Catalog.API.Models.Product", b =>
             {
-                b.Property<string>("Id")
+                b.Property<string>("ImageId")
                     .ValueGeneratedOnAdd();
 
                 b.Property<int>("AvailableStock");
@@ -111,7 +111,7 @@ namespace Catalog.API.Migrations
 
                 b.Property<int>("TotalReviews");
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.HasIndex("CategoryId");
 
@@ -122,7 +122,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductColor", b =>
             {
-                b.Property<int>("Id")
+                b.Property<int>("ImageId")
                     .ValueGeneratedOnAdd()
                     .HasAnnotation("SqlServer:ValueGenerationStrategy",
                         SqlServerValueGenerationStrategy.IdentityColumn);
@@ -134,7 +134,7 @@ namespace Catalog.API.Migrations
                 b.Property<string>("ProductId")
                     .IsRequired();
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.HasIndex("ProductId");
 
@@ -143,7 +143,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductImage", b =>
             {
-                b.Property<int>("Id")
+                b.Property<int>("ImageId")
                     .ValueGeneratedOnAdd()
                     .HasAnnotation("SqlServer:ValueGenerationStrategy",
                         SqlServerValueGenerationStrategy.IdentityColumn);
@@ -154,7 +154,7 @@ namespace Catalog.API.Migrations
 
                 b.Property<string>("ProductId");
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.HasIndex("ProductId");
 
@@ -163,7 +163,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductRating", b =>
             {
-                b.Property<int>("Id")
+                b.Property<int>("ImageId")
                     .ValueGeneratedOnAdd()
                     .HasAnnotation("SqlServer:ValueGenerationStrategy",
                         SqlServerValueGenerationStrategy.IdentityColumn);
@@ -174,7 +174,7 @@ namespace Catalog.API.Migrations
 
                 b.Property<string>("UserId");
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.HasIndex("ProductId");
 
@@ -185,14 +185,14 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.User", b =>
             {
-                b.Property<string>("Id")
+                b.Property<string>("ImageId")
                     .ValueGeneratedOnAdd();
 
                 b.Property<string>("Name")
                     .IsRequired()
                     .HasMaxLength(500);
 
-                b.HasKey("Id");
+                b.HasKey("ImageId");
 
                 b.ToTable("User");
             });

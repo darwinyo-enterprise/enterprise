@@ -32,8 +32,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             return new ProductViewModel
             {
                 ActorId = "1",
-                CategoryId = targetCategory.Id,
-                ManufacturerId = targetManufacturer.Id,
+                CategoryId = targetCategory.ImageId,
+                ManufacturerId = targetManufacturer.ImageId,
                 CategoryName = targetCategory.Name,
                 ManufacturerName = targetManufacturer.Name,
                 Description = "Test",
@@ -322,7 +322,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.ProductImages.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.ImageByProductImageId(actual.Id.ToString()));
+                    .GetAsync(Get.ImageByProductImageId(actual.ImageId.ToString()));
                 Assert.IsType<StreamContent>(response.Content);
             }
         }

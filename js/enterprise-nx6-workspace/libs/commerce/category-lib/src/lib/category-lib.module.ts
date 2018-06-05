@@ -5,6 +5,7 @@ import { FileUploadModule } from '@enterprise/material/file-upload';
 import { NgxsModule } from '@ngxs/store';
 import { CategoryState } from './shared/category.state';
 import { CategoryFormComponent } from './category-form/category-form.component';
+import { CategoryCardComponent } from './category-card/category-card.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { CategoryFormComponent } from './category-form/category-form.component';
     FileUploadModule,
     NgxsModule.forFeature([CategoryState])
   ],
-  declarations: [CategoryFormComponent],
-  exports: [CategoryFormComponent]
+  declarations: [CategoryFormComponent, CategoryCardComponent],
+  exports: [CategoryFormComponent, CategoryCardComponent]
 })
 export class CategoryLibModule { }

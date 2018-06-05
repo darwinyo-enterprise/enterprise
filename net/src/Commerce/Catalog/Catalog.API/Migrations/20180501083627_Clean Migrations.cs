@@ -90,13 +90,13 @@ namespace Catalog.API.Migrations
                         "FK_Product_Category_CategoryId",
                         x => x.CategoryId,
                         "Category",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         "FK_Product_Manufacturer_ManufacturerId",
                         x => x.ManufacturerId,
                         "Manufacturer",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -117,7 +117,7 @@ namespace Catalog.API.Migrations
                         "FK_ProductColor_Product_ProductId",
                         x => x.ProductId,
                         "Product",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -138,7 +138,7 @@ namespace Catalog.API.Migrations
                         "FK_ProductImage_Product_ProductId",
                         x => x.ProductId,
                         "Product",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -160,13 +160,13 @@ namespace Catalog.API.Migrations
                         "FK_ProductRating_Product_ProductId",
                         x => x.ProductId,
                         "Product",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         "FK_ProductRating_User_UserId",
                         x => x.UserId,
                         "User",
-                        "Id",
+                        "ImageId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

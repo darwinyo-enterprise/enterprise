@@ -8,15 +8,20 @@ namespace Catalog.API.ViewModels
     public class CatalogItemViewModel : IImage
     {
         public string CatalogId { get; set; }
+
+        /// <summary>
+        /// Catalog Name
+        /// </summary>
         public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal OverallRating { get; set; }
         public int TotalFavorites { get; set; }
         public int TotalReviews { get; set; }
+        public int TotalRatingCount { get; set; }
 
         public int ManufacturerId { get; set; }
         public int CategoryId { get; set; }
-        public int Id { get; set; }
+        public int ImageId { get; set; }
         public string ImageUrl { get; set; }
         public string ImageName { get; set; }
     }
