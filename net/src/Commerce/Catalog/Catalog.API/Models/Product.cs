@@ -12,11 +12,12 @@ namespace Catalog.API.Models
         public decimal OverallRating { get; set; }
         public int TotalFavorites { get; set; }
         public int TotalReviews { get; set; }
+        public int TotalSold { get; set; }
         public string Description { get; set; }
-
+        
         public DateTime? LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
-
+        
         // Quantity in stock
         public int AvailableStock { get; set; }
 

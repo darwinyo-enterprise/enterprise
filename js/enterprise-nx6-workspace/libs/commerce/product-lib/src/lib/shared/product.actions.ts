@@ -45,6 +45,39 @@ export class PaginatedProductsListFetched {
   constructor() { }
 }
 
+/** Fetch hot paginated Products List Command
+ *  Used for Admin
+ */
+export class FetchPaginatedHotProductsList {
+  static readonly type = '[COMMERCE] FETCH HOT PAGINATED PRODUCTS LIST';
+  constructor() { }
+}
+
+/** paginated hot Products List Fetched Event
+ * Used for Admin
+ */
+export class PaginatedHotProductsListFetched {
+  static readonly type = '[COMMERCE] PAGINATED HOT PRODUCTS LIST FETCHED';
+  constructor() { }
+}
+
+
+/** Fetch latest paginated Products List Command
+ *  Used for Admin
+ */
+export class FetchPaginatedLatestProductsList {
+  static readonly type = '[COMMERCE] FETCH LATEST PAGINATED PRODUCTS LIST';
+  constructor() { }
+}
+
+/** paginated latest Products List Fetched Event
+ * Used for Admin
+ */
+export class PaginatedLatestProductsListFetched {
+  static readonly type = '[COMMERCE] PAGINATED LATEST PRODUCTS LIST FETCHED';
+  constructor() { }
+}
+
 /** Add Product Command */
 export class AddProduct {
   static readonly type = '[COMMERCE] ADD PRODUCT';

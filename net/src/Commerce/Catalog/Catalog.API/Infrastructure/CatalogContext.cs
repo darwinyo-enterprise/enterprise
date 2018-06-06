@@ -51,7 +51,7 @@ namespace Catalog.API.Infrastructure
         {
             var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>()
                 .UseSqlServer(
-                    "Server=tcp:127.0.0.1,5433;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;User ImageId=sa;Password=P@ssw0rd");
+                    "Server=tcp:127.0.0.1,5433;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd");
 
             return new CatalogContext(optionsBuilder.Options);
         }

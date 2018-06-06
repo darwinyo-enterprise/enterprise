@@ -266,7 +266,7 @@ namespace Catalog.API.Infrastructure
 
             return new Manufacturer
             {
-                //ImageId = ids,
+                //Id = ids,
                 Name = name,
                 Description = description,
                 ImageName = imageName
@@ -403,7 +403,7 @@ namespace Catalog.API.Infrastructure
 
             return new Category
             {
-                //ImageId = ids,
+                //Id = ids,
                 Name = name,
                 Description = description,
                 ImageName = imageName
@@ -575,7 +575,7 @@ namespace Catalog.API.Infrastructure
 
             return new ProductColor
             {
-                //ImageId = ids,
+                //Id = ids,
                 Name = name,
                 ProductId = productId
             };
@@ -638,7 +638,7 @@ namespace Catalog.API.Infrastructure
 
             return new ProductImage
             {
-                //ImageId = ids,
+                //Id = ids,
                 ProductId = productId,
                 ImageName = imageName
             };
@@ -690,7 +690,7 @@ namespace Catalog.API.Infrastructure
             //if (!int.TryParse(id, out var ids)) throw new Exception($"id is empty");
 
             var productId = column[Array.IndexOf(headers, "productid")].Trim('"').Trim();
-            if (string.IsNullOrEmpty(productId)) throw new Exception("Product ImageId is empty");
+            if (string.IsNullOrEmpty(productId)) throw new Exception("Product Id is empty");
 
             var userId = column[Array.IndexOf(headers, "userid")].Trim('"').Trim();
             if (string.IsNullOrEmpty(userId)) throw new Exception("User id is empty");
@@ -700,7 +700,7 @@ namespace Catalog.API.Infrastructure
 
             return new ProductRating
             {
-                //ImageId = ids,
+                //Id = ids,
                 ProductId = productId,
                 UserId = userId,
                 Rate = rates

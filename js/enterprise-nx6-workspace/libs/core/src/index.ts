@@ -5,3 +5,4 @@ export * from './lib/app.state';
 export * from './lib/router.state';
 export * from './lib/not-authorized/not-authorized.component';
 export * from './lib/page-not-found/page-not-found.component';
+export * from './lib/routing/routing.route';

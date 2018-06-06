@@ -16,7 +16,7 @@ namespace Catalog.API.Helpers
             {
                 catalogItem.ImageUrl = azureStorageEnabled
                     ? baseUri + catalogItem.ImageName
-                    : baseUri + catalogItem.ImageId.ToString();
+                    : baseUri + catalogItem.Id.ToString();
             });
 
             return items;
@@ -26,7 +26,7 @@ namespace Catalog.API.Helpers
         {
             item.ImageUrl = azureStorageEnabled
                 ? baseUri + item.ImageName
-                : baseUri + item.ImageId + "/" + item.ImageName;
+                : baseUri + item.Id + "/" + item.ImageName;
             return item;
         }
 
@@ -42,7 +42,7 @@ namespace Catalog.API.Helpers
         {
             var imageFileExtension = Path.GetExtension(item.ImageName);
 
-            var buffer = await fileUtility.ReadFileAsync(folderName + "/" + item.ImageId, item.ImageName, cancellationToken);
+            var buffer = await fileUtility.ReadFileAsync(folderName + "/" + item.Id, item.ImageName, cancellationToken);
             item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," + Convert.ToBase64String(buffer);
             return item;
         }

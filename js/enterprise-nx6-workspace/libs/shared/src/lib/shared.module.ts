@@ -31,7 +31,7 @@ import {
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule } from '@covalent/core';
+import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule, CovalentStepsModule, CovalentSearchModule, CovalentPagingModule, CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule } from '@covalent/core';
 
 @NgModule({
   imports: [
@@ -73,6 +73,20 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule } fro
     //#endregion
 
     //#region Covalent Imports
+    /** Covalent Modules */
+    CovalentCommonModule,
+    CovalentLayoutModule,
+    CovalentMediaModule,
+    CovalentExpansionPanelModule,
+    CovalentStepsModule,
+    CovalentDialogsModule,
+    CovalentLoadingModule,
+    CovalentSearchModule,
+    CovalentPagingModule,
+    CovalentNotificationsModule,
+    CovalentMenuModule,
+    CovalentDataTableModule,
+    CovalentMessageModule,
     CovalentLoadingModule,
     CovalentDialogsModule,
     CovalentChipsModule,
@@ -115,6 +129,20 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule } fro
     //#endregion
 
     //#region Covalent Imports
+    /** Covalent Modules */
+    CovalentCommonModule,
+    CovalentLayoutModule,
+    CovalentMediaModule,
+    CovalentExpansionPanelModule,
+    CovalentStepsModule,
+    CovalentDialogsModule,
+    CovalentLoadingModule,
+    CovalentSearchModule,
+    CovalentPagingModule,
+    CovalentNotificationsModule,
+    CovalentMenuModule,
+    CovalentDataTableModule,
+    CovalentMessageModule,
     CovalentLoadingModule,
     CovalentDialogsModule,
     CovalentChipsModule,

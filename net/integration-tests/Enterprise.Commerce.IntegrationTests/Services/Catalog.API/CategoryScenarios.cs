@@ -84,7 +84,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
                 var insertedCategory =
                     await ctx.Categories.SingleOrDefaultAsync(x => x.Name == GetTestCategory().Name);
-                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + insertedCategory.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + insertedCategory.Id + "/" +
                                 insertedCategory.ImageName;
 
                 Assert.True(File.Exists(targetDir));
@@ -133,11 +133,11 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var categoryToDelete = await SeedTestCategoryAsync(ctx, server);
 
                 await server.CreateClient()
-                    .DeleteAsync(Delete.DeleteCategory(categoryToDelete.ImageId));
+                    .DeleteAsync(Delete.DeleteCategory(categoryToDelete.Id));
 
                 var hostingEnvironment = server.Host.Services.GetRequiredService<IHostingEnvironment>();
 
-                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + categoryToDelete.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + categoryToDelete.Id + "/" +
                                 categoryToDelete.ImageName;
 
                 Assert.False(File.Exists(targetDir));
@@ -155,7 +155,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var categoryToDelete = await SeedTestCategoryAsync(ctx, server);
 
                 await server.CreateClient()
-                    .DeleteAsync(Delete.DeleteCategory(categoryToDelete.ImageId));
+                    .DeleteAsync(Delete.DeleteCategory(categoryToDelete.Id));
 
                 var deletedCategory =
                     await ctx.Categories.SingleOrDefaultAsync(x => x.Name == categoryToDelete.Name);
@@ -221,7 +221,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Categories.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.CategoryImageById(actual.ImageId.ToString()));
+                    .GetAsync(Get.CategoryImageById(actual.Id.ToString()));
                 Assert.IsType<StreamContent>(response.Content);
             }
         }
@@ -236,7 +236,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Categories.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.CategoryById(actual.ImageId.ToString()));
+                    .GetAsync(Get.CategoryById(actual.Id.ToString()));
 
                 response.EnsureSuccessStatusCode();
 
@@ -245,7 +245,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(actual.Name, result.Name);
                 Assert.Equal(actual.Description, result.Description);
                 Assert.Equal(actual.ImageName, result.ImageName);
-                Assert.Equal(actual.ImageId, result.ImageId);
+                Assert.Equal(actual.Id, result.Id);
             }
         }
 
@@ -259,7 +259,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Categories.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.CategoryById(actual.ImageId.ToString()));
+                    .GetAsync(Get.CategoryById(actual.Id.ToString()));
 
                 response.EnsureSuccessStatusCode();
 
@@ -268,7 +268,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(actual.Name, result.Name);
                 Assert.Equal(actual.Description, result.Description);
                 Assert.Equal(actual.ImageName, result.ImageName);
-                Assert.Equal(actual.ImageId, result.ImageId);
+                Assert.Equal(actual.Id, result.Id);
                 Assert.Contains("base64", result.ImageUrl);
             }
         }
@@ -292,7 +292,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     "application/json");
 
                 var response = await server.CreateClient()
-                    .PutAsync(Put.UpdateCategory(categoryToUpdate.ImageId), content);
+                    .PutAsync(Put.UpdateCategory(categoryToUpdate.Id), content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -319,7 +319,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     "application/json");
 
                 var response = await server.CreateClient()
-                    .PutAsync(Put.UpdateCategory(categoryToUpdate.ImageId), content);
+                    .PutAsync(Put.UpdateCategory(categoryToUpdate.Id), content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -327,7 +327,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
                 var insertedCategory =
                     await ctx.Categories.SingleOrDefaultAsync(x => x.Name == categoryToUpdate.Name);
-                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + insertedCategory.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Category/" + insertedCategory.Id + "/" +
                                 insertedCategory.ImageName;
 
                 Assert.True(File.Exists(targetDir));

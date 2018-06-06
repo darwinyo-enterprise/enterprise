@@ -1,5 +1,6 @@
 <mat-card class="card-item" *ngIf="productViewModel" (click)="onProductCardClicked()">
   <div class="card-item__image">
+    <span class="card-item__image__helper"></span>
     <img src="{{productViewModel.imageUrl}}" alt="" srcset="">
   </div>
   <div class="card-item__title">

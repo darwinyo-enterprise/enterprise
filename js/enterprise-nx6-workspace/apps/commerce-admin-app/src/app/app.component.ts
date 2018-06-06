@@ -5,7 +5,9 @@ import {
   SetUsername,
   Navigate,
   RoutingModel,
-  RouteLinkModel
+  RouteLinkModel,
+  AppMenu,
+  UserMenu
 } from '@enterprise/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, Select } from '@ngxs/store';
@@ -23,6 +25,31 @@ export class AppComponent implements OnInit {
   @Select((state: AppStateModel) => state.username)
   username$;
   name = 'Enterprise';
+  routes: RouteLinkModel[] = [{
+    title: 'Dashboards',
+    route: '/',
+    icon: 'dashboard',
+  }, {
+    title: 'Manufacturer',
+    route: '/manufacturer',
+    icon: 'insert_chart',
+  }, {
+    title: 'Category',
+    route: '/category',
+    icon: 'insert_chart',
+  }, {
+    title: 'Product',
+    route: '/product',
+    icon: 'insert_chart',
+  }, {
+    title: 'Inventory',
+    route: '/inventory',
+    icon: 'insert_chart',
+  }
+  ];
+  usermenu: RouteLinkModel[] = UserMenu;
+  appmenu: RouteLinkModel[] = AppMenu;
+
   constructor(private store: Store, private loadingService: TdLoadingService, public media: TdMediaService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _iconRegistry: MatIconRegistry,
@@ -62,47 +89,6 @@ export class AppComponent implements OnInit {
     window.location.href = item.route;
   }
 
-  routes: RouteLinkModel[] = [{
-    title: 'Dashboards',
-    route: '/',
-    icon: 'dashboard',
-  }, {
-    title: 'Manufacturer',
-    route: '/manufacturer',
-    icon: 'insert_chart',
-  }, {
-    title: 'Category',
-    route: '/category',
-    icon: 'insert_chart',
-  }, {
-    title: 'Product',
-    route: '/product',
-    icon: 'insert_chart',
-  }, {
-    title: 'Inventory',
-    route: '/inventory',
-    icon: 'insert_chart',
-  }
-  ];
-  usermenu: RouteLinkModel[] = [{
-    title: 'Profile',
-    route: '/',
-    icon: 'account_box',
-  }, {
-    title: 'Settings',
-    route: '/',
-    icon: 'settings',
-  },
-  ];
-  appmenu: RouteLinkModel[] = [{
-    title: 'Commerce Management',
-    route: 'http://localhost:4200',
-    icon: 'account_box',
-  }, {
-    title: 'Commerce',
-    route: 'http://localhost:4201',
-    icon: 'settings',
-  },
-  ];
+
 
 }

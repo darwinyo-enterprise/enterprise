@@ -118,7 +118,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory.LastOrDefault().ImageId++;
+            var id = expectedCategory.LastOrDefault().Id++;
 
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
@@ -156,7 +156,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory.LastOrDefault().ImageId++;
+            var id = expectedCategory.LastOrDefault().Id++;
 
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
@@ -242,7 +242,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory.LastOrDefault().ImageId++;
+            var id = expectedCategory.LastOrDefault().Id++;
 
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
@@ -268,7 +268,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory[0].ImageId;
+            var id = expectedCategory[0].Id;
             expectedCategory[0].ImageName = "";
             expectedCategory[0].ImageUrl = "";
             // Act
@@ -297,7 +297,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             }
             Assert.NotEmpty(expectedCategory);
 
-            var id = (await _catalogContextFixture.Context.Categories.FirstOrDefaultAsync()).ImageId;
+            var id = (await _catalogContextFixture.Context.Categories.FirstOrDefaultAsync()).Id;
             
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
@@ -336,7 +336,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory.LastOrDefault().ImageId++;
+            var id = expectedCategory.LastOrDefault().Id++;
 
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,

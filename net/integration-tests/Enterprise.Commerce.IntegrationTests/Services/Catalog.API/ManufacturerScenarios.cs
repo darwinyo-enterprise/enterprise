@@ -84,7 +84,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
                 var insertedManufacturer =
                     await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == GetTestManufacturer().Name);
-                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + insertedManufacturer.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + insertedManufacturer.Id + "/" +
                                 insertedManufacturer.ImageName;
 
                 Assert.True(File.Exists(targetDir));
@@ -133,11 +133,11 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var manufacturerToDelete = await SeedTestManufacturerAsync(ctx, server);
 
                 await server.CreateClient()
-                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.ImageId));
+                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.Id));
 
                 var hostingEnvironment = server.Host.Services.GetRequiredService<IHostingEnvironment>();
 
-                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + manufacturerToDelete.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + manufacturerToDelete.Id + "/" +
                                 manufacturerToDelete.ImageName;
 
                 Assert.False(File.Exists(targetDir));
@@ -155,7 +155,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var manufacturerToDelete = await SeedTestManufacturerAsync(ctx, server);
 
                 await server.CreateClient()
-                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.ImageId));
+                    .DeleteAsync(Delete.DeleteManufacturer(manufacturerToDelete.Id));
 
                 var deletedManufacturer =
                     await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == manufacturerToDelete.Name);
@@ -221,7 +221,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerImageById(actual.ImageId.ToString()));
+                    .GetAsync(Get.ManufacturerImageById(actual.Id.ToString()));
                 Assert.IsType<StreamContent>(response.Content);
             }
         }
@@ -236,7 +236,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(actual.ImageId));
+                    .GetAsync(Get.ManufacturerById(actual.Id));
 
                 response.EnsureSuccessStatusCode();
 
@@ -245,7 +245,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(actual.Name, result.Name);
                 Assert.Equal(actual.Description, result.Description);
                 Assert.Equal(actual.ImageName, result.ImageName);
-                Assert.Equal(actual.ImageId, result.ImageId);
+                Assert.Equal(actual.Id, result.Id);
             }
         }
 
@@ -259,7 +259,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
 
                 var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(actual.ImageId));
+                    .GetAsync(Get.ManufacturerById(actual.Id));
 
                 response.EnsureSuccessStatusCode();
 
@@ -268,7 +268,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(actual.Name, result.Name);
                 Assert.Equal(actual.Description, result.Description);
                 Assert.Equal(actual.ImageName, result.ImageName);
-                Assert.Equal(actual.ImageId, result.ImageId);
+                Assert.Equal(actual.Id, result.Id);
                 Assert.Contains("base64", result.ImageUrl);
             }
         }
@@ -292,7 +292,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     "application/json");
 
                 var response = await server.CreateClient()
-                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.ImageId), content);
+                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.Id), content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -319,7 +319,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     "application/json");
 
                 var response = await server.CreateClient()
-                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.ImageId), content);
+                    .PutAsync(Put.UpdateManufacturer(manufacturerToUpdate.Id), content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -327,7 +327,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
                 var insertedManufacturer =
                     await ctx.Manufacturers.SingleOrDefaultAsync(x => x.Name == manufacturerToUpdate.Name);
-                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + insertedManufacturer.ImageId + "/" +
+                var targetDir = hostingEnvironment.WebRootPath + "/Manufacturer/" + insertedManufacturer.Id + "/" +
                                 insertedManufacturer.ImageName;
 
                 Assert.True(File.Exists(targetDir));

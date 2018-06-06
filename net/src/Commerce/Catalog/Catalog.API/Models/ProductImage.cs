@@ -3,7 +3,7 @@
     public class ProductImage : IImage
     {
         public string ProductId { get; set; }
-        public int ImageId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         ///     Image Url is base64.

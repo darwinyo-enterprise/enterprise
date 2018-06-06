@@ -119,7 +119,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedManufacturer.LastOrDefault().ImageId++;
+            var id = expectedManufacturer.LastOrDefault().Id++;
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
@@ -157,7 +157,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedManufacturer.LastOrDefault().ImageId++;
+            var id = expectedManufacturer.LastOrDefault().Id++;
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
@@ -244,7 +244,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedManufacturer.LastOrDefault().ImageId++;
+            var id = expectedManufacturer.LastOrDefault().Id++;
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
@@ -270,7 +270,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedManufacturer[0].ImageId;
+            var id = expectedManufacturer[0].Id;
             expectedManufacturer[0].ImageName = "";
             expectedManufacturer[0].ImageUrl = "";
             // Act
@@ -300,7 +300,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             Assert.NotEmpty(expectedManufacturer);
 
-            var id = (await _catalogContextFixture.Context.Manufacturers.FirstOrDefaultAsync(cancellationToken: cancellationToken)).ImageId;
+            var id = (await _catalogContextFixture.Context.Manufacturers.FirstOrDefaultAsync(cancellationToken: cancellationToken)).Id;
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
@@ -338,7 +338,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.NotEmpty(expectedManufacturer);
 
             // ReSharper disable once PossibleNullReferenceException
-            var id = expectedManufacturer.LastOrDefault().ImageId++;
+            var id = expectedManufacturer.LastOrDefault().Id++;
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,

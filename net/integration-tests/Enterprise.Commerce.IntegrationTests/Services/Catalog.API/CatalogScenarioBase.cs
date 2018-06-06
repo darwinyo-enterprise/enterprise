@@ -94,6 +94,14 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return "api/v1/product" + Paginated(PageIndex, PageSize);
             }
+            public static string HotProductPaginatedItem()
+            {
+                return "api/v1/product/hot" + Paginated(PageIndex, PageSize);
+            }
+            public static string LatestProductPaginatedItem()
+            {
+                return "api/v1/product/latest" + Paginated(PageIndex, PageSize);
+            }
             public static string ProductListPaginatedItem()
             {
                 return "api/v1/product/list" + Paginated(PageIndex, PageSize);

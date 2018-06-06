@@ -1,3 +1,19 @@
-<p>
-  home works!
-</p>
+<div class="card-container">
+  <mat-tab-group class="tab-group">
+    <mat-tab label="Added Recently" *ngIf="newProducts">
+      <div class="card-container__content">
+        <ng-template ngFor let-newProduct [ngForOf]="(newProducts | async)">
+          <eca-product-card [productViewModel]="newProduct" (productCardClicked)="onProductCardClicked($event)"></eca-product-card>
+        </ng-template>
+      </div>
+
+    </mat-tab>
+    <mat-tab class="card-container__content" label="Hot Products" *ngIf="hotProducts">
+      <div class="card-container__content">
+        <ng-template ngFor let-hotProduct [ngForOf]="(hotProducts | async)">
+          <eca-product-card [productViewModel]="hotProduct" (productCardClicked)="onProductCardClicked($event)"></eca-product-card>
+        </ng-template>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

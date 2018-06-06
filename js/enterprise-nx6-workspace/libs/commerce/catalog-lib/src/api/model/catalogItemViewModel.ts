@@ -18,10 +18,10 @@ export interface CatalogItemViewModel {
     overallRating?: number;
     totalFavorites?: number;
     totalReviews?: number;
-    totalRatingCount: number;
+    totalRatingCount?: number;
     manufacturerId?: number;
     categoryId?: number;
-    imageId?: number;
+    id?: number;
     imageUrl?: string;
     imageName?: string;
 }

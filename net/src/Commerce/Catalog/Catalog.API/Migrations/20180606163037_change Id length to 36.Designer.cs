@@ -11,8 +11,8 @@ using System;
 namespace Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20180505032157_SpResetIdentity")]
-    partial class SpResetIdentity
+    [Migration("20180606163037_change Id length to 36")]
+    partial class changeIdlengthto36
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.Category", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -45,14 +45,14 @@ namespace Catalog.API.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Catalog.API.Models.Manufacturer", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -69,15 +69,16 @@ namespace Catalog.API.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.ToTable("Manufacturer");
                 });
 
             modelBuilder.Entity("Catalog.API.Models.Product", b =>
                 {
-                    b.Property<string>("ImageId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36);
 
                     b.Property<int>("AvailableStock");
 
@@ -107,7 +108,11 @@ namespace Catalog.API.Migrations
 
                     b.Property<int>("TotalReviews");
 
-                    b.HasKey("ImageId");
+                    b.Property<int>("TotalSold")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -118,7 +123,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductColor", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -129,7 +134,7 @@ namespace Catalog.API.Migrations
                     b.Property<string>("ProductId")
                         .IsRequired();
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -138,7 +143,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductImage", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -148,7 +153,7 @@ namespace Catalog.API.Migrations
 
                     b.Property<string>("ProductId");
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -157,7 +162,7 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.ProductRating", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -167,7 +172,7 @@ namespace Catalog.API.Migrations
 
                     b.Property<string>("UserId");
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -178,14 +183,15 @@ namespace Catalog.API.Migrations
 
             modelBuilder.Entity("Catalog.API.Models.User", b =>
                 {
-                    b.Property<string>("ImageId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.HasKey("ImageId");
+                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });

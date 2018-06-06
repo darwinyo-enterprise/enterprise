@@ -1,4 +1,31 @@
-td-chips{
-    padding: 0px !important;   
+td-chips {
+    padding: 0px !important;
     padding-bottom: 1.25em !important;
+}
+
+// Active icon color in list nav
+mat-nav-list,
+mat-list {
+    [mat-list-item].active {
+        mat-icon[matListAvatar] {
+            background-color: mat-color($secondary-background-color);
+            color: mat-color($secondary-color, default-contrast);
+        }
+        mat-icon[matListIcon] {
+            color: mat-color($secondary-color);
+        }
+    }
+}
+
+.tab-group {
+    width: 100%;
+}
+
+.mat-tab-body-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mat-card {
+    padding: 0px !important;
 }

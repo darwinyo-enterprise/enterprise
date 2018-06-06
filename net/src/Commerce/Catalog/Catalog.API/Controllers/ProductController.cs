@@ -145,7 +145,68 @@ namespace Catalog.API.Controllers
 
             var list = await _catalogContext.Products
                 .Include(x => x.ProductImages)
+                .Include(x => x.ProductRatings)
                 .OrderBy(c => c.Name)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            var model = CreatePaginatedCatalogViewModel(pageSize, pageIndex, totalItems, list);
+
+            return Ok(model);
+        }
+
+
+        /// <summary>
+        ///     Fetch All Paginated Hot Products By Page size and page index
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="pageSize"></param>
+        /// <returns>list of Products</returns>
+        // GET api/v1/Product[?pageSize=3&pageIndex=10]
+        [HttpGet("hot")]
+        [ProducesResponseType(typeof(PaginatedCatalogViewModel<CatalogItemViewModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPaginatedHottestCatalogAsync(CancellationToken cancellationToken,
+            [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+        {
+            var totalItems = await _catalogContext.Products
+                .LongCountAsync(cancellationToken);
+
+            var list = await _catalogContext.Products
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductRatings)
+                .OrderBy(c => c.TotalSold)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            var model = CreatePaginatedCatalogViewModel(pageSize, pageIndex, totalItems, list);
+
+            return Ok(model);
+        }
+
+
+        /// <summary>
+        ///     Fetch All Paginated New Products By Page size and page index
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="pageSize"></param>
+        /// <returns>list of Products</returns>
+        // GET api/v1/Product[?pageSize=3&pageIndex=10]
+        [HttpGet("latest")]
+        [ProducesResponseType(typeof(PaginatedCatalogViewModel<CatalogItemViewModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPaginatedLatestCatalogAsync(CancellationToken cancellationToken,
+            [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+        {
+            var totalItems = await _catalogContext.Products
+                .LongCountAsync(cancellationToken);
+
+            var list = await _catalogContext.Products
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductRatings)
+                .OrderBy(c => c.LastUpdated)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
@@ -225,15 +286,15 @@ namespace Catalog.API.Controllers
             var page = new List<CatalogItemViewModel>();
             list.ForEach(x =>
             {
-                var id = x.ProductImages.FirstOrDefault()?.ImageId;
+                var id = x.ProductImages.FirstOrDefault()?.Id;
+                var totalRatingCount = x.ProductRatings.Count;
                 if (id != null)
                 {
-                    var totalRatingCount = x.ProductRatings.Count(y => y.ProductId == x.Id);
                     page.Add(new CatalogItemViewModel
                     {
                         CategoryId = x.CategoryId,
                         CatalogId = x.Id,
-                        ImageId = id.Value,
+                        Id = id.Value,
                         ImageName = x.ProductImages.FirstOrDefault()?.ImageName,
                         ManufacturerId = x.ManufacturerId,
 
@@ -294,7 +355,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductByIdAsync(string id, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "ImageId Cant be null" });
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .Include(x => x.ProductImages)
@@ -343,7 +404,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductInfoByIdAsync(string id, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "ImageId Cant be null" });
+            if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -437,6 +498,7 @@ namespace Catalog.API.Controllers
                 {
                     productImages.Add(new ProductImage()
                     {
+                        Id = 0,
                         ImageName = image.ImageName,
                         ProductId = product.Id
                     });
@@ -462,6 +524,7 @@ namespace Catalog.API.Controllers
                     OverallRating = 0,
                     TotalFavorites = 0,
                     TotalReviews = 0,
+                    //TotalSold = 0,
                     ProductImages = productImages,
                 };
                 #endregion
@@ -475,6 +538,7 @@ namespace Catalog.API.Controllers
                     {
                         colors.Add(new ProductColor
                         {
+                            Id = 0,
                             Name = color.Name,
                             ProductId = product.Id
                         });
@@ -658,7 +722,7 @@ namespace Catalog.API.Controllers
             if (id <= 0) return BadRequest(new { Message = "invalid Image Request" });
 
             var item = await _catalogContext.ProductImages
-                .SingleOrDefaultAsync(ci => ci.ImageId == id, cancellationToken);
+                .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
 
             if (item != null)
             {

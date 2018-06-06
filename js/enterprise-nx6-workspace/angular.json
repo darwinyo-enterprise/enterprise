@@ -146,6 +146,7 @@
               "apps/commerce-client-app/src/assets"
             ],
             "styles": [
+              "../../sass/enterprise.globalstyle/src/_main.scss",
               "apps/commerce-client-app/src/styles.scss"
             ],
             "scripts": []

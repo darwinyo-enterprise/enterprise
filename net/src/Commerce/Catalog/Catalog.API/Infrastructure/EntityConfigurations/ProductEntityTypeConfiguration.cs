@@ -14,6 +14,11 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
+                .HasMaxLength(36)
+                .IsRequired();
+
+            builder.Property(x => x.TotalSold)
+                .HasDefaultValue(0)
                 .IsRequired();
 
             builder.HasOne(ci => ci.Manufacturer)

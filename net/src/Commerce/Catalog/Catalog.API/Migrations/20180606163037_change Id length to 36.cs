@@ -1,75 +1,83 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
 
 namespace Catalog.API.Migrations
 {
-    public partial class CleanMigrations : Migration
+    public partial class changeIdlengthto36 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateSequence(
-                "category_hilo",
+                name: "category_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                "manufacturer_type_hilo",
+                name: "manufacturer_type_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                "product_color_type_hilo",
+                name: "product_color_type_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                "product_image_hilo",
+                name: "product_image_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                "product_rating_hilo",
+                name: "product_rating_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
-                "Category",
-                table => new
+                name: "Category",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
                     ImageName = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Category", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Category", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Manufacturer",
-                table => new
+                name: "Manufacturer",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
                     ImageName = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Manufacturer", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Manufacturer", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "User",
-                table => new
+                name: "User",
+                columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
                     Name = table.Column<string>(maxLength: 500, nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_User", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Product",
-                table => new
+                name: "Product",
+                columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
                     AvailableStock = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
@@ -81,32 +89,32 @@ namespace Catalog.API.Migrations
                     Price = table.Column<decimal>(nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     TotalFavorites = table.Column<int>(nullable: false),
-                    TotalReviews = table.Column<int>(nullable: false)
+                    TotalReviews = table.Column<int>(nullable: false),
+                    TotalSold = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        "FK_Product_Category_CategoryId",
-                        x => x.CategoryId,
-                        "Category",
-                        "ImageId",
+                        name: "FK_Product_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        "FK_Product_Manufacturer_ManufacturerId",
-                        x => x.ManufacturerId,
-                        "Manufacturer",
-                        "ImageId",
+                        name: "FK_Product_Manufacturer_ManufacturerId",
+                        column: x => x.ManufacturerId,
+                        principalTable: "Manufacturer",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "ProductColor",
-                table => new
+                name: "ProductColor",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     ProductId = table.Column<string>(nullable: false)
                 },
@@ -114,20 +122,19 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductColor", x => x.Id);
                     table.ForeignKey(
-                        "FK_ProductColor_Product_ProductId",
-                        x => x.ProductId,
-                        "Product",
-                        "ImageId",
+                        name: "FK_ProductColor_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "ProductImage",
-                table => new
+                name: "ProductImage",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ImageName = table.Column<string>(maxLength: 100, nullable: false),
                     ProductId = table.Column<string>(nullable: true)
                 },
@@ -135,20 +142,19 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductImage", x => x.Id);
                     table.ForeignKey(
-                        "FK_ProductImage_Product_ProductId",
-                        x => x.ProductId,
-                        "Product",
-                        "ImageId",
+                        name: "FK_ProductImage_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                "ProductRating",
-                table => new
+                name: "ProductRating",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy",
-                            SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductId = table.Column<string>(nullable: true),
                     Rate = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
@@ -157,87 +163,87 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductRating", x => x.Id);
                     table.ForeignKey(
-                        "FK_ProductRating_Product_ProductId",
-                        x => x.ProductId,
-                        "Product",
-                        "ImageId",
+                        name: "FK_ProductRating_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        "FK_ProductRating_User_UserId",
-                        x => x.UserId,
-                        "User",
-                        "ImageId",
+                        name: "FK_ProductRating_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_Product_CategoryId",
-                "Product",
-                "CategoryId");
+                name: "IX_Product_CategoryId",
+                table: "Product",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                "IX_Product_ManufacturerId",
-                "Product",
-                "ManufacturerId");
+                name: "IX_Product_ManufacturerId",
+                table: "Product",
+                column: "ManufacturerId");
 
             migrationBuilder.CreateIndex(
-                "IX_ProductColor_ProductId",
-                "ProductColor",
-                "ProductId");
+                name: "IX_ProductColor_ProductId",
+                table: "ProductColor",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                "IX_ProductImage_ProductId",
-                "ProductImage",
-                "ProductId");
+                name: "IX_ProductImage_ProductId",
+                table: "ProductImage",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                "IX_ProductRating_ProductId",
-                "ProductRating",
-                "ProductId");
+                name: "IX_ProductRating_ProductId",
+                table: "ProductRating",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                "IX_ProductRating_UserId",
-                "ProductRating",
-                "UserId");
+                name: "IX_ProductRating_UserId",
+                table: "ProductRating",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "ProductColor");
+                name: "ProductColor");
 
             migrationBuilder.DropTable(
-                "ProductImage");
+                name: "ProductImage");
 
             migrationBuilder.DropTable(
-                "ProductRating");
+                name: "ProductRating");
 
             migrationBuilder.DropTable(
-                "Product");
+                name: "Product");
 
             migrationBuilder.DropTable(
-                "User");
+                name: "User");
 
             migrationBuilder.DropTable(
-                "Category");
+                name: "Category");
 
             migrationBuilder.DropTable(
-                "Manufacturer");
+                name: "Manufacturer");
 
             migrationBuilder.DropSequence(
-                "category_hilo");
+                name: "category_hilo");
 
             migrationBuilder.DropSequence(
-                "manufacturer_type_hilo");
+                name: "manufacturer_type_hilo");
 
             migrationBuilder.DropSequence(
-                "product_color_type_hilo");
+                name: "product_color_type_hilo");
 
             migrationBuilder.DropSequence(
-                "product_image_hilo");
+                name: "product_image_hilo");
 
             migrationBuilder.DropSequence(
-                "product_rating_hilo");
+                name: "product_rating_hilo");
         }
     }
 }

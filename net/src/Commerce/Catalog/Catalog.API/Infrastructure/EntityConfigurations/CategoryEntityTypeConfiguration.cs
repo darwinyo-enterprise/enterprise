@@ -11,9 +11,9 @@ namespace Catalog.API.Infrastructure.EntityConfigurations
             builder.ToTable("Category");
 
             // Primary Key
-            builder.HasKey(x => x.ImageId);
+            builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.ImageId)
+            builder.Property(x => x.Id)
                 .ForSqlServerUseSequenceHiLo("category_hilo")
                 .UseSqlServerIdentityColumn()
                 .IsRequired();

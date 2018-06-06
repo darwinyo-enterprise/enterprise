@@ -6,7 +6,7 @@
         public string Description { get; set; }
 
         public byte[] Timestamp { get; set; }
-        public int ImageId { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         ///     Image Url is base64.
