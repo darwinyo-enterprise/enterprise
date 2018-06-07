@@ -15,6 +15,18 @@
   fill: currentColor;
 }
 
+%card-placeholder {
+  cursor: pointer;
+  margin: 0rem 0.4rem 1rem 0.4rem;
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: .8px .9px 3px grey;
+    transition: all .6s ease-out;
+  }
+  background-color: $primary-background-color;
+  display: flex;
+}
+
 %detail-position-placeholder {
   font-size: $font-size-md;
   padding: 0rem 1rem 1rem 1rem;
@@ -31,20 +43,71 @@
   position: relative;
 }
 
+%card-title-placeholder {
+  @extend %font-placeholder;
+  @extend %detail-position-placeholder;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+  color: $secondary-color;
+}
+
+%img-center-placeholder {
+  padding-bottom: 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+  &>img {
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .card-container {
-  background-color: $primary-background-color;
-  margin: 1rem;
-  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  &--full-screen {
+    background-color: $secondary-background-color;
+  }
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+  }
+  &--manufacturer {
+    background-color: $secondary-background-color;
+    width: 28%
+  }
+  &--category {
+    background-color: $secondary-background-color;
+    width: 71%
+  }
   &__title {
+    display: flex;
+    justify-content: space-between;
     @extend %font-placeholder;
-    font-size: $font-size-bg;
-    border-bottom: $border;
+    font-size: $font-size-lg;
+    padding: 0.8rem;
+    &__more-links {
+      &:hover {
+        color: $link-hover-color;
+        text-decoration: underline;
+      }
+      font-size: $font-size-sm;
+      color: $link-color;
+      text-decoration: none;
+    }
   }
   &__content {
     @extend %font-placeholder;
-    margin-top: 1rem;
-    padding: 1rem;
-    justify-content: center;
+    padding: 0.8rem;
+    justify-content: space-evenly;
     font-size: $font-size-md;
     display: flex;
     flex-wrap: wrap;
@@ -57,44 +120,33 @@
 }
 
 .card-item {
-  cursor: pointer;
-  margin: 0rem 1rem 1rem 0rem;
-  &:hover {
-    transform: scale(1.03);
-    box-shadow: .8px .9px 3px grey;
-    transition: all .6s ease-out;
+  &--mini {
+    @extend %card-placeholder;
+    width: 200px;
+    height: 220px;
+    &__image {
+      height: 85%;
+      @extend %img-center-placeholder;
+    }
+    &__title {
+      @extend %card-title-placeholder;
+      text-align: center;
+    }
   }
-  background-color: $primary-background-color;
-  width: 250px;
+  @extend %card-placeholder;
+  width: 240px;
   height: 400px;
-  display: flex;
   &__image {
     height: 65%;
-    padding-bottom: 0.5rem;
-    text-align: center;
-    white-space: nowrap;
+    @extend %img-center-placeholder;
     &__helper {
       display: inline-block;
       height: 100%;
       vertical-align: middle;
     }
-    &>img {
-      vertical-align: middle;
-      max-width: 100%;
-      max-height: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
   }
   &__title {
-    @extend %font-placeholder;
-    @extend %detail-position-placeholder;
-    word-break: break-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 240px;
-    color: $secondary-color;
+    @extend %card-title-placeholder;
   }
   &__detail {
     @extend %font-placeholder;

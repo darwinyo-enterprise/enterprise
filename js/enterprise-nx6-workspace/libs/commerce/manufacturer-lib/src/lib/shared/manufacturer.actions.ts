@@ -46,6 +46,23 @@ export class PaginatedManufacturersListFetched {
 }
 
 
+/** Fetch paginated Manufacturers Command
+ *  Can be used globally
+ */
+export class FetchPaginatedManufacturers {
+  static readonly type = '[COMMERCE] FETCH PAGINATED MANUFACTURERS';
+  constructor() {}
+}
+
+/** paginated Manufacturers Fetched Event
+ * Can be used globally
+ */
+export class PaginatedManufacturersFetched {
+  static readonly type = '[COMMERCE] PAGINATED MANUFACTURERS FETCHED';
+  constructor() {}
+}
+
+
 /** Add Manufacturer Command */
 export class AddManufacturer {
   static readonly type = '[COMMERCE] ADD MANUFACTURER';

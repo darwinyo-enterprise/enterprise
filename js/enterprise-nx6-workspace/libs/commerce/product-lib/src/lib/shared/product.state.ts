@@ -278,7 +278,7 @@ export class ProductState {
     dispatch(RegisterLoadingOverlay);
 
     return this.productService
-      .apiV1ProductHotGet(12, 0)
+      .apiV1ProductHotGet(14, 0)
       .pipe(
         tap(
           (x) => {
@@ -304,7 +304,7 @@ export class ProductState {
     dispatch(RegisterLoadingOverlay);
 
     return this.productService
-      .apiV1ProductLatestGet(12, 0)
+      .apiV1ProductLatestGet(14, 0)
       .pipe(
         tap(
           (x) => {

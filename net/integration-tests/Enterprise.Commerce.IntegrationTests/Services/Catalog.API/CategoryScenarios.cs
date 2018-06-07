@@ -336,7 +336,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
         [Fact,
         TestPriority(13)]
-        public async Task Get_manufacturer_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
+        public async Task Get_category_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
         {
             using (var server = CreateServer())
             {
@@ -355,5 +355,26 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(Get.PageSize, result.ListData.Count());
             }
         }
+
+        [Fact,
+         TestPriority(14)]
+        public async Task Get_paginated_category_response_ok_status_code_and_correct_item_count()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.CategoryPaginatedItem());
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<List<Category>>(await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var expectation = await ctx.Categories.Take(10).ToListAsync();
+                Assert.Equal(result.Count, expectation.Count);
+            }
+        }
+
     }
 }

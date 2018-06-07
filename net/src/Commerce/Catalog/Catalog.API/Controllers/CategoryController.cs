@@ -68,6 +68,25 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
+        ///     Fetch Paginated Categories
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>list of Categories</returns>
+        // GET api/v1/Category[?pageSize=3&pageIndex=10]
+        [HttpGet("paginated")] // DONE
+        [ProducesResponseType(typeof(List<Category>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPaginatedCategoriesAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+        {
+            var result = await _catalogContext.Categories
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+            var withUrl = UrlImageHelper<Category>.ChangeUriPlaceholder(result, _settings.CategoryImageBaseUrl,
+                _settings.AzureStorageEnabled);
+            return Ok(withUrl);
+        }
+
+        /// <summary>
         ///     Fetch Single Category by Category id.
         ///     Used by admin, for Get into Category Edit Page
         ///     TODO: Implement Authorize

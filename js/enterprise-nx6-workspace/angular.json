@@ -28,18 +28,17 @@
             ],
             "styles": [
               "../../sass/enterprise.globalstyle/src/_main.scss",
+              "./node_modules/@covalent/core/common/platform.scss",
               "apps/commerce-admin-app/src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/commerce-admin-app/src/environments/environment.ts",
-                  "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "apps/commerce-admin-app/src/environments/environment.ts",
+                "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -147,18 +146,17 @@
             ],
             "styles": [
               "../../sass/enterprise.globalstyle/src/_main.scss",
+              "./node_modules/@covalent/core/common/platform.scss",
               "apps/commerce-client-app/src/styles.scss"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/commerce-client-app/src/environments/environment.ts",
-                  "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "apps/commerce-client-app/src/environments/environment.ts",
+                "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

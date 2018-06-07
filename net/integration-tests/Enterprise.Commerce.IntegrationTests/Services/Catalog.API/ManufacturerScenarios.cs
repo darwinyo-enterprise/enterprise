@@ -357,5 +357,25 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
+        [Fact,
+         TestPriority(14)]
+        public async Task Get_paginated_manufacturer_response_ok_status_code_and_correct_item_count()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerPaginatedItem());
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var expectation = await ctx.Manufacturers.Take(10).ToListAsync();
+                Assert.Equal(result.Count, expectation.Count);
+            }
+        }
+
     }
 }

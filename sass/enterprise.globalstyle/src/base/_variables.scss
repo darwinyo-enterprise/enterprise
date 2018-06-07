@@ -8,6 +8,12 @@ $primary-color: white;
 /// used mostly in stateful font color
 $secondary-color: white;
 
+/// used for links anchor
+$link-color:white;
+
+/// used for links hover
+$link-hover-color:white;
+
 /// used in alert, warning, need attention font color
 $alert-color: white;
 
@@ -34,6 +40,9 @@ $primary-font-family: Mina;
 
 /// font size for title
 $font-size-bg: 2rem;
+
+/// font size for secondary title
+$font-size-lg: 1.5rem;
 
 /// font size for most text
 $font-size-md: 1.25rem;

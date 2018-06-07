@@ -68,6 +68,25 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
+        ///     Fetch Paginated Manufacturers
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>list of Manufacturers</returns>
+        // GET api/v1/Manufacturer[?pageSize=3&pageIndex=10]
+        [HttpGet("paginated")] // DONE
+        [ProducesResponseType(typeof(List<Manufacturer>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPaginatedManufacturersAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+        {
+            var result = await _catalogContext.Manufacturers
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+            var withUrl = UrlImageHelper<Manufacturer>.ChangeUriPlaceholder(result, _settings.ManufacturerImageBaseUrl,
+                _settings.AzureStorageEnabled);
+            return Ok(withUrl);
+        }
+
+        /// <summary>
         ///     Fetch All Manufacturers Used for Admin Management.
         ///     TODO: Implement Authorization
         /// </summary>
@@ -84,7 +103,7 @@ namespace Catalog.API.Controllers
         {
             if (pageIndex < 0 || pageSize <= 0)
             {
-                return BadRequest(new {Message = $"Invalid pagination request."});
+                return BadRequest(new { Message = $"Invalid pagination request." });
             }
             var root = (IQueryable<Manufacturer>)_catalogContext.Manufacturers;
 
@@ -297,7 +316,7 @@ namespace Catalog.API.Controllers
         {
             try
             {
-                if (id <= 0) return BadRequest(new {Message = $"Invalid Manufacturer Id."});
+                if (id <= 0) return BadRequest(new { Message = $"Invalid Manufacturer Id." });
 
                 var item = await _catalogContext.Manufacturers
                     .SingleOrDefaultAsync(ci => ci.Id == id, cancellationToken);
@@ -310,7 +329,7 @@ namespace Catalog.API.Controllers
                     return NoContent();
                 }
 
-                return NotFound(new {Message = $"Manufacturer not found."});
+                return NotFound(new { Message = $"Manufacturer not found." });
             }
             catch (DbUpdateException)
             {

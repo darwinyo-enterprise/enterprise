@@ -1,8 +1,9 @@
-<mat-card class="card-item" *ngIf="manufacturer" (click)="onManufacturerCardClicked()">
-  <div class="card-item__image">
+<mat-card class="card-item--mini" *ngIf="manufacturer" (click)="onManufacturerCardClicked()">
+  <div class="card-item--mini__image">
+    <span class="card-item__image__helper"></span>
     <img src="{{manufacturer.imageUrl}}" alt="" srcset="">
   </div>
-  <div class="card-item__title">
+  <div class="card-item--mini__title">
     {{manufacturer.name}}
   </div>
 </mat-card>

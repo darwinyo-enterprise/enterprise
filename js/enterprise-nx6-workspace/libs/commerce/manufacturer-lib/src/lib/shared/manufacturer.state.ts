@@ -24,7 +24,9 @@ import {
   ClearSelectedManufacturer,
   SelectedManufacturerCleared,
   FetchPaginatedManufacturersList,
-  PaginatedManufacturersListFetched
+  PaginatedManufacturersListFetched,
+  FetchPaginatedManufacturers,
+  PaginatedManufacturersFetched
 } from './../shared/manufacturer.actions';
 import {
   Manufacturer,
@@ -253,6 +255,32 @@ export class ManufacturerState {
 
   @Action(PaginatedManufacturersListFetched)
   paginatedManufacturersListFetched({ dispatch }: StateContext<ManufacturerStateModel>) {
+    dispatch(ResolveLoadingOverlay);
+  }
+
+  /** fetch paginated manufacturer  */
+  @Action(FetchPaginatedManufacturers)
+  fetchPaginatedManufacturers(
+    { dispatch, patchState }: StateContext<ManufacturerStateModel>) {
+    // Register Loading Overlay
+    dispatch(RegisterLoadingOverlay);
+
+    return this.manufacturerService
+      .apiV1ManufacturerPaginatedGet(4,0)
+      .pipe(
+        tap(
+          (x) => {
+            patchState({
+              manufacturers: x
+            })
+          },
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+          () => dispatch(PaginatedManufacturersFetched))
+      );
+  }
+
+  @Action(PaginatedManufacturersFetched)
+  paginatedManufacturersFetched({ dispatch }: StateContext<ManufacturerStateModel>) {
     dispatch(ResolveLoadingOverlay);
   }
   //#endregion

@@ -67,6 +67,10 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return "api/v1/manufacturer/list" + Paginated(PageIndex, PageSize);
             }
+            public static string ManufacturerPaginatedItem()
+            {
+                return "api/v1/manufacturer/paginated" + Paginated(PageIndex, PageSize);
+            }
             #endregion
 
             #region Category
@@ -85,6 +89,10 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             public static string CategoryListPaginatedItem()
             {
                 return "api/v1/category/list" + Paginated(PageIndex, PageSize);
+            }
+            public static string CategoryPaginatedItem()
+            {
+                return "api/v1/category/paginated" + Paginated(PageIndex, PageSize);
             }
             #endregion
 
