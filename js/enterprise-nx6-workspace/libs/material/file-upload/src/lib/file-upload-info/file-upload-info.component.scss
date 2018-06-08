@@ -8,6 +8,7 @@
     }
   }
 }
+
 @media screen and (max-width: $mobile-screen-m) {
   .file-upload-info {
     &__card {
@@ -16,6 +17,7 @@
     }
   }
 }
+
 @media screen and (max-width: $mobile-screen-s) {
   .file-upload-info {
     &__card {
@@ -33,12 +35,17 @@
     padding: 10px;
     margin: 10px;
     display: flex;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
     &__img {
       align-self: center;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       & img {
         max-width: 100%;
-        height: auto;
+        max-height: 100%;
       }
     }
     &__delete-btn {

@@ -15,5 +15,11 @@ namespace Catalog.API.ViewModels
         public string ActorId { get; set; }
         public ProductImage[] ProductImages { get; set; }
         public ProductColor[] ProductColors { get; set; }
+        public string Location { get; set; }
+        public int MinPurchase { get; set; }
+        public string HasExpiry { get; set; }
+        public string ExpireDate { get; set; }
+        public decimal Discount { get; set; }
+        public int Stock { get; set; }
     }
 }

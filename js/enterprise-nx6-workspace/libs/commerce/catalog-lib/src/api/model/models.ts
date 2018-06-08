@@ -6,6 +6,7 @@ export * from './modelFile';
 export * from './paginatedCatalogViewModelCatalogItemViewModel';
 export * from './paginatedListViewModelItemViewModel';
 export * from './productColor';
+export * from './productDetailViewModel';
 export * from './productImage';
 export * from './productRateViewModel';
 export * from './productRating';

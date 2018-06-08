@@ -67,7 +67,25 @@ export class ProductPage {
     formManufacturerSelect() {
         return $('#manufacturer-select mat-select')
     }
-    matOption(){
+    formStockTxtbox() {
+        return $('#stock-txtbox input');
+    }
+    formDiscountTxtbox() {
+        return $('#discount-txtbox input');
+    }
+    formLocationTxtbox() {
+        return $('#location-txtbox input');
+    }
+    formMinPurchaseTxtbox() {
+        return $('#min-purchase-txtbox input');
+    }
+    formHasExpiry() {
+        return $('#has-expire-checkbox');
+    }
+    formExpireDateTxtbox() {
+        return $('#expire-date-calender input');
+    }
+    matOption() {
         return $$('mat-option');
     }
     formColorChipTxtbox() {

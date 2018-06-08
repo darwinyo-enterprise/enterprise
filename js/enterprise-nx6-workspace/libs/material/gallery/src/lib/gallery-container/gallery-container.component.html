@@ -1,0 +1,11 @@
+<div class="product-detail__container__header__image-container">
+  <div class="product-detail__container__header__image-container__main-image">
+    <img src="{{(selectedImage | async)?.fileUrl}}" alt="">
+  </div>
+  <div class="product-detail__container__header__image-container__opt-image scrollbar">
+    <div class="product-detail__container__header__image-container__opt-image__item" (click)="onOptionImageClicked(image.id)"
+      *ngFor="let image of (images | async)">
+      <img [class.active]="image.id===(selectedImage | async).id" src="{{image.fileUrl}}" alt="">
+    </div>
+  </div>
+</div>

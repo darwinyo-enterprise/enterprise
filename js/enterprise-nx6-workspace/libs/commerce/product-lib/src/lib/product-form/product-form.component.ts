@@ -43,6 +43,7 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   categories$: Observable<Category[]>;
 
   //#endregion
+  hasExpiry: boolean;
   selectedManufacturerId: string;
   selectedCategoryId: string;
 
@@ -145,6 +146,23 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   get descriptionControl(): AbstractControl {
     return this.productForm.controls['description'];
   }
+  /** Stock Form Control Getter */
+  get stockControl(): AbstractControl {
+    return this.productForm.controls['stock'];
+  }
+  /** Discount Form Control Getter */
+  get discountControl(): AbstractControl {
+    return this.productForm.controls['discount'];
+  }
+  /** Location Form Control Getter */
+  get minPurchaseControl(): AbstractControl {
+    return this.productForm.controls['minPurchase'];
+  }
+  /** Location Form Control Getter */
+  get locationControl(): AbstractControl {
+    return this.productForm.controls['location'];
+  }
+
 
   /** Product Image Form Array Getter */
   get imagesFormArray(): FormArray {
@@ -156,13 +174,19 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
     this.productForm = this.fb.group({
       id: '',
       name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0)]],
       description: '',
       manufacturerId: [''],
       categoryId: [''],
       productColors: this.fb.array([]),
       actorId: '',
       productImages: this.fb.array([]),
+      stock: [1, [Validators.required, Validators.min(0)]],
+      discount: [0, [Validators.required, Validators.min(0)]],
+      location: ['', Validators.required],
+      minPurchase: [1, [Validators.required, Validators.min(0)]],
+      hasExpiry: false,
+      expireDate: ''
     });
   }
 
@@ -176,17 +200,25 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
       alert('error')
     }, () => {
       if (this.product !== null) {
+        console.log(this.product);
         this.productForm.reset({
           id: this.product.id || '',
           name: this.product.name || '',
           description: this.product.description || '',
-          price: this.product.price || '',
+          price: this.product.price || 0,
           manufacturerId: this.selectedManufacturerId || this.product.manufacturerId,
           categoryId: this.selectedCategoryId || this.product.categoryId,
-          actorId: this.product.actorId || ''
+          actorId: this.product.actorId || '',
+          stock: this.product.stock || 1,
+          discount: this.product.discount || 0,
+          location: this.product.location || '',
+          minPurchase: this.product.minPurchase || 1,
+          hasExpiry: this.product.hasExpiry || 'false',
+          expireDate: this.product.expireDate || ''
         });
         this.setProductColor(this.product.productColors)
         this.setProductImage(this.product.productImages)
+        this.hasExpiry = this.product.hasExpiry === 'true';
       }
     })
   }
@@ -253,7 +285,6 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
   }
   /**Will update value of product color */
   onChipInputChanged(): void {
-    console.log(this.colorChips.value);
     if (this.colorChips.value !== undefined) {
       const colors: ProductColor[] = (<string[]>this.colorChips.value).map(x => <ProductColor>{
         name: x
@@ -261,5 +292,13 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
       this.setProductColor(colors);
     }
 
+  }
+
+  /** checkbox changed event */
+  onHasExpiryCheckbox() {
+    this.hasExpiry = !this.hasExpiry;
+    this.productForm.patchValue({
+      hasExpiry: '' + this.hasExpiry
+    });
   }
 }

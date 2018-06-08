@@ -26,7 +26,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatSliderModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -70,6 +71,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
     MatNativeDateModule,
     MatSliderModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
     //#endregion
 
     //#region Covalent Imports
@@ -126,6 +128,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
     MatNativeDateModule,
     MatSliderModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
     //#endregion
 
     //#region Covalent Imports

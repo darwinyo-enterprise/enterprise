@@ -51,6 +51,9 @@
       ],
       "@enterprise/material/stars": [
         "libs/material/stars/src/index.ts"
+      ],
+      "@enterprise/material/gallery": [
+        "libs/material/gallery/src/index.ts"
       ]
     }
   },

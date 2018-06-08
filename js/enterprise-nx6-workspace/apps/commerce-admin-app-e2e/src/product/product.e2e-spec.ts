@@ -1,12 +1,13 @@
 import { ProductPage } from "./product.po";
 import { browser, Key, protractor } from "protractor";
 
-describe('Product Scenario', () => {
+fdescribe('Product Scenario', () => {
     let page: ProductPage
-    let path = require('path');
+    const path = require('path');
 
     beforeEach(() => {
         page = new ProductPage();
+        browser.driver.manage().window().setSize(1600, 1200);
     })
     describe('display list product scenario', () => {
         beforeEach(async () => {
@@ -19,14 +20,14 @@ describe('Product Scenario', () => {
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:4200/product/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:1000/product/add');
         })
         it('should navigate edit product when edit button clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:4200/product/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:1000/product/edit');
         })
         it('should display list of products', async () => {
             expect(await page.listItemActions().count()).toBeGreaterThan(1);
@@ -42,7 +43,7 @@ describe('Product Scenario', () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let lst = await page.listItemActions().count();
+            const lst = await page.listItemActions().count();
             await browser.sleep(1000);
 
             await page.lastDeleteBtn().click();
@@ -57,7 +58,7 @@ describe('Product Scenario', () => {
         //#endregion
 
         it('should add product when add button clicked', async () => {
-            let testName = 'zzz';
+            const testName = 'zzz';
             await page.lastPaginationBtn().click();
 
             await browser.sleep(2000);
@@ -73,7 +74,7 @@ describe('Product Scenario', () => {
                 await page.promptOkButton().click();
                 await browser.sleep(2000);
                 await page.popupCloseButton().click();
-                
+
                 await browser.sleep(1000);
             }
             //#endregion
@@ -89,10 +90,29 @@ describe('Product Scenario', () => {
             await browser.sleep(1000);
             await page.matOption().first().click();
 
+            await browser.sleep(1000);
             await page.formManufacturerSelect().click();
 
             await browser.sleep(1000);
             await page.matOption().first().click();
+
+            await browser.sleep(1000);
+            await page.formStockTxtbox().sendKeys('12');
+
+            await browser.sleep(1000);
+            await page.formDiscountTxtbox().sendKeys('13');
+
+            await browser.sleep(1000);
+            await page.formLocationTxtbox().sendKeys('New York');
+
+            await browser.sleep(1000);
+            await page.formMinPurchaseTxtbox().sendKeys('12');
+
+            await browser.sleep(1000);
+            await page.formHasExpiry().click();
+
+            await browser.sleep(1000);
+            await page.formExpireDateTxtbox().sendKeys('12/12/2018');
 
             await page.formColorChipTxtbox().sendKeys('Yellow', protractor.Key.ENTER);
             await browser.sleep(1000);
@@ -101,7 +121,9 @@ describe('Product Scenario', () => {
 
             await page.fileUploadDropZone().sendKeys(path.resolve(__dirname, '../assets/test-product.png'));
 
-            await browser.sleep(1000);
+            await browser.executeScript('window.scrollTo(0,0);');
+
+            await browser.sleep(2000);
             await page.formSubmitBtn().click();
             await browser.sleep(3000);
 
@@ -109,13 +131,12 @@ describe('Product Scenario', () => {
             await browser.sleep(1000);
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let element = await page.listItemActions().last().getText();
+            const element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
 
         it('should change product when form edit submitted', async () => {
-            await browser.executeScript('window.scrollTo(0,0);');
-            let testName = 'zzz1';
+            const testName = 'zzz1';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
 
@@ -140,13 +161,16 @@ describe('Product Scenario', () => {
             await browser.sleep(1000);
             await page.formNameTxtbox().clear();
             await page.formNameTxtbox().sendKeys(testName);
+
+            await browser.executeScript('window.scrollTo(0,0);');
+            await browser.sleep(1000);
             await page.formSubmitBtn().click();
             await browser.sleep(2000);
             await page.popupCloseButton().click();
             await browser.sleep(2000);
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let element = await page.listItemActions().last().getText();
+            const element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
 
@@ -154,7 +178,7 @@ describe('Product Scenario', () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let targetDelete = page.listItemNames().last().getText();
+            const targetDelete = page.listItemNames().last().getText();
 
             await browser.sleep(1000);
             await page.lastDeleteBtn().click();

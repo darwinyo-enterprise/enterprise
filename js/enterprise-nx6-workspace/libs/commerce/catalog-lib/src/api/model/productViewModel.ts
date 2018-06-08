@@ -25,4 +25,10 @@ export interface ProductViewModel {
     actorId?: string;
     productImages?: Array<ProductImage>;
     productColors?: Array<ProductColor>;
+    location?: string;
+    minPurchase?: number;
+    hasExpiry?: string;
+    expireDate?: string;
+    discount?: number;
+    stock?: number;
 }

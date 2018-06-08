@@ -85,11 +85,21 @@ namespace Catalog.API.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<decimal>("Discount");
+
+                    b.Property<DateTime>("ExpireDate");
+
+                    b.Property<bool>("HasExpiry");
+
                     b.Property<DateTime?>("LastUpdated");
 
                     b.Property<string>("LastUpdatedBy");
 
+                    b.Property<string>("Location");
+
                     b.Property<int>("ManufacturerId");
+
+                    b.Property<int>("MinPurchase");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -110,6 +120,8 @@ namespace Catalog.API.Migrations
                     b.Property<int>("TotalSold")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
+
+                    b.Property<int>("TotalWishlist");
 
                     b.HasKey("Id");
 

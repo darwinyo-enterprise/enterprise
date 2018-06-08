@@ -3,7 +3,7 @@ import { browser } from "protractor";
 
 describe('Manufacturer Scenario', () => {
     let page: ManufacturerPage
-    let path = require('path');
+    const path = require('path');
 
     beforeEach(() => {
         page = new ManufacturerPage();
@@ -18,10 +18,10 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:4200/manufacturer/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:1000/manufacturer/add');
         })
         it('should add manufacturer when add button clicked', async () => {
-            let testName = 'zzz';
+            const testName = 'zzz';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
 
@@ -56,7 +56,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let element = await page.listItemActions().last().getText();
+            const element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
         it('should navigate edit manufacturer when edit button clicked', async () => {
@@ -64,11 +64,11 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:4200/manufacturer/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:1000/manufacturer/edit');
         })
         it('should change manufacturer when form edit submitted', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
-            let testName = 'zzz1';
+            const testName = 'zzz1';
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
 
@@ -85,7 +85,7 @@ describe('Manufacturer Scenario', () => {
                 await browser.sleep(1000);
             }
             //#endregion
-            
+
             expect(await page.listItemActions().last().getText()).not.toContain(testName);
             await browser.sleep(1000);
             await page.lastEditBtn().click();
@@ -98,7 +98,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let element = await page.listItemActions().last().getText();
+            const element = await page.listItemActions().last().getText();
             expect(element).toContain(testName);
         })
         it('should display list of manufacturers', async () => {
@@ -115,7 +115,7 @@ describe('Manufacturer Scenario', () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let lst = await page.listItemActions().count();
+            const lst = await page.listItemActions().count();
             await browser.sleep(1000);
 
             await page.lastDeleteBtn().click();
@@ -131,7 +131,7 @@ describe('Manufacturer Scenario', () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await page.lastPaginationBtn().click();
             await browser.sleep(2000);
-            let targetDelete = page.listItemNames().last().getText();
+            const targetDelete = page.listItemNames().last().getText();
 
             await browser.sleep(1000);
             await page.lastDeleteBtn().click();

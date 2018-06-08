@@ -260,6 +260,43 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         /// <returns></returns>
         #region Get
 
+
+        [Fact]
+        public async Task Get_product_info_by_id_response_bad_request_with_message_when_id_null_or_empty()
+        {
+            var id = "";
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var productController = new ProductController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await productController.GetProductInfoByIdAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        [Fact]
+        public async Task Get_product_info_by_id_response_not_found_when_item_not_exists()
+        {
+            var cancellationToken = new CancellationToken();
+            // Arrange
+            var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
+
+            if (expectedProduct.IsNullOrEmpty())
+            {
+                expectedProduct = await SeedProduct(cancellationToken);
+            }
+            Assert.NotEmpty(expectedProduct);
+
+            var id = expectedProduct.LastOrDefault()?.Id + "z";
+
+            // Act
+            var productController = new ProductController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await productController.GetProductInfoByIdAsync(id, cancellationToken);
+            Assert.IsType<NotFoundResult>(response);
+        }
+
         [Fact]
         public async Task Get_product_by_id_response_bad_request_with_message_when_id_null_or_empty()
         {

@@ -120,6 +120,11 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 return $"api/v1/product/{id}";
             }
 
+            public static string ItemInfoById(string id)
+            {
+                return $"api/v1/product/info/{id}";
+            }
+
             public static string ItemByName(string name, bool paginated = false)
             {
                 return paginated

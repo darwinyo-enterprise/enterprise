@@ -10,6 +10,12 @@ namespace Catalog.API.Models
         public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal OverallRating { get; set; }
+        public int MinPurchase { get; set; }
+        public bool HasExpiry { get; set; }
+        public DateTime ExpireDate { get; set; }
+        public decimal Discount { get; set; }
+        public string Location { get; set; }
+        public int TotalWishlist { get; set; }
         public int TotalFavorites { get; set; }
         public int TotalReviews { get; set; }
         public int TotalSold { get; set; }

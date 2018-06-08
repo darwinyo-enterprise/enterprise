@@ -57,6 +57,36 @@ export class ProductFormPage extends BaseTestPage<
   get title() {
     return this.query<HTMLElement>('.form-card__title');
   }
+  get stockInputGroup() {
+    return this.query<HTMLElement>('#stock-txtbox');
+  }
+  get stockInputControl(): HTMLInputElement {
+    return <HTMLInputElement>this.stockInputGroup.children.item(0);
+  }
+  get discountInputGroup() {
+    return this.query<HTMLElement>('#discount-txtbox');
+  }
+  get discountInputControl(): HTMLInputElement {
+    return <HTMLInputElement>this.discountInputGroup.children.item(0);
+  }
+  get locationInputGroup() {
+    return this.query<HTMLElement>('#location-txtbox');
+  }
+  get locationInputControl(): HTMLInputElement {
+    return <HTMLInputElement>this.locationInputGroup.children.item(0);
+  }
+  get minPurchaseInputGroup() {
+    return this.query<HTMLElement>('#min-purchase-txtbox');
+  }
+  get minPurchaseInputControl(): HTMLInputElement {
+    return <HTMLInputElement>this.minPurchaseInputGroup.children.item(0);
+  }
+  get hasExpiryInputControl(): HTMLInputElement {
+    return this.query<HTMLInputElement>('#has-expire-checkbox');
+  }
+  get ExpireDateInputGroup() {
+    return this.query<HTMLElement>('#expire-date-calender');
+  }
 }
 
 describe('ProductFormComponent', () => {
@@ -126,7 +156,7 @@ describe('ProductFormComponent', () => {
       store.dispatch(new AddFileImage(uploadFileModel));
 
       expect(component.imagesFormArray.length).toBe(uploadFileModel.length);
-      var images: ProductImage[] = component.imagesFormArray.value;
+      const images: ProductImage[] = component.imagesFormArray.value;
       expect(images[0].imageName).toContain(
         uploadFileModel[0].fileName
       );
@@ -163,8 +193,8 @@ describe('ProductFormComponent', () => {
     it('should populate product Form correctly when product selected has value', () => {
       component.ngOnInit();
       component.ngOnChanges();
-      let actual: ProductViewModel = component.productForm.value;
-      let expectation: ProductViewModel = ProductViewModelsMock[0];
+      const actual: ProductViewModel = component.productForm.value;
+      const expectation: ProductViewModel = ProductViewModelsMock[0];
       expect(actual.name).toBe(expectation.name);
       expect(actual.productColors.length).toBe(expectation.productColors.length);
       expect(actual.productImages.length).toBe(expectation.productImages.length);
@@ -191,7 +221,14 @@ describe('ProductFormComponent', () => {
       component.save.subscribe(x => expect(true).toBeTruthy());
       productFormPage.saveBtn.click();
     })
-
+    it('should change has expire value on form and field when onHasExpireCheckboxChanged', () => {
+      component.ngOnChanges();
+      expect(component.hasExpiry).toBeTruthy();
+      expect(component.productForm.value.hasExpiry).toBe(component.hasExpiry + '');
+      component.onHasExpiryCheckbox();
+      expect(component.hasExpiry).toBeFalsy();
+      expect(component.productForm.value.hasExpiry).toBe(component.hasExpiry + '');
+    })
     it('should emit save event with correct product form value when save btn clicked', () => {
       component.save.subscribe(x => expect(x).toBeTruthy(component.productForm.value));
       productFormPage.saveBtn.click();
@@ -250,6 +287,132 @@ describe('ProductFormComponent', () => {
       expect(productFormPage.nameInputGroup.children.length).toEqual(1);
       expect(productFormPage.nameInputGroup.children.item(1)).toBeNull();
     });
+    it('should render validation error message when stock text box is error', () => {
+      component.productForm.patchValue({
+        stock: 1
+      });
+      component.stockControl.markAsDirty();
+      component.stockControl.markAsTouched();
+      fixture.detectChanges();
+      expect(productFormPage.stockInputGroup.children.length).toEqual(1);
+
+      component.productForm.patchValue({
+        stock: null
+      });
+
+      fixture.detectChanges();
+      expect(productFormPage.stockInputGroup.children.length).toEqual(2);
+      expect(
+        productFormPage.stockInputGroup.children.item(1)
+      ).toBeDefined();
+    })
+    it('should not render validation error message when stock input is pristine', () => {
+      component.productForm.patchValue({
+        stock: null
+      });
+      expect(component.stockControl.pristine).toBeTruthy();
+      expect(component.stockControl.invalid).toBeTruthy();
+      fixture.detectChanges();
+
+      expect(productFormPage.stockInputGroup.children.length).toEqual(1);
+      expect(productFormPage.stockInputGroup.children.item(1)).toBeNull();
+    });
+
+    it('should render validation error message when discount text box is error', () => {
+      component.productForm.patchValue({
+        discount: 1
+      });
+      component.discountControl.markAsDirty();
+      component.discountControl.markAsTouched();
+      fixture.detectChanges();
+      expect(productFormPage.discountInputGroup.children.length).toEqual(1);
+
+      component.productForm.patchValue({
+        discount: null
+      });
+
+      fixture.detectChanges();
+      expect(productFormPage.discountInputGroup.children.length).toEqual(2);
+      expect(
+        productFormPage.discountInputGroup.children.item(1)
+      ).toBeDefined();
+    })
+    it('should not render validation error message when discount input is pristine', () => {
+
+      component.productForm.patchValue({
+        discount: null
+      });
+      expect(component.discountControl.pristine).toBeTruthy();
+      expect(component.discountControl.invalid).toBeTruthy();
+      fixture.detectChanges();
+
+      expect(productFormPage.discountInputGroup.children.length).toEqual(1);
+      expect(productFormPage.discountInputGroup.children.item(1)).toBeNull();
+    });
+
+    it('should render validation error message when location text box is error', () => {
+      component.productForm.patchValue({
+        location: 'New York'
+      });
+      component.locationControl.markAsDirty();
+      component.locationControl.markAsTouched();
+      fixture.detectChanges();
+      expect(productFormPage.locationInputGroup.children.length).toEqual(1);
+
+      component.productForm.patchValue({
+        location: null
+      });
+
+      fixture.detectChanges();
+      expect(productFormPage.locationInputGroup.children.length).toEqual(2);
+      expect(
+        productFormPage.locationInputGroup.children.item(1)
+      ).toBeDefined();
+    })
+    it('should not render validation error message when location input is pristine', () => {
+      component.productForm.patchValue({
+        location: null
+      });
+      expect(component.locationControl.pristine).toBeTruthy();
+      expect(component.locationControl.invalid).toBeTruthy();
+      fixture.detectChanges();
+
+      expect(productFormPage.locationInputGroup.children.length).toEqual(1);
+      expect(productFormPage.locationInputGroup.children.item(1)).toBeNull();
+    });
+
+    it('should render validation error message when min purchase text box is error', () => {
+      component.productForm.patchValue({
+        minPurchase: 1
+      });
+      component.minPurchaseControl.markAsDirty();
+      component.minPurchaseControl.markAsTouched();
+      fixture.detectChanges();
+      expect(productFormPage.minPurchaseInputGroup.children.length).toEqual(1);
+
+      component.productForm.patchValue({
+        minPurchase: null
+      });
+
+      fixture.detectChanges();
+      expect(productFormPage.minPurchaseInputGroup.children.length).toEqual(2);
+      expect(
+        productFormPage.minPurchaseInputGroup.children.item(1)
+      ).toBeDefined();
+    })
+    it('should not render validation error message when min purchase input is pristine', () => {
+
+      component.productForm.patchValue({
+        minPurchase: null
+      });
+      expect(component.minPurchaseControl.pristine).toBeTruthy();
+      expect(component.minPurchaseControl.invalid).toBeTruthy();
+      fixture.detectChanges();
+
+      expect(productFormPage.minPurchaseInputGroup.children.length).toEqual(1);
+      expect(productFormPage.minPurchaseInputGroup.children.item(1)).toBeNull();
+    });
+
     it('should enabled save button when form valid', () => {
       // Name Field Null => invalid
       expect(
@@ -261,7 +424,11 @@ describe('ProductFormComponent', () => {
         name: 'Test',
         categoryId: "1",
         manufacturerId: "1",
-        price: 200
+        price: 200,
+        stock:1,
+        discount:10,
+        location:'New York',
+        minPurchase:1,
       });
 
       fixture.detectChanges();
@@ -278,6 +445,15 @@ describe('ProductFormComponent', () => {
       expect(
         productFormPage.nameInputGroup.children.item(1)
       ).toBeDefined();
+    })
+
+    it('should show hide expire date control when checkbox changed', () => {
+      component.hasExpiry = true;
+      fixture.detectChanges();
+      expect(productFormPage.ExpireDateInputGroup).toBeDefined();
+      component.hasExpiry = false;
+      fixture.detectChanges();
+      expect(productFormPage.ExpireDateInputGroup).toBeNull();
     })
   });
   describe('State Tests', () => {

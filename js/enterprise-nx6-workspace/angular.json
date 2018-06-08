@@ -35,10 +35,12 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "apps/commerce-admin-app/src/environments/environment.ts",
-                "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-admin-app/src/environments/environment.ts",
+                  "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -153,10 +155,12 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "apps/commerce-client-app/src/environments/environment.ts",
-                "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-client-app/src/environments/environment.ts",
+                  "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -539,6 +543,34 @@
             "tsConfig": [
               "libs/material/stars/tsconfig.lib.json",
               "libs/material/stars/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "material-gallery": {
+      "root": "libs/material/gallery",
+      "sourceRoot": "libs/material/gallery/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material/gallery/src/test.ts",
+            "tsConfig": "libs/material/gallery/tsconfig.spec.json",
+            "karmaConfig": "libs/material/gallery/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material/gallery/tsconfig.lib.json",
+              "libs/material/gallery/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

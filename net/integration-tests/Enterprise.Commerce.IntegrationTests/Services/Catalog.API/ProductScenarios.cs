@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -40,6 +41,12 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Id = "testId",
                 Name = "TestProduct",
                 Price = 1000,
+                Location = "New York",
+                MinPurchase = 1,
+                HasExpiry = "true",
+                ExpireDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                Discount = 10,
+                Stock = 10,
                 ProductColors = new[]
                 {
                     new ProductColor
@@ -213,7 +220,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 }
             }
         }
-        
+
         [Fact, TestPriority(12)]
         public async Task Delete_product_should_properly_delete_record_in_db()
         {
@@ -284,7 +291,13 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     Name = productSelected.Name,
                     Price = productSelected.Price,
                     ProductColors = productSelected.ProductColors.ToArray(),
-                    ProductImages = productSelected.ProductImages.ToArray()
+                    ProductImages = productSelected.ProductImages.ToArray(),
+                    Location = productSelected.Location,
+                    MinPurchase = productSelected.MinPurchase,
+                    HasExpiry = productSelected.HasExpiry ? "True" : "False",
+                    ExpireDate = productSelected.ExpireDate.ToShortDateString(),
+                    Discount = productSelected.Discount,
+                    Stock = productSelected.AvailableStock,
                 };
 
                 var response = await server.CreateClient()
@@ -303,6 +316,12 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
                 Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
                 Assert.Equal(productViewModel.Id, result.Id);
+                Assert.Equal(productViewModel.Location, result.Location);
+                Assert.Equal(productViewModel.MinPurchase, result.MinPurchase);
+                Assert.Equal(productViewModel.HasExpiry, result.HasExpiry);
+                Assert.Equal(productViewModel.ExpireDate, result.ExpireDate);
+                Assert.Equal(productViewModel.Discount, result.Discount);
+                Assert.Equal(productViewModel.Stock, result.Stock);
             }
         }
 
@@ -556,7 +575,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,TestPriority(14)]
+        [Fact, TestPriority(14)]
         public async Task Get_paginated_hot_catalog_response_ok_status_code_should_return_paginated_products()
         {
             using (var server = CreateServer())
@@ -580,7 +599,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(Get.PageIndex, result.PageIndex);
             }
         }
-        
+
         [Fact, TestPriority(15)]
         public async Task Get_paginated_latest_catalog_response_ok_status_code_should_return_paginated_products()
         {
@@ -603,6 +622,109 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.Equal(Get.PageSize, result.Data.Count());
                 Assert.Equal(Get.PageSize, result.PageSize);
                 Assert.Equal(Get.PageIndex, result.PageIndex);
+            }
+        }
+
+        [Fact, TestPriority(16)]
+        public async Task Get_product_info_by_id_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var searchedProductId = (await ctx.Products.FirstAsync()).Id;
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(searchedProductId));
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        [Fact, TestPriority(17)]
+        public async Task Get_product_info_by_id_response_ok_status_code_return_base64_instead_of_http_url()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var actual = await ctx.Products.FirstOrDefaultAsync();
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(actual.Id));
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
+
+                foreach (var image in result.ProductImages) Assert.Contains("base64", image.ImageUrl);
+            }
+        }
+
+        [Fact, TestPriority(18)]
+        public async Task Get_Product_info_by_id_response_ok_status_code_with_correct_result()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var productSelected = await ctx.Products
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.ProductRatings)
+                    .Include(x => x.Manufacturer)
+                    .FirstOrDefaultAsync();
+
+                var productViewModel = new ProductDetailViewModel()
+                {
+                    CategoryId = productSelected.CategoryId,
+                    ManufacturerId = productSelected.ManufacturerId,
+                    ManufacturerName = productSelected.Manufacturer.Name,
+                    Description = productSelected.Description,
+                    Id = productSelected.Id,
+                    Name = productSelected.Name,
+                    Price = productSelected.Price,
+                    ProductColors = productSelected.ProductColors.ToArray(),
+                    ProductImages = productSelected.ProductImages.ToArray(),
+                    Location = "Jakarta",
+                    MinPurchase = productSelected.MinPurchase,
+                    Sold = productSelected.TotalSold,
+                    HasExpiry = productSelected.HasExpiry ? "True" : "False",
+                    ExpireDate = productSelected.ExpireDate.ToShortDateString(),
+                    LastUpdated = productSelected.LastUpdated.Value.ToShortDateString(),
+                    Discount = productSelected.Discount,
+                    Stock = productSelected.AvailableStock,
+                    Favorites = productSelected.TotalFavorites,
+                    Reviews = productSelected.TotalReviews,
+                    OverallRating = productSelected.OverallRating,
+                    WishlistCount = productSelected.TotalWishlist
+                };
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(productViewModel.Id));
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
+
+                Assert.Equal(productViewModel.CategoryId, result.CategoryId);
+                Assert.Equal(productViewModel.ManufacturerId, result.ManufacturerId);
+                Assert.Equal(productViewModel.ManufacturerName, result.ManufacturerName);
+                Assert.Equal(productViewModel.Price, result.Price);
+                Assert.Equal(productViewModel.Name, result.Name);
+                Assert.Equal(productViewModel.Description, result.Description);
+                Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
+                Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
+                Assert.Equal(productViewModel.Id, result.Id);
+                Assert.Equal(productViewModel.Location, result.Location);
+                Assert.Equal(productViewModel.MinPurchase, result.MinPurchase);
+                Assert.Equal(productViewModel.Sold, result.Sold);
+                Assert.Equal(productViewModel.HasExpiry, result.HasExpiry);
+                Assert.Equal(productViewModel.ExpireDate, result.ExpireDate);
+                Assert.Equal(productViewModel.LastUpdated, result.LastUpdated);
+                Assert.Equal(productViewModel.Discount, result.Discount);
+                Assert.Equal(productViewModel.Stock, result.Stock);
+                Assert.Equal(productViewModel.Favorites, result.Favorites);
+                Assert.Equal(productViewModel.Reviews, result.Reviews);
+                Assert.Equal(productViewModel.OverallRating, result.OverallRating);
+                Assert.Equal(productViewModel.WishlistCount, result.WishlistCount);
             }
         }
     }

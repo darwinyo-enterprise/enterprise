@@ -1,0 +1,244 @@
+%icon-placeholder {
+    color: $alert-color;
+    display: block;
+    stroke: currentColor;
+    width: 2em;
+    height: 2em;
+    fill: currentColor;
+}
+
+%title-placeholder {
+    width: 100%;
+    font-family: 'Mina';
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid;
+    font-weight: bold;
+}
+
+%icon-margin-placeholder {
+    margin-right: 0.5rem;
+    position: relative;
+}
+
+%row-placeholder {
+    padding: 0.2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+%info-placeholder {
+    font-family: 'Mina';
+    font-size: $font-size-xs;
+    color: $primary-color;
+    font-style: italic;
+    padding-bottom: 1rem;
+}
+
+%row-full-placeholder {
+    padding: 0.2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+%btn-full-width-placeholder {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+%info-border-placeholder {
+    @extend %info-placeholder;
+    border-bottom: 1px solid;
+    width: 100%;
+}
+
+%primary-btn-placeholder {
+    background-color: $inverted-color;
+    color: $primary-color;
+    border: 1px solid;
+}
+
+.product-detail {
+    &__container {
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        &__header {
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            &__image-container {
+                width: 20%;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                &__main-image {
+                    &>img {
+                        min-width: 100%;
+                    }
+                }
+                &__opt-image {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+                    &__item {
+                        padding: 0.2rem;
+                        cursor: pointer;
+                        max-width: 25%;
+                        min-width: 25%;
+                        &>img {
+                            width: 100%;
+                        }
+                        &>.active {
+                            border: 2px solid;
+                        }
+                    }
+                }
+            }
+            &__info-container {
+                width: 56%;
+                padding: 2rem;
+                &__row {
+                    @extend %row-placeholder;
+                    &--full {
+                        @extend %row-full-placeholder;
+                    }
+                }
+            }
+            &__action-container {
+                width: 22%;
+                padding: 1rem;
+                &__row {
+                    @extend %row-placeholder;
+                    &--full {
+                        @extend %row-full-placeholder;
+                    }
+                }
+            }
+            padding-bottom: 1rem;
+        }
+        &__description {
+            width: 100%;
+            padding: 1rem;
+            &__title {
+                font-size: $font-size-md;
+                @extend %title-placeholder;
+            }
+            &__content {
+                padding-top: 1rem;
+                font-family: 'Mina';
+                line-height: 1.5rem;
+            }
+        }
+    }
+    &__title {
+        font-size: $font-size-bg;
+        color: $secondary-color;
+        @extend %title-placeholder;
+    }
+    &__price {
+        font-family: 'Mina';
+        font-size: $font-size-lg;
+        color: $alert-color;
+    }
+    &__last-updated {
+        @extend %info-placeholder;
+    }
+    &__star-rate {
+        padding: 0rem 0rem 1rem 0rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &__star-wrapper {
+            @extend %icon-margin-placeholder;
+        }
+        &__lit {
+            overflow: hidden;
+            position: absolute;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 1;
+        }
+        &__hollow-star {
+            @extend %icon-placeholder;
+            position: relative;
+        }
+        &__primary-star {
+            @extend %icon-placeholder;
+            position: absolute;
+        }
+        &__rate-count {
+            font-size: $font-size-lg;
+            font-family: 'Mina';
+            font-weight: bold;
+            color: $alert-color;
+        }
+    }
+    &__info-header {
+        font-size: $font-size-md;
+        color: $primary-color;
+        @extend %title-placeholder;
+    }
+    &__color-chip {
+        @extend %primary-btn-placeholder;
+    }
+    &__info {
+        &__container {
+            padding-bottom: 0.5rem;
+            font-family: 'Mina';
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}
+
+.product-detail-action {
+    &__title {
+        font-size: $font-size-lg;
+        color: $secondary-color;
+        @extend %title-placeholder;
+    }
+    &__price {
+        font-family: 'Mina';
+        color: $alert-color;
+        font-size: $font-size-md;
+    }
+    &__discount {
+        @extend %info-placeholder;
+        color: $alert-color;
+    }
+    &__stock {
+        @extend %info-border-placeholder;
+        color: $alert-color;
+    }
+    &__wishlist {
+        @extend %info-border-placeholder;
+        color: $secondary-color;
+    }
+    &__add-to-card-btn {
+        @extend %btn-full-width-placeholder;
+        background-color: $alert-color;
+        color: $inverted-color;
+    }
+    &__add-to-wishlist-btn {
+        @extend %btn-full-width-placeholder;
+        background-color: $secondary-color;
+        color: $inverted-color;
+    }
+    &__favorites-btn {
+        @extend %btn-full-width-placeholder;
+        background-color: $third-color;
+        color: $inverted-color;
+    }
+    &__share-btn {
+        @extend %primary-btn-placeholder;
+    }
+    &__report-btn {
+        @extend %primary-btn-placeholder;
+    }
+}

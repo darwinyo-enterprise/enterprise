@@ -51,7 +51,7 @@ namespace Catalog.API.Infrastructure
 
                         await context.SaveChangesAsync();
                     }
-                    
+
                     DeleteAllFilesWithinDir(_env.WebRootPath + "/" + manufacturer);
                     ValidateFileDirExists(manufacturer);
                 }
@@ -61,7 +61,7 @@ namespace Catalog.API.Infrastructure
                     const string category = "Category";
                     await context.SpResetIdentity(category);
                     GetPictures(contentRootPath, _env.WebRootPath + "/" + category, category + ".zip");
-                    
+
                     if (useCustomizationData)
                     {
                         var categories = GetCategoryFromFile(contentRootPath, logger);
@@ -439,7 +439,8 @@ namespace Catalog.API.Infrastructure
                 string[] requiredHeaders =
                 {
                     "id", "name", "price", "overallrating", "totalfavorites", "totalreviews", "description",
-                    "lastupdated", "lastupdatedby", "availablestock", "manufacturerid", "categoryid"
+                    "lastupdated", "lastupdatedby", "availablestock", "manufacturerid", "categoryid","location",
+                    "minpurchase","sold","hasexpiry","expiredate","discount","totalwishlist"
                 };
                 csvheaders = GetHeaders(csvFileProducts, requiredHeaders);
             }
@@ -505,6 +506,32 @@ namespace Catalog.API.Infrastructure
             var description = column[Array.IndexOf(headers, "description")].Trim('"').Trim();
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog Brand Description is empty");
 
+            var location = column[Array.IndexOf(headers, "location")].Trim('"').Trim();
+            if (string.IsNullOrEmpty(name)) throw new Exception("catalog location is empty");
+
+            var minpurchase = column[Array.IndexOf(headers, "minpurchase")].Trim('"').Trim();
+            if (!int.TryParse(minpurchase, out var minpurchaseResult)) throw new Exception("catalog minpurchase is not number");
+
+            var sold = column[Array.IndexOf(headers, "sold")].Trim('"').Trim();
+            if (!int.TryParse(sold, out var solds)) throw new Exception("catalog sold is not number");
+
+            var hasExpiry = column[Array.IndexOf(headers, "hasexpiry")].Trim('"').Trim();
+            int.TryParse(hasExpiry, out var hasExpiryResult);
+            bool hasExpirys;
+            if (hasExpiryResult > 1 && hasExpiryResult < 0) throw new Exception("catalog has Expiry is not bool");
+            hasExpirys = hasExpiryResult == 1;
+
+            var expireDate = column[Array.IndexOf(headers, "expiredate")].Trim('"').Trim();
+            var result = DateTime.TryParseExact(expireDate, "dd-MM-yyyy", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var expireDates);
+            if (!result) throw new Exception("expiry date is not Datetime");
+
+            var discount = column[Array.IndexOf(headers, "discount")].Trim('"').Trim();
+            if (!int.TryParse(discount, out var discounts)) throw new Exception("catalog discount is not number");
+
+            var totalWishlist = column[Array.IndexOf(headers, "totalwishlist")].Trim('"').Trim();
+            if (!int.TryParse(totalWishlist, out var totalWishlists)) throw new Exception("catalog totalwishlist is not number");
+
             return new Product
             {
                 Name = name,
@@ -518,7 +545,14 @@ namespace Catalog.API.Infrastructure
                 TotalReviews = totalReviews,
                 LastUpdated = lastUpdates,
                 LastUpdatedBy = lastUpdatedBy,
-                ManufacturerId = manufacturerIds
+                ManufacturerId = manufacturerIds,
+                Location = location,
+                MinPurchase = minpurchaseResult,
+                TotalSold = solds,
+                HasExpiry = hasExpirys,
+                ExpireDate = expireDates,
+                Discount = discounts,
+                TotalWishlist = totalWishlists
             };
         }
 
@@ -770,8 +804,8 @@ namespace Catalog.API.Infrastructure
             var subdir = directory.GetDirectories(id).FirstOrDefault();
             var fileToInsert = subdir?.GetFiles(imageName).FirstOrDefault();
             if (fileToInsert != null && fileToInsert.Exists) fileToInsert.Delete();
-            
-            File.Copy(picturePath + "/" +file.Name, picturePath+"/"+id+"/"+file.Name,true);
+
+            File.Copy(picturePath + "/" + file.Name, picturePath + "/" + id + "/" + file.Name, true);
         }
 
         private void DeleteAllFilesWithinDir(string directoryPath)

@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs/Observab
 
 import { PaginatedCatalogViewModelCatalogItemViewModel } from '../model/paginatedCatalogViewModelCatalogItemViewModel';
 import { PaginatedListViewModelItemViewModel } from '../model/paginatedListViewModelItemViewModel';
+import { ProductDetailViewModel } from '../model/productDetailViewModel';
 import { ProductRateViewModel } from '../model/productRateViewModel';
 import { ProductViewModel } from '../model/productViewModel';
 
@@ -328,9 +329,9 @@ export class ProductService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1ProductInfoByIdGet(id: string, observe?: 'body', reportProgress?: boolean): Observable<ProductViewModel>;
-    public apiV1ProductInfoByIdGet(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductViewModel>>;
-    public apiV1ProductInfoByIdGet(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductViewModel>>;
+    public apiV1ProductInfoByIdGet(id: string, observe?: 'body', reportProgress?: boolean): Observable<ProductDetailViewModel>;
+    public apiV1ProductInfoByIdGet(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProductDetailViewModel>>;
+    public apiV1ProductInfoByIdGet(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProductDetailViewModel>>;
     public apiV1ProductInfoByIdGet(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiV1ProductInfoByIdGet.');
@@ -351,7 +352,7 @@ export class ProductService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<ProductViewModel>(`${this.basePath}/api/v1/Product/info/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<ProductDetailViewModel>(`${this.basePath}/api/v1/Product/info/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -41,11 +41,54 @@
           </mat-form-field>
         </div>
 
+        <div class="form-row">
+          <mat-form-field id="stock-txtbox" class="form-control--half-width">
+            <input matInput type="number" placeholder="Stock" formControlName="stock" min="0">
+            <mat-error *ngIf="!stockControl.pristine && stockControl.hasError('required')">
+              Stock is
+              <strong>required</strong>.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field id="discount-txtbox" class="form-control--half-width">
+            <input matInput type="number" placeholder="Discount" formControlName="discount" min="0">
+            <mat-error *ngIf="!discountControl.pristine && discountControl.hasError('required')">
+              Discount is
+              <strong>required</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-row">
+          <mat-form-field id="location-txtbox" class="form-control--half-width">
+            <input matInput placeholder="Location" formControlName="location">
+            <mat-error *ngIf="!locationControl.pristine && locationControl.hasError('required')">
+              Location is
+              <strong>required</strong>.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field id="min-purchase-txtbox" class="form-control--half-width">
+            <input matInput type="number" placeholder="Min Purchase" formControlName="minPurchase" min="0">
+            <mat-error *ngIf="!minPurchaseControl.pristine && minPurchaseControl.hasError('required')">
+              Min Purchase is
+              <strong>required</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
         <td-chips color="warn" placeholder="Enter any color" [value]="colors" (inputChange)="onChipInputChanged()" #ColorChips></td-chips>
 
         <mat-form-field id="description" class="form-control--full-width">
           <textarea matInput placeholder="Description" formControlName="description"></textarea>
         </mat-form-field>
+
+        <div class="form-row">
+          <mat-checkbox id="has-expire-checkbox" [value]="hasExpiry" (change)="onHasExpiryCheckbox()">Has Expiry</mat-checkbox>
+          <mat-form-field id="expire-date-calender" class="form-control--half-width" *ngIf="hasExpiry">
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="expireDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
       </div>
       <em-file-upload [parentId]="product?.id || parentId"></em-file-upload>
     </div>
@@ -54,3 +97,5 @@
     </div>
   </mat-card>
 </form>
+
+<span>{{productForm.value | json}}</span>

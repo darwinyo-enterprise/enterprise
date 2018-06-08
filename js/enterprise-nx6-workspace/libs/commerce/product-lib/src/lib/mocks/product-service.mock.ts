@@ -20,7 +20,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
             imageUrl: 'http://mock-image/'
           }
         ],
-        description: 'CPU Product'
+        description: 'CPU Product',
+        stock: 1,
+        discount: 10,
+        location: 'New York',
+        minPurchase: 1,
+        hasExpiry: 'true',
+        expireDate: '2018-06-05T07:00:00.000Z'
       },
       <ProductViewModel>{
         id: '2',
@@ -36,7 +42,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
             imageUrl: 'http://mock-image/'
           }
         ],
-        description: 'CPU Product'
+        description: 'CPU Product',
+        stock: 1,
+        discount: 10,
+        location: 'New York',
+        minPurchase: 1,
+        hasExpiry: 'true',
+        expireDate: '2018-06-05T07:00:00.000Z'
       },
       <ProductViewModel>{
         id: '3',
@@ -52,7 +64,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
             imageUrl: 'http://mock-image/'
           }
         ],
-        description: 'CPU Product'
+        description: 'CPU Product',
+        stock: 1,
+        discount: 10,
+        location: 'New York',
+        minPurchase: 1,
+        hasExpiry: 'true',
+        expireDate: '2018-06-05T07:00:00.000Z'
       },
       <ProductViewModel>{
         id: '4',
@@ -68,7 +86,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
             imageUrl: 'http://mock-image/'
           }
         ],
-        description: 'CPU Product'
+        description: 'CPU Product',
+        stock: 1,
+        discount: 10,
+        location: 'New York',
+        minPurchase: 1,
+        hasExpiry: 'true',
+        expireDate: '2018-06-05T07:00:00.000Z'
       },
       <ProductViewModel>{
         id: '5',
@@ -90,7 +114,13 @@ export const PaginatedProductMock: PaginatedListViewModelItemViewModel =
             imageUrl: 'http://mock-image/'
           }
         ],
-        description: 'CPU Product'
+        description: 'CPU Product',
+        stock: 1,
+        discount: 10,
+        location: 'New York',
+        minPurchase: 1,
+        hasExpiry: 'true',
+        expireDate: '2018-06-05T07:00:00.000Z'
       },
     ],
     pageIndex: 1,
@@ -119,7 +149,13 @@ export const ProductViewModelsMock: ProductViewModel[] = [
         imageUrl: 'http://mock-image/'
       }
     ],
-    description: 'CPU Product'
+    description: 'CPU Product',
+    stock: 1,
+    discount: 10,
+    location: 'New York',
+    minPurchase: 1,
+    hasExpiry: 'true',
+    expireDate: '2018-06-05T07:00:00.000Z'
   },
   <ProductViewModel>{
     id: '2',
@@ -135,7 +171,13 @@ export const ProductViewModelsMock: ProductViewModel[] = [
         imageUrl: 'http://mock-image/'
       }
     ],
-    description: 'CPU Product'
+    description: 'CPU Product',
+    stock: 1,
+    discount: 10,
+    location: 'New York',
+    minPurchase: 1,
+    hasExpiry: 'true',
+    expireDate: '2018-06-05T07:00:00.000Z'
   },
   <ProductViewModel>{
     id: '3',
@@ -151,7 +193,13 @@ export const ProductViewModelsMock: ProductViewModel[] = [
         imageUrl: 'http://mock-image/'
       }
     ],
-    description: 'CPU Product'
+    description: 'CPU Product',
+    stock: 1,
+    discount: 10,
+    location: 'New York',
+    minPurchase: 1,
+    hasExpiry: 'true',
+    expireDate: '2018-06-05T07:00:00.000Z'
   },
   <ProductViewModel>{
     id: '4',
@@ -167,7 +215,13 @@ export const ProductViewModelsMock: ProductViewModel[] = [
         imageUrl: 'http://mock-image/'
       }
     ],
-    description: 'CPU Product'
+    description: 'CPU Product',
+    stock: 1,
+    discount: 10,
+    location: 'New York',
+    minPurchase: 1,
+    hasExpiry: 'true',
+    expireDate: '2018-06-05T07:00:00.000Z'
   },
   <ProductViewModel>{
     id: '5',
@@ -183,6 +237,12 @@ export const ProductViewModelsMock: ProductViewModel[] = [
         imageUrl: 'http://mock-image/'
       }
     ],
-    description: 'CPU Product'
+    description: 'CPU Product',
+    stock: 1,
+    discount: 10,
+    location: 'New York',
+    minPurchase: 1,
+    hasExpiry: 'true',
+    expireDate: '2018-06-05T07:00:00.000Z'
   },
 ]

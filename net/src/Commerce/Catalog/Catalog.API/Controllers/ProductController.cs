@@ -381,7 +381,13 @@ namespace Catalog.API.Controllers
                     Name = result.Name,
                     Price = result.Price,
                     ProductColors = result.ProductColors.ToArray(),
-                    ProductImages = imagesWithUrl.ToArray()
+                    ProductImages = imagesWithUrl.ToArray(),
+                    Location = result.Location,
+                    MinPurchase = result.MinPurchase,
+                    HasExpiry = result.HasExpiry ? "True" : "False",
+                    ExpireDate = result.ExpireDate.ToShortDateString(),
+                    Discount = result.Discount,
+                    Stock = result.AvailableStock,
                 };
                 return Ok(productViewModel);
             }
@@ -390,26 +396,64 @@ namespace Catalog.API.Controllers
         }
 
         /// <summary>
-        ///     Fetch Single Product by Product id
+        ///     Fetch Single Product Details by Product id
         ///     used for display product info anonymously
-        ///     TODO: Change Implementation this not ready yet
         /// </summary>
         /// <param name="id">Product id</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Product</returns>
-        // GET api/v1/Product/5
+        // GET api/v1/Product/info/5
         [HttpGet("info/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductDetailViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProductInfoByIdAsync(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id)) return BadRequest(new { Message = "Id Cant be null" });
 
             var result = await _catalogContext.Products.Where(x => x.Id == id)
+                .Include(x => x.ProductImages)
+                .Include(x => x.ProductColors)
+                .Include(x => x.ProductRatings)
+                .Include(x => x.Manufacturer)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (result != null) return Ok(result);
+            if (result != null)
+            {
+                var imagesWithUrl = new List<ProductImage>();
+                foreach (var img in result.ProductImages.ToList())
+                {
+                    var imgWithUrl = await UrlImageHelper<ProductImage>.GetImageBase64UrlAsync(img.ProductId, img, _fileUtility, "ProductImage",
+                        cancellationToken);
+                    imagesWithUrl.Add(imgWithUrl);
+                }
+
+                var productDetailViewModel = new ProductDetailViewModel
+                {
+                    CategoryId = result.CategoryId,
+                    ManufacturerId = result.ManufacturerId,
+                    ManufacturerName = result.Manufacturer.Name,
+                    Description = result.Description,
+                    Id = result.Id,
+                    Name = result.Name,
+                    Price = result.Price,
+                    ProductColors = result.ProductColors.ToArray(),
+                    ProductImages = imagesWithUrl.ToArray(),
+                    Location = result.Location,
+                    MinPurchase = result.MinPurchase,
+                    Sold = result.TotalSold,
+                    HasExpiry = result.HasExpiry ? "True" : "False",
+                    ExpireDate = result.ExpireDate.ToShortDateString(),
+                    LastUpdated = result.LastUpdated.Value.ToShortDateString(),
+                    Discount = result.Discount,
+                    Stock = result.AvailableStock,
+                    Favorites = result.TotalFavorites,
+                    Reviews = result.TotalReviews,
+                    OverallRating = result.OverallRating,
+                    WishlistCount = result.TotalWishlist
+                };
+                return Ok(productDetailViewModel);
+            }
 
             return NotFound();
         }
@@ -516,7 +560,7 @@ namespace Catalog.API.Controllers
                     Id = product.Id,
                     LastUpdatedBy = product.ActorId,
                     LastUpdated = DateTime.Now,
-                    AvailableStock = 0,
+                    AvailableStock = product.Stock,
                     Name = product.Name,
                     CategoryId = product.CategoryId,
                     ManufacturerId = product.ManufacturerId,
@@ -524,8 +568,14 @@ namespace Catalog.API.Controllers
                     OverallRating = 0,
                     TotalFavorites = 0,
                     TotalReviews = 0,
-                    //TotalSold = 0,
+                    TotalSold = 0,
                     ProductImages = productImages,
+                    TotalWishlist = 0,
+                    Location = product.Location,
+                    MinPurchase = product.MinPurchase,
+                    HasExpiry = Boolean.Parse(product.HasExpiry),
+                    ExpireDate = DateTime.Parse(product.ExpireDate),
+                    Discount = product.Discount,
                 };
                 #endregion
 
