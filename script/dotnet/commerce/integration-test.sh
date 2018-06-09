@@ -1,5 +1,6 @@
 cd ../../
-docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
+ls
+# docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
 
 # cd ./integration-tests/Enterprise.Commerce.IntegrationTests
 # dotnet restore
