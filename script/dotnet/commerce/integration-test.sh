@@ -1,4 +1,4 @@
-cd ../../
+cd ./net
 ls
 # docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
 
