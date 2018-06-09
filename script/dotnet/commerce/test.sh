@@ -4,7 +4,7 @@ dotnet build
 
 dotnet test
 
-cd ./Enterprise.Library.EventBus.Tests
+cd ../Enterprise.Library.EventBus.Tests
 dotnet restore
 dotnet build 
 
