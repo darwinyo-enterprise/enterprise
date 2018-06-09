@@ -1,13 +1,14 @@
 cd ./net/tests/Enterprise.Commerce.Tests
-dotnet restore
-dotnet build 
+#dotnet restore
+#dotnet build 
 
-dotnet test
+#dotnet test
 
+cd ../
 ls
 
-cd ../Enterprise.Library.EventBus.tests
-dotnet restore
-dotnet build 
+cd ./Enterprise.Library.EventBus.tests
+#dotnet restore
+#dotnet build 
 
-dotnet test
+#dotnet test
