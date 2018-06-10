@@ -2,11 +2,13 @@ sudo: required
 language: csharp
 dist: trusty
 mono: none
-dotnet: 2.0.0
+dotnet: 2.1.2
 
 services:
   - docker
 
 script:    # the following commands are just examples, use whatever your build process requires
+  - chmod +x ./script/dotnet/commerce/build.sh
+  - chmod +x ./script/dotnet/commerce/test.sh
   - ./script/dotnet/commerce/build.sh
   - ./script/dotnet/commerce/test.sh
