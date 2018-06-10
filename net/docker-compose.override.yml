@@ -40,22 +40,22 @@ services:
     ports:
       - "5101:80"
 
-  # identity.api:
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ASPNETCORE_URLS=http://0.0.0.0:80
-  #     - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
-  #     - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql.data;Database=Enterprise.Commerce.Service.IdentityDb;User Id=sa;Password=P@ssw0rd} 
-  #     - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
-  #     - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
-  #     - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
-  #     - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
-  #     - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
-  #     - UseCustomizationData=True  
-  #     - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-  #     - OrchestratorType=${ORCHESTRATOR_TYPE}
-  #   ports:
-  #     - "5105:80"
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5104
+      - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql.data;Database=Enterprise.Commerce.Service.IdentityDb;User Id=sa;Password=P@ssw0rd} 
+      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
+      - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
+      - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
+      - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
+      - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - UseCustomizationData=True  
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5105:80"
 
   # order.api:
   #   environment:

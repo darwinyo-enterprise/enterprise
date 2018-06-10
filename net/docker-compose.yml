@@ -32,13 +32,13 @@ services:
       - sql.data
       - rabbitmq
 
-  # identity.api:
-  #   image: darwinyo/identity.api:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/Identity/Identity.API/Dockerfile
-  #   depends_on:
-  #     - sql.data
+  identity.api:
+    image: darwinyo/identity.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Identity/Identity.API/Dockerfile
+    depends_on:
+      - sql.data
 
   # order.api:
   #   image: darwinyo/order.api:${TAG:-latest}

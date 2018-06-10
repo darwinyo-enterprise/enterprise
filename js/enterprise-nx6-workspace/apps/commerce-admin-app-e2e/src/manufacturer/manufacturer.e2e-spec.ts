@@ -18,7 +18,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:1000/manufacturer/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:2000/manufacturer/add');
         })
         it('should add manufacturer when add button clicked', async () => {
             const testName = 'zzz';
@@ -64,7 +64,7 @@ describe('Manufacturer Scenario', () => {
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:1000/manufacturer/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:2000/manufacturer/edit');
         })
         it('should change manufacturer when form edit submitted', async () => {
             await browser.executeScript('window.scrollTo(0,0);');

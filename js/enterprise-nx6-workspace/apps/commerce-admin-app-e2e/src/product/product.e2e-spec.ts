@@ -20,14 +20,14 @@ fdescribe('Product Scenario', () => {
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:1000/product/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:2000/product/add');
         })
         it('should navigate edit product when edit button clicked', async () => {
             await browser.executeScript('window.scrollTo(0,0);');
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:1000/product/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:2000/product/edit');
         })
         it('should display list of products', async () => {
             expect(await page.listItemActions().count()).toBeGreaterThan(1);

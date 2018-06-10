@@ -18,7 +18,7 @@ describe('Category Scenario', () => {
             await browser.sleep(1000);
             await page.listItemBtnAdd().click();
 
-            expect(await browser.getCurrentUrl()).toBe('http://localhost:1000/category/add');
+            expect(await browser.getCurrentUrl()).toBe('http://localhost:2000/category/add');
         })
         it('should add category when add button clicked', async () => {
             const testName = 'zzz';
@@ -64,7 +64,7 @@ describe('Category Scenario', () => {
             await browser.sleep(1000);
             await page.lastEditBtn().click();
             await browser.sleep(1000);
-            expect(await browser.getCurrentUrl()).toContain('http://localhost:1000/category/edit');
+            expect(await browser.getCurrentUrl()).toContain('http://localhost:2000/category/edit');
         })
         it('should change category when form edit submitted', async () => {
             await browser.executeScript('window.scrollTo(0,0);');

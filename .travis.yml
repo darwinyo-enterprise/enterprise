@@ -62,7 +62,7 @@ jobs:
       script:
         - node --version
         - docker-compose -f ./net/docker-compose.yml -f ./net/docker-compose.override.yml up -d
-        - sleep 180
+        - sleep 300
         - docker ps
         - chmod +x ./script/js/commerce/e2e-test.sh
         - ./script/js/commerce/e2e-test.sh

@@ -27,7 +27,7 @@ namespace Identity.API.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseSqlServer(
-                    "Server=.;Initial Catalog=Enterprise.Commerce.Services.IdentityDb;Integrated Security=true");
+                    "Server=tcp:127.0.0.1,5433;Initial Catalog=Enterprise.Commerce.Services.IdentityDb;Integrated Security=true");
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }
