@@ -18,6 +18,7 @@ using Xunit;
 namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 {
     [TestCaseOrderer(TestCollectionOrderer.TypeName, TestCollectionOrderer.AssembyName)]
+    [Collection("Commerce Integration Test")]
     public class Categoriescenarios : CatalogScenarioBase
     {
         private Category GetTestCategory()
