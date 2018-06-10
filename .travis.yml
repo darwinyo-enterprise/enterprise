@@ -10,5 +10,7 @@ services:
 script:    # the following commands are just examples, use whatever your build process requires
   - chmod +x ./script/dotnet/commerce/test.sh
   - chmod +x ./script/dotnet/commerce/integration-test.sh
+  - chmod +x ./script/js/commerce/test.sh
   - ./script/dotnet/commerce/test.sh
   - ./script/dotnet/commerce/integration-test.sh
+  - ./script/js/commerce/test.sh
