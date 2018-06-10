@@ -1,0 +1,9 @@
+sudo: required
+language: csharp
+solution: enterprise.commerce.sln
+services:
+  - docker
+
+script:    # the following commands are just examples, use whatever your build process requires
+  - ./script/dotnet/commerce/build.sh
+  - ./script/dotnet/commerce/test.sh
