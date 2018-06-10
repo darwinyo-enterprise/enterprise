@@ -16,6 +16,19 @@ export class SingleProductFetched {
   constructor() { }
 }
 
+/** Fetch detail info Products Command */
+export class FetchProductDetailInfo {
+  static readonly type = '[COMMERCE] FETCH PRODUCT DETAIL INFO';
+  /** Product Id */
+  constructor(public payload: string) { }
+}
+
+/** Products detail info Fetched Event */
+export class ProductDetailInfoFetched {
+  static readonly type = '[COMMERCE] PRODUCT DETAIL INFO FETCHED';
+  constructor() { }
+}
+
 /** Fetch All Products Command */
 export class FetchProducts {
   static readonly type = '[COMMERCE] FETCH PRODUCTS';

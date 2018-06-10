@@ -10,6 +10,12 @@ export class StarContainerComponent implements OnInit {
   @Input()
   rate: number;
 
+  @Input()
+  isCard = true;
+
+  @Input()
+  reviewsCount = 0;
+
   starWidths: number[];
   constructor() {
     this.starWidths = [];

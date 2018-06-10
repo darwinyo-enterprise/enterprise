@@ -1,0 +1,11 @@
+<div class="product-detail-action__counter">
+  <button id="remove-quantity" class="mat-mini-fab" (click)="removeQuantity()">
+    <i class="material-icons">remove</i>
+  </button>
+  <input #quantity [(ngModel)]="value" (change)="valueChanged()" class="product-detail-action__counter__input" type="number"
+    name="quantity">
+
+  <button id="add-quantity" class="mat-mini-fab" (click)="addQuantity()">
+    <i class="material-icons">add</i>
+  </button>
+</div>

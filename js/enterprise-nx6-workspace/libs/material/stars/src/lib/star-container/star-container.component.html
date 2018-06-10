@@ -1,8 +1,19 @@
-<div class="card-item__detail__star-rate">
+<div class="card-item__detail__star-rate" *ngIf="isCard">
+
   <ng-template ngFor let-star [ngForOf]="starWidths">
-    <em-star [starWidth]="star"></em-star>
+    <em-star [starWidth]="star" [isCard]="isCard"></em-star>
   </ng-template>
   <span class="card-item__detail__star-rate__rate-count">
     ({{rate}})
+  </span>
+</div>
+
+<div class="product-detail__star-rate" *ngIf="!isCard">
+
+  <ng-template ngFor let-star [ngForOf]="starWidths">
+    <em-star [starWidth]="star" [isCard]="isCard"></em-star>
+  </ng-template>
+  <span class="product-detail__star-rate__rate-count">
+    {{rate}} out of 5 stars ({{reviewsCount}} reviews)
   </span>
 </div>

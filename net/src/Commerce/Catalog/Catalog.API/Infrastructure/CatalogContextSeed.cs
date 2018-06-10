@@ -233,7 +233,7 @@ namespace Catalog.API.Infrastructure
                 logger.LogError(ex.Message);
                 return GetPreconfiguredManufacturer();
             }
-
+            CleanImageDirectory("Manufacturer");
             return File.ReadAllLines(csvFileManufacturers)
                 .Skip(1) // skip header row
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
@@ -370,7 +370,7 @@ namespace Catalog.API.Infrastructure
                 logger.LogError(ex.Message);
                 return GetPreconfiguredCategory();
             }
-
+            CleanImageDirectory("Category");
             return File.ReadAllLines(csvFileCategorys)
                 .Skip(1) // skip header row
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
@@ -643,12 +643,13 @@ namespace Catalog.API.Infrastructure
                 return GetPreconfiguredProductImage();
             }
 
+            CleanImageDirectory("ProductImage");
             return File.ReadAllLines(csvFileProductImages)
                 .Skip(1) // skip header row
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(x =>
                 {
-                    PlacePictureById(x, csvheaders, _env.WebRootPath + "/ProductImage");
+                    PlacePictureById(x, csvheaders, _env.WebRootPath + "/ProductImage", "productid");
                     return CreateProductImage(x, csvheaders);
                 })
                 .OnCaughtException(ex =>
@@ -657,6 +658,29 @@ namespace Catalog.API.Infrastructure
                     return null;
                 })
                 .Where(x => x != null);
+        }
+
+        private void CleanImageDirectory(string parentDirName)
+        {
+            var dirPath = _env.WebRootPath;
+            var directory = new DirectoryInfo(dirPath);
+            var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == parentDirName);
+
+            if (dir != null && dir.Exists)
+            {
+                if (dir.GetDirectories().Length > 0)
+                {
+                    foreach (var fileDir in dir.GetDirectories())
+                    {
+                        foreach (var fileInfo in fileDir.GetFiles())
+                        {
+                            fileInfo.Delete();
+                        }
+
+                        fileDir.Delete();
+                    }
+                }
+            }
         }
 
         private ProductImage CreateProductImage(string[] column, string[] headers)
@@ -782,18 +806,12 @@ namespace Catalog.API.Infrastructure
             ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
         }
 
-        private void PlacePictureById(string[] column, string[] headers, string picturePath)
+        private void PlacePictureById(string[] column, string[] headers, string picturePath, string idFolder = "id")
         {
             var directory = new DirectoryInfo(picturePath);
 
-            var id = column[Array.IndexOf(headers, "id")].Trim('"').Trim();
+            var id = column[Array.IndexOf(headers, idFolder)].Trim('"').Trim();
             var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == id.ToString());
-            if (dir != null && dir.Exists)
-            {
-                foreach (var fileInfo in dir.GetFiles()) fileInfo.Delete();
-
-                dir.Delete();
-            }
 
             var files = directory.GetFiles();
             directory.CreateSubdirectory(id);

@@ -15,6 +15,18 @@ export class StarContainerComponentPage extends BaseTestPage<StarContainerCompon
   get rate_count() {
     return this.query<HTMLElement>('.card-item__detail__star-rate__rate-count');
   }
+  get rate_count_productDetail() {
+    return this.query<HTMLElement>('.product-detail__star-rate__rate-count');
+  }
+  get productDetailContainer() {
+    return this.query<HTMLElement>('.product-detail__star-rate');
+  }
+  get cardContainer() {
+    return this.query<HTMLElement>('.card-item__detail__star-rate');
+  }
+  get reviewCount() {
+    return this.query<HTMLElement>('.product-detail__star-rate__rate-count');
+  }
 }
 
 describe('StarContainerComponent', () => {
@@ -60,6 +72,26 @@ describe('StarContainerComponent', () => {
       component.rate = 4.95;
       fixture.detectChanges();
       expect(page.rate_count.innerHTML).toContain(component.rate.toString());
+    })
+    it('should render card star when isCard is true', () => {
+      component.isCard = true;
+      fixture.detectChanges();
+      expect(page.cardContainer).not.toBeNull();
+      expect(page.productDetailContainer).toBeNull();
+    })
+    it('should render review count when defined', () => {
+      component.isCard = false;
+      component.reviewsCount = 131;
+      component.rate = 4.5;
+      fixture.detectChanges();
+      expect(page.reviewCount.innerHTML).toContain(component.reviewsCount.toString());
+    })
+    it('should render rate count product details', () => {
+      component.isCard = false;
+      component.reviewsCount = 131;
+      component.rate = 4.5;
+      fixture.detectChanges();
+      expect(page.reviewCount.innerHTML).toContain(component.rate.toString());
     })
   })
 });

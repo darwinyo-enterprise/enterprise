@@ -1,11 +1,13 @@
-<div class="product-detail__container__header__image-container">
+<mat-card>
   <div class="product-detail__container__header__image-container__main-image">
+    <span class="product-detail__container__header__image-container__helper"></span>
     <img src="{{(selectedImage | async)?.fileUrl}}" alt="">
   </div>
   <div class="product-detail__container__header__image-container__opt-image scrollbar">
-    <div class="product-detail__container__header__image-container__opt-image__item" (click)="onOptionImageClicked(image.id)"
-      *ngFor="let image of (images | async)">
-      <img [class.active]="image.id===(selectedImage | async).id" src="{{image.fileUrl}}" alt="">
+    <div class="product-detail__container__header__image-container__opt-image__item" [class.active]="image.id===(selectedImage | async).id"
+      (click)="onOptionImageClicked(image.id)" *ngFor="let image of (images | async)">
+      <span class="product-detail__container__header__image-container__helper"></span>
+      <img src="{{image.fileUrl}}" alt="">
     </div>
   </div>
-</div>
+</mat-card>

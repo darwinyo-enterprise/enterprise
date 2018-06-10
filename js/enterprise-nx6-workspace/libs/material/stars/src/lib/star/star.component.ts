@@ -9,6 +9,8 @@ export class StarComponent implements OnInit {
   @Input()
   starWidth: number;
 
+  @Input()
+  isCard: boolean;
   constructor() { }
 
   ngOnInit() {

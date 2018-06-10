@@ -28,14 +28,17 @@ import {
   FetchPaginatedHotProductsList,
   PaginatedHotProductsListFetched,
   PaginatedLatestProductsListFetched,
-  FetchPaginatedLatestProductsList
+  FetchPaginatedLatestProductsList,
+  FetchProductDetailInfo,
+  ProductDetailInfoFetched
 } from './../shared/product.actions';
 import {
   ProductService,
   ProductViewModel,
   PaginatedListViewModelItemViewModel,
   PaginatedCatalogViewModelCatalogItemViewModel,
-  CatalogItemViewModel
+  CatalogItemViewModel,
+  ProductDetailViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
@@ -49,6 +52,7 @@ export interface ProductStateModel {
   paginatedHotProducts: CatalogItemViewModel[];
   paginatedLatestProducts: CatalogItemViewModel[];
   selectedProduct: ProductViewModel;
+  selectedProductDetailInfo: ProductDetailViewModel;
 }
 
 const defaults: ProductStateModel = {
@@ -56,7 +60,8 @@ const defaults: ProductStateModel = {
   paginatedProducts: null,
   paginatedHotProducts: null,
   paginatedLatestProducts: null,
-  selectedProduct: null
+  selectedProduct: null,
+  selectedProductDetailInfo: null
 };
 
 @State({
@@ -86,6 +91,10 @@ export class ProductState {
   @Selector()
   static getPaginatedProduct(state: ProductStateModel) {
     return state.paginatedProducts;
+  }
+  @Selector()
+  static getSelectedProductDetailInfo(state: ProductStateModel) {
+    return state.selectedProductDetailInfo;
   }
   //#endregion
 
@@ -119,6 +128,39 @@ export class ProductState {
   /** Single Product Fetched Event */
   @Action(SingleProductFetched)
   singleProductFetched(
+    { dispatch }: StateContext<ProductStateModel>
+  ) {
+    dispatch(ResolveLoadingOverlay);
+  }
+
+  // DOne
+  /** Command Fetch Product Detail Info API */
+  @Action(FetchProductDetailInfo, { cancelUncompleted: true })
+  fetchProductDetailInfo(
+    { patchState, dispatch }: StateContext<ProductStateModel>,
+    { payload }: FetchSingleProduct
+  ) {
+    // Register Loading Overlay
+    dispatch(RegisterLoadingOverlay);
+
+    // call product service
+    return this.productService
+      .apiV1ProductInfoByIdGet(payload)
+      .pipe(
+        tap(
+          (product) => patchState({
+            selectedProductDetailInfo: product
+          }),
+          (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/home'] })]),
+          () => { dispatch(ProductDetailInfoFetched) }
+        )
+      );
+  }
+
+  // Done
+  /** Single ProductDetailInfoFetched Event */
+  @Action(ProductDetailInfoFetched)
+  productDetailInfoFetched(
     { dispatch }: StateContext<ProductStateModel>
   ) {
     dispatch(ResolveLoadingOverlay);

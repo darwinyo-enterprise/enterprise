@@ -578,6 +578,34 @@
           }
         }
       }
+    },
+    "material-counter": {
+      "root": "libs/material/counter",
+      "sourceRoot": "libs/material/counter/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material/counter/src/test.ts",
+            "tsConfig": "libs/material/counter/tsconfig.spec.json",
+            "karmaConfig": "libs/material/counter/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material/counter/tsconfig.lib.json",
+              "libs/material/counter/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

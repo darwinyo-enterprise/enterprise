@@ -2,12 +2,14 @@ import { Routes, RouterModule } from "@angular/router";
 import { PageNotFoundComponent, NotAuthorizedComponent } from "@enterprise/core";
 import { NgModule } from "@angular/core";
 import { HomeComponent } from "./core/home/home.component";
+import { DetailCatalogComponent } from "./catalog/detail-catalog/detail-catalog.component";
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
 
     { path: 'not-authorized', component: NotAuthorizedComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'product-detail/:id', component: DetailCatalogComponent },
     { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -15,7 +17,7 @@ const appRoutes: Routes = [
     imports: [
         RouterModule.forRoot(
             appRoutes,
-            { enableTracing: true }
+            // { enableTracing: true }
         )
     ],
     exports: [

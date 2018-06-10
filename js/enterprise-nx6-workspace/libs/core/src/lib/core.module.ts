@@ -24,7 +24,7 @@ import {
     SharedModule,
     NgxsModule.forRoot([RouterState, AppState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
 
     CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
     CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,

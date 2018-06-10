@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Models;
@@ -56,7 +57,7 @@ namespace Catalog.API.Helpers
         /// <param name="folderName">folder group name => Manufacturer, Product, Category</param>
         /// <param name="cancellationToken"></param>
         /// <returns>base64 format image model</returns>
-        public static async Task<T> GetImageBase64UrlAsync(string id,T item, IFileUtility fileUtility, string folderName, CancellationToken cancellationToken)
+        public static async Task<T> GetImageBase64UrlAsync(string id, T item, IFileUtility fileUtility, string folderName, CancellationToken cancellationToken)
         {
             var imageFileExtension = Path.GetExtension(item.ImageName);
 

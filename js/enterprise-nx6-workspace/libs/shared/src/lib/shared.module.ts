@@ -27,7 +27,7 @@ import {
   MatNativeDateModule,
   MatSliderModule,
   MatAutocompleteModule,
-  MatCheckboxModule
+  MatCheckboxModule,
 } from '@angular/material';
 
 import { ReactiveFormsModule } from '@angular/forms';

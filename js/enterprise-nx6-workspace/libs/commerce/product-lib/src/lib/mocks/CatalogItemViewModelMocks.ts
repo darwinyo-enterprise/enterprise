@@ -1,4 +1,4 @@
-import { CatalogItemViewModel, PaginatedCatalogViewModelCatalogItemViewModel } from "@enterprise/commerce/catalog-lib";
+import { CatalogItemViewModel, PaginatedCatalogViewModelCatalogItemViewModel, ProductDetailViewModel } from "@enterprise/commerce/catalog-lib";
 
 export const CatalogItemViewModelMock: CatalogItemViewModel = {
     catalogId: '1',
@@ -14,6 +14,99 @@ export const CatalogItemViewModelMock: CatalogItemViewModel = {
     imageUrl: 'hello',
     imageName: 'hex.svg'
 }
+export const ProductDetailViewModelMocks: ProductDetailViewModel = {
+    sold: 0,
+    lastUpdated: "04/20/2018",
+    favorites: 3210,
+    reviews: 5031,
+    overallRating: 5.00,
+    wishlistCount: 2123,
+    id: "21",
+    name: "PS 3",
+    price: 600.00,
+    description: "PlayStation 3 160GB system, you get free PlayStation Network membership, built-in Wi-Fi and 160GB of hard disk drive storage for games, music, videos and photos. This system will come with firmware 3.6 or greater. You can easily upgrade to the latest firmware for free, simply by connecting the PS3 to the internet.",
+    manufacturerId: 6,
+    manufacturerName: "Sony",
+    categoryId: 4,
+    categoryName: null,
+    actorId: null,
+    productImages: [{
+        productId: "21",
+        id: 21,
+        imageUrl: "http://localhost:5101/api/v1/product/image/21",
+        imageName: "PS3.jpg"
+    }, {
+        productId: "21",
+        id: 42,
+        imageUrl: "http://localhost:5101/api/v1/product/image/42",
+        imageName: "GooglePixel2.jpg"
+    }, {
+        productId: "21",
+        id: 63,
+        imageUrl: "http://localhost:5101/api/v1/product/image/63",
+        imageName: "docker.png"
+    }, {
+        productId: "21",
+        id: 78,
+        imageUrl: "http://localhost:5101/api/v1/product/image/78",
+        imageName: "AsusROG.jpg"
+    }, {
+        productId: "21",
+        id: 90,
+        imageUrl: "http://localhost:5101/api/v1/product/image/90",
+        imageName: "GooglePixel2.jpg"
+    }, {
+        productId: "21",
+        id: 98,
+        imageUrl: "http://localhost:5101/api/v1/product/image/98",
+        imageName: "MacbookPro.jpeg"
+    }, {
+        productId: "21",
+        id: 122,
+        imageUrl: "http://localhost:5101/api/v1/product/image/122",
+        imageName: "MacbookPro.jpeg"
+    }, {
+        productId: "21",
+        id: 143,
+        imageUrl: "http://localhost:5101/api/v1/product/image/143",
+        imageName: "SurfacePro3.jpg"
+    }, {
+        productId: "21",
+        id: 164,
+        imageUrl: "http://localhost:5101/api/v1/product/image/164",
+        imageName: "PSVITA.jpg"
+    }, {
+        productId: "21",
+        id: 179,
+        imageUrl: "http://localhost:5101/api/v1/product/image/179",
+        imageName: "SonyXperiaX.jpg"
+    }, {
+        productId: "21",
+        id: 191,
+        imageUrl: "http://localhost:5101/api/v1/product/image/191",
+        imageName: "SurfacePro3.jpg"
+    }, {
+        productId: "21",
+        id: 199,
+        imageUrl: "http://localhost:5101/api/v1/product/image/199",
+        imageName: "iPhoneX.png"
+    }],
+    productColors: [{
+        id: 39,
+        productId: "21",
+        name: "Black"
+    }, {
+        id: 40,
+        productId: "21",
+        name: "White"
+    }],
+    location: "Tokyo",
+    minPurchase: 21,
+    hasExpiry: "True",
+    expireDate: "01/01/0001",
+    discount: 20.00,
+    stock: 3
+};
 
 export const PaginatedCatalogItemViewModelMock: PaginatedCatalogViewModelCatalogItemViewModel = {
     pageIndex: 0, pageSize: 10, count: 24, data:

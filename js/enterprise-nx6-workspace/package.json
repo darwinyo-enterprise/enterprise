@@ -24,7 +24,7 @@
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
-    "e2e:commerce-admin":"ng e2e commerce-admin-app-e2e --port 1000"
+    "e2e:commerce-admin": "ng e2e commerce-admin-app-e2e --port 1000"
   },
   "private": true,
   "dependencies": {

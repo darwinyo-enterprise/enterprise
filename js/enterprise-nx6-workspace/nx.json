@@ -48,6 +48,9 @@
     },
     "material-gallery": {
       "tags": []
+    },
+    "material-counter": {
+      "tags": []
     }
   }
 }

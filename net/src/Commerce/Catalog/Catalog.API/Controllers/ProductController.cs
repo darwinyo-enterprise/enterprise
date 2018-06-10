@@ -420,13 +420,8 @@ namespace Catalog.API.Controllers
 
             if (result != null)
             {
-                var imagesWithUrl = new List<ProductImage>();
-                foreach (var img in result.ProductImages.ToList())
-                {
-                    var imgWithUrl = await UrlImageHelper<ProductImage>.GetImageBase64UrlAsync(img.ProductId, img, _fileUtility, "ProductImage",
-                        cancellationToken);
-                    imagesWithUrl.Add(imgWithUrl);
-                }
+                var imagesWithUrl = UrlImageHelper<ProductImage>.ChangeUriPlaceholder(result.ProductImages.ToList(),
+                    _settings.ProductImageBaseUrl, _settings.AzureStorageEnabled);
 
                 var productDetailViewModel = new ProductDetailViewModel
                 {

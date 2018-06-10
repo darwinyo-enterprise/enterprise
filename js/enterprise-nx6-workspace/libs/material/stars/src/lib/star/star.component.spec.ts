@@ -11,6 +11,9 @@ export class StarComponentPage extends BaseTestPage<StarComponent> {
   get starlit() {
     return this.query<HTMLElement>(".card-item__detail__star-rate__lit");
   }
+  get starlitProductDetail() {
+    return this.query<HTMLElement>(".product-detail__star-rate__lit");
+  }
 }
 
 describe('StarComponent', () => {
@@ -32,9 +35,16 @@ describe('StarComponent', () => {
     page = new StarComponentPage(fixture);
   });
 
-  it('should render correct width star by starWidth Input', () => {
+  it('should render correct width star by starWidth Input card', () => {
+    component.isCard = true;
     component.starWidth = 20;
     fixture.detectChanges();
     expect(page.starlit.style.width).toContain('20%');
+  });
+  it('should render correct width star by starWidth Input product detail', () => {
+    component.isCard = false;
+    component.starWidth = 20;
+    fixture.detectChanges();
+    expect(page.starlitProductDetail.style.width).toContain('20%');
   });
 });

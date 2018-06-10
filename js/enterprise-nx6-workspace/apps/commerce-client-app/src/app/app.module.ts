@@ -7,6 +7,7 @@ import { NgxsModule } from '@ngxs/store';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '@enterprise/shared';
 import { CoreModule } from './core/core.module';
+import { CatalogModule } from './catalog/catalog.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { CoreModule } from './core/core.module';
     SharedModule,
     NxModule.forRoot(),
     AppRoutingModule,
+    CatalogModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

@@ -1,3 +1,7 @@
-body{
+body {
   background-color: $secondary-background-color;
+}
+
+.no-shadow {
+  box-shadow: none !important;
 }
