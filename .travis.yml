@@ -3,6 +3,10 @@ language: csharp
 dist: trusty
 mono: none
 dotnet: 2.1.2
+node_js:
+  - lts/*
+  - "8.11.2"
+
 
 # env:
 #   global:
@@ -20,7 +24,7 @@ before_script:
   
 script:
   # - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
-  
+  - node --version
   - chmod +x ./script/js/commerce/test.sh
   # - chmod +x ./script/dotnet/commerce/test.sh
   - chmod +x ./script/dotnet/commerce/integration-test.sh
