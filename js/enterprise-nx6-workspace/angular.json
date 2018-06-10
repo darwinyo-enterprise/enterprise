@@ -254,7 +254,8 @@
           "options": {
             "main": "libs/material/file-upload/src/test.ts",
             "tsConfig": "libs/material/file-upload/tsconfig.spec.json",
-            "karmaConfig": "libs/material/file-upload/karma.conf.js"
+            "karmaConfig": "libs/material/file-upload/karma.conf.js",
+            "polyfills": "libs/material/file-upload/src/polyfills.ts"
           }
         },
         "lint": {
@@ -282,7 +283,8 @@
           "options": {
             "main": "libs/material/list-item-actions/src/test.ts",
             "tsConfig": "libs/material/list-item-actions/tsconfig.spec.json",
-            "karmaConfig": "libs/material/list-item-actions/karma.conf.js"
+            "karmaConfig": "libs/material/list-item-actions/karma.conf.js",
+            "polyfills": "libs/material/list-item-actions/src/polyfills.ts"
           }
         },
         "lint": {
@@ -310,7 +312,8 @@
           "options": {
             "main": "libs/core/src/test.ts",
             "tsConfig": "libs/core/tsconfig.spec.json",
-            "karmaConfig": "libs/core/karma.conf.js"
+            "karmaConfig": "libs/core/karma.conf.js",
+            "polyfills": "libs/core/src/polyfills.ts"
           }
         },
         "lint": {
@@ -366,7 +369,8 @@
           "options": {
             "main": "libs/shared/src/test.ts",
             "tsConfig": "libs/shared/tsconfig.spec.json",
-            "karmaConfig": "libs/shared/karma.conf.js"
+            "karmaConfig": "libs/shared/karma.conf.js",
+            "polyfills": "libs/shared/src/polyfills.ts"
           }
         },
         "lint": {
@@ -394,7 +398,8 @@
           "options": {
             "main": "libs/commerce/catalog-lib/src/test.ts",
             "tsConfig": "libs/commerce/catalog-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/catalog-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/catalog-lib/karma.conf.js",
+            "polyfills": "libs/commerce/catalog-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -422,7 +427,8 @@
           "options": {
             "main": "libs/commerce/category-lib/src/test.ts",
             "tsConfig": "libs/commerce/category-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/category-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/category-lib/karma.conf.js",
+            "polyfills": "libs/commerce/category-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -450,7 +456,8 @@
           "options": {
             "main": "libs/commerce/manufacturer-lib/src/test.ts",
             "tsConfig": "libs/commerce/manufacturer-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/manufacturer-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/manufacturer-lib/karma.conf.js",
+            "polyfills": "libs/commerce/manufacturer-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -478,7 +485,8 @@
           "options": {
             "main": "libs/commerce/product-lib/src/test.ts",
             "tsConfig": "libs/commerce/product-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/product-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/product-lib/karma.conf.js",
+            "polyfills": "libs/commerce/product-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -506,7 +514,8 @@
           "options": {
             "main": "libs/commerce/core/src/test.ts",
             "tsConfig": "libs/commerce/core/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/core/karma.conf.js"
+            "karmaConfig": "libs/commerce/core/karma.conf.js",
+            "polyfills": "libs/commerce/core/src/polyfills.ts"
           }
         },
         "lint": {
@@ -534,7 +543,8 @@
           "options": {
             "main": "libs/material/stars/src/test.ts",
             "tsConfig": "libs/material/stars/tsconfig.spec.json",
-            "karmaConfig": "libs/material/stars/karma.conf.js"
+            "karmaConfig": "libs/material/stars/karma.conf.js",
+            "polyfills": "libs/material/stars/src/polyfills.ts"
           }
         },
         "lint": {
@@ -562,7 +572,8 @@
           "options": {
             "main": "libs/material/gallery/src/test.ts",
             "tsConfig": "libs/material/gallery/tsconfig.spec.json",
-            "karmaConfig": "libs/material/gallery/karma.conf.js"
+            "karmaConfig": "libs/material/gallery/karma.conf.js",
+            "polyfills": "libs/material/gallery/src/polyfills.ts"
           }
         },
         "lint": {
@@ -590,7 +601,8 @@
           "options": {
             "main": "libs/material/counter/src/test.ts",
             "tsConfig": "libs/material/counter/tsconfig.spec.json",
-            "karmaConfig": "libs/material/counter/karma.conf.js"
+            "karmaConfig": "libs/material/counter/karma.conf.js",
+            "polyfills": "libs/material/counter/src/polyfills.ts"
           }
         },
         "lint": {

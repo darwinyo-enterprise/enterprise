@@ -200,7 +200,6 @@ export class ProductFormComponent implements OnInit, OnChanges, OnDestroy {
       alert('error')
     }, () => {
       if (this.product !== null) {
-        console.log(this.product);
         this.productForm.reset({
           id: this.product.id || '',
           name: this.product.name || '',

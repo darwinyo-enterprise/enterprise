@@ -5,6 +5,7 @@ import { BaseTestPage } from '@enterprise/core/testing/src';
 import { GalleryState } from '../shared/gallery.state';
 import { NgxsModule } from '@ngxs/store';
 import { GalleryMocks } from '../mocks/gallery.mocks';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 export class GalleryContainerPage extends BaseTestPage<GalleryContainerComponent> {
   constructor(public fixture: ComponentFixture<GalleryContainerComponent>) {
@@ -13,6 +14,9 @@ export class GalleryContainerPage extends BaseTestPage<GalleryContainerComponent
 
   get mainImage() {
     return this.query<HTMLInputElement>(".product-detail__container__header__image-container__main-image > img");
+  }
+  get optImageContainer() {
+    return this.queryAll<HTMLElement>(".product-detail__container__header__image-container__opt-image__item");
   }
 
   get optImage() {
@@ -28,7 +32,8 @@ describe('GalleryContainerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([GalleryState])],
-      declarations: [GalleryContainerComponent]
+      declarations: [GalleryContainerComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -78,12 +83,12 @@ describe('GalleryContainerComponent', () => {
       component.optImages = GalleryMocks;
       component.ngOnInit();
       fixture.detectChanges();
-      expect(page.optImage[0].classList.contains("active")).toBeTruthy();
+      expect(page.optImageContainer[0].classList.contains("active")).toBeTruthy();
       fixture.detectChanges();
       page.optImage[1].click();
       fixture.detectChanges();
-      expect(page.optImage[0].classList.contains("active")).toBeFalsy();
-      expect(page.optImage[1].classList.contains("active")).toBeTruthy();
+      expect(page.optImageContainer[0].classList.contains("active")).toBeFalsy();
+      expect(page.optImageContainer[1].classList.contains("active")).toBeTruthy();
     })
   })
 });

@@ -2,13 +2,15 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc/libs/commerce/category-lib",
+    "module": "commonjs",
     "types": [
       "jasmine",
       "node"
     ]
   },
   "files": [
-    "src/test.ts"
+    "src/test.ts",
+    "src/polyfills.ts"
   ],
   "include": [
     "**/*.spec.ts",

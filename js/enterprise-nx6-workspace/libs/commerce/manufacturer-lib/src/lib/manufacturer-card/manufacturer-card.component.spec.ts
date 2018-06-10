@@ -11,13 +11,13 @@ export class ManufacturerCardComponentPage extends BaseTestPage<ManufacturerCard
     super(fixture);
   }
   get card() {
-    return this.query<HTMLImageElement>(".card-item");
+    return this.query<HTMLImageElement>(".card-item--mini");
   }
   get cardImage() {
-    return this.query<HTMLImageElement>(".card-item__image > img");
+    return this.query<HTMLImageElement>(".card-item--mini__image > img");
   }
   get cardTitle() {
-    return this.query<HTMLElement>('.card-item__title');
+    return this.query<HTMLElement>('.card-item--mini__title');
   }
 }
 
