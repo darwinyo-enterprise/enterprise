@@ -37,7 +37,7 @@ commerce_catalog_unit_test:
     - dotnet build ./Enterprise.Commerce.Tests.csproj
     - dotnet test ./Enterprise.Commerce.Tests.csproj
 
-commerce_catalog_unit_test:
+commerce_frontend_unit_test:
   stage: test
   image: node:10.4.0-alpine
   cache:
