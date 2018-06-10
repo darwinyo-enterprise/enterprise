@@ -1,48 +1,48 @@
 jobs:
   include:
-    - stage: sass-unit-test
-      sudo: required
-      language: node_js
-      dist: trusty
-      node_js:
-        - 8.9
-      script:
-        - chmod +x ./script/sass/test.sh
-        - ./script/sass/test.sh
+    # - stage: sass-unit-test
+    #   sudo: required
+    #   language: node_js
+    #   dist: trusty
+    #   node_js:
+    #     - 8.9
+    #   script:
+    #     - chmod +x ./script/sass/test.sh
+    #     - ./script/sass/test.sh
 
-    - stage: back-end-unit-test
-      sudo: required
-      language: csharp
-      dist: trusty
-      mono: none
-      dotnet: 2.1.2
-      services:
-        - docker
-      script: 
-        - chmod +x ./script/dotnet/commerce/test.sh
-        - ./script/dotnet/commerce/test.sh
+    # - stage: back-end-unit-test
+    #   sudo: required
+    #   language: csharp
+    #   dist: trusty
+    #   mono: none
+    #   dotnet: 2.1.2
+    #   services:
+    #     - docker
+    #   script: 
+    #     - chmod +x ./script/dotnet/commerce/test.sh
+    #     - ./script/dotnet/commerce/test.sh
 
-    - stage: back-end-integration-test
-      sudo: required
-      language: csharp
-      dist: trusty
-      mono: none
-      dotnet: 2.1.2
-      services:
-        - docker
-      script: 
-        - chmod +x ./script/dotnet/commerce/integration-test.sh
-        - ./script/dotnet/commerce/integration-test.sh
+    # - stage: back-end-integration-test
+    #   sudo: required
+    #   language: csharp
+    #   dist: trusty
+    #   mono: none
+    #   dotnet: 2.1.2
+    #   services:
+    #     - docker
+    #   script: 
+    #     - chmod +x ./script/dotnet/commerce/integration-test.sh
+    #     - ./script/dotnet/commerce/integration-test.sh
 
-    - stage: front-end-unit-test
-      sudo: required
-      language: node_js
-      dist: trusty
-      node_js:
-        - 8.9
-      script:
-        - chmod +x ./script/js/commerce/test.sh
-        - ./script/js/commerce/test.sh
+    # - stage: front-end-unit-test
+    #   sudo: required
+    #   language: node_js
+    #   dist: trusty
+    #   node_js:
+    #     - 8.9
+    #   script:
+    #     - chmod +x ./script/js/commerce/test.sh
+    #     - ./script/js/commerce/test.sh
 
     - stage: front-end-e2e-test
       sudo: required
