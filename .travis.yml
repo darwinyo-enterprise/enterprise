@@ -4,13 +4,38 @@ dist: trusty
 mono: none
 dotnet: 2.1.2
 
+env:
+  global:
+    - IMAGE_NAME=darwinyo/commerce-integration-test
+    - REGISTRY_USER=darwinyo
+    - REGISTRY_PASS=P@ssw0rd
+    - secret: "<something long>"
+
 services:
   - docker
 
-script:    # the following commands are just examples, use whatever your build process requires
+before_script:
+  - version="$(awk '$2 == "CAKE_SERVICE_VERSION" { print $3; exit }' Dockerfile)"
+  # - docker pull "$IMAGE_NAME" || true
+  
+script:
+  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
   # - chmod +x ./script/dotnet/commerce/test.sh
   - chmod +x ./script/dotnet/commerce/integration-test.sh
   # - chmod +x ./script/js/commerce/test.sh
   # - ./script/dotnet/commerce/test.sh
   - ./script/dotnet/commerce/integration-test.sh
   # - ./script/js/commerce/test.sh
+
+after_script:
+  # - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
+deploy:
+  provider: script
+  script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
+  on:
+    branch: Commerce/ClientCoreFeature
