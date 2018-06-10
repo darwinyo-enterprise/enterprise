@@ -61,7 +61,7 @@ jobs:
         - sh -e /etc/init.d/xvfb start
       script:
         - node --version
-        - docker-compose -f ./net/docker-compose.yml -f ./net/docker-compose.override.yml -d up
+        - docker-compose -f ./net/docker-compose.yml -f ./net/docker-compose.override.yml up -d
         - sleep 180
         - docker ps
         - chmod +x ./script/js/commerce/e2e-test.sh
