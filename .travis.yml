@@ -66,3 +66,13 @@ jobs:
         - node --version
         - chmod +x ./script/js/commerce/e2e-test.sh
         - ./script/js/commerce/e2e-test.sh
+
+    - stage: publish-release
+      script:
+        - echo "Deploying to github"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_OAUTH_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
