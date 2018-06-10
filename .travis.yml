@@ -1,53 +1,71 @@
-sudo: required
-language: csharp
-dist: trusty
-mono: none
-dotnet: 2.1.2
+jobs:
+  include:
+    - stage: front-end-unit-test
+      sudo: required
+      language: node_js
+      dist: trusty
+      node_js:
+        - 8.9
+      addons:
+        apt:
+          sources:
+            - google-chrome
+          packages:
+            - google-chrome-stable
+      script:
+        - node --version
+        - chmod +x ./script/js/commerce/test.sh
+        - ./script/js/commerce/test.sh
+    # - stage: unit-test
+    #   sudo: required
+    #   language: csharp
+    #   dist: trusty
+    #   mono: none
+    #   dotnet: 2.1.2
+    #   script: ./test 1
+    # - # stage name not required, will continue to use `test`
+    #   script: ./test 2
+    # - stage: integration-test
+    #   script: ./deploy
+    
 
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
 
-node_js:
-  - 8.9
+# sudo: required
+# language: csharp
+# dist: trusty
+# mono: none
+# dotnet: 2.1.2
+# node_js:
+#   - 8.9
+
+# services:
+#   - docker
+
+# before_script:
+#   - npm
+#   # - version="$(awk '$2 == "CAKE_SERVICE_VERSION" { print $3; exit }' Dockerfile)"
+#   # - docker pull "$IMAGE_NAME" || true
   
-# env:
-#   global:
-#     - IMAGE_NAME=darwinyo/commerce-integration-test
-#     - REGISTRY_USER=darwinyo
-#     - REGISTRY_PASS=P@ssw0rd
-#     - secret: "<something long>"
-
-services:
-  - docker
-
-before_script:
-  # - version="$(awk '$2 == "CAKE_SERVICE_VERSION" { print $3; exit }' Dockerfile)"
-  # - docker pull "$IMAGE_NAME" || true
-  
-script:
-  # - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
-  - node --version
-  - chmod +x ./script/js/commerce/test.sh
-  # - chmod +x ./script/dotnet/commerce/test.sh
-  - chmod +x ./script/dotnet/commerce/integration-test.sh
-  - ./script/js/commerce/test.sh
-  # - ./script/dotnet/commerce/test.sh
-  - ./script/dotnet/commerce/integration-test.sh
+# script:
+#   # - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+#   - node --version
+#   - chmod +x ./script/js/commerce/test.sh
+#   # - chmod +x ./script/dotnet/commerce/test.sh
+#   - chmod +x ./script/dotnet/commerce/integration-test.sh
+#   - ./script/js/commerce/test.sh
+#   # - ./script/dotnet/commerce/test.sh
+#   - ./script/dotnet/commerce/integration-test.sh
   
 
-after_script:
-  # - docker images
+# after_script:
+#   # - docker images
 
-# before_deploy:
-#   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-#   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-  # - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
-# deploy:
-#   provider: script
-#   script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
-#   on:
-#     branch: Commerce/ClientCoreFeature
+# # before_deploy:
+# #   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+# #   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+#   # - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
+# # deploy:
+# #   provider: script
+# #   script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
+# #   on:
+# #     branch: Commerce/ClientCoreFeature
