@@ -655,7 +655,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 var result =
                     JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
 
-                foreach (var image in result.ProductImages) Assert.Contains("base64", image.ImageUrl);
+                foreach (var image in result.ProductImages) Assert.Contains("http", image.ImageUrl);
             }
         }
 
@@ -683,7 +683,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     Price = productSelected.Price,
                     ProductColors = productSelected.ProductColors.ToArray(),
                     ProductImages = productSelected.ProductImages.ToArray(),
-                    Location = "Jakarta",
+                    Location = productSelected.Location,
                     MinPurchase = productSelected.MinPurchase,
                     Sold = productSelected.TotalSold,
                     HasExpiry = productSelected.HasExpiry ? "True" : "False",
