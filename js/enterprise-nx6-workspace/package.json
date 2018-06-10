@@ -38,7 +38,9 @@
     "test:commerce-admin-app": "ng test commerce-admin-app --watch false --browsers PhantomJS",
     "test:all": "npm run test:category-lib && npm run test:manufacturer-lib && npm run test:product-lib && npm run test:core && npm run test:material-counter && npm run test:material-file-upload && npm run test:material-gallery && npm run test:material-list-item-actions && npm run test:material-stars && npm run test:commerce-client-app && npm run test:commerce-admin-app",
     "e2e:commerce-admin": "ng e2e commerce-admin-app-e2e --port 1000",
-    "e2e:commerce-client": "ng e2e commerce-admin-app-e2e --port 1001"
+    "e2e:commerce-client": "ng e2e commerce-admin-app-e2e --port 1001",
+    "e2e:all": "npm run e2e:commerce-admin && npm run e2e:commerce-client"
+
   },
   "private": true,
   "dependencies": {

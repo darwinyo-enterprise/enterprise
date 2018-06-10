@@ -1,5 +1,39 @@
 jobs:
   include:
+    - stage: sass-unit-test
+      sudo: required
+      language: node_js
+      dist: trusty
+      node_js:
+        - 8.9
+      script:
+        - chmod +x ./script/sass/test.sh
+        - ./script/sass/test.sh
+
+    - stage: back-end-unit-test
+      sudo: required
+      language: csharp
+      dist: trusty
+      mono: none
+      dotnet: 2.1.2
+      services:
+        - docker
+      script: 
+        - chmod +x ./script/dotnet/commerce/test.sh
+        - ./script/dotnet/commerce/test.sh
+
+    - stage: back-end-integration-test
+      sudo: required
+      language: csharp
+      dist: trusty
+      mono: none
+      dotnet: 2.1.2
+      services:
+        - docker
+      script: 
+        - chmod +x ./script/dotnet/commerce/integration-test.sh
+        - ./script/dotnet/commerce/integration-test.sh
+
     - stage: front-end-unit-test
       sudo: required
       language: node_js
@@ -13,53 +47,22 @@ jobs:
           packages:
             - google-chrome-stable
       script:
-        - node --version
         - chmod +x ./script/js/commerce/test.sh
         - ./script/js/commerce/test.sh
 
-    - stage: unit-test
+    - stage: front-end-e2e-test
       sudo: required
-      language: csharp
+      language: node_js
       dist: trusty
-      mono: none
-      dotnet: 2.1.2
-      services:
-        - docker
-      script: 
-        - chmod +x ./script/js/commerce/test.sh
-        - chmod +x ./script/dotnet/commerce/test.sh
-        - ./script/js/commerce/test.sh
-        - ./script/dotnet/commerce/test.sh
-    # - stage: integration-test
-    #   script: ./deploy
-    
-
-
-
-#   - npm
-#   # - version="$(awk '$2 == "CAKE_SERVICE_VERSION" { print $3; exit }' Dockerfile)"
-#   # - docker pull "$IMAGE_NAME" || true
-  
-# script:
-#   # - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
-#   - node --version
-  # - chmod +x ./script/js/commerce/test.sh
-  # - chmod +x ./script/dotnet/commerce/test.sh
-  # - chmod +x ./script/dotnet/commerce/integration-test.sh
-  # - ./script/js/commerce/test.sh
-  # - ./script/dotnet/commerce/test.sh
-  # - ./script/dotnet/commerce/integration-test.sh
-  
-
-# after_script:
-#   # - docker images
-
-# # before_deploy:
-# #   - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-# #   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-#   # - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
-# # deploy:
-# #   provider: script
-# #   script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
-# #   on:
-# #     branch: Commerce/ClientCoreFeature
+      node_js:
+        - 8.9
+      addons:
+        apt:
+          sources:
+            - google-chrome
+          packages:
+            - google-chrome-stable
+      script:
+        - node --version
+        - chmod +x ./script/js/commerce/e2e-test.sh
+        - ./script/js/commerce/e2e-test.sh
