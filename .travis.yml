@@ -16,32 +16,26 @@ jobs:
         - node --version
         - chmod +x ./script/js/commerce/test.sh
         - ./script/js/commerce/test.sh
-    # - stage: unit-test
-    #   sudo: required
-    #   language: csharp
-    #   dist: trusty
-    #   mono: none
-    #   dotnet: 2.1.2
-    #   script: ./test 1
-    # - # stage name not required, will continue to use `test`
-    #   script: ./test 2
+
+    - stage: unit-test
+      sudo: required
+      language: csharp
+      dist: trusty
+      mono: none
+      dotnet: 2.1.2
+      services:
+        - docker
+      script: 
+        - chmod +x ./script/js/commerce/test.sh
+        - chmod +x ./script/dotnet/commerce/test.sh
+        - ./script/js/commerce/test.sh
+        - ./script/dotnet/commerce/test.sh
     # - stage: integration-test
     #   script: ./deploy
     
 
 
-# sudo: required
-# language: csharp
-# dist: trusty
-# mono: none
-# dotnet: 2.1.2
-# node_js:
-#   - 8.9
 
-# services:
-#   - docker
-
-# before_script:
 #   - npm
 #   # - version="$(awk '$2 == "CAKE_SERVICE_VERSION" { print $3; exit }' Dockerfile)"
 #   # - docker pull "$IMAGE_NAME" || true
@@ -49,12 +43,12 @@ jobs:
 # script:
 #   # - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
 #   - node --version
-#   - chmod +x ./script/js/commerce/test.sh
-#   # - chmod +x ./script/dotnet/commerce/test.sh
-#   - chmod +x ./script/dotnet/commerce/integration-test.sh
-#   - ./script/js/commerce/test.sh
-#   # - ./script/dotnet/commerce/test.sh
-#   - ./script/dotnet/commerce/integration-test.sh
+  # - chmod +x ./script/js/commerce/test.sh
+  # - chmod +x ./script/dotnet/commerce/test.sh
+  # - chmod +x ./script/dotnet/commerce/integration-test.sh
+  # - ./script/js/commerce/test.sh
+  # - ./script/dotnet/commerce/test.sh
+  # - ./script/dotnet/commerce/integration-test.sh
   
 
 # after_script:
