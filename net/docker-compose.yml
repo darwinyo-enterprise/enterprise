@@ -31,6 +31,7 @@ services:
     depends_on:
       - sql.data
       - rabbitmq
+      - identity.api
 
   identity.api:
     image: darwinyo/identity.api:${TAG:-latest}

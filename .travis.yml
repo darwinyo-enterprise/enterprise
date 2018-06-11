@@ -1,71 +1,72 @@
 jobs:
   include:
-    # - stage: sass-unit-test
-    #   sudo: required
-    #   language: node_js
-    #   dist: trusty
-    #   node_js:
-    #     - 8.9
-    #   script:
-    #     - chmod +x ./script/sass/test.sh
-    #     - ./script/sass/test.sh
-
-    # - stage: back-end-unit-test
-    #   sudo: required
-    #   language: csharp
-    #   dist: trusty
-    #   mono: none
-    #   dotnet: 2.1.2
-    #   services:
-    #     - docker
-    #   script: 
-    #     - chmod +x ./script/dotnet/commerce/test.sh
-    #     - ./script/dotnet/commerce/test.sh
-
-    # - stage: back-end-integration-test
-    #   sudo: required
-    #   language: csharp
-    #   dist: trusty
-    #   mono: none
-    #   dotnet: 2.1.2
-    #   services:
-    #     - docker
-    #   script: 
-    #     - chmod +x ./script/dotnet/commerce/integration-test.sh
-    #     - ./script/dotnet/commerce/integration-test.sh
-
-    # - stage: front-end-unit-test
-    #   sudo: required
-    #   language: node_js
-    #   dist: trusty
-    #   node_js:
-    #     - 8.9
-    #   script:
-    #     - chmod +x ./script/js/commerce/test.sh
-    #     - ./script/js/commerce/test.sh
-
-    - stage: front-end-e2e-test
+    - stage: sass-unit-test
       sudo: required
       language: node_js
       dist: trusty
       node_js:
         - 8.9
-      addons:
-        apt:
-          sources:
-            - google-chrome
-          packages:
-            - google-chrome-stable
-      before_script:
-        - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
       script:
-        - node --version
-        - docker-compose -f ./net/docker-compose.yml -f ./net/docker-compose.override.yml up -d
-        - sleep 300
-        - docker ps
-        - chmod +x ./script/js/commerce/e2e-test.sh
-        - ./script/js/commerce/e2e-test.sh
+        - chmod +x ./script/sass/test.sh
+        - ./script/sass/test.sh
+
+    - stage: back-end-unit-test
+      sudo: required
+      language: csharp
+      dist: trusty
+      mono: none
+      dotnet: 2.1.2
+      services:
+        - docker
+      script: 
+        - chmod +x ./script/dotnet/commerce/test.sh
+        - ./script/dotnet/commerce/test.sh
+
+    - stage: back-end-integration-test
+      sudo: required
+      language: csharp
+      dist: trusty
+      mono: none
+      dotnet: 2.1.2
+      services:
+        - docker
+      script: 
+        - chmod +x ./script/dotnet/commerce/integration-test.sh
+        - ./script/dotnet/commerce/integration-test.sh
+
+    - stage: front-end-unit-test
+      sudo: required
+      language: node_js
+      dist: trusty
+      node_js:
+        - 8.9
+      script:
+        - chmod +x ./script/js/commerce/test.sh
+        - ./script/js/commerce/test.sh
+
+    # needs real production env
+    # - stage: front-end-e2e-test
+    #   sudo: required
+    #   language: node_js
+    #   dist: trusty
+    #   node_js:
+    #     - 8.9
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - google-chrome
+    #       packages:
+    #         - google-chrome-stable
+    #   before_script:
+    #     - export DISPLAY=:99.0
+    #     - sh -e /etc/init.d/xvfb start
+    #   script:
+    #     - node --version
+    #     - docker-compose -f ./net/docker-compose.yml -f ./net/docker-compose.override.yml up -d
+    #     - sleep 300
+    #     - docker ps
+    #     - chmod +x ./script/js/commerce/e2e-test.sh
+    #     - ./script/js/commerce/e2e-test.sh
 
     - stage: publish-release
       script:
