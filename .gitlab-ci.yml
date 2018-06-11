@@ -39,7 +39,7 @@ before_script:
 
 commerce_frontend_unit_test:
   stage: test
-  image: node:8.11.2-alpine
+  image: node:latest
   cache:
     untracked: true
     paths:

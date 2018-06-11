@@ -1,0 +1,90 @@
+/*TODO: REFACTOR CODE*/
+@media screen and (max-width: 800px) {
+  .file-upload__upload-btn {
+    width: 20% !important; }
+  .file-upload__drop-zone {
+    width: 80% !important; } }
+
+@media screen and (max-width: 425px) {
+  .file-upload__drop-zone {
+    font-size: 25px !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important; } }
+
+@media screen and (max-width: 320px) {
+  .file-upload__upload-btn {
+    width: 30% !important; }
+  .file-upload__drop-zone {
+    width: 70% !important;
+    font-size: 20px !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important; } }
+
+.file-upload__container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
+
+.file-upload__upload-btn {
+  width: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+
+.file-upload__drop-zone {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  /*Sort of important*/
+  width: 100%;
+  /*Sort of important*/
+  height: 100px;
+  border: 1px dashed rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  font-family: Arial;
+  text-align: center;
+  position: relative;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.3);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+  .file-upload__drop-zone.mouse-over {
+    border: 2px dashed rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5); }
+  .file-upload__drop-zone__button {
+    position: relative;
+    cursor: pointer;
+    line-height: 26px;
+    color: white;
+    font-size: 12px;
+    width: 100px;
+    height: 26px;
+    border-radius: 4px;
+    background-color: #3b85c3; }
+    .file-upload__drop-zone__button:hover {
+      background-color: #4499dd; }
+  .file-upload__drop-zone input {
+    /*Important*/
+    position: absolute;
+    /*Important*/
+    cursor: pointer;
+    left: 0px;
+    top: 0px;
+    opacity: 0; }
