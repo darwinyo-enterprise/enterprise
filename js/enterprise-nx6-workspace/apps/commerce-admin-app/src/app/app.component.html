@@ -11,7 +11,7 @@
       </mat-nav-list>
     </div>
   </td-navigation-drawer>
-  <td-layout-nav-list logo="assets:covalent" navigationRoute="/" color="accent">
+  <td-layout-nav-list logo="assets:covalent" navigationRoute="/" color="primary">
     <button mat-icon-button td-menu-button tdLayoutToggle>
       <mat-icon>menu</mat-icon>
     </button>
@@ -21,10 +21,33 @@
           <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
       </mat-nav-list>
     </div>
-    <div td-toolbar-content>
+    <div td-toolbar-content class="main-nav">
       <button mat-button tdLayoutNavListToggle>
         Toggle
       </button>
+      <div td-toolbar-content layout="row" layout-align="start center" flex>
+        <mat-card class="nav-search-box" flex="20">
+          <td-search-box [alwaysVisible]="true" #searchBox placeholder="Search" [showUnderline]="false"></td-search-box>
+        </mat-card>
+        <ng-template [ngIf]="false">
+          <span class="nav-account">
+            Welcome,
+            <a href="#">Darwin Yo</a>
+          </span>
+          <button mat-button class="nav-button">
+            <mat-icon>exit_to_app</mat-icon>
+            Logout
+          </button>
+        </ng-template>
+        <ng-template [ngIf]="true">
+          <button mat-button class="nav-button">
+            Login
+          </button>
+          <button mat-button class="nav-button">
+            Register
+          </button>
+        </ng-template>
+      </div>
     </div>
     <router-outlet></router-outlet>
     <section class="bgc-blue-grey-800 tc-blue-grey-100">

@@ -16,47 +16,96 @@
       <mat-icon>menu</mat-icon>
     </button>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span hide-gt-xs class="tc-blue-500 mat-subhead">Landing</span>
-      <span hide-xs class="tc-blue-500 mat-subhead">Landing Page</span>
-      <span flex></span>
-      <button mat-icon-button [matMenuTriggerFor]="notificationsMenu">
-        <td-notification-count color="accent" [notifications]="12">
-          <mat-icon>notifications</mat-icon>
-        </td-notification-count>
-      </button>
-      <mat-menu #notificationsMenu="matMenu">
-        <td-menu>
-          <div td-menu-header class="mat-subhead">Job Openings</div>
-          <mat-nav-list dense>
-            <a mat-list-item>
-              <mat-icon mat-list-avatar>fiber_new</mat-icon>
-              <h4 matLine>
-                <span class="text-wrap">Sr. Frontend Engineer</span>
-              </h4>
-              <p matLine>UX team</p>
+      <mat-card class="nav-search-box" flex="20">
+        <td-search-box [alwaysVisible]="true" #searchBox placeholder="Search" [showUnderline]="false"></td-search-box>
+      </mat-card>
+      <ng-template [ngIf]="false">
+        <button mat-button class="nav-button" [matMenuTriggerFor]="shoppingCartMenu">
+          <mat-icon>shopping_cart</mat-icon>
+          Cart
+        </button>
+        <mat-menu #shoppingCartMenu="matMenu">
+          <td-menu class="cart-menu">
+            <div td-menu-header class="mat-subhead">Cart</div>
+            <mat-nav-list>
+              <a mat-list-item class="cart-menu__item">
+                <div class="cart-menu__item__image">
+                  <img src="http://localhost:5101/api/v1/category/image/1" alt="" srcset="">
+                </div>
+                <div class="cart-menu__item__info">
+                  <div class="cart-menu__item__info__title">
+                    <a href="#">
+                      Intel i5 7790K
+                    </a>
+                  </div>
+                  <div class="cart-menu__item__info__quantity">
+                    1 pcs
+                  </div>
+                </div>
+                <div class="cart-menu__item__total-price">
+                  Total: $ 1200
+                </div>
+              </a>
+              <mat-divider></mat-divider>
+              <a mat-list-item class="cart-menu__item">
+                <div class="cart-menu__item__image">
+                  <img src="http://localhost:5101/api/v1/category/image/2" alt="" srcset="">
+                </div>
+                <div class="cart-menu__item__info">
+                  <div class="cart-menu__item__info__title">
+                    <a href="#">
+                      Intel i5 7790K
+                    </a>
+                  </div>
+                  <div class="cart-menu__item__info__quantity">
+                    1 pcs
+                  </div>
+                </div>
+                <div class="cart-menu__item__total-price">
+                  Total: $ 1200
+                </div>
+              </a>
+              <mat-divider></mat-divider>
+              <a mat-list-item class="cart-menu__item">
+                <div class="cart-menu__item__image">
+                  <img src="http://localhost:5101/api/v1/category/image/3" alt="" srcset="">
+                </div>
+                <div class="cart-menu__item__info">
+                  <div class="cart-menu__item__info__title">
+                    <a href="#">
+                      Intel i5 7790K
+                    </a>
+                  </div>
+                  <div class="cart-menu__item__info__quantity">
+                    1 pcs
+                  </div>
+                </div>
+                <div class="cart-menu__item__total-price">
+                  Total: $ 1200
+                </div>
+              </a>
+              <mat-divider></mat-divider>
+
+            </mat-nav-list>
+            <a mat-button color="accent" td-menu-footer>
+              View Cart
             </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item>
-              <mat-icon mat-list-avatar>fiber_new</mat-icon>
-              <h4 matLine>
-                <span class="text-wrap">Sr. Data Scientist</span>
-              </h4>
-              <p matLine>Data science team</p>
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item>
-              <mat-icon mat-list-avatar>fiber_new</mat-icon>
-              <h4 matLine>
-                <span class="text-wrap">Sr. DevOps Engineer</span>
-              </h4>
-              <p matLine>DevOps team</p>
-            </a>
-          </mat-nav-list>
-          <a mat-button color="accent" td-menu-footer>
-            View Jobs
-          </a>
-        </td-menu>
-      </mat-menu>
+          </td-menu>
+        </mat-menu>
+        <button mat-button class="nav-button">
+          <mat-icon>exit_to_app</mat-icon>
+          Logout
+        </button>
+      </ng-template>
+      <ng-template [ngIf]="true">
+        <button mat-button class="nav-button">
+          Login
+        </button>
+        <button mat-button class="nav-button">
+          Register
+        </button>
+      </ng-template>
+
     </div>
     <mat-toolbar class="pad-none">
       <nav mat-stretch-tabs mat-tab-nav-bar class="pull-bottom-xl pull-top-md text-upper" flex>
@@ -93,7 +142,7 @@
       </nav>
     </mat-toolbar>
     <!-- router outlet goes here -->
-    <router-outlet></router-outlet>
+    <!-- <router-outlet></router-outlet> -->
     <!-- end content -->
     <section class="bgc-blue-grey-800 tc-blue-grey-100">
       <div layout-gt-xs="row" layout-align-gt-xs="center center">
