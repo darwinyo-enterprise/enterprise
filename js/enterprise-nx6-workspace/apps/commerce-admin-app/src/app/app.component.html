@@ -1,38 +1,80 @@
 <td-layout>
-    <td-navigation-drawer flex [sidenavTitle]="name" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
-        <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
-            <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
-                <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
-        </mat-nav-list>
-        <div td-navigation-drawer-menu>
+  <td-navigation-drawer flex logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+    <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
+      <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
+        <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+    </mat-nav-list>
+    <div td-navigation-drawer-menu>
+      <mat-nav-list>
+        <a *ngFor="let item of usermenu" mat-list-item>
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      </mat-nav-list>
+    </div>
+  </td-navigation-drawer>
+  <td-layout-nav-list logo="assets:covalent" navigationRoute="/" color="accent">
+    <button mat-icon-button td-menu-button tdLayoutToggle>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div td-sidenav-content>
+      <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
+        <a *ngFor="let item of routes" mat-list-item (click)="onNavigateBtnClicked(item)">
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+      </mat-nav-list>
+    </div>
+    <div td-toolbar-content>
+      <button mat-button tdLayoutNavListToggle>
+        Toggle
+      </button>
+    </div>
+    <router-outlet></router-outlet>
+    <section class="bgc-blue-grey-800 tc-blue-grey-100">
+      <div layout-gt-xs="row" layout-align-gt-xs="center center">
+        <div layout-gt-xs="row" flex-gt-xs="80" layout-margin layout-padding>
+          <div flex-gt-xs>
             <mat-nav-list>
-                <a *ngFor="let item of usermenu" mat-list-item>
-                    <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+              <h3 mat-subheader class="text-upper tc-blue-grey-100">About Teradata</h3>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">Company Info</p>
+              </mat-list-item>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">Our Customers</p>
+              </mat-list-item>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">Press</p>
+              </mat-list-item>
             </mat-nav-list>
-        </div>
-    </td-navigation-drawer>
-    <td-layout-nav-list [toolbarTitle]="(media.registerQuery('gt-xs') | async) ? 'Dashboard' : ''" logo="assets:covalent" navigationRoute="/">
-        <button mat-icon-button td-menu-button tdLayoutToggle>
-            <mat-icon>menu</mat-icon>
-        </button>
-        <div td-sidenav-content>
-            <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
-                <a *ngFor="let item of routes" mat-list-item (click)="onNavigateBtnClicked(item)">
-                    <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
+          </div>
+          <div flex-gt-xs>
+            <mat-nav-list>
+              <h3 mat-subheader class="text-upper tc-blue-grey-100">Career Info</h3>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">Benefits</p>
+              </mat-list-item>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">Locations</p>
+              </mat-list-item>
+              <mat-list-item>
+                <p matLine class="tc-blue-grey-300">List item</p>
+              </mat-list-item>
             </mat-nav-list>
+          </div>
+          <div flex-gt-xs="10">
+          </div>
+          <div flex layout="column" flex-gt-xs="30">
+            <mat-icon class="push-top-md" style="height:auto;width:auto;">
+              <img src="/assets/brand_footer.svg">
+            </mat-icon>
+            <p class="mat-body-1">&copy; Copyright 2018 Enterprise, Inc. All rights reserved.</p>
+          </div>
         </div>
-        <div td-toolbar-content>
-            <button mat-button tdLayoutNavListToggle>
-                Toggle
-            </button>
-        </div>
-        <router-outlet></router-outlet>
-        <td-layout-footer>
-            <div layout="row" layout-align="start center">
-                <span class="mat-caption">Made with
-                    <mat-icon class="text-md">favorite</mat-icon> using
-                    <a href="http://getcovalent.com" class="text-nodecoration tc-teal-600">Covalent</a>, built on Angular v4 + Angular Material + NGX-Charts.</span>
-            </div>
-        </td-layout-footer>
-    </td-layout-nav-list>
+      </div>
+    </section>
+    <td-layout-footer>
+      <div layout="row" layout-align="start center">
+        <span class="mat-caption">Made with
+          <mat-icon class="text-md">favorite</mat-icon> using
+          <a href="http://getcovalent.com" class="text-nodecoration tc-teal-600">Covalent</a>, built on Angular v6 + Angular Material.</span>
+      </div>
+    </td-layout-footer>
+  </td-layout-nav-list>
 </td-layout>

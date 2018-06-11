@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     });
     this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
       this._domSanitizer.bypassSecurityTrustResourceUrl
-        ('https://raw.githubusercontent.com/Teradata/covalent-quickstart/develop/src/assets/icons/covalent.svg'));
+        ('./assets/brand.svg'));
   }
 
   ngOnInit() {

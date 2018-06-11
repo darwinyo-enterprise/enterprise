@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:commerce": "ng serve commerce-client-app --port 4201 && ng serve commerce-admin-app --port 4200",
+    "start:commerce-client": "ng serve commerce-client-app --port 4201",
+    "start:commerce-admin": "ng serve commerce-admin-app --port 4200",
     "build": "ng build",
     "test": "ng test",
     "lint": "./node_modules/.bin/nx lint && ng lint",

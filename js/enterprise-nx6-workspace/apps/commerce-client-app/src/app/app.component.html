@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex [sidenavTitle]="name" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -129,15 +129,14 @@
           <div flex-gt-xs="10">
           </div>
           <div flex layout="column" flex-gt-xs="30">
-            <mat-icon class="push-top-md" svgIcon="assets:covalent" style="height:auto;width:auto;"></mat-icon>
-            <p class="mat-body-1">&copy; Copyright 2017 Teradata, Inc. All rights reserved.</p>
+            <mat-icon class="push-top-md" style="height:auto;width:auto;">
+              <img src="/assets/brand_footer.svg">
+            </mat-icon>
+            <p class="mat-body-1">&copy; Copyright 2018 Enterprise, Inc. All rights reserved.</p>
           </div>
         </div>
       </div>
     </section>
-    <a mat-fab color="accent" matTooltip="Contact Us" matTooltipPosition="above" class="mat-fab-position-bottom-right fixed">
-      <mat-icon>send</mat-icon>
-    </a>
     <td-layout-footer>
       <div layout="row" layout-align="start center">
         <span class="mat-caption">Made with

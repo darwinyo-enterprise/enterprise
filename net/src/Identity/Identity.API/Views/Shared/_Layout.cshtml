@@ -1,56 +1,121 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>eShopOnContainers Identity</title>
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico"/>
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico"/>
-    <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
-        <link rel="stylesheet" href="~/css/site.css"/>
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
-    </environment>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Identity</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    @*<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+        <environment names="Development">*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/platform.css" />
+    <link rel="stylesheet" href="~/lib/mdl/material.min.css" />
+    @*</environment>
+        <environment names="Staging,Production">
+            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/css/platform.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/lib/mdl/material.min.css" asp-append-version="true" />
+
+        </environment>*@
+
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top es-header">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header col-sm-6 col-xs-8">
-                <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-                    <div class="navbar-brand"></div>
-                </a>
+    <div class="navbar navbar-inverse navbar-fixed-top es-header">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header col-sm-6 col-xs-8">
+                    <a asp-controller="home" asp-action="ReturnToOriginalApplication" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                        <div class="navbar-brand">
+                            <img src="~/images/brand.svg" />
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div>
-    @RenderBody()
-    <br/><br/>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <br>
-                    <div class="brand"></div>
+    <div class="page-container">
+        @RenderBody()
+        <br /><br />
+        <footer>
+            <section class="bgc-blue-grey-800 tc-blue-grey-100">
+                <div layout-align-gt-xs="center center" layout-gt-xs="row">
+                    <div flex-gt-xs="80" layout-gt-xs="row" layout-margin="" layout-padding="">
+                        <div flex-gt-xs="">
+                            <ul class="mdl-list" role="navigation">
+                                <h5 class="text-upper tc-blue-grey-100">About Teradata</h5>
+                                <li class="mdl-list__item no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="mdl-list__item  no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="mdl-list__item no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div flex-gt-xs="">
+                            <ul class="mdl-list" role="navigation">
+                                <h5 class="text-upper tc-blue-grey-100">About Teradata</h5>
+                                <li class="mdl-list__item no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="mdl-list__item  no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="mdl-list__item no-padding">
+                                    <div class="mdl-list__item-primary-content">
+                                        <button class="full-width mdl-button mdl-js-button mdl-js-ripple-effect">
+                                            <p class="tc-blue-grey-300 footer-menu-item">Company Info</p>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div flex-gt-xs="10"></div>
+                        <div flex="" flex-gt-xs="30" layout="column">
+                            <i class="push-top-md material-icons" role="img" style="height:auto;width:auto;" svgicon="assets:covalent" aria-hidden="true">
+                                <img src="/images/brand_footer.svg" />
+                            </i>
+                            <p class="mat-body-1">© Copyright 2018 Enterprise, Inc. All rights reserved.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6">
-                    <img class="text hidden-xs" src="~/images/main_footer_text.PNG" width="335" height="26" alt="footer text image"/>
-                </div>
-            </div>
-        </div>
-    </footer>
-</div>
+            </section>
+        </footer>
+    </div>
 
 
-<script src="~/lib/jquery/jquery.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-@RenderSection("scripts", false)
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="~/lib/mdl/material.min.js"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>
