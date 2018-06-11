@@ -12,7 +12,7 @@ before_script:
 #  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 commerce_library_unit_test:
-  stage: back-end_unit-test
+  stage: test
   image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
@@ -25,7 +25,7 @@ commerce_library_unit_test:
     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
 commerce_catalog_unit_test:
-  stage: back-end_unit-test
+  stage: test
   image: microsoft/aspnetcore-build:2.0
   cache:
     untracked: true
@@ -38,7 +38,7 @@ commerce_catalog_unit_test:
     - dotnet test ./Enterprise.Commerce.Tests.csproj
 
 commerce_frontend_unit_test:
-  stage: front-end_unit-test
+  stage: test
   image: node:latest
   cache:
     untracked: true
@@ -50,7 +50,7 @@ commerce_frontend_unit_test:
     - npm run test:all
 
 commerce_catalog_integration_test:
-  stage: back-end_integration-test
+  stage: test
   image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
   cache:
     untracked: true

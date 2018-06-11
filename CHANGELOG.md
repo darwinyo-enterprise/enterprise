@@ -58,6 +58,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Gallery
 - Product detail
 - Counter
+- Search bar
+- Identity Server
 
 ### Fixed
 - fix CHANGELOG
