@@ -1,0 +1,17 @@
+.nav-button {
+    padding: 0 1rem !important;
+    margin: 0 1rem !important;
+}
+
+.main-nav {
+    display: flex;
+    width: 100%;
+}
+
+.nav-account {
+    font-size: $font-size-sm;
+    margin: 0 2rem;
+    &>a {
+        text-decoration: none;
+    }
+}

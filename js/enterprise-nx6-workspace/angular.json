@@ -28,7 +28,7 @@
               "apps/commerce-admin-app/src/manifest.json"
             ],
             "styles": [
-              "../../sass/enterprise.globalstyle/src/_main.scss",
+              "./styles/_main.scss",
               "./node_modules/@covalent/core/common/platform.scss",
               "apps/commerce-admin-app/src/styles.scss"
             ],
@@ -159,7 +159,7 @@
               "apps/commerce-client-app/src/manifest.json"
             ],
             "styles": [
-              "../../sass/enterprise.globalstyle/src/_main.scss",
+              "./styles/_main.scss",
               "./node_modules/@covalent/core/common/platform.scss",
               "apps/commerce-client-app/src/styles.scss"
             ],

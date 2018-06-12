@@ -1,0 +1,52 @@
+////
+/// @author Darwin Yo
+////
+%font-placeholder {
+  font-family: $primary-font-family;
+  color: $primary-color;
+}
+
+.form-card {
+  background-color: $primary-background-color; // box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  margin: 1rem;
+  padding: 2rem !important;
+  min-height: 55vh;
+  &__title {
+    @extend %font-placeholder;
+    font-size: $font-size-bg;
+    border-bottom: $border;
+  }
+  &__content {
+    @extend %font-placeholder;
+    margin-top: 2rem;
+    font-size: $font-size-md;
+  }
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem;
+    &>button {
+      &.ok {
+        color: $secondary-color;
+      }
+      @extend %font-placeholder;
+      font-size: $font-size-md;
+    }
+  }
+}
+
+// @TODO:REFACTORING
+.form-control {
+  &--full-width {
+    width: 100%;
+  }
+  &--half-width {
+    width: 48%;
+  }
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

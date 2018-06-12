@@ -1,0 +1,78 @@
+////
+/// @author Darwin Yo
+////
+
+/// used mostly in all text font color except stateful one
+$primary-color: white;
+
+/// used mostly in stateful font color
+$secondary-color: white;
+
+/// used mostly in optional color
+$third-color:white;
+
+/// used for links anchor
+$link-color:white;
+
+/// used for links hover
+$link-hover-color:white;
+
+/// used in alert, warning, need attention font color
+$alert-color: white;
+
+/// used in inverted enviroment font color
+$inverted-color: white;
+
+/// used in all component background color
+$primary-background-color: white;
+
+/// used only in body background color
+$secondary-background-color: white;
+
+/// used for inverted background color
+$inverted-background-color: white;
+
+/// used in most border component
+$border: 1px solid white;
+
+/// default border radius in all component
+$border-radius: 5px;
+
+/// primary font family used in most place
+$primary-font-family: Mina;
+
+/// font size for title
+$font-size-bg: 2rem;
+
+/// font size for secondary title
+$font-size-lg: 1.5rem;
+
+/// font size for most text
+$font-size-md: 1.25rem;
+
+/// font size for info, unimportant details.
+$font-size-sm: 1rem;
+
+/* #region Breakpoints*/
+/// Small Mobile Screen
+$mobile-screen-s: 320px;
+
+/// Medium Mobile Screen
+$mobile-screen-m: 375px;
+
+/// Large Mobile Screen
+$mobile-screen-l: 425px;
+
+/// Tablet Screen
+$tablet-screen: 768px;
+
+/// Laptop Screen
+$laptop-screen: 1024px;
+
+/// Large Laptop Screen
+$laptop-screen-l: 1440px;
+
+/// 4k Screen
+$fourK-screen: 2560px;
+
+/* #endregion */

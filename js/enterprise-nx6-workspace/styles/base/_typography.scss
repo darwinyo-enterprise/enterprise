@@ -1,0 +1,84 @@
+////
+/// @author Darwin Yo
+////
+/* #region Lato Typographies*/
+
+$lato-hairline: ( 
+    font-family: Lato, 
+    font-style: normal, 
+    src: url("../../../assets/fonts/Lato/Lato-Hairline.ttf") format("truetype")
+);
+$lato-hairline-italic: ( font-family: Lato,
+font-style: italic,
+src: url("../../../assets/fonts/Lato/Lato-HairlineItalic.ttf") format("truetype"));
+$lato-regular: ( font-family: Lato,
+font-style: normal,
+src: url("../../../assets/fonts/Lato/Lato-Regular.ttf") format("truetype"));
+$lato-italic: ( font-family: Lato,
+font-style: italic,
+src: url("../../../assets/fonts/Lato/Lato-Italic.ttf") format("truetype"));
+$lato-black: ( font-family: Lato,
+font-style: normal,
+src: url("../../../assets/fonts/Lato/Lato-Black.ttf") format("truetype"));
+$lato-black-italic: ( font-family: Lato,
+font-style: italic,
+src: url("../../../assets/fonts/Lato/Lato-BlackItalic.ttf") format("truetype"));
+$lato-bold: ( font-family: Lato,
+font-style: normal,
+font-weight: bold,
+src: url("../../../assets/fonts/Lato/Lato-Bold.ttf") format("truetype"));
+$lato-bold-italic: ( font-family: Lato,
+font-style: italic,
+font-weight: bold,
+src: url("../../../assets/fonts/Lato/Lato-BoldItalic.ttf") format("truetype"));
+$lato-light: ( font-family: Lato,
+font-style: normal,
+font-weight: lighter,
+src: url("../../../assets/fonts/Lato/Lato-Light.ttf") format("truetype"));
+$lato-light-italic: ( font-family: Lato,
+font-style: italic,
+font-weight: lighter,
+src: url("../../../assets/fonts/Lato/Lato-LightItalic.ttf") format("truetype"));
+/* #endregion */
+
+/* #region */
+
+$mina-bold:( font-family: Mina,
+font-style: normal,
+font-weight: bold,
+src: url("../../../assets/fonts/Mina/Mina-Bold.ttf") format("truetype"));
+$mina:( font-family: Mina,
+font-style: normal,
+font-weight: normal,
+src: url("../../../assets/fonts/Mina/Mina-Regular.ttf") format("truetype"));
+/* #endregion */
+
+/// List of typographies object that will be used in generating font face
+$typographies:  
+                $lato-black 
+                $lato-black-italic 
+                $lato-bold 
+                $lato-bold-italic 
+                $lato-hairline
+                $lato-hairline-italic
+                $lato-italic 
+                $lato-light 
+                $lato-light-italic 
+                $lato-regular
+                $mina
+                $mina-bold;
+/// Help to generate font faces by providing typography object list
+/// @param {list} $typography-lists [$typographies] list of typography object
+/// @todo write unit test
+@mixin font-face($typography-lists:$typographies) {
+    @each $typography in $typography-lists {
+        @font-face {
+            font-family: map-get($map:$typography, $key:font-family);
+            font-style: map-get($map:$typography, $key: font-style);
+            font-weight: map-get($map:$typography, $key: font-weight);
+            src: map-get($map: $typography, $key: src);
+        }
+    }
+}
+
+@include font-face($typographies);
