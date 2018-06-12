@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: apps/commerce-admin-app/Dockerfile
   
-  # commerce.client:
-  #   image: darwinyo/commerce.client:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: apps/commerce-client-app/Dockerfile
+  commerce.client:
+    image: darwinyo/commerce.client:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: apps/commerce-client-app/Dockerfile

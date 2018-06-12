@@ -1,0 +1,14 @@
+FROM node:10.4.0-alpine
+
+RUN mkdir -p /usr/src
+WORKDIR /usr/src
+COPY . .
+
+RUN npm install
+
+EXPOSE 4000
+
+RUN npm run build:ssr:commerce-client
+
+CMD ["npm", "serve:ssr:commerce-client"]
+
