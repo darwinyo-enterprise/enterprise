@@ -1,5 +1,10 @@
 jobs:
   include:
+    - stage: build-image
+      script:
+        - cd js/enterprise-nx6-workspace
+        - docker-compose up
+
     - stage: sass-unit-test
       sudo: required
       language: node_js
@@ -67,6 +72,8 @@ jobs:
     #     - docker ps
     #     - chmod +x ./script/js/commerce/e2e-test.sh
     #     - ./script/js/commerce/e2e-test.sh
+
+    
 
     - stage: publish-release
       script:
