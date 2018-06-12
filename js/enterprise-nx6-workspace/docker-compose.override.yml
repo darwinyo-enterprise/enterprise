@@ -1,0 +1,7 @@
+version: '3.4'
+
+services:
+  commerce.admin:
+    ports:
+      - "4000:4000"
+  
