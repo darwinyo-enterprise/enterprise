@@ -11,6 +11,17 @@ before_script:
  # - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
 #  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
+enterprise_global_sass_unit_test:
+  stage: test
+  image: node:latest
+  cache:
+    untracked: true
+    paths:
+      - node_modules/
+  script:
+    - chmod +x ./script/sass/test.sh
+    - ./script/sass/test.sh
+
 commerce_library_unit_test:
   stage: test
   image: microsoft/aspnetcore-build:2.0
