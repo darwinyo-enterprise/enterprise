@@ -72,6 +72,12 @@ commerce_catalog_integration_test:
     - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
     
 
+commerce_frontend_build:
+  stage: build
+  script:
+    - cd ./js/enterprise-nx6-workspace
+    - docker-compose up
+
 # commerce_build_ci_images:
 #   stage: build
 #   script:
