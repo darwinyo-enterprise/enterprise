@@ -49,7 +49,6 @@ export class AppComponent implements OnInit {
   ];
   usermenu: RouteLinkModel[] = UserMenu;
   appmenu: RouteLinkModel[] = AppMenu;
-
   constructor(private store: Store, private loadingService: TdLoadingService, public media: TdMediaService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _iconRegistry: MatIconRegistry,

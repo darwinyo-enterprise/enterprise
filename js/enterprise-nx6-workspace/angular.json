@@ -17,14 +17,15 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/commerce-admin-app",
+            "outputPath": "apps/commerce-admin-app/dist/apps",
             "index": "apps/commerce-admin-app/src/index.html",
             "main": "apps/commerce-admin-app/src/main.ts",
             "polyfills": "apps/commerce-admin-app/src/polyfills.ts",
             "tsConfig": "apps/commerce-admin-app/tsconfig.app.json",
             "assets": [
               "apps/commerce-admin-app/src/favicon.ico",
-              "apps/commerce-admin-app/src/assets"
+              "apps/commerce-admin-app/src/assets",
+              "apps/commerce-admin-app/src/manifest.json"
             ],
             "styles": [
               "../../sass/enterprise.globalstyle/src/_main.scss",
@@ -49,7 +50,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -83,7 +85,8 @@
             "scripts": [],
             "assets": [
               "apps/commerce-admin-app/src/favicon.ico",
-              "apps/commerce-admin-app/src/assets"
+              "apps/commerce-admin-app/src/assets",
+              "apps/commerce-admin-app/src/manifest.json"
             ]
           }
         },
@@ -97,6 +100,14 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "apps/commerce-admin-app/dist/server",
+            "main": "apps/commerce-admin-app/src/main.server.ts",
+            "tsConfig": "apps/commerce-admin-app/tsconfig.server.json"
           }
         }
       }
@@ -137,14 +148,15 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/commerce-client-app",
+            "outputPath": "apps/commerce-client-app/dist/apps",
             "index": "apps/commerce-client-app/src/index.html",
             "main": "apps/commerce-client-app/src/main.ts",
             "polyfills": "apps/commerce-client-app/src/polyfills.ts",
             "tsConfig": "apps/commerce-client-app/tsconfig.app.json",
             "assets": [
               "apps/commerce-client-app/src/favicon.ico",
-              "apps/commerce-client-app/src/assets"
+              "apps/commerce-client-app/src/assets",
+              "apps/commerce-client-app/src/manifest.json"
             ],
             "styles": [
               "../../sass/enterprise.globalstyle/src/_main.scss",
@@ -169,7 +181,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -203,7 +216,8 @@
             "scripts": [],
             "assets": [
               "apps/commerce-client-app/src/favicon.ico",
-              "apps/commerce-client-app/src/assets"
+              "apps/commerce-client-app/src/assets",
+              "apps/commerce-client-app/src/manifest.json"
             ]
           }
         },
@@ -217,6 +231,14 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "apps/commerce-client-app/dist/server",
+            "main": "apps/commerce-client-app/src/main.server.ts",
+            "tsConfig": "apps/commerce-client-app/tsconfig.server.json"
           }
         }
       }

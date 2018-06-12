@@ -51,13 +51,13 @@ export class ListItemActionsComponent implements OnInit, OnDestroy {
   pagingChanged: EventEmitter<null>;
 
   unsubscribe$: ReplaySubject<boolean>;
-
   constructor(public media: TdMediaService, private store: Store) {
     this.editItem = new EventEmitter<string>();
     this.deleteItem = new EventEmitter<string>();
     this.addNewItem = new EventEmitter<null>();
     this.pagingChanged = new EventEmitter<null>();
     this.unsubscribe$ = new ReplaySubject(1);
+
   }
 
   ngOnInit() {

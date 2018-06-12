@@ -26,6 +26,14 @@
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
+    "build:ssr:commerce-admin": "npm run build:client-and-server-bundles:commerce-admin && npm run webpack:server:commerce-admin",
+    "serve:ssr:commerce-admin": "node apps/commerce-admin-app/dist/server/server",
+    "build:client-and-server-bundles:commerce-admin": "ng build commerce-admin-app --prod && ng run commerce-admin-app:server",
+    "webpack:server:commerce-admin": "webpack --config ./apps/commerce-admin-app/webpack.server.config.js --progress --colors",
+    "build:ssr:commerce-client": "npm run build:client-and-server-bundles:commerce-client && npm run webpack:server:commerce-client",
+    "serve:ssr:commerce-client": "node apps/commerce-client-app/dist/server/server",
+    "build:client-and-server-bundles:commerce-client": "ng build commerce-client-app --prod && ng run commerce-client-app:server",
+    "webpack:server:commerce-client": "webpack --config ./apps/commerce-client-app/webpack.server.config.js --progress --colors",
     "test:category-lib": "ng test commerce-category-lib --watch false --browsers PhantomJS",
     "test:manufacturer-lib": "ng test commerce-manufacturer-lib --watch false --browsers PhantomJS",
     "test:product-lib": "ng test commerce-product-lib --watch false --browsers PhantomJS",
@@ -41,7 +49,6 @@
     "e2e:commerce-admin": "ng e2e commerce-admin-app-e2e --port 2000",
     "e2e:commerce-client": "ng e2e commerce-admin-app-e2e --port 2001",
     "e2e:all": "npm run e2e:commerce-admin && npm run e2e:commerce-client"
-
   },
   "private": true,
   "dependencies": {
@@ -56,23 +63,31 @@
     "@angular/platform-browser": "6.0.1",
     "@angular/platform-browser-dynamic": "6.0.1",
     "@angular/platform-server": "^6.0.1",
+    "@angular/pwa": "^0.6.8",
     "@angular/router": "6.0.1",
+    "@angular/service-worker": "6.0.1",
     "@covalent/core": "^2.0.0-beta.1",
     "@ngrx/effects": "5.2.0",
     "@ngrx/router-store": "5.2.0",
     "@ngrx/store": "5.2.0",
     "@ngrx/store-devtools": "5.2.0",
+    "@nguniversal/express-engine": "^6.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
     "@ngxs/devtools-plugin": "^3.0.1",
     "@ngxs/logger-plugin": "^3.0.1",
     "@ngxs/store": "^3.0.1",
     "@nrwl/nx": "6.0.4",
+    "body-parser": "^1.18.3",
     "core-js": "^2.5.4",
+    "express": "^4.16.3",
     "hammerjs": "^2.0.8",
     "intl": "^1.2.5",
     "ngrx-store-freeze": "0.2.2",
+    "node-fetch": "^2.1.2",
+    "preboot": "^6.0.0-beta.4",
     "rxjs": "6.0.0",
     "rxjs-compat": "6.0.0",
+    "ts-loader": "^4.4.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
@@ -85,7 +100,7 @@
     "@nrwl/schematics": "6.0.4",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "codelyzer": "~4.2.1",
     "jasmine-core": "~2.99.1",
     "jasmine-marbles": "0.3.1",
@@ -104,6 +119,7 @@
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "2.7.2"
+    "typescript": "2.7.2",
+    "webpack-cli": "^3.0.3"
   }
 }

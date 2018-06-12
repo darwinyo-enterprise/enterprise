@@ -1,0 +1,59 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/apps/commerce-admin-app",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "types": ["node"],
+    "typeRoots": ["../../node_modules/@types"],
+    "paths": {
+      "@enterprise/*": [
+        "../../libs/*"
+      ],
+      "@enterprise/commerce/*": [
+        "../../libs/commerce/*"
+      ],
+      "@enterprise/commerce/catalog-lib": [
+        "../../libs/commerce/catalog-lib/src/index.ts"
+      ],
+      "@enterprise/commerce/category-lib": [
+        "../../libs/commerce/category-lib/src/index.ts"
+      ],
+      "@enterprise/commerce/core": [
+        "../../libs/commerce/core/src/index.ts"
+      ],
+      "@enterprise/commerce/manufacturer-lib": [
+        "../../libs/commerce/manufacturer-lib/src/index.ts"
+      ],
+      "@enterprise/commerce/product-lib": [
+        "../../libs/commerce/product-lib/src/index.ts"
+      ],
+      "@enterprise/material/*": [
+        "../../libs/material/*"
+      ],
+      "@enterprise/material/file-upload": [
+        "../../libs/material/file-upload/src/index.ts"
+      ],
+      "@enterprise/material/list-item-actions": [
+        "../../libs/material/list-item-actions/src/index.ts"
+      ],
+      "@enterprise/shared": [
+        "../../libs/shared/src/index.ts"
+      ],
+      "@enterprise/core": [
+        "../../libs/core/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts"
+    /* add all lazy-loaded libraries here: "../../../libs/my-lib/index.ts" */
+  ],
+  "exclude": [
+    "./src/test.ts",
+    "**/*.spec.ts"
+  ],
+  "angularCompilerOptions": {
+    "entryModule": "src/app/app.server.module#AppServerModule"
+  }
+}
