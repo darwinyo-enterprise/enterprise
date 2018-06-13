@@ -1,3 +1,19 @@
-<p>
-  detail-payment works!
-</p>
+<mat-card class="payment-detail">
+  <div class="payment-detail__title">
+    Payment Detail
+  </div>
+  <div class="payment-detail__card-number">
+    Card Number: 5379 2013 5712 1381
+  </div>
+  <div class="payment-detail__card-holder">
+    Card Holder: Darwin Yo
+  </div>
+  <div class="payment-detail__card-expiry">
+    Card Expiry: 20/99
+  </div>
+  <div class="payment-detail__actions">
+    <span></span>
+    <button mat-button matStepperNext class="payment-detail__actions__purchase">Next</button>
+    <button mat-button matStepperPrevious class="payment-detail__actions__back">Back</button>
+  </div>
+</mat-card>

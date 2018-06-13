@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex logo="assets:enterprise" name="Firstname Lastname" email="firstname.lastname@company.com">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -11,7 +11,7 @@
       </mat-nav-list>
     </div>
   </td-navigation-drawer>
-  <td-layout-nav-list logo="assets:covalent" navigationRoute="/" color="primary">
+  <td-layout-nav-list logo="assets:enterprise" navigationRoute="/" color="primary">
     <button mat-icon-button td-menu-button tdLayoutToggle>
       <mat-icon>menu</mat-icon>
     </button>

@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
       mode: LoadingMode.Indeterminate,
       color: 'accent'
     });
-    this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
+    this._iconRegistry.addSvgIconInNamespace('assets', 'enterprise',
       this._domSanitizer.bypassSecurityTrustResourceUrl
         ('./assets/brand.svg'));
   }

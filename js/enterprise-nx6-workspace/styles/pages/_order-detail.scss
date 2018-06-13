@@ -1,0 +1,83 @@
+%order-detail-title {
+  width: 100%;
+  font-size: $font-size-lg;
+  font-family: 'Mina';
+  padding-bottom: 2rem;
+}
+
+%order-detail-item {
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+.order-detail-page {
+  padding: 2rem !important;
+  background-color: #F8F8FB !important;
+}
+
+.purchase-detail-container {
+  padding: 2rem !important;
+  &__title {
+    @extend %order-detail-title;
+  }
+  &__info-container {
+    &__item {
+      width: 46%;
+      padding-bottom: 1rem;
+      font-family: 'Mina';
+      display: grid;
+      grid-template-columns: 0.2fr 1fr;
+    }
+  }
+}
+
+.order-detail-container {
+  padding: 2rem !important;
+  &__title {
+    @extend %order-detail-title;
+  }
+  &__order-list {
+    &__item {
+      @extend %order-detail-item;
+      &__name {
+        font-size: $font-size-sm;
+        width: 30%;
+      }
+      &__quantity {
+        font-size: $font-size-sm;
+        width: 10%;
+      }
+      &__total-price {
+        font-size: $font-size-sm;
+        width: 10%;
+        color: $alert-color;
+      }
+    }
+  }
+  &__order-total {
+    border-top: 1px solid;
+    @extend %order-detail-item;
+    padding-top: 1rem;
+  }
+  &__actions{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    padding: 0 3rem;
+    &__purchase{
+        @extend %cart-btn-action;
+        justify-self: start;
+        align-self: center;
+        width: 98%;
+        background-color: $alert-color !important;
+        color: $inverted-color !important;
+    }
+    &__back{
+        @extend %cart-btn-action;
+        justify-self: end;
+        align-self: center;
+        width: 98%;
+        background-color: $alert-color !important;
+        color: $inverted-color !important;
+    }
+  }
+}

@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DetailPaymentComponent } from './detail-payment/detail-payment.component';
+import { SharedModule } from '@enterprise/shared/src';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
-  declarations: [DetailPaymentComponent]
+  declarations: [DetailPaymentComponent],
+  exports: [DetailPaymentComponent]
 })
 export class PaymentModule { }

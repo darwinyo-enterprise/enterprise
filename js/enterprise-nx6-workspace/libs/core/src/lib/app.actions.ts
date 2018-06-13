@@ -1,5 +1,6 @@
 import { IConfirmConfig } from '@covalent/core';
 import { Subject } from 'rxjs';
+import { IConfiguration } from './models/configuration.model';
 
 /** Register Linear Loading Overlay Command */
 export class RegisterLinearLoadingOverlay {
@@ -64,11 +65,11 @@ export class Login {
 /** Logged Event */
 export class Logged {
   static readonly type = '[APP] LOGGED';
-  constructor() { }
+  constructor(public payload: string) { }
 }
 /** Logged Out Event */
 export class LoggedOut {
-  static readonly type = '[APP] LOGGED';
+  static readonly type = '[APP] LOGGED OUT';
   constructor() { }
 }
 /** Logout Command */
@@ -83,3 +84,8 @@ export class SubscribeUser {
   constructor() { }
 }
 
+/** Load Configuration Command */
+export class LoadConfiguration {
+  static readonly type = '[APP] LOAD CONFIGURATION';
+  constructor(public payload: IConfiguration) { }
+}

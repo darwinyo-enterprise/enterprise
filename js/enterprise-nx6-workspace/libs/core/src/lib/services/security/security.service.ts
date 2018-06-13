@@ -4,7 +4,6 @@ import { StorageService } from '../storage/storage.service';
 import { Subject } from 'rxjs/Subject';
 import { Http, Headers } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfigurationService } from '../configuration/configuration.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
@@ -18,20 +17,15 @@ export class SecurityService {
   private authenticationSource = new Subject<boolean>();
   authenticationChallenge$ = this.authenticationSource.asObservable();
   private authorityUrl = '';
-
-
   public UserData: any;
 
-  constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _configurationService: ConfigurationService, private _storageService: StorageService) {
+  constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _storageService: StorageService) {
     this.headers = new HttpHeaders();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');
     this.storage = _storageService;
 
-    this.authorityUrl = this._configurationService.serverSettings.identityUrl
-    this.storage.store('IdentityUrl', this.authorityUrl);
-
-    if (this.storage.retrieve('IsAuthorized') !== '') {
+    if (this.storage.retrieve('IsAuthorized') !== undefined) {
       this.IsAuthorized = this.storage.retrieve('IsAuthorized');
       this.authenticationSource.next(true);
       this.UserData = this.storage.retrieve('userData');

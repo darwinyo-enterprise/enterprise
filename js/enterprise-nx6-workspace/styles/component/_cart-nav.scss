@@ -1,50 +1,74 @@
+%cart-menu-full-width-span {
+  width: 100%;
+  font-family: 'Mina';
+}
+
 .cart-menu {
-    width: 400px !important;
-    &__item {
-        height: 70px !important;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        &:hover {
-            background: rgba(0, 0, 0, 0) !important;
-        }
-        &__image {
-            height: 70px;
-            width: 70px;
-            margin: 0 0.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            &>img {
-                max-height: 100%;
-                max-width: 100%;
-            }
-        }
-        &__info {
-            width: 40%;
-            &__title {
-                width: 100%;
-                font-size: $font-size-sm;
-                font-family: 'Mina';
-                &>a {
-                    text-decoration: none;
-                    color: $secondary-color;
-                }
-            }
-            &__quantity {
-                font-size: $font-size-xs;
-                font-family: 'Mina';
-            }
-        }
-        &__total-price {
-            width: 30%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-items: center;
-            font-size: $font-size-sm;
-            font-family: 'Mina';
-            color: $alert-color;
-        }
+  width: 400px !important;
+  &__item {
+    height: 70px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+      box-shadow: 0.8px 0.9px 3px grey;
+      filter: alpha(opacity=80);
     }
+    &__image {
+      height: 70px;
+      width: 70px;
+      margin: 0 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &>img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+    &__info {
+      width: 40%;
+      &__title {
+        font-size: $font-size-sm;
+        @extend %cart-menu-full-width-span;
+        &>a {
+          text-decoration: none;
+          color: $secondary-color;
+        }
+      }
+      &__quantity {
+        font-size: $font-size-xs;
+        font-family: 'Mina';
+      }
+    }
+    &__total-price {
+      width: 30%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: $font-size-sm;
+      font-family: 'Mina';
+      color: $alert-color;
+    }
+  }
+}
+
+.cart-menu-empty {
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  &__title {
+    @extend %cart-menu-full-width-span;
+    font-size: $font-size-md;
+    padding-bottom: 1rem;
+    color: $secondary-color;
+  }
+  &__content {
+    @extend %cart-menu-full-width-span;
+    font-size: $font-size-sm;
+  }
 }

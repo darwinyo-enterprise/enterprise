@@ -6,6 +6,6 @@ export * from './lib/router.state';
 export * from './lib/not-authorized/not-authorized.component';
 export * from './lib/page-not-found/page-not-found.component';
 export * from './lib/routing/routing.route';
-export * from './lib/services/configuration/configuration.service';
 export * from './lib/services/security/security.service';
 export * from './lib/services/storage/storage.service';
+export * from './lib/models/configuration.model'

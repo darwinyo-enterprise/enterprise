@@ -1,87 +1,91 @@
 td-chips {
-    padding: 0px !important;
-    padding-bottom: 1.25em !important;
+  padding: 0px !important;
+  padding-bottom: 1.25em !important;
 }
 
 // Active icon color in list nav
 mat-nav-list,
 mat-list {
-    [mat-list-item].active {
-        mat-icon[matListAvatar] {
-            background-color: mat-color($secondary-background-color);
-            color: mat-color($secondary-color, default-contrast);
-        }
-        mat-icon[matListIcon] {
-            color: mat-color($secondary-color);
-        }
+  [mat-list-item].active {
+    mat-icon[matListAvatar] {
+      background-color: mat-color($secondary-background-color);
+      color: mat-color($secondary-color, default-contrast);
     }
+    mat-icon[matListIcon] {
+      color: mat-color($secondary-color);
+    }
+  }
 }
 
 .tab-group {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-tab-body-content {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .mat-card {
-    padding: 0px !important;
+  padding: 0px !important;
 }
 
 .mat-tab-label-content {
-    font-size: 1.25rem;
-    padding: 1rem;
+  font-size: 1.25rem;
+  padding: 1rem;
 }
 
 .mat-toolbar {
-    display: flex;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0 16px;
-    flex-direction: column
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px;
+  flex-direction: column
 }
 
 .mat-toolbar .mat-toolbar-row {
-    display: flex;
-    box-sizing: border-box;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    white-space: nowrap
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap
 }
 
 .mat-toolbar {
-    min-height: 64px
+  min-height: 64px
 }
 
 .mat-toolbar-row {
-    height: 64px
+  height: 64px
 }
 
 @media (max-width:600px) {
-    .mat-toolbar {
-        min-height: 56px
-    }
-    .mat-toolbar-row {
-        height: 56px
-    }
+  .mat-toolbar {
+    min-height: 56px
+  }
+  .mat-toolbar-row {
+    height: 56px
+  }
 }
 
 .mat-icon.mat-icon-logo {
-    width: 100% !important;
-    height: 4rem !important;
+  width: 100% !important;
+  height: 4rem !important;
 }
 
 .mat-form-field-infix {
-    border-top: 0rem solid transparent !important;
+  border-top: 0rem solid transparent !important;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-wrapper {
-    padding-bottom: 0px !important;
+  padding-bottom: 0px !important;
 }
 
-.mat-menu-panel{
-    max-width: 100% !important;
+.mat-menu-panel {
+  max-width: 100% !important;
+}
+
+.mat-step-label {
+  font-size: $font-size-md !important;
 }

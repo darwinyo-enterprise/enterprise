@@ -11,6 +11,8 @@ import { CatalogModule } from './catalog/catalog.module';
 import { isPlatformBrowser } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import { environment } from '../environments/environment';
     NxModule.forRoot(),
     AppRoutingModule,
     CatalogModule,
+    CartModule,
+    OrderModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [AppComponent],

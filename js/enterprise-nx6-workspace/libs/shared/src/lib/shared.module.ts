@@ -28,6 +28,7 @@ import {
   MatSliderModule,
   MatAutocompleteModule,
   MatCheckboxModule,
+  MatStepperModule,
 } from '@angular/material';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -43,12 +44,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
 
     //#region Material Imports
     MatButtonModule,
-    MatCardModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatButtonModule,
     MatListModule,
     MatIconModule,
     MatCardModule,
@@ -72,6 +68,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
     MatSliderModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatStepperModule,
     //#endregion
 
     //#region Covalent Imports
@@ -100,12 +97,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
 
     //#region Material Imports
     MatButtonModule,
-    MatCardModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatButtonModule,
     MatListModule,
     MatIconModule,
     MatCardModule,
@@ -129,6 +121,7 @@ import { CovalentLoadingModule, CovalentDialogsModule, CovalentChipsModule, Cova
     MatSliderModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatStepperModule,
     //#endregion
 
     //#region Covalent Imports

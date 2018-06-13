@@ -1,0 +1,32 @@
+%order-completed-title {
+  width: 100%;
+  font-size: $font-size-lg;
+  font-family: 'Mina';
+  padding-bottom: 4rem;
+  text-align: center;
+}
+
+.order-completed-container {
+  padding: 2rem !important;
+  text-align: center;
+  &__title {
+    @extend %order-completed-title;
+  }
+  &__content {
+    font-size: $font-size-sm;
+  }
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0 3rem;
+    &__back {
+      @extend %cart-btn-action;
+      justify-self: end;
+      align-self: center;
+      width: 98%;
+      background-color: $alert-color !important;
+      color: $inverted-color !important;
+      margin-top: 2rem !important;
+    }
+  }
+}

@@ -1,16 +1,26 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { RouteLinkModel, UserMenu, AppMenu, Navigate, RoutingModel } from '@enterprise/core';
+import { Store, Select } from '@ngxs/store';
+import { RouteLinkModel, UserMenu, AppMenu, Navigate, RoutingModel, SubscribeUser, LoadConfiguration, AppState } from '@enterprise/core';
 import { TdLoadingService, LoadingMode, TdMediaService, LoadingType } from '@covalent/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../environments/environment';
+import { Observable } from 'rxjs';
+import { CartModel } from './cart/models/cart.model';
 
 @Component({
-  selector: 'enterprise-root',
+  selector: 'eca-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  @Select(AppState.authenticated)
+  isAuthenticated: Observable<boolean>;
+
+  @Select(AppState.username)
+  username: Observable<string>;
+
+  cartItem: CartModel[] = [];
   name = 'Enterprise';
   routes: RouteLinkModel[] = [{
     title: 'Dashboards',
@@ -47,12 +57,14 @@ export class AppComponent implements OnInit {
       mode: LoadingMode.Indeterminate,
       color: 'accent'
     });
-    this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
+    this._iconRegistry.addSvgIconInNamespace('assets', 'enterprise',
       this._domSanitizer.bypassSecurityTrustResourceUrl
         ('./assets/brand.svg'));
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.dispatch([new LoadConfiguration(environment.configuration), SubscribeUser]);
+  }
 
   onNavigateBtnClicked(item: RouteLinkModel) {
     this.store.dispatch(new Navigate(<RoutingModel>{

@@ -1,0 +1,18 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Cart List</ng-template>
+    <eca-list-cart></eca-list-cart>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Payment</ng-template>
+    <eca-detail-payment></eca-detail-payment>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Order Details</ng-template>
+    <eca-order-detail></eca-order-detail>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <eca-order-completed></eca-order-completed>
+  </mat-step>
+</mat-horizontal-stepper>

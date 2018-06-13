@@ -11,7 +11,6 @@ import {
   RegisterLoadingOverlay,
   ResolveLoadingOverlay,
   ErrorOccured,
-  SetUsername,
   RegisterLinearLoadingOverlay,
   ResolveLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
@@ -22,12 +21,14 @@ import {
   SubscribeUser,
   Logout,
   Login,
-  LoggedOut
+  LoggedOut,
+  LoadConfiguration
 } from './app.actions';
-import { ConfigurationService } from './services/configuration/configuration.service';
 import { SecurityService } from './services/security/security.service';
+import { IConfiguration } from './models/configuration.model';
 
 export interface AppStateModel {
+  configuration: IConfiguration,
   authenticated: boolean;
   username: string;
   alertMessage: string;
@@ -40,6 +41,7 @@ export interface AppStateModel {
 }
 
 const defaults: AppStateModel = {
+  configuration: null,
   authenticated: false,
   username: '',
   alertMessage: '',
@@ -61,7 +63,6 @@ export class AppState {
   constructor(
     private loadingService: TdLoadingService,
     private dialogService: TdDialogService,
-    private configurationService: ConfigurationService,
     private securityService: SecurityService
   ) {
     this.loadingService.create({
@@ -102,6 +103,19 @@ export class AppState {
   static confirmation(state: AppStateModel) {
     return state.confirmation;
   }
+  @Selector()
+  static configuration(state: AppStateModel) {
+    return state.configuration;
+  }
+  @Selector()
+  static authenticated(state: AppStateModel) {
+    return state.authenticated;
+  }
+  @Selector()
+  static username(state: AppStateModel) {
+    return state.username;
+  }
+
   //#endregion
 
   @Action(ProgressLinearLoadingOverlay)
@@ -175,16 +189,25 @@ export class AppState {
   /** Logged Event */
   @Action(Logged)
   logged(
-    { patchState }: StateContext<AppStateModel>
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: Logged
   ) {
-    console.log('Logged')
+    patchState({
+      authenticated: true,
+      username: payload
+    });
   }
+
   /** Logged Out Event */
   @Action(LoggedOut)
   loggedOut(
-    { patchState }: StateContext<AppStateModel>
+    { patchState, getState }: StateContext<AppStateModel>
   ) {
-    console.log('Logged Out')
+    patchState({
+      authenticated: false,
+      username: ''
+    });
+    console.log(getState());
   }
 
   /** Subscribe user auth command */
@@ -195,16 +218,8 @@ export class AppState {
     const state = getState();
     this.securityService.authenticationChallenge$.subscribe(res => {
       if (res) {
-        patchState({
-          authenticated: res,
-          username: this.securityService.UserData.email
-        })
-        dispatch(Logged);
+        dispatch(new Logged(this.securityService.UserData.email));
       } else {
-        patchState({
-          authenticated: res,
-          username: ''
-        })
         dispatch(LoggedOut);
       }
     });
@@ -213,6 +228,17 @@ export class AppState {
       this.securityService.AuthorizedCallback();
     }
 
+  }
+
+  /** Load Configuration Command */
+  @Action(LoadConfiguration)
+  loadConfiguration(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: LoadConfiguration
+  ) {
+    patchState({
+      configuration: payload
+    })
   }
 
   @Action(Confirm)

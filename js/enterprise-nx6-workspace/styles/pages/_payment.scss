@@ -1,0 +1,46 @@
+%payment-info-font {
+  width: 100%;
+  font-size: $font-size-sm;
+  font-family: 'Mina';
+  margin-bottom: 1rem;
+}
+
+.payment-detail {
+  padding: 2rem !important;
+  &__title {
+    width: 100%;
+    font-size: $font-size-lg;
+    font-family: 'Mina';
+    padding-bottom: 2rem;
+  }
+  &__card-number {
+    @extend %payment-info-font;
+  }
+  &__card-holder {
+    @extend %payment-info-font;
+  }
+  &__card-expiry {
+    @extend %payment-info-font;
+  }
+  &__actions {
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    padding: 0 3rem;
+    &__purchase {
+      @extend %cart-btn-action;
+      justify-self: start;
+      align-self: center;
+      width: 98%;
+      background-color: $alert-color !important;
+      color: $inverted-color !important;
+    }
+    &__back {
+      @extend %cart-btn-action;
+      justify-self: end;
+      align-self: center;
+      width: 98%;
+      background-color: $alert-color !important;
+      color: $inverted-color !important;
+    }
+  }
+}

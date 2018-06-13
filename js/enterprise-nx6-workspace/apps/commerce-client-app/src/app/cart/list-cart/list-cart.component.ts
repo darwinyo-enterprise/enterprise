@@ -11,5 +11,7 @@ export class ListCartComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  onDelete() {
+    console.log('Delete');
+  }
 }

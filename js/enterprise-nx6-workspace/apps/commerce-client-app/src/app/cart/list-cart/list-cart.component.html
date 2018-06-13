@@ -1,3 +1,46 @@
-<p>
-  list-cart works!
-</p>
+<div class="cart-item__container">
+  <div class="cart-item__container__child">
+    <mat-card class="cart-item">
+      <div class="cart-item__image">
+        <img src="assets/test-product.png" alt="" srcset="">
+      </div>
+      <div class="cart-item__info">
+        <div class="cart-item__info__title">
+          <a href="#">
+            Intel i5 7790K
+          </a>
+        </div>
+        <div class="cart-item__info__quantity">
+          <input type="number" name="" id="" class="cart-item__info__quantity__input" value="1">
+          <span>pcs x </span>
+          <span class="cart-item__info__quantity__price"> $ 1200</span>
+        </div>
+      </div>
+      <div class="cart-item__total-price">
+        Total: $ 1200
+      </div>
+      <div class="cart-item__delete-btn" (click)="onDelete()">
+        <mat-icon class="td-chip-removal mat-icon material-icons" role="img" aria-hidden="true">
+          cancel
+        </mat-icon>
+      </div>
+    </mat-card>
+  </div>
+  <div class="cart-item__container__child">
+    <mat-card class="cart-item--action">
+
+      <div class="cart-item__total-price">
+        Total Order: $ 1200
+      </div>
+      <div class="cart-item-action">
+        <button mat-button matStepperNext class="cart-item-action__purchase-btn">
+          Check out
+        </button>
+        <button mat-button class="cart-item-action__clear-btn">
+          Clear
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+</div>

@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex logo="assets:enterprise" email="{{username||'guest'}}">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -11,7 +11,7 @@
       </mat-nav-list>
     </div>
   </td-navigation-drawer>
-  <td-layout-nav color="none" logo="assets:covalent" navigationRoute="/">
+  <td-layout-nav color="none" logo="assets:enterprise" navigationRoute="/">
     <button mat-icon-button td-menu-button tdLayoutToggle>
       <mat-icon>menu</mat-icon>
     </button>
@@ -19,89 +19,30 @@
       <mat-card class="nav-search-box" flex="20">
         <td-search-box [alwaysVisible]="true" #searchBox placeholder="Search" [showUnderline]="false"></td-search-box>
       </mat-card>
-      <ng-template [ngIf]="false">
-        <button mat-button class="nav-button" [matMenuTriggerFor]="shoppingCartMenu">
+      <ng-template [ngIf]="!(isAuthenticated | async)">
+        <button id="cart-btn" mat-button class="nav-button" [matMenuTriggerFor]="shoppingCartMenu">
           <mat-icon>shopping_cart</mat-icon>
           Cart
         </button>
         <mat-menu #shoppingCartMenu="matMenu">
           <td-menu class="cart-menu">
             <div td-menu-header class="mat-subhead">Cart</div>
-            <mat-nav-list>
-              <a mat-list-item class="cart-menu__item">
-                <div class="cart-menu__item__image">
-                  <img src="http://localhost:5101/api/v1/category/image/1" alt="" srcset="">
-                </div>
-                <div class="cart-menu__item__info">
-                  <div class="cart-menu__item__info__title">
-                    <a href="#">
-                      Intel i5 7790K
-                    </a>
-                  </div>
-                  <div class="cart-menu__item__info__quantity">
-                    1 pcs
-                  </div>
-                </div>
-                <div class="cart-menu__item__total-price">
-                  Total: $ 1200
-                </div>
-              </a>
-              <mat-divider></mat-divider>
-              <a mat-list-item class="cart-menu__item">
-                <div class="cart-menu__item__image">
-                  <img src="http://localhost:5101/api/v1/category/image/2" alt="" srcset="">
-                </div>
-                <div class="cart-menu__item__info">
-                  <div class="cart-menu__item__info__title">
-                    <a href="#">
-                      Intel i5 7790K
-                    </a>
-                  </div>
-                  <div class="cart-menu__item__info__quantity">
-                    1 pcs
-                  </div>
-                </div>
-                <div class="cart-menu__item__total-price">
-                  Total: $ 1200
-                </div>
-              </a>
-              <mat-divider></mat-divider>
-              <a mat-list-item class="cart-menu__item">
-                <div class="cart-menu__item__image">
-                  <img src="http://localhost:5101/api/v1/category/image/3" alt="" srcset="">
-                </div>
-                <div class="cart-menu__item__info">
-                  <div class="cart-menu__item__info__title">
-                    <a href="#">
-                      Intel i5 7790K
-                    </a>
-                  </div>
-                  <div class="cart-menu__item__info__quantity">
-                    1 pcs
-                  </div>
-                </div>
-                <div class="cart-menu__item__total-price">
-                  Total: $ 1200
-                </div>
-              </a>
-              <mat-divider></mat-divider>
-
-            </mat-nav-list>
+            <eca-cart-menu [cartItems]="cartItem"></eca-cart-menu>
             <a mat-button color="accent" td-menu-footer>
               View Cart
             </a>
           </td-menu>
         </mat-menu>
-        <button mat-button class="nav-button">
+        <button id="logout-btn" mat-button class="nav-button">
           <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
       </ng-template>
-      <ng-template [ngIf]="true">
-        <button mat-button class="nav-button">
+      <ng-template [ngIf]="(isAuthenticated | async)">
+        <button id="login-btn" mat-button class="nav-button">
           Login
         </button>
-        <button mat-button class="nav-button">
+        <button id="register-btn" mat-button class="nav-button">
           Register
         </button>
       </ng-template>
@@ -116,27 +57,9 @@
           </span>
         </a>
         <a mat-tab-link>
-          <span hide-xs>Technology</span>
+          <span hide-xs>My Cart</span>
           <span hide-gt-xs>
-            <mat-icon>laptop_mac</mat-icon>
-          </span>
-        </a>
-        <a mat-tab-link>
-          <span hide-xs>Locations</span>
-          <span hide-gt-xs>
-            <mat-icon>language</mat-icon>
-          </span>
-        </a>
-        <a mat-tab-link>
-          <span hide-xs>Job Openings</span>
-          <span hide-gt-xs>
-            <mat-icon>assignment</mat-icon>
-          </span>
-        </a>
-        <a mat-tab-link>
-          <span hide-xs>Leadership</span>
-          <span hide-gt-xs>
-            <mat-icon>people</mat-icon>
+            <mat-icon>shopping_cart</mat-icon>
           </span>
         </a>
       </nav>
@@ -149,7 +72,7 @@
         <div layout-gt-xs="row" flex-gt-xs="80" layout-margin layout-padding>
           <div flex-gt-xs>
             <mat-nav-list>
-              <h3 mat-subheader class="text-upper tc-blue-grey-100">About Teradata</h3>
+              <h3 mat-subheader class="text-upper tc-blue-grey-100">About Enterprise</h3>
               <mat-list-item>
                 <p matLine class="tc-blue-grey-300">Company Info</p>
               </mat-list-item>
@@ -186,12 +109,5 @@
         </div>
       </div>
     </section>
-    <td-layout-footer>
-      <div layout="row" layout-align="start center">
-        <span class="mat-caption">Made with
-          <mat-icon class="text-md">favorite</mat-icon> using
-          <a href="http://getcovalent.com" class="text-nodecoration tc-blue-700">Covalent</a>, built on Angular v4 + Angular Material.</span>
-      </div>
-    </td-layout-footer>
   </td-layout-nav>
 </td-layout>

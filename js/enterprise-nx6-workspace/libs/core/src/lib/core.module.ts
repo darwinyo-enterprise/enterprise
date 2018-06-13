@@ -18,7 +18,6 @@ import {
   CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
   CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule
 } from '@covalent/core';
-import { ConfigurationService } from './services/configuration/configuration.service';
 import { SecurityService } from './services/security/security.service';
 import { StorageService } from './services/storage/storage.service';
 @NgModule({
@@ -41,7 +40,6 @@ import { StorageService } from './services/storage/storage.service';
     CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule],
   declarations: [PageNotFoundComponent, NotAuthorizedComponent],
   providers: [
-    ConfigurationService,
     SecurityService,
     StorageService
   ]
