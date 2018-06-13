@@ -18,6 +18,9 @@ import {
   CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
   CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule
 } from '@covalent/core';
+import { ConfigurationService } from './services/configuration/configuration.service';
+import { SecurityService } from './services/security/security.service';
+import { StorageService } from './services/storage/storage.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,6 +39,11 @@ import {
     CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
     CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
     CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule],
-  declarations: [PageNotFoundComponent, NotAuthorizedComponent]
+  declarations: [PageNotFoundComponent, NotAuthorizedComponent],
+  providers: [
+    ConfigurationService,
+    SecurityService,
+    StorageService
+  ]
 })
 export class CoreModule { }

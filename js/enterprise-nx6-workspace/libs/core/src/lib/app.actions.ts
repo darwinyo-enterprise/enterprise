@@ -56,8 +56,30 @@ export class Alert {
   constructor(public payload: string) { }
 }
 
-/** TODO: Not Yet DONE */
-export class SetUsername {
-  static readonly type = '[APP] SET USERNAME';
-  constructor(public payload: string) { }
+/** Login command */
+export class Login {
+  static readonly type = '[APP] LOGIN';
+  constructor() { }
 }
+/** Logged Event */
+export class Logged {
+  static readonly type = '[APP] LOGGED';
+  constructor() { }
+}
+/** Logged Out Event */
+export class LoggedOut {
+  static readonly type = '[APP] LOGGED';
+  constructor() { }
+}
+/** Logout Command */
+export class Logout {
+  static readonly type = '[APP] LOGOUT';
+  constructor() { }
+}
+
+/** subscribe user login and logout */
+export class SubscribeUser {
+  static readonly type = '[APP] SUBSCRIBE USER';
+  constructor() { }
+}
+

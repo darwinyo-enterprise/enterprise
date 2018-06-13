@@ -17,12 +17,20 @@ import {
   ProgressLinearLoadingOverlay,
   Confirm,
   Confirmed,
-  Alert
+  Alert,
+  Logged,
+  SubscribeUser,
+  Logout,
+  Login,
+  LoggedOut
 } from './app.actions';
+import { ConfigurationService } from './services/configuration/configuration.service';
+import { SecurityService } from './services/security/security.service';
 
 export interface AppStateModel {
+  authenticated: boolean;
   username: string;
-  alertMessage:string;
+  alertMessage: string;
   errorMessage: string;
   progressLoading: number;
   confirmModel: IConfirmConfig;
@@ -32,8 +40,9 @@ export interface AppStateModel {
 }
 
 const defaults: AppStateModel = {
+  authenticated: false,
   username: '',
-  alertMessage:'',
+  alertMessage: '',
   errorMessage: '',
   progressLoading: 0,
   confirmModel: null,
@@ -51,7 +60,9 @@ export class AppState {
   linearLoadingAppName = 'linear-loading-facade';
   constructor(
     private loadingService: TdLoadingService,
-    private dialogService: TdDialogService
+    private dialogService: TdDialogService,
+    private configurationService: ConfigurationService,
+    private securityService: SecurityService
   ) {
     this.loadingService.create({
       name: this.circularLoadingAppName,
@@ -145,13 +156,63 @@ export class AppState {
     });
   }
 
-  /** TODO : NOT YET DONE */
-  @Action(SetUsername)
-  setUsername(
-    { patchState }: StateContext<AppStateModel>,
-    { payload }: SetUsername
+  /** Login Command */
+  @Action(Login)
+  login(
+    { patchState }: StateContext<AppStateModel>
   ) {
-    patchState({ username: payload });
+    this.securityService.Authorize();
+  }
+
+  /** Logout Command */
+  @Action(Logout)
+  logout(
+    { patchState }: StateContext<AppStateModel>
+  ) {
+    this.securityService.Logoff();
+  }
+
+  /** Logged Event */
+  @Action(Logged)
+  logged(
+    { patchState }: StateContext<AppStateModel>
+  ) {
+    console.log('Logged')
+  }
+  /** Logged Out Event */
+  @Action(LoggedOut)
+  loggedOut(
+    { patchState }: StateContext<AppStateModel>
+  ) {
+    console.log('Logged Out')
+  }
+
+  /** Subscribe user auth command */
+  @Action(SubscribeUser)
+  subscribeUser(
+    { getState, patchState, dispatch }: StateContext<AppStateModel>
+  ) {
+    const state = getState();
+    this.securityService.authenticationChallenge$.subscribe(res => {
+      if (res) {
+        patchState({
+          authenticated: res,
+          username: this.securityService.UserData.email
+        })
+        dispatch(Logged);
+      } else {
+        patchState({
+          authenticated: res,
+          username: ''
+        })
+        dispatch(LoggedOut);
+      }
+    });
+
+    if (window.location.hash) {
+      this.securityService.AuthorizedCallback();
+    }
+
   }
 
   @Action(Confirm)

@@ -28,10 +28,8 @@ export class SecurityService {
     this.headers.append('Accept', 'application/json');
     this.storage = _storageService;
 
-    this._configurationService.settingsLoaded$.subscribe(x => {
-      this.authorityUrl = this._configurationService.serverSettings.identityUrl
-      this.storage.store('IdentityUrl', this.authorityUrl);
-    });
+    this.authorityUrl = this._configurationService.serverSettings.identityUrl
+    this.storage.store('IdentityUrl', this.authorityUrl);
 
     if (this.storage.retrieve('IsAuthorized') !== '') {
       this.IsAuthorized = this.storage.retrieve('IsAuthorized');
@@ -46,40 +44,8 @@ export class SecurityService {
     return this.storage.retrieve('authorizationData');
   }
 
-  public ResetAuthorizationData() {
-    this.storage.store('authorizationData', '');
-    this.storage.store('authorizationDataIdToken', '');
-
-    this.IsAuthorized = false;
-    this.storage.store('IsAuthorized', false);
-  }
-
-  public SetAuthorizationData(token: any, id_token: any) {
-    if (this.storage.retrieve('authorizationData') !== '') {
-      this.storage.store('authorizationData', '');
-    }
-
-    this.storage.store('authorizationData', token);
-    this.storage.store('authorizationDataIdToken', id_token);
-    this.IsAuthorized = true;
-    this.storage.store('IsAuthorized', true);
-
-    this.getUserData()
-      .subscribe(data => {
-        this.UserData = data;
-        this.storage.store('userData', data);
-        // emit observable
-        this.authenticationSource.next(true);
-        window.location.href = location.origin;
-      },
-        error => this.HandleError(error),
-        () => {
-          console.log(this.UserData);
-        });
-  }
-
   public Authorize() {
-    this.ResetAuthorizationData();
+    this.resetAuthorizationData();
 
     const authorizationUrl = this.authorityUrl + '/connect/authorize';
     const client_id = 'js';
@@ -105,7 +71,7 @@ export class SecurityService {
   }
 
   public AuthorizedCallback() {
-    this.ResetAuthorizationData();
+    this.resetAuthorizationData();
 
     const hash = window.location.hash.substr(1);
 
@@ -148,7 +114,7 @@ export class SecurityService {
 
 
     if (authResponseIsValid) {
-      this.SetAuthorizationData(token, id_token);
+      this.setAuthorizationData(token, id_token);
     }
   }
 
@@ -162,14 +128,46 @@ export class SecurityService {
       'id_token_hint=' + encodeURI(id_token_hint) + '&' +
       'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
 
-    this.ResetAuthorizationData();
+    this.resetAuthorizationData();
 
     // emit observable
     this.authenticationSource.next(false);
     window.location.href = url;
   }
 
-  public HandleError(error: any) {
+  resetAuthorizationData() {
+    this.storage.store('authorizationData', '');
+    this.storage.store('authorizationDataIdToken', '');
+
+    this.IsAuthorized = false;
+    this.storage.store('IsAuthorized', false);
+  }
+
+  setAuthorizationData(token: any, id_token: any) {
+    if (this.storage.retrieve('authorizationData') !== '') {
+      this.storage.store('authorizationData', '');
+    }
+
+    this.storage.store('authorizationData', token);
+    this.storage.store('authorizationDataIdToken', id_token);
+    this.IsAuthorized = true;
+    this.storage.store('IsAuthorized', true);
+
+    this.getUserData()
+      .subscribe(data => {
+        this.UserData = data;
+        this.storage.store('userData', data);
+        // emit observable
+        this.authenticationSource.next(true);
+        window.location.href = location.origin;
+      },
+        error => this.handleError(error),
+        () => {
+          console.log(this.UserData);
+        });
+  }
+
+  handleError(error: any) {
     console.log(error);
     if (error.status === 403) {
       this._router.navigate(['/Forbidden']);
@@ -180,7 +178,7 @@ export class SecurityService {
     }
   }
 
-  private urlBase64Decode(str: string) {
+  urlBase64Decode(str: string) {
     let output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
       case 0:
@@ -198,7 +196,7 @@ export class SecurityService {
     return window.atob(output);
   }
 
-  private getDataFromToken(token: any) {
+  getDataFromToken(token: any) {
     let data = {};
     if (typeof token !== 'undefined') {
       const encoded = token.split('.')[1];
@@ -208,7 +206,7 @@ export class SecurityService {
     return data;
   }
 
-  private getUserData = (): Observable<string[]> => {
+  getUserData = (): Observable<string[]> => {
     this.setHeaders();
     if (this.authorityUrl === '')
       this.authorityUrl = this.storage.retrieve('IdentityUrl');
@@ -218,7 +216,7 @@ export class SecurityService {
     });
   }
 
-  private setHeaders() {
+  setHeaders() {
     this.headers = new HttpHeaders();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Accept', 'application/json');

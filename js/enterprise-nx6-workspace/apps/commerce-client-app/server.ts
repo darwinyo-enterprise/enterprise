@@ -13,6 +13,10 @@ import fetch from 'node-fetch';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
+interface IConfiguration {
+  identityUrl: string
+}
+
 // Express server
 const app = express();
 
@@ -60,6 +64,12 @@ app.engine('html', ngExpressEngine({
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'apps'));
 
+app.get('/api/configuration', (req, res) => {
+  res.status(200).send(<IConfiguration>{
+    identityUrl: process.env.identityUrl || 'http://localhost:5105'
+  });
+});
+
 // TODO: implement data requests securely
 app.get('/api/*', (req, res) => {
   res.status(404).send('data requests are not supported');
@@ -71,11 +81,6 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'apps')));
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {
   res.render('index', { req });
-});
-
-// TODO: implement data requests securely
-app.get('/api/*', (req, res) => {
-  res.status(404).send('data requests are not supported');
 });
 
 // Start up the Node server
