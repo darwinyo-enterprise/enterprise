@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex logo="assets:enterprise" email="{{username||'guest'}}">
+  <td-navigation-drawer flex logo="assets:enterprise" email="{{(username|async)||'guest'}}">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -11,7 +11,7 @@
       </mat-nav-list>
     </div>
   </td-navigation-drawer>
-  <td-layout-nav color="none" logo="assets:enterprise" navigationRoute="/">
+  <td-layout-nav logo="assets:enterprise" navigationRoute="/">
     <button mat-icon-button td-menu-button tdLayoutToggle>
       <mat-icon>menu</mat-icon>
     </button>
@@ -19,7 +19,7 @@
       <mat-card class="nav-search-box" flex="20">
         <td-search-box [alwaysVisible]="true" #searchBox placeholder="Search" [showUnderline]="false"></td-search-box>
       </mat-card>
-      <ng-template [ngIf]="!(isAuthenticated | async)">
+      <ng-template [ngIf]="(isAuthenticated | async)">
         <button id="cart-btn" mat-button class="nav-button" [matMenuTriggerFor]="shoppingCartMenu">
           <mat-icon>shopping_cart</mat-icon>
           Cart
@@ -33,16 +33,16 @@
             </a>
           </td-menu>
         </mat-menu>
-        <button id="logout-btn" mat-button class="nav-button">
+        <button id="logout-btn" mat-button class="nav-button" (click)="onLogoutBtnClicked()">
           <mat-icon>exit_to_app</mat-icon>
           Logout
         </button>
       </ng-template>
-      <ng-template [ngIf]="(isAuthenticated | async)">
-        <button id="login-btn" mat-button class="nav-button">
+      <ng-template [ngIf]="!(isAuthenticated | async)">
+        <button id="login-btn" mat-button class="nav-button" (click)="onLoginBtnClicked()">
           Login
         </button>
-        <button id="register-btn" mat-button class="nav-button">
+        <button id="register-btn" mat-button class="nav-button" (click)="onRegisterBtnClicked()">
           Register
         </button>
       </ng-template>
@@ -58,6 +58,18 @@
         </a>
         <a mat-tab-link>
           <span hide-xs>My Cart</span>
+          <span hide-gt-xs>
+            <mat-icon>shopping_cart</mat-icon>
+          </span>
+        </a>
+        <a mat-tab-link>
+          <span hide-xs>Contact Us</span>
+          <span hide-gt-xs>
+            <mat-icon>shopping_cart</mat-icon>
+          </span>
+        </a>
+        <a mat-tab-link>
+          <span hide-xs>About Us</span>
           <span hide-gt-xs>
             <mat-icon>shopping_cart</mat-icon>
           </span>

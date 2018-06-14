@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace Basket.API.Infrastructure.Middlewares
+namespace Catalog.API.Middlewares
 {
     internal class ByPassAuthMiddleware
     {
@@ -63,7 +63,7 @@ namespace Basket.API.Infrastructure.Middlewares
                             new Claim("nonce", Guid.NewGuid().ToString()),
                             new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname", "User"),
                             new Claim("sub", "1234"),
-                            new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname", "Microsoft")
+                            new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname", "Enterprise")
                         }
                         , "ByPassAuth");
 

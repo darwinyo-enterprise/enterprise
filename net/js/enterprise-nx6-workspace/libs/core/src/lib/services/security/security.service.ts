@@ -5,6 +5,10 @@ import { Subject } from 'rxjs/Subject';
 import { Http, Headers } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Select } from '@ngxs/store';
+import { AppState } from '../../app.state';
+import { IConfiguration } from '../../models/configuration.model';
+import { takeLast, take } from 'rxjs/operators';
 
 
 @Injectable({
@@ -16,7 +20,7 @@ export class SecurityService {
   private storage: StorageService;
   private authenticationSource = new Subject<boolean>();
   authenticationChallenge$ = this.authenticationSource.asObservable();
-  private authorityUrl = '';
+
   public UserData: any;
 
   constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _storageService: StorageService) {
@@ -38,14 +42,14 @@ export class SecurityService {
     return this.storage.retrieve('authorizationData');
   }
 
-  public Authorize() {
+  public Authorize(authorityUrl: string) {
     this.resetAuthorizationData();
 
-    const authorizationUrl = this.authorityUrl + '/connect/authorize';
+    const authorizationUrl = authorityUrl + '/connect/authorize';
     const client_id = 'js';
     const redirect_uri = location.origin + '/';
     const response_type = 'id_token token';
-    const scope = 'openid profile orders basket marketing locations webshoppingagg orders.signalrhub';
+    const scope = 'openid profile orders basket catalog';
     const nonce = 'N' + Math.random() + '' + Date.now();
     const state = Date.now() + '' + Math.random();
 
@@ -64,7 +68,7 @@ export class SecurityService {
     window.location.href = url;
   }
 
-  public AuthorizedCallback() {
+  public AuthorizedCallback(authorityUrl: string) {
     this.resetAuthorizationData();
 
     const hash = window.location.hash.substr(1);
@@ -108,12 +112,12 @@ export class SecurityService {
 
 
     if (authResponseIsValid) {
-      this.setAuthorizationData(token, id_token);
+      this.setAuthorizationData(token, id_token, authorityUrl);
     }
   }
 
-  public Logoff() {
-    const authorizationUrl = this.authorityUrl + '/connect/endsession';
+  public Logoff(authorityUrl: string) {
+    const authorizationUrl = authorityUrl + '/connect/endsession';
     const id_token_hint = this.storage.retrieve('authorizationDataIdToken');
     const post_logout_redirect_uri = location.origin + '/';
 
@@ -137,7 +141,7 @@ export class SecurityService {
     this.storage.store('IsAuthorized', false);
   }
 
-  setAuthorizationData(token: any, id_token: any) {
+  setAuthorizationData(token: any, id_token: any, authorityUrl: string) {
     if (this.storage.retrieve('authorizationData') !== '') {
       this.storage.store('authorizationData', '');
     }
@@ -147,7 +151,7 @@ export class SecurityService {
     this.IsAuthorized = true;
     this.storage.store('IsAuthorized', true);
 
-    this.getUserData()
+    this.getUserData(authorityUrl)
       .subscribe(data => {
         this.UserData = data;
         this.storage.store('userData', data);
@@ -200,12 +204,12 @@ export class SecurityService {
     return data;
   }
 
-  getUserData = (): Observable<string[]> => {
+  getUserData(authorityUrl: string): Observable<string[]> {
     this.setHeaders();
-    if (this.authorityUrl === '')
-      this.authorityUrl = this.storage.retrieve('IdentityUrl');
+    if (authorityUrl === '')
+      authorityUrl = this.storage.retrieve('IdentityUrl');
 
-    return this._http.get<string[]>(this.authorityUrl + '/connect/userinfo', {
+    return this._http.get<string[]>(authorityUrl + '/connect/userinfo', {
       headers: this.headers
     });
   }

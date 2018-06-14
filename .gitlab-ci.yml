@@ -11,72 +11,73 @@ before_script:
  # - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
 #  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-enterprise_global_sass_unit_test:
-  stage: test
-  image: node:latest
-  cache:
-    untracked: true
-    paths:
-      - node_modules/
-  script:
-    - chmod +x ./script/sass/test.sh
-    - ./script/sass/test.sh
+# enterprise_global_sass_unit_test:
+#   stage: test
+#   image: node:latest
+#   cache:
+#     untracked: true
+#     paths:
+#       - node_modules/
+#   script:
+#     - chmod +x ./script/sass/test.sh
+#     - ./script/sass/test.sh
 
-commerce_library_unit_test:
-  stage: test
-  image: microsoft/aspnetcore-build:2.0
-  cache:
-    untracked: true
-    paths:
-      - bin/
-  script:
-    - cd ./net/tests/Enterprise.Library.EventBus.Tests
-    - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
-    - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
-    - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
+# commerce_library_unit_test:
+#   stage: test
+#   image: microsoft/aspnetcore-build:2.0
+#   cache:
+#     untracked: true
+#     paths:
+#       - bin/
+#   script:
+#     - cd ./net/tests/Enterprise.Library.EventBus.Tests
+#     - dotnet restore ./Enterprise.Library.EventBus.Tests.csproj
+#     - dotnet build ./Enterprise.Library.EventBus.Tests.csproj
+#     - dotnet test ./Enterprise.Library.EventBus.Tests.csproj
 
-commerce_catalog_unit_test:
-  stage: test
-  image: microsoft/aspnetcore-build:2.0
-  cache:
-    untracked: true
-    paths:
-    - bin/
-  script:
-    - cd ./net/tests/Enterprise.Commerce.Tests
-    - dotnet restore ./Enterprise.Commerce.Tests.csproj
-    - dotnet build ./Enterprise.Commerce.Tests.csproj
-    - dotnet test ./Enterprise.Commerce.Tests.csproj
+# commerce_catalog_unit_test:
+#   stage: test
+#   image: microsoft/aspnetcore-build:2.0
+#   cache:
+#     untracked: true
+#     paths:
+#     - bin/
+#   script:
+#     - cd ./net/tests/Enterprise.Commerce.Tests
+#     - dotnet restore ./Enterprise.Commerce.Tests.csproj
+#     - dotnet build ./Enterprise.Commerce.Tests.csproj
+#     - dotnet test ./Enterprise.Commerce.Tests.csproj
 
-commerce_frontend_unit_test:
-  stage: test
-  image: node:latest
-  cache:
-    untracked: true
-    paths:
-    - node_modules/
-  script:
-    - cd ./js/enterprise-nx6-workspace
-    - npm install
-    - npm run test:all
+# commerce_frontend_unit_test:
+#   stage: test
+#   image: node:latest
+#   cache:
+#     untracked: true
+#     paths:
+#     - node_modules/
+#   script:
+#     - cd ./js/enterprise-nx6-workspace
+#     - npm install
+#     - npm run test:all
 
-commerce_catalog_integration_test:
-  stage: test
-  image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
-  cache:
-    untracked: true
-    paths:
-      - bin/
-  script:
-    - cd ./net
-    - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
+# commerce_catalog_integration_test:
+#   stage: test
+#   image: "$CI_REGISTRY_IMAGE/aspnetcore-ci:v1"
+#   cache:
+#     untracked: true
+#     paths:
+#       - bin/
+#   script:
+#     - cd ./net
+#     - docker-compose -f docker-compose-ci.yml -f docker-compose-ci.override.yml up --abort-on-container-exit
     
 
 commerce_frontend_build:
   stage: build
   script:
-    - cd ./js/enterprise-nx6-workspace
-    - docker-compose up
+    - cd ./net
+    - docker-compose build
+
 
 # commerce_build_ci_images:
 #   stage: build

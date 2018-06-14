@@ -5,11 +5,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BaseTestPage } from '@enterprise/core/testing/src';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store } from '@ngxs/store';
-import { AppState, Logged, LoggedOut } from '@enterprise/core/src';
+import { AppState, Logged, LoggedOut, LoadConfiguration, SubscribeUser, Logout, Login } from '@enterprise/core/src';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material';
 import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
 import { noop } from 'rxjs';
+import { environment } from '../environments/environment';
 
 export class AppPage extends BaseTestPage<AppComponent> {
   constructor(public fixture: ComponentFixture<AppComponent>) {
@@ -95,6 +96,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     page = new AppPage(fixture);
     store = TestBed.get(Store);
+
     storeSpy = spyOn(store, 'dispatch').and.callThrough();
   });
 
@@ -128,8 +130,9 @@ describe('AppComponent', () => {
 
   })
   describe('Functionality Tests', () => {
-
-
-
+    it('should dispatch load configuration, and Subscribe user on init', () => {
+      component.ngOnInit();
+      expect(store.dispatch).toHaveBeenCalledWith([new LoadConfiguration(environment.configuration), SubscribeUser]);
+    })
   })
 });

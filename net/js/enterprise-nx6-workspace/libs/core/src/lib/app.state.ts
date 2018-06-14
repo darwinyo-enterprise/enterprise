@@ -173,17 +173,19 @@ export class AppState {
   /** Login Command */
   @Action(Login)
   login(
-    { patchState }: StateContext<AppStateModel>
+    { patchState, getState }: StateContext<AppStateModel>
   ) {
-    this.securityService.Authorize();
+    const state = getState();
+    this.securityService.Authorize(state.configuration.identityUrl);
   }
 
   /** Logout Command */
   @Action(Logout)
   logout(
-    { patchState }: StateContext<AppStateModel>
+    { patchState, getState }: StateContext<AppStateModel>
   ) {
-    this.securityService.Logoff();
+    const state = getState();
+    this.securityService.Logoff(state.configuration.identityUrl);
   }
 
   /** Logged Event */
@@ -223,10 +225,6 @@ export class AppState {
         dispatch(LoggedOut);
       }
     });
-
-    if (window.location.hash) {
-      this.securityService.AuthorizedCallback();
-    }
 
   }
 

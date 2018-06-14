@@ -4,6 +4,7 @@
 
 .page-container {
     height: 80vh;
+    padding-top: 6rem;
 }
 
 .navbar-header {
@@ -199,21 +200,30 @@ select::-ms-expand {
     font-weight: normal;
 }
 
-    .btn-brand::before {
-        content: '['
-    }
+.error-page {
+    text-align: center;
+}
 
-    .btn-brand::after {
-        content: ']'
-    }
+.error-content {
+    display: flex;
+    justify-content: center;
+}
 
-    .btn-brand:hover:before {
-        padding-right: 5px;
-    }
+.btn-brand::before {
+    content: '['
+}
 
-    .btn-brand:hover:after {
-        padding-left: 5px;
-    }
+.btn-brand::after {
+    content: ']'
+}
+
+.btn-brand:hover:before {
+    padding-right: 5px;
+}
+
+.btn-brand:hover:after {
+    padding-left: 5px;
+}
 
 .btn-brand-big {
     width: 360px;
@@ -947,4 +957,3 @@ form .col-md-4 {
         padding-left: 0px;
     }
 }
-

@@ -32,7 +32,7 @@ export class CartMenuPage extends BaseTestPage<CartMenuComponent> {
     return this.query<HTMLElement>("#cart-menu-list");
   }
 }
-fdescribe('CartMenuComponent', () => {
+describe('CartMenuComponent', () => {
   let component: CartMenuComponent;
   let fixture: ComponentFixture<CartMenuComponent>;
   let page: CartMenuPage;

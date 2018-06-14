@@ -2,7 +2,7 @@ FROM node:10.4.0-alpine
 
 RUN mkdir -p /usr/src
 WORKDIR /usr/src
-COPY . .
+COPY ./js/enterprise-nx6-workspace .
 
 RUN npm install
 

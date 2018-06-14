@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Filters;
 using Catalog.API.Infrastructure;
 using Catalog.API.IntegrationEvents;
+using Catalog.API.Middlewares;
 using Enterprise.Extensions.HealthChecks;
 using Enterprise.Extensions.HealthChecks.AzureStorage;
 using Enterprise.Extensions.HealthChecks.SqlServer;
@@ -19,6 +22,7 @@ using Enterprise.Library.IntegrationEventLog;
 using Enterprise.Library.IntegrationEventLog.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.ServiceBus;
@@ -64,6 +68,8 @@ namespace Catalog.API
             services.AddMvc(options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); })
                 .AddControllersAsServices();
 
+            ConfigureAuthService(services);
+
             services.AddDbContext<CatalogContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString"],
@@ -106,6 +112,20 @@ namespace Catalog.API
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    Scopes = new Dictionary<string, string>
+                    {
+                        {"catalog", "Catalog API"}
+                    }
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             services.AddCors(options =>
@@ -185,6 +205,8 @@ namespace Catalog.API
 
             app.UseCors("CorsPolicy");
 
+            ConfigureAuth(app);
+
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
@@ -193,6 +215,9 @@ namespace Catalog.API
                     c.SwaggerEndpoint(
                         $"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json",
                         "Catalog.API V1");
+
+                    c.OAuthClientId("catalogwaggerui");
+                    c.OAuthAppName("Catalog Swagger UI");
                 });
 
             ConfigureEventBus(app);
@@ -209,6 +234,31 @@ namespace Catalog.API
                     new FabricTelemetryInitializer());
         }
 
+        private void ConfigureAuthService(IServiceCollection services)
+        {
+            // prevent from mapping "sub" claim to nameidentifier.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = identityUrl;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "catalog";
+            });
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            if (Configuration.GetValue<bool>("UseLoadTest")) app.UseMiddleware<ByPassAuthMiddleware>();
+
+            app.UseAuthentication();
+        }
         private void RegisterEventBus(IServiceCollection services)
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];

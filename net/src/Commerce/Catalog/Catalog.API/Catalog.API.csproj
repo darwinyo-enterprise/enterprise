@@ -57,6 +57,7 @@
     <ProjectReference Include="..\..\..\Library\HealthChecks\Enterprise.Extensions.HealthChecks\Enterprise.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\Library\HealthChecks\Enterprise.Library.HealthChecks\Enterprise.Library.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\Library\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj" />
+    <ProjectReference Include="..\..\Basket\Basket.API\Basket.API.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Azure.ServiceBus">
