@@ -4,6 +4,8 @@ jobs:
       script:
         - cd net/
         - docker-compose build
+        - docker ps
+        
 
     # - stage: sass-unit-test
     #   sudo: required
