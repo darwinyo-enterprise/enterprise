@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   AppState,
   AppStateModel,
-  SetUsername,
   Navigate,
   RoutingModel,
   RouteLinkModel,
@@ -75,7 +74,7 @@ export class AppComponent implements OnInit {
    * @param username user name
    */
   setUserName(username: string) {
-    this.store.dispatch([new SetUsername(username), new Navigate(<RoutingModel>{
+    this.store.dispatch([new Navigate(<RoutingModel>{
       commands: ['dashboard']
     })]);
   }
