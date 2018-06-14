@@ -23,23 +23,23 @@ services:
   #     - identity.api
   #     - rabbitmq
 
-  catalog.api:
-    image: darwinyo/catalog.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Commerce/Catalog/Catalog.API/Dockerfile
-    depends_on:
-      - sql.data
-      - rabbitmq
-      - identity.api
+  # catalog.api:
+  #   image: darwinyo/catalog.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Commerce/Catalog/Catalog.API/Dockerfile
+  #   depends_on:
+  #     - sql.data
+  #     - rabbitmq
+  #     - identity.api
 
-  identity.api:
-    image: darwinyo/identity.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Identity/Identity.API/Dockerfile
-    depends_on:
-      - sql.data
+  # identity.api:
+  #   image: darwinyo/identity.api:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: src/Identity/Identity.API/Dockerfile
+  #   depends_on:
+  #     - sql.data
 
   commerce.admin:
     image: darwinyo/commerce.admin:${TAG:-latest}
@@ -47,11 +47,11 @@ services:
       context: .
       dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
   
-  commerce.client:
-    image: darwinyo/commerce.client:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
+  # commerce.client:
+  #   image: darwinyo/commerce.client:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
       
   # order.api:
   #   image: darwinyo/order.api:${TAG:-latest}

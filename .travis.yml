@@ -3,8 +3,8 @@ jobs:
     - stage: build-image
       script:
         - cd net/
-        - docker-compose build
-        - docker ps
+        - docker-compose -f docker-compose.yml -f docker-compose.override.yml up --no-start
+        - docker images
         
 
     # - stage: sass-unit-test
