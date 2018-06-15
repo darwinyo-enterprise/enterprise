@@ -10,7 +10,11 @@ namespace Order.API.Application.Behaviors
     public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly IValidator<TRequest>[] _validators;
-        public ValidatorBehavior(IValidator<TRequest>[] validators) => _validators = validators;
+
+        public ValidatorBehavior(IValidator<TRequest>[] validators)
+        {
+            _validators = validators;
+        }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
@@ -22,11 +26,9 @@ namespace Order.API.Application.Behaviors
                 .ToList();
 
             if (failures.Any())
-            {
                 throw new OrderingDomainException(
                     $"Command Validation Errors for type {typeof(TRequest).Name}",
                     new ValidationException("Validation exception", failures));
-            }
 
             var response = await next();
             return response;
