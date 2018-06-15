@@ -51,6 +51,12 @@
     },
     "material-counter": {
       "tags": []
+    },
+    "commerce-basket-lib": {
+      "tags": []
+    },
+    "commerce-order-lib": {
+      "tags": []
     }
   }
 }

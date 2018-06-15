@@ -640,6 +640,62 @@
           }
         }
       }
+    },
+    "commerce-basket-lib": {
+      "root": "libs/commerce/basket-lib",
+      "sourceRoot": "libs/commerce/basket-lib/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/basket-lib/src/test.ts",
+            "tsConfig": "libs/commerce/basket-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/basket-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/basket-lib/tsconfig.lib.json",
+              "libs/commerce/basket-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-order-lib": {
+      "root": "libs/commerce/order-lib",
+      "sourceRoot": "libs/commerce/order-lib/src",
+      "projectType": "library",
+      "prefix": "em",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/order-lib/src/test.ts",
+            "tsConfig": "libs/commerce/order-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/order-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/order-lib/tsconfig.lib.json",
+              "libs/commerce/order-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
