@@ -6,6 +6,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Basket.API.Infrastructure.Filters;
 using Basket.API.Infrastructure.Middlewares;
+using Basket.API.IntegrationEvents.EventHandling;
+using Basket.API.IntegrationEvents.Events;
 using Basket.API.Model;
 using Basket.API.Services;
 using Enterprise.Extensions.HealthChecks;
@@ -267,16 +269,16 @@ namespace Basket.API
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-            //services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
-            //services.AddTransient<OrderStartedIntegrationEventHandler>();
+            services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+            services.AddTransient<OrderStartedIntegrationEventHandler>();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-            //eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
-            //eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+            eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+            eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
         }
     }
 }

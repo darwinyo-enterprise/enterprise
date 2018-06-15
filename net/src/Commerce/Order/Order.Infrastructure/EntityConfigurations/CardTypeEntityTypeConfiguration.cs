@@ -4,12 +4,12 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    internal class CardTypeEntityTypeConfiguration
+    class CardTypeEntityTypeConfiguration
         : IEntityTypeConfiguration<CardType>
     {
         public void Configure(EntityTypeBuilder<CardType> cardTypesConfiguration)
         {
-            cardTypesConfiguration.ToTable("cardtypes", OrderContext.DEFAULT_SCHEMA);
+            cardTypesConfiguration.ToTable("cardtypes", OrderingContext.DEFAULT_SCHEMA);
 
             cardTypesConfiguration.HasKey(ct => ct.Id);
 

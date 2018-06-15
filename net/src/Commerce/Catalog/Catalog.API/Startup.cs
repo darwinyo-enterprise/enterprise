@@ -8,6 +8,8 @@ using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Filters;
 using Catalog.API.Infrastructure;
 using Catalog.API.IntegrationEvents;
+using Catalog.API.IntegrationEvents.EventHandling;
+using Catalog.API.IntegrationEvents.Events;
 using Catalog.API.Middlewares;
 using Enterprise.Extensions.HealthChecks;
 using Enterprise.Extensions.HealthChecks.AzureStorage;
@@ -294,18 +296,18 @@ namespace Catalog.API
                 });
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-            //services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-            //services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
+            services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
         }
 
         protected virtual void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            //eventBus
-            //    .Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent,
-            //        OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
-            //eventBus
-            //    .Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent,
+                    OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
         }
     }
 }

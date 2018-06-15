@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Basket.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Basket")]
+    [Route("api/v1/[controller]")]
     [Authorize]
     public class BasketController : Controller
     {
@@ -37,7 +37,7 @@ namespace Basket.API.Controllers
         /// </returns>
         // GET /id
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(CustomerBasket), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
@@ -56,7 +56,7 @@ namespace Basket.API.Controllers
         /// </returns>
         // POST /value
         [HttpPost]
-        [ProducesResponseType(typeof(CustomerBasket), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post([FromBody] CustomerBasket value)
         {
             var basket = await _repository.UpdateBasketAsync(value);
@@ -73,8 +73,8 @@ namespace Basket.API.Controllers
         /// <returns></returns>
         [Route("checkout")]
         [HttpPost]
-        [ProducesResponseType((int) HttpStatusCode.Accepted)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout,
             [FromHeader(Name = "x-requestid")] string requestId)
         {

@@ -1,13 +1,54 @@
-﻿using Enterprise.Abstraction;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Enterprise.Abstraction;
+using Microsoft.EntityFrameworkCore;
 using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.Repositories
 {
     public class BuyerRepository
-        : Repository<Buyer, OrderContext>, IBuyerRepository
+        : Repository<Buyer, OrderingContext>, IBuyerRepository
     {
-        public BuyerRepository(OrderContext context) : base(context)
+        private readonly OrderingContext _context;
+
+        public BuyerRepository(OrderingContext context) : base(context)
         {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public Buyer Add(Buyer buyer)
+        {
+            if (buyer.IsTransient())
+            {
+                return _context.Buyers
+                    .Add(buyer)
+                    .Entity;
+            }
+            else
+            {
+                return buyer;
+            }
+        }
+
+        public async Task<Buyer> FindAsync(string identity)
+        {
+            var buyer = await _context.Buyers
+                .Include(b => b.PaymentMethods)
+                .Where(b => b.IdentityGuid == identity)
+                .SingleOrDefaultAsync();
+
+            return buyer;
+        }
+
+        public async Task<Buyer> FindByIdAsync(string id)
+        {
+            var buyer = await _context.Buyers
+                .Include(b => b.PaymentMethods)
+                .Where(b => b.Id == int.Parse(id))
+                .SingleOrDefaultAsync();
+
+            return buyer;
         }
     }
 }

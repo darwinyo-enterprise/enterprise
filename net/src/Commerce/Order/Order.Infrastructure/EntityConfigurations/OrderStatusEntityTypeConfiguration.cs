@@ -4,12 +4,12 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    internal class OrderStatusEntityTypeConfiguration
+    class OrderStatusEntityTypeConfiguration
         : IEntityTypeConfiguration<OrderStatus>
     {
         public void Configure(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
         {
-            orderStatusConfiguration.ToTable("orderstatus", OrderContext.DEFAULT_SCHEMA);
+            orderStatusConfiguration.ToTable("orderstatus", OrderingContext.DEFAULT_SCHEMA);
 
             orderStatusConfiguration.HasKey(o => o.Id);
 

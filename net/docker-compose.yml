@@ -53,34 +53,34 @@ services:
   #     context: .
   #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
       
-  # order.api:
-  #   image: darwinyo/order.api:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/Commerce/Order/Order.API/Dockerfile
-  #   depends_on:
-  #     - sql.data
-  #     - rabbitmq
+  order.api:
+    image: darwinyo/order.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Commerce/Order/Order.API/Dockerfile
+    depends_on:
+      - sql.data
+      - rabbitmq
 
-  # order.backgroundtasks:
-  #   image: darwinyo/order.backgroundtasks:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/Commerce/Order/Order.BackgroundTasks/Dockerfile
-  #   depends_on:
-  #     - sql.data
-  #     - rabbitmq
+  order.backgroundtasks:
+    image: darwinyo/order.backgroundtasks:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Commerce/Order/Order.BackgroundTasks/Dockerfile
+    depends_on:
+      - sql.data
+      - rabbitmq
 
-  # payment.api:
-  #   image: darwinyo/payment.api:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/Commerce/Payment/Payment.API/Dockerfile
-  #   depends_on:
-  #     - rabbitmq   
+  payment.api:
+    image: darwinyo/payment.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Commerce/Payment/Payment.API/Dockerfile
+    depends_on:
+      - rabbitmq   
 
-  # webstatus:
-  #   image: darwinyo/webstatus:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/HealthCheck/WebStatus/Dockerfile
+  webstatus:
+    image: darwinyo/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/HealthCheck/WebStatus/Dockerfile

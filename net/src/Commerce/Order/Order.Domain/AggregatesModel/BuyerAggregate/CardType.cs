@@ -5,6 +5,7 @@ using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
+
     public class CardType
         : Enumeration
     {
@@ -12,28 +13,28 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
         public static CardType Visa = new CardType(2, "Visa");
         public static CardType MasterCard = new CardType(3, "MasterCard");
 
-        protected CardType()
-        {
-        }
+        protected CardType() { }
 
         public CardType(int id, string name)
             : base(id, name)
         {
+
         }
 
         public static IEnumerable<CardType> List()
         {
-            return new[] {Amex, Visa, MasterCard};
+            return new[] { Amex, Visa, MasterCard };
         }
 
         public static CardType FromName(string name)
         {
             var state = List()
-                .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
+                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (state == null)
-                throw new ArgumentException(
-                    $"Possible values for CardType: {string.Join(",", List().Select(s => s.Name))}");
+            {
+                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
+            }
 
             return state;
         }
@@ -43,8 +44,9 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             var state = List().SingleOrDefault(s => s.Id == id);
 
             if (state == null)
-                throw new ArgumentException(
-                    $"Possible values for CardType: {string.Join(",", List().Select(s => s.Name))}");
+            {
+                throw new ArgumentException($"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
+            }
 
             return state;
         }

@@ -1,4 +1,5 @@
-﻿using Enterprise.Abstraction;
+﻿using System.Threading.Tasks;
+using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.OrderAggregate
 {
@@ -7,5 +8,8 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
 
     public interface IOrderRepository : IRepository<Order>
     {
+        Order Add(Order order);
+
+        Task<Order> GetAsync(int orderId);
     }
 }

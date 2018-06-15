@@ -1,35 +1,52 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 
 namespace Enterprise.Abstraction
 {
     public abstract class Entity
     {
-        private int? _requestedHashCode;
+        int? _requestedHashCode;
+        int _Id;
+        public virtual int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            protected set
+            {
+                _Id = value;
+            }
+        }
 
-        public virtual int Id { get; protected set; }
-
-        public List<INotification> DomainEvents { get; private set; }
+        private List<INotification> _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
         {
-            DomainEvents = DomainEvents ?? new List<INotification>();
-            DomainEvents.Add(eventItem);
+            _domainEvents = _domainEvents ?? new List<INotification>();
+            _domainEvents.Add(eventItem);
         }
 
         public void RemoveDomainEvent(INotification eventItem)
         {
-            DomainEvents?.Remove(eventItem);
+            _domainEvents?.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()
         {
-            return Id == default(int);
+            return Id == default(Int32);
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Entity))
+            if (obj == null || !(obj is Entity))
                 return false;
 
             if (ReferenceEquals(this, obj))
@@ -38,33 +55,33 @@ namespace Enterprise.Abstraction
             if (GetType() != obj.GetType())
                 return false;
 
-            var item = (Entity) obj;
+            Entity item = (Entity)obj;
 
             if (item.IsTransient() || IsTransient())
                 return false;
-            return item.Id == Id;
+            else
+                return item.Id == Id;
         }
 
         public override int GetHashCode()
         {
-            if (IsTransient()) return base.GetHashCode();
-            // ReSharper disable once NonReadonlyMemberInGetHashCode
-            if (!_requestedHashCode.HasValue)
-                // ReSharper disable once NonReadonlyMemberInGetHashCode
-                _requestedHashCode =
-                    // ReSharper disable once NonReadonlyMemberInGetHashCode
-                    Id.GetHashCode() ^
-                    31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
+            if (!IsTransient())
+            {
+                if (!_requestedHashCode.HasValue)
+                    _requestedHashCode = Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
 
-            // ReSharper disable once NonReadonlyMemberInGetHashCode
-            return _requestedHashCode.Value;
+                return _requestedHashCode.Value;
+            }
+            else
+                return base.GetHashCode();
+
         }
-
         public static bool operator ==(Entity left, Entity right)
         {
-            if (Equals(left, null))
-                return Equals(right, null);
-            return left.Equals(right);
+            if (Object.Equals(left, null))
+                return (Object.Equals(right, null)) ? true : false;
+            else
+                return left.Equals(right);
         }
 
         public static bool operator !=(Entity left, Entity right)

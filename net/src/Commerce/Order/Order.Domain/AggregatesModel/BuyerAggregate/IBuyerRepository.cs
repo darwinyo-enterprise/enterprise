@@ -1,4 +1,5 @@
-﻿using Enterprise.Abstraction;
+﻿using System.Threading.Tasks;
+using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
@@ -7,5 +8,8 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
 
     public interface IBuyerRepository : IRepository<Buyer>
     {
+        Buyer Add(Buyer buyer);
+        Task<Buyer> FindAsync(string buyerIdentityGuid);
+        Task<Buyer> FindByIdAsync(string id);
     }
 }

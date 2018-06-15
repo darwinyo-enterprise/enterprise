@@ -6,7 +6,7 @@ namespace Enterprise.Commerce.IntegrationTests.Attributes
     {
         public TestPriorityAttribute(int priority)
         {
-            this.Priority = priority;
+            Priority = priority;
         }
 
         public int Priority { get; set; }

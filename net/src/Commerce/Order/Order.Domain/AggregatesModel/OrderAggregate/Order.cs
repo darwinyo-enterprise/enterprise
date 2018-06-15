@@ -11,32 +11,49 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         : Entity, IAggregateRoot
     {
         // DDD Patterns comment
+        // Using private fields, allowed since EF Core 1.1, is a much better encapsulation
+        // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
+        private DateTime _orderDate;
+
+        // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
+        public Address Address { get; private set; }
+
+        public int? GetBuyerId => _buyerId;
+        private int? _buyerId;
+
+        public OrderStatus OrderStatus { get; private set; }
+        private int _orderStatusId;
+
+        private string _description;
+
+       
+        // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
+        private bool _isDraft;
+
+        // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
-
-        private string _buyerId;
-
-        private string _description;
-
-        // DDD Patterns comment
-        // Using private fields, allowed since EF Core 1.1, is a much better encapsulation
-        // aligned with DDD Aggregates and Domain Entities (Instead of properties and property collections)
-        private DateTime _orderDate;
-        private int _orderStatusId;
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         private int? _paymentMethodId;
 
-        protected Order()
+        public static Order NewDraft()
         {
-            _orderItems = new List<OrderItem>();
+            var order = new Order();
+            order._isDraft = true;
+            return order;
         }
 
-        public Order(string userId, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
-            string cardHolderName, DateTime cardExpiration, string buyerId = null, int? paymentMethodId = null)
-        {
+        protected Order() {
             _orderItems = new List<OrderItem>();
+            _isDraft = false;
+        }
+
+        public Order(string userId, string userName, Address address, int cardTypeId, string cardNumber, string cardSecurityNumber,
+                string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null) : this()
+        {
             _buyerId = buyerId;
             _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.Submitted.Id;
@@ -45,32 +62,27 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
 
             // Add the OrderStarterDomainEvent to the domain events collection 
             // to be raised/dispatched when comitting changes into the Database [ After DbContext.SaveChanges() ]
-            AddOrderStartedDomainEvent(userId, cardTypeId, cardNumber,
-                cardSecurityNumber, cardHolderName, cardExpiration);
+            AddOrderStartedDomainEvent(userId, userName, cardTypeId, cardNumber,
+                                       cardSecurityNumber, cardHolderName, cardExpiration);
         }
-
-        // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
-        public Address Address { get; }
-
-        public OrderStatus OrderStatus { get; private set; }
-        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         // DDD Patterns comment
         // This Order AggregateRoot's method "AddOrderitem()" should be the only way to add Items to the Order,
         // so any behavior (discounts, etc.) and validations are controlled by the AggregateRoot 
         // in order to maintain consistency between the whole Aggregate. 
-        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount,
-            string pictureUrl, int units = 1)
+        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount, string pictureUrl, int units = 1)
         {
-            var existingOrderForProduct = _orderItems
-                .SingleOrDefault(o => o.ProductId == productId);
+            var existingOrderForProduct = _orderItems.Where(o => o.ProductId == productId)
+                .SingleOrDefault();
 
             if (existingOrderForProduct != null)
             {
                 //if previous line exist modify it with higher discount  and units..
 
                 if (discount > existingOrderForProduct.GetCurrentDiscount())
+                {
                     existingOrderForProduct.SetNewDiscount(discount);
+                }
 
                 existingOrderForProduct.AddUnits(units);
             }
@@ -88,7 +100,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             _paymentMethodId = id;
         }
 
-        public void SetBuyerId(string id)
+        public void SetBuyerId(int id)
         {
             _buyerId = id;
         }
@@ -97,9 +109,8 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
             if (_orderStatusId == OrderStatus.Submitted.Id)
             {
-                _orderStatusId = OrderStatus.AwaitingValidation.Id;
-
                 AddDomainEvent(new OrderStatusChangedToAwaitingValidationDomainEvent(Id, _orderItems));
+                _orderStatusId = OrderStatus.AwaitingValidation.Id;
             }
         }
 
@@ -107,10 +118,10 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
             if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
+                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
+
                 _orderStatusId = OrderStatus.StockConfirmed.Id;
                 _description = "All the items were confirmed with available stock.";
-
-                AddDomainEvent(new OrderStatusChangedToStockConfirmedDomainEvent(Id));
             }
         }
 
@@ -118,30 +129,36 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
             if (_orderStatusId == OrderStatus.StockConfirmed.Id)
             {
-                _orderStatusId = OrderStatus.Paid.Id;
-                _description =
-                    "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
-
                 AddDomainEvent(new OrderStatusChangedToPaidDomainEvent(Id, OrderItems));
+
+                _orderStatusId = OrderStatus.Paid.Id;
+                _description = "The payment was performed at a simulated \"American Bank checking bank account endinf on XX35071\"";
             }
         }
 
         public void SetShippedStatus()
         {
-            if (_orderStatusId != OrderStatus.Paid.Id) StatusChangeException(OrderStatus.Shipped);
+            if (_orderStatusId != OrderStatus.Paid.Id)
+            {
+                StatusChangeException(OrderStatus.Shipped);
+            }
 
             _orderStatusId = OrderStatus.Shipped.Id;
             _description = "The order was shipped.";
+            AddDomainEvent(new OrderShippedDomainEvent(this));
         }
 
         public void SetCancelledStatus()
         {
             if (_orderStatusId == OrderStatus.Paid.Id ||
                 _orderStatusId == OrderStatus.Shipped.Id)
+            {
                 StatusChangeException(OrderStatus.Cancelled);
+            }
 
             _orderStatusId = OrderStatus.Cancelled.Id;
             _description = $"The order was cancelled.";
+            AddDomainEvent(new OrderCancelledDomainEvent(this));
         }
 
         public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
@@ -159,20 +176,19 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             }
         }
 
-        private void AddOrderStartedDomainEvent(string userId, int cardTypeId, string cardNumber,
-            string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
+        private void AddOrderStartedDomainEvent(string userId, string userName, int cardTypeId, string cardNumber,
+                string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)
         {
-            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, cardTypeId,
-                cardNumber, cardSecurityNumber,
-                cardHolderName, cardExpiration);
+            var orderStartedDomainEvent = new OrderStartedDomainEvent(this, userId, userName, cardTypeId,
+                                                                      cardNumber, cardSecurityNumber,
+                                                                      cardHolderName, cardExpiration);
 
             AddDomainEvent(orderStartedDomainEvent);
         }
 
         private void StatusChangeException(OrderStatus orderStatusToChange)
         {
-            throw new OrderingDomainException(
-                $"Is not possible to change the order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
+            throw new OrderingDomainException($"Is not possible to change the order status from {OrderStatus.Name} to {orderStatusToChange.Name}.");
         }
 
         public decimal GetTotal()
@@ -181,3 +197,4 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         }
     }
 }
+
