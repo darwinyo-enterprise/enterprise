@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Order.Infrastructure
 {
-    static class MediatorExtension
+    internal static class MediatorExtension
     {
         public static async Task DispatchDomainEventsAsync(this IMediator mediator, OrderingContext ctx)
         {
@@ -21,7 +21,7 @@ namespace Order.Infrastructure
                 .ForEach(entity => entity.Entity.ClearDomainEvents());
 
             var tasks = domainEvents
-                .Select(async (domainEvent) => { await mediator.Publish(domainEvent); });
+                .Select(async domainEvent => { await mediator.Publish(domainEvent); });
 
             await Task.WhenAll(tasks);
         }

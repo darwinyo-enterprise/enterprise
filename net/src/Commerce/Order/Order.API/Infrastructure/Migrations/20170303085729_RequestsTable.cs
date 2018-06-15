@@ -8,7 +8,7 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "requests",
+                "requests",
                 schema: "ordering",
                 columns: table => new
                 {
@@ -22,8 +22,8 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "requests",
-                schema: "ordering");
+                "requests",
+                "ordering");
         }
     }
 }

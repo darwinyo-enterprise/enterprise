@@ -4,7 +4,7 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class BuyerEntityTypeConfiguration
+    internal class BuyerEntityTypeConfiguration
         : IEntityTypeConfiguration<Buyer>
     {
         public void Configure(EntityTypeBuilder<Buyer> buyerConfiguration)

@@ -8,7 +8,9 @@ namespace Order.API.Application.IntegrationEvents.Events
     public class OrderStartedIntegrationEvent : IntegrationEvent
     {
         public OrderStartedIntegrationEvent(string userId)
-            => UserId = userId;
+        {
+            UserId = userId;
+        }
 
         public string UserId { get; set; }
     }

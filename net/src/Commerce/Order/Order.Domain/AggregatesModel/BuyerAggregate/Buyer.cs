@@ -9,7 +9,7 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
     public class Buyer
         : Entity, IAggregateRoot
     {
-        private List<PaymentMethod> _paymentMethods;
+        private readonly List<PaymentMethod> _paymentMethods;
 
         protected Buyer()
         {
@@ -24,9 +24,9 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
         }
 
-        public string IdentityGuid { get; private set; }
+        public string IdentityGuid { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
@@ -43,17 +43,15 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
 
                 return existingPayment;
             }
-            else
-            {
-                var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName,
-                    expiration);
 
-                _paymentMethods.Add(payment);
+            var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName,
+                expiration);
 
-                AddDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, payment, orderId));
+            _paymentMethods.Add(payment);
 
-                return payment;
-            }
+            AddDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, payment, orderId));
+
+            return payment;
         }
     }
 }

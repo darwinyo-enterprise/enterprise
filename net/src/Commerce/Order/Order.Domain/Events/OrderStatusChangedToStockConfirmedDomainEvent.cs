@@ -9,7 +9,9 @@ namespace Order.Domain.Events
         : INotification
     {
         public OrderStatusChangedToStockConfirmedDomainEvent(int orderId)
-            => OrderId = orderId;
+        {
+            OrderId = orderId;
+        }
 
         public int OrderId { get; }
     }

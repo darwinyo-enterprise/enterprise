@@ -15,10 +15,9 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
         // but only through the method OrderAggrergateRoot.AddOrderItem() which includes behaviour.
         private readonly List<OrderItem> _orderItems;
-        private int? _buyerId;
 
         private string _description;
-        
+
 
         // DDD Patterns comment
         // Using private fields, allowed since EF Core 1.1, is a much better encapsulation
@@ -37,7 +36,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             string cardSecurityNumber,
             string cardHolderName, DateTime cardExpiration, int? buyerId = null, int? paymentMethodId = null) : this()
         {
-            _buyerId = buyerId;
+            GetBuyerId = buyerId;
             _paymentMethodId = paymentMethodId;
             _orderStatusId = OrderStatus.Submitted.Id;
             _orderDate = DateTime.UtcNow;
@@ -50,9 +49,9 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         }
 
         // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
-        public Address Address { get; private set; }
+        public Address Address { get; }
 
-        public int? GetBuyerId => _buyerId;
+        public int? GetBuyerId { get; private set; }
 
         public OrderStatus OrderStatus { get; private set; }
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
@@ -78,9 +77,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
                 //if previous line exist modify it with higher discount  and units..
 
                 if (discount > existingOrderForProduct.GetCurrentDiscount())
-                {
                     existingOrderForProduct.SetNewDiscount(discount);
-                }
 
                 existingOrderForProduct.AddUnits(units);
             }
@@ -100,7 +97,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
 
         public void SetBuyerId(int id)
         {
-            _buyerId = id;
+            GetBuyerId = id;
         }
 
         public void SetAwaitingValidationStatus()
@@ -137,10 +134,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
 
         public void SetShippedStatus()
         {
-            if (_orderStatusId != OrderStatus.Paid.Id)
-            {
-                StatusChangeException(OrderStatus.Shipped);
-            }
+            if (_orderStatusId != OrderStatus.Paid.Id) StatusChangeException(OrderStatus.Shipped);
 
             _orderStatusId = OrderStatus.Shipped.Id;
             _description = "The order was shipped.";
@@ -151,9 +145,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
             if (_orderStatusId == OrderStatus.Paid.Id ||
                 _orderStatusId == OrderStatus.Shipped.Id)
-            {
                 StatusChangeException(OrderStatus.Cancelled);
-            }
 
             _orderStatusId = OrderStatus.Cancelled.Id;
             _description = $"The order was cancelled.";

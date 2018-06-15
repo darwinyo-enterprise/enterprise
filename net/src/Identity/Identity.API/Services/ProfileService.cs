@@ -105,10 +105,7 @@ namespace Identity.API.Services
             if (!string.IsNullOrWhiteSpace(user.ZipCode))
                 claims.Add(new Claim("address_zip_code", user.ZipCode));
 
-            foreach (var claim in roles)
-            {
-                claims.Add(new Claim("roles", claim));
-            }
+            foreach (var claim in roles) claims.Add(new Claim("roles", claim));
 
             if (_userManager.SupportsUserEmail)
                 claims.AddRange(new[]

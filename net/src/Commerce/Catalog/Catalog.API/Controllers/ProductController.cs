@@ -331,7 +331,6 @@ namespace Catalog.API.Controllers
                 var id = x.ProductImages.FirstOrDefault()?.Id;
                 var totalRatingCount = x.ProductRatings.Count;
                 if (id != null)
-                {
                     page.Add(new CatalogItemViewModel
                     {
                         CategoryId = x.CategoryId,
@@ -348,7 +347,6 @@ namespace Catalog.API.Controllers
                         TotalReviews = x.TotalReviews,
                         TotalRatingCount = totalRatingCount
                     });
-                }
             });
 
 
@@ -431,7 +429,7 @@ namespace Catalog.API.Controllers
                     HasExpiry = result.HasExpiry ? "True" : "False",
                     ExpireDate = result.ExpireDate.ToShortDateString(),
                     Discount = result.Discount,
-                    Stock = result.AvailableStock,
+                    Stock = result.AvailableStock
                 };
                 return Ok(productViewModel);
             }
@@ -514,10 +512,7 @@ namespace Catalog.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
-            if (pageIndex < 0 || pageSize <= 0)
-            {
-                return BadRequest(new {Message = $"Invalid pagination request."});
-            }
+            if (pageIndex < 0 || pageSize <= 0) return BadRequest(new {Message = $"Invalid pagination request."});
 
             var root = (IQueryable<Product>) _catalogContext.Products;
 
@@ -559,9 +554,9 @@ namespace Catalog.API.Controllers
             {
                 if (product == null)
                     return BadRequest(new {Message = $"Cant Create Empty Product."});
-                else if (product.ProductImages.Length <= 0)
+                if (product.ProductImages.Length <= 0)
                     return BadRequest(new {Message = $"Cant Create Product without image."});
-                else if (product.CategoryId <= 0 || product.ManufacturerId <= 0)
+                if (product.CategoryId <= 0 || product.ManufacturerId <= 0)
                     return BadRequest(new
                     {
                         Message = $"Cant Create Product when category and manufacturer is not assign."
@@ -586,7 +581,7 @@ namespace Catalog.API.Controllers
                 var productImages = new List<ProductImage>();
                 foreach (var image in product.ProductImages)
                 {
-                    productImages.Add(new ProductImage()
+                    productImages.Add(new ProductImage
                     {
                         Id = 0,
                         ImageName = image.ImageName,
@@ -619,9 +614,9 @@ namespace Catalog.API.Controllers
                     TotalWishlist = 0,
                     Location = product.Location,
                     MinPurchase = product.MinPurchase,
-                    HasExpiry = Boolean.Parse(product.HasExpiry),
+                    HasExpiry = bool.Parse(product.HasExpiry),
                     ExpireDate = DateTime.Parse(product.ExpireDate),
-                    Discount = product.Discount,
+                    Discount = product.Discount
                 };
 
                 #endregion
@@ -632,14 +627,12 @@ namespace Catalog.API.Controllers
                 {
                     var colors = new List<ProductColor>();
                     foreach (var color in product.ProductColors)
-                    {
                         colors.Add(new ProductColor
                         {
                             Id = 0,
                             Name = color.Name,
                             ProductId = product.Id
                         });
-                    }
 
                     item.ProductColors = colors;
                 }
@@ -688,12 +681,12 @@ namespace Catalog.API.Controllers
                     .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
                 if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
-                else if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
+                if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
                     return BadRequest(new
                     {
                         Message = $"Cant update Product when category and manufacturer is not assign."
                     });
-                else if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
+                if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
                     return BadRequest(new {Message = "Cant update product with 0 image"});
 
                 updateModel.Id = id;
@@ -705,15 +698,11 @@ namespace Catalog.API.Controllers
 
                 // Delete Previous Images
                 foreach (var image in item.ProductImages)
-                {
                     _fileUtility.DeleteFile("ProductImage/" + id, image.ImageName);
-                }
 
                 // Insert new images
                 foreach (var image in updateModel.ProductImages)
-                {
                     await InsertProductImageAsync(updateModel, cancellationToken, image);
-                }
 
                 await _catalogContext.SaveChangesAsync(cancellationToken);
 
@@ -730,10 +719,10 @@ namespace Catalog.API.Controllers
                 item.ManufacturerId = updateModel.ManufacturerId;
                 item.Price = updateModel.Price;
                 item.ProductImages = updateModel.ProductImages.Select(x =>
-                        new ProductImage() {ImageName = x.ImageName, ImageUrl = x.ImageUrl, ProductId = x.ProductId})
+                        new ProductImage {ImageName = x.ImageName, ImageUrl = x.ImageUrl, ProductId = x.ProductId})
                     .ToList();
                 item.ProductColors = updateModel.ProductColors
-                    .Select(x => new ProductColor() {Name = x.Name, ProductId = x.ProductId}).ToList();
+                    .Select(x => new ProductColor {Name = x.Name, ProductId = x.ProductId}).ToList();
 
                 #endregion
 
@@ -782,9 +771,7 @@ namespace Catalog.API.Controllers
                 {
                     // Delete Foreach image in directory and eventually delete folder when its empty.
                     foreach (var image in item.ProductImages)
-                    {
                         _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
-                    }
 
                     _catalogContext.ProductImages.RemoveRange(item.ProductImages);
                     _catalogContext.ProductRatings.RemoveRange(item.ProductRatings);

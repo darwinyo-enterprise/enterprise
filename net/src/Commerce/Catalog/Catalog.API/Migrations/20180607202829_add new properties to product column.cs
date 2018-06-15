@@ -8,37 +8,37 @@ namespace Catalog.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<decimal>(
-                name: "Discount",
-                table: "Product",
+                "Discount",
+                "Product",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "ExpireDate",
-                table: "Product",
+                "ExpireDate",
+                "Product",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<bool>(
-                name: "HasExpiry",
-                table: "Product",
+                "HasExpiry",
+                "Product",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
-                name: "Location",
-                table: "Product",
+                "Location",
+                "Product",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "MinPurchase",
-                table: "Product",
+                "MinPurchase",
+                "Product",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "TotalWishlist",
-                table: "Product",
+                "TotalWishlist",
+                "Product",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -46,28 +46,28 @@ namespace Catalog.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Discount",
-                table: "Product");
+                "Discount",
+                "Product");
 
             migrationBuilder.DropColumn(
-                name: "ExpireDate",
-                table: "Product");
+                "ExpireDate",
+                "Product");
 
             migrationBuilder.DropColumn(
-                name: "HasExpiry",
-                table: "Product");
+                "HasExpiry",
+                "Product");
 
             migrationBuilder.DropColumn(
-                name: "Location",
-                table: "Product");
+                "Location",
+                "Product");
 
             migrationBuilder.DropColumn(
-                name: "MinPurchase",
-                table: "Product");
+                "MinPurchase",
+                "Product");
 
             migrationBuilder.DropColumn(
-                name: "TotalWishlist",
-                table: "Product");
+                "TotalWishlist",
+                "Product");
         }
     }
 }

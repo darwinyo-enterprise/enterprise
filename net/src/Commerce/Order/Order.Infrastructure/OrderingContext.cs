@@ -77,7 +77,7 @@ namespace Order.Infrastructure
             return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
 
-        class NoMediator : IMediator
+        private class NoMediator : IMediator
         {
             public Task Publish<TNotification>(TNotification notification,
                 CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
@@ -88,7 +88,7 @@ namespace Order.Infrastructure
             public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
                 CancellationToken cancellationToken = default(CancellationToken))
             {
-                return Task.FromResult<TResponse>(default(TResponse));
+                return Task.FromResult(default(TResponse));
             }
 
             public Task Send(IRequest request, CancellationToken cancellationToken = default(CancellationToken))

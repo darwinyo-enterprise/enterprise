@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Identity.API.Configuration;
 using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,10 +30,7 @@ namespace Identity.API.Data
 
             if (!context.Clients.Any())
             {
-                foreach (var client in Config.GetClients(clientUrls))
-                {
-                    context.Clients.Add(client.ToEntity());
-                }
+                foreach (var client in Config.GetClients(clientUrls)) context.Clients.Add(client.ToEntity());
 
                 await context.SaveChangesAsync();
             }
@@ -44,7 +40,7 @@ namespace Identity.API.Data
             // ref: https://github.com/dotnet-architecture/eShopOnContainers/issues/586
             else
             {
-                List<ClientRedirectUri> oldRedirects =
+                var oldRedirects =
                     (await context.Clients.Include(c => c.RedirectUris).ToListAsync())
                     .SelectMany(c => c.RedirectUris)
                     .Where(ru => ru.RedirectUri.EndsWith("/o2c.html"))
@@ -64,20 +60,14 @@ namespace Identity.API.Data
 
             if (!context.IdentityResources.Any())
             {
-                foreach (var resource in Config.GetResources())
-                {
-                    context.IdentityResources.Add(resource.ToEntity());
-                }
+                foreach (var resource in Config.GetResources()) context.IdentityResources.Add(resource.ToEntity());
 
                 await context.SaveChangesAsync();
             }
 
             if (!context.ApiResources.Any())
             {
-                foreach (var api in Config.GetApis())
-                {
-                    context.ApiResources.Add(api.ToEntity());
-                }
+                foreach (var api in Config.GetApis()) context.ApiResources.Add(api.ToEntity());
 
                 await context.SaveChangesAsync();
             }

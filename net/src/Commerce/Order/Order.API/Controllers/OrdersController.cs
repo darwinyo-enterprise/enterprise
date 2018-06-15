@@ -33,14 +33,14 @@ namespace Order.API.Controllers
         public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand command,
             [FromHeader(Name = "x-requestid")] string requestId)
         {
-            bool commandResult = false;
-            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            var commandResult = false;
+            if (Guid.TryParse(requestId, out var guid) && guid != Guid.Empty)
             {
                 var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
                 commandResult = await _mediator.Send(requestCancelOrder);
             }
 
-            return commandResult ? (IActionResult) Ok() : (IActionResult) BadRequest();
+            return commandResult ? Ok() : (IActionResult) BadRequest();
         }
 
         [Route("ship")]
@@ -50,14 +50,14 @@ namespace Order.API.Controllers
         public async Task<IActionResult> ShipOrder([FromBody] ShipOrderCommand command,
             [FromHeader(Name = "x-requestid")] string requestId)
         {
-            bool commandResult = false;
-            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            var commandResult = false;
+            if (Guid.TryParse(requestId, out var guid) && guid != Guid.Empty)
             {
                 var requestShipOrder = new IdentifiedCommand<ShipOrderCommand, bool>(command, guid);
                 commandResult = await _mediator.Send(requestShipOrder);
             }
 
-            return commandResult ? (IActionResult) Ok() : (IActionResult) BadRequest();
+            return commandResult ? Ok() : (IActionResult) BadRequest();
         }
 
         [Route("{orderId:int}")]

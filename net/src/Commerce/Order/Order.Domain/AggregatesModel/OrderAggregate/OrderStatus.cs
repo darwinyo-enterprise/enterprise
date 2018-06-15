@@ -28,19 +28,19 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
         }
 
-        public static IEnumerable<OrderStatus> List() =>
-            new[] {Submitted, AwaitingValidation, StockConfirmed, Paid, Shipped, Cancelled};
+        public static IEnumerable<OrderStatus> List()
+        {
+            return new[] {Submitted, AwaitingValidation, StockConfirmed, Paid, Shipped, Cancelled};
+        }
 
         public static OrderStatus FromName(string name)
         {
             var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
+                .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (state == null)
-            {
                 throw new OrderingDomainException(
-                    $"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                    $"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }
@@ -50,10 +50,8 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             var state = List().SingleOrDefault(s => s.Id == id);
 
             if (state == null)
-            {
                 throw new OrderingDomainException(
-                    $"Possible values for OrderStatus: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                    $"Possible values for OrderStatus: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }

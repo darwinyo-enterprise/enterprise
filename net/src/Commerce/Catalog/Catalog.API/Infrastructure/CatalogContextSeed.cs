@@ -83,7 +83,6 @@ namespace Catalog.API.Infrastructure
                 }
 
                 if (!context.Users.Any())
-                {
                     if (useCustomizationData)
                     {
                         var users = GetUserFromFile(contentRootPath, logger);
@@ -99,10 +98,8 @@ namespace Catalog.API.Infrastructure
 
                         await context.SaveChangesAsync();
                     }
-                }
 
                 if (!context.Products.Any())
-                {
                     if (useCustomizationData)
                     {
                         var products = GetProductFromFile(contentRootPath, logger);
@@ -118,7 +115,6 @@ namespace Catalog.API.Infrastructure
 
                         await context.SaveChangesAsync();
                     }
-                }
 
                 if (!context.ProductColors.Any())
                 {
@@ -671,20 +667,13 @@ namespace Catalog.API.Infrastructure
             var dir = directory.GetDirectories().SingleOrDefault(x => x?.Name == parentDirName);
 
             if (dir != null && dir.Exists)
-            {
                 if (dir.GetDirectories().Length > 0)
-                {
                     foreach (var fileDir in dir.GetDirectories())
                     {
-                        foreach (var fileInfo in fileDir.GetFiles())
-                        {
-                            fileInfo.Delete();
-                        }
+                        foreach (var fileInfo in fileDir.GetFiles()) fileInfo.Delete();
 
                         fileDir.Delete();
                     }
-                }
-            }
         }
 
         private ProductImage CreateProductImage(string[] column, string[] headers)

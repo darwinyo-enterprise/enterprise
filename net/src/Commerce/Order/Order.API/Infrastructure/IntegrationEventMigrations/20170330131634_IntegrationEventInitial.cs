@@ -8,8 +8,8 @@ namespace Order.API.Infrastructure.IntegrationEventMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "IntegrationEventLog",
-                columns: table => new
+                "IntegrationEventLog",
+                table => new
                 {
                     EventId = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(nullable: false),
@@ -24,7 +24,7 @@ namespace Order.API.Infrastructure.IntegrationEventMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "IntegrationEventLog");
+                "IntegrationEventLog");
         }
     }
 }

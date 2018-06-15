@@ -4,7 +4,7 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class OrderStatusEntityTypeConfiguration
+    internal class OrderStatusEntityTypeConfiguration
         : IEntityTypeConfiguration<OrderStatus>
     {
         public void Configure(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)

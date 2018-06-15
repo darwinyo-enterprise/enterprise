@@ -20,15 +20,10 @@ namespace Order.Infrastructure.Repositories
         public Buyer Add(Buyer buyer)
         {
             if (buyer.IsTransient())
-            {
                 return _context.Buyers
                     .Add(buyer)
                     .Entity;
-            }
-            else
-            {
-                return buyer;
-            }
+            return buyer;
         }
 
         public async Task<Buyer> FindAsync(string identity)

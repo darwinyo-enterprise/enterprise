@@ -6,7 +6,7 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Domain.AggregatesModel.OrderAggregate.Order>
+    internal class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Domain.AggregatesModel.OrderAggregate.Order>
     {
         public void Configure(EntityTypeBuilder<Domain.AggregatesModel.OrderAggregate.Order> orderConfiguration)
         {

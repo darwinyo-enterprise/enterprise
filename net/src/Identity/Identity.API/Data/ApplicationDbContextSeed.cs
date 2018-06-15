@@ -254,7 +254,7 @@ namespace Identity.API.Data
             var roleId = ctx.Roles.First(x => x.Name == roleString).Id;
             var userId = ctx.Users.First(x => x.UserName == userString).Id;
 
-            var userRole = new ApplicationUserRole()
+            var userRole = new ApplicationUserRole
             {
                 RoleId = roleId,
                 UserId = userId
@@ -313,16 +313,16 @@ namespace Identity.API.Data
             var roles = ctx.Roles.ToList();
             var role = new List<ApplicationUserRole>
             {
-                new ApplicationUserRole()
+                new ApplicationUserRole
                 {
                     UserId = users[0].Id,
                     RoleId = roles[0].Id
                 },
-                new ApplicationUserRole()
+                new ApplicationUserRole
                 {
                     UserId = users[1].Id,
                     RoleId = roles[1].Id
-                },
+                }
             };
             return role;
         }

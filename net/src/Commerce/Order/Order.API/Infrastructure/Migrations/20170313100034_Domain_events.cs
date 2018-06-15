@@ -7,26 +7,26 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_orders_buyers_BuyerId",
+                "FK_orders_buyers_BuyerId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.AlterColumn<int>(
-                name: "PaymentMethodId",
+                "PaymentMethodId",
                 schema: "ordering",
                 table: "orders",
                 nullable: true,
                 oldClrType: typeof(int));
 
             migrationBuilder.AlterColumn<int>(
-                name: "BuyerId",
+                "BuyerId",
                 schema: "ordering",
                 table: "orders",
                 nullable: true,
                 oldClrType: typeof(int));
 
             migrationBuilder.AddForeignKey(
-                name: "FK_orders_buyers_BuyerId",
+                "FK_orders_buyers_BuyerId",
                 schema: "ordering",
                 table: "orders",
                 column: "BuyerId",
@@ -39,12 +39,12 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_orders_buyers_BuyerId",
+                "FK_orders_buyers_BuyerId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.AlterColumn<int>(
-                name: "PaymentMethodId",
+                "PaymentMethodId",
                 schema: "ordering",
                 table: "orders",
                 nullable: false,
@@ -52,7 +52,7 @@ namespace Order.API.Infrastructure.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "BuyerId",
+                "BuyerId",
                 schema: "ordering",
                 table: "orders",
                 nullable: false,
@@ -60,7 +60,7 @@ namespace Order.API.Infrastructure.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_orders_buyers_BuyerId",
+                "FK_orders_buyers_BuyerId",
                 schema: "ordering",
                 table: "orders",
                 column: "BuyerId",

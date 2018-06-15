@@ -9,7 +9,7 @@ namespace Order.API.Application.Queries
     public class OrderQueries
         : IOrderQueries
     {
-        private string _connectionString = string.Empty;
+        private readonly string _connectionString = string.Empty;
 
         public OrderQueries(string constr)
         {
@@ -86,7 +86,7 @@ namespace Order.API.Application.Queries
                 total = 0
             };
 
-            foreach (dynamic item in result)
+            foreach (var item in result)
             {
                 var orderitem = new Orderitem
                 {

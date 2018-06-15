@@ -119,7 +119,7 @@ namespace Identity.API.Configuration
                     {
                         "orders"
                     }
-                },
+                }
             };
         }
     }

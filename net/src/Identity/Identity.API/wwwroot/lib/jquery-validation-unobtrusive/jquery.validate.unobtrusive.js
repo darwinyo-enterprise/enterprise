@@ -87,7 +87,7 @@
 
     function onReset(event) { // 'this' is the form element
         var $form = $(this),
-            key = '__jquery_unobtrusive_validation_form_reset';
+            key = "__jquery_unobtrusive_validation_form_reset";
         if ($form.data(key)) {
             return;
         }
@@ -443,9 +443,9 @@
                             .filter("[name='" + escapeAttributeValue(paramName) + "']");
                         // For checkboxes and radio buttons, only pick up values from checked fields.
                         if (field.is(":checkbox")) {
-                            return field.filter(":checked").val() || field.filter(":hidden").val() || '';
+                            return field.filter(":checked").val() || field.filter(":hidden").val() || "";
                         } else if (field.is(":radio")) {
-                            return field.filter(":checked").val() || '';
+                            return field.filter(":checked").val() || "";
                         }
                         return field.val();
                     };

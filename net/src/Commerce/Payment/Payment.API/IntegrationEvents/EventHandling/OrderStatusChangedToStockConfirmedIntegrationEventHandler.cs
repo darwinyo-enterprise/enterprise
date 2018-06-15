@@ -30,13 +30,9 @@ namespace Payment.API.IntegrationEvents.EventHandling
             // The payment can be successful or it can fail
 
             if (_settings.PaymentSucceded)
-            {
                 orderPaymentIntegrationEvent = new OrderPaymentSuccededIntegrationEvent(@event.OrderId);
-            }
             else
-            {
                 orderPaymentIntegrationEvent = new OrderPaymentFailedIntegrationEvent(@event.OrderId);
-            }
 
             _eventBus.Publish(orderPaymentIntegrationEvent);
 

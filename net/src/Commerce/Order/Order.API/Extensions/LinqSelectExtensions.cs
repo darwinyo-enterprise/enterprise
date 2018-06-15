@@ -9,7 +9,7 @@ namespace Order.API.Extensions
         public static IEnumerable<SelectTryResult<TSource, TResult>> SelectTry<TSource, TResult>(
             this IEnumerable<TSource> enumerable, Func<TSource, TResult> selector)
         {
-            foreach (TSource element in enumerable)
+            foreach (var element in enumerable)
             {
                 SelectTryResult<TSource, TResult> returnedValue;
                 try
@@ -48,9 +48,9 @@ namespace Order.API.Extensions
                 CaughtException = exception;
             }
 
-            public TSource Source { get; private set; }
-            public TResult Result { get; private set; }
-            public Exception CaughtException { get; private set; }
+            public TSource Source { get; }
+            public TResult Result { get; }
+            public Exception CaughtException { get; }
         }
     }
 }

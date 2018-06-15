@@ -37,19 +37,17 @@ namespace Order.API.Application.Commands
             {
                 return CreateResultForDuplicateRequest();
             }
-            else
+
+            await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
+            try
             {
-                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
-                try
-                {
-                    // Send the embeded business command to mediator so it runs its related CommandHandler 
-                    var result = await _mediator.Send(message.Command);
-                    return result;
-                }
-                catch
-                {
-                    return default(R);
-                }
+                // Send the embeded business command to mediator so it runs its related CommandHandler 
+                var result = await _mediator.Send(message.Command);
+                return result;
+            }
+            catch
+            {
+                return default(R);
             }
         }
 

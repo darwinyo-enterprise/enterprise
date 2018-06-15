@@ -16,9 +16,9 @@ namespace Enterprise.Commerce.IntegrationTests.Attributes
         {
             var sortedMethods = new SortedDictionary<int, TTestCase>();
 
-            foreach (TTestCase testCase in testCases)
+            foreach (var testCase in testCases)
             {
-                IAttributeInfo attribute = testCase.TestMethod.Method.GetCustomAttributes(typeof(TestPriorityAttribute)
+                var attribute = testCase.TestMethod.Method.GetCustomAttributes(typeof(TestPriorityAttribute)
                     .AssemblyQualifiedName).FirstOrDefault();
 
                 var priority = attribute.GetNamedArgument<int>("Priority");

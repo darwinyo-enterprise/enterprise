@@ -81,7 +81,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private Category GetTestCategoryEmptyImage()
         {
-            return new Category()
+            return new Category
             {
                 Description = "Test",
                 ImageUrl = "",
@@ -97,10 +97,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 
@@ -135,10 +132,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 
@@ -175,10 +169,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 
@@ -213,10 +204,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 
@@ -251,10 +239,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             //Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
@@ -297,10 +282,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 
@@ -324,10 +306,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
 
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
+            if (expectedCategory.IsNullOrEmpty()) expectedCategory = await SeedCategory(cancellationToken);
 
             Assert.NotEmpty(expectedCategory);
 

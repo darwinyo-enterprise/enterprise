@@ -4,7 +4,7 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class CardTypeEntityTypeConfiguration
+    internal class CardTypeEntityTypeConfiguration
         : IEntityTypeConfiguration<CardType>
     {
         public void Configure(EntityTypeBuilder<CardType> cardTypesConfiguration)

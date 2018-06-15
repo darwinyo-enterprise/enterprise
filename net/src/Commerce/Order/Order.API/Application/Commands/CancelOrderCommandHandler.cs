@@ -25,10 +25,7 @@ namespace Order.API.Application.Commands
         public async Task<bool> Handle(CancelOrderCommand command, CancellationToken cancellationToken)
         {
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
-            if (orderToUpdate == null)
-            {
-                return false;
-            }
+            if (orderToUpdate == null) return false;
 
             orderToUpdate.SetCancelledStatus();
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync();

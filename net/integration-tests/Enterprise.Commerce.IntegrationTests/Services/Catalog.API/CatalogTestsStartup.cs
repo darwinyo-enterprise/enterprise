@@ -14,13 +14,9 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         protected override void ConfigureAuth(IApplicationBuilder app)
         {
             if (Configuration["isTest"] == bool.TrueString.ToLowerInvariant())
-            {
                 app.UseMiddleware<AutoAuthorizeMiddleware>();
-            }
             else
-            {
                 base.ConfigureAuth(app);
-            }
         }
     }
 }

@@ -57,8 +57,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             return insertedCategory;
         }
 
-        [Fact,
-         TestPriority(7)]
+        [Fact]
+        [TestPriority(7)]
         public async Task Add_Category_response_ok_status_code_should_add_file_in_directory()
         {
             using (var server = CreateServer())
@@ -93,8 +93,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
 
-        [Fact,
-         TestPriority(8)]
+        [Fact]
+        [TestPriority(8)]
         public async Task Add_Category_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -124,8 +124,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(11)]
+        [Fact]
+        [TestPriority(11)]
         public async Task Delete_Category_should_delete_file_and_folder_in_directory()
         {
             using (var server = CreateServer())
@@ -146,8 +146,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
 
-        [Fact,
-         TestPriority(12)]
+        [Fact]
+        [TestPriority(12)]
         public async Task Delete_Category_should_properly_delete_record_in_db()
         {
             using (var server = CreateServer())
@@ -164,8 +164,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(3)]
+        [Fact]
+        [TestPriority(3)]
         public async Task Get_Category_by_id_response_ok_status_code()
         {
             var searchedCategoryId = 1;
@@ -177,8 +177,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(5)]
+        [Fact]
+        [TestPriority(5)]
         public async Task Get_Category_by_id_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
@@ -201,8 +201,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(4)]
+        [Fact]
+        [TestPriority(4)]
         public async Task Get_Category_by_id_response_ok_status_code_with_correct_result()
         {
             using (var server = CreateServer())
@@ -224,8 +224,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(6)]
+        [Fact]
+        [TestPriority(6)]
         public async Task Get_Category_image_by_id_response_file_result()
         {
             using (var server = CreateServer())
@@ -239,8 +239,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(13)]
+        [Fact]
+        [TestPriority(13)]
         public async Task
             Get_category_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
         {
@@ -263,8 +263,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(1)]
+        [Fact]
+        [TestPriority(1)]
         public async Task Get_Category_response_ok_status_code_should_return_all_Categories()
         {
             using (var server = CreateServer())
@@ -282,8 +282,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(2)]
+        [Fact]
+        [TestPriority(2)]
         public async Task Get_Category_response_ok_status_code_with_http_urls()
         {
             using (var server = CreateServer())
@@ -298,8 +298,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(14)]
+        [Fact]
+        [TestPriority(14)]
         public async Task Get_paginated_category_response_ok_status_code_and_correct_item_count()
         {
             using (var server = CreateServer())
@@ -319,8 +319,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
 
-        [Fact,
-         TestPriority(10)]
+        [Fact]
+        [TestPriority(10)]
         public async Task Update_Category_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -347,8 +347,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact,
-         TestPriority(9)]
+        [Fact]
+        [TestPriority(9)]
         public async Task Update_Category_response_ok_status_code_should_replace_file_in_directory()
         {
             using (var server = CreateServer())

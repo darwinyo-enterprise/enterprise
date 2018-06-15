@@ -29,13 +29,11 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
         public static CardType FromName(string name)
         {
             var state = List()
-                .SingleOrDefault(s => String.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
+                .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (state == null)
-            {
                 throw new ArgumentException(
-                    $"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                    $"Possible values for CardType: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }
@@ -45,10 +43,8 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             var state = List().SingleOrDefault(s => s.Id == id);
 
             if (state == null)
-            {
                 throw new ArgumentException(
-                    $"Possible values for CardType: {String.Join(",", List().Select(s => s.Name))}");
-            }
+                    $"Possible values for CardType: {string.Join(",", List().Select(s => s.Name))}");
 
             return state;
         }

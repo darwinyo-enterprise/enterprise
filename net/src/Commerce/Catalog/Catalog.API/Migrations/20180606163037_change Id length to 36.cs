@@ -9,28 +9,28 @@ namespace Catalog.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateSequence(
-                name: "category_hilo",
+                "category_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                name: "manufacturer_type_hilo",
+                "manufacturer_type_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                name: "product_color_type_hilo",
+                "product_color_type_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                name: "product_image_hilo",
+                "product_image_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
-                name: "product_rating_hilo",
+                "product_rating_hilo",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
+                "Category",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy",
@@ -43,8 +43,8 @@ namespace Catalog.API.Migrations
                 constraints: table => { table.PrimaryKey("PK_Category", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Manufacturer",
-                columns: table => new
+                "Manufacturer",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy",
@@ -57,8 +57,8 @@ namespace Catalog.API.Migrations
                 constraints: table => { table.PrimaryKey("PK_Manufacturer", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
+                "User",
+                table => new
                 {
                     Id = table.Column<string>(maxLength: 36, nullable: false),
                     Name = table.Column<string>(maxLength: 500, nullable: false)
@@ -66,8 +66,8 @@ namespace Catalog.API.Migrations
                 constraints: table => { table.PrimaryKey("PK_User", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
+                "Product",
+                table => new
                 {
                     Id = table.Column<string>(maxLength: 36, nullable: false),
                     AvailableStock = table.Column<int>(nullable: false),
@@ -88,22 +88,22 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
+                        "FK_Product_Category_CategoryId",
+                        x => x.CategoryId,
+                        "Category",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Product_Manufacturer_ManufacturerId",
-                        column: x => x.ManufacturerId,
-                        principalTable: "Manufacturer",
-                        principalColumn: "Id",
+                        "FK_Product_Manufacturer_ManufacturerId",
+                        x => x.ManufacturerId,
+                        "Manufacturer",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductColor",
-                columns: table => new
+                "ProductColor",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy",
@@ -115,16 +115,16 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductColor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductColor_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
+                        "FK_ProductColor_Product_ProductId",
+                        x => x.ProductId,
+                        "Product",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductImage",
-                columns: table => new
+                "ProductImage",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy",
@@ -136,16 +136,16 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductImage", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductImage_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
+                        "FK_ProductImage_Product_ProductId",
+                        x => x.ProductId,
+                        "Product",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductRating",
-                columns: table => new
+                "ProductRating",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy",
@@ -158,87 +158,87 @@ namespace Catalog.API.Migrations
                 {
                     table.PrimaryKey("PK_ProductRating", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductRating_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
+                        "FK_ProductRating_Product_ProductId",
+                        x => x.ProductId,
+                        "Product",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductRating_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
+                        "FK_ProductRating_User_UserId",
+                        x => x.UserId,
+                        "User",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CategoryId",
-                table: "Product",
-                column: "CategoryId");
+                "IX_Product_CategoryId",
+                "Product",
+                "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ManufacturerId",
-                table: "Product",
-                column: "ManufacturerId");
+                "IX_Product_ManufacturerId",
+                "Product",
+                "ManufacturerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductColor_ProductId",
-                table: "ProductColor",
-                column: "ProductId");
+                "IX_ProductColor_ProductId",
+                "ProductColor",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImage_ProductId",
-                table: "ProductImage",
-                column: "ProductId");
+                "IX_ProductImage_ProductId",
+                "ProductImage",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductRating_ProductId",
-                table: "ProductRating",
-                column: "ProductId");
+                "IX_ProductRating_ProductId",
+                "ProductRating",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductRating_UserId",
-                table: "ProductRating",
-                column: "UserId");
+                "IX_ProductRating_UserId",
+                "ProductRating",
+                "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductColor");
+                "ProductColor");
 
             migrationBuilder.DropTable(
-                name: "ProductImage");
+                "ProductImage");
 
             migrationBuilder.DropTable(
-                name: "ProductRating");
+                "ProductRating");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                "Product");
 
             migrationBuilder.DropTable(
-                name: "User");
+                "User");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                "Category");
 
             migrationBuilder.DropTable(
-                name: "Manufacturer");
+                "Manufacturer");
 
             migrationBuilder.DropSequence(
-                name: "category_hilo");
+                "category_hilo");
 
             migrationBuilder.DropSequence(
-                name: "manufacturer_type_hilo");
+                "manufacturer_type_hilo");
 
             migrationBuilder.DropSequence(
-                name: "product_color_type_hilo");
+                "product_color_type_hilo");
 
             migrationBuilder.DropSequence(
-                name: "product_image_hilo");
+                "product_image_hilo");
 
             migrationBuilder.DropSequence(
-                name: "product_rating_hilo");
+                "product_rating_hilo");
         }
     }
 }

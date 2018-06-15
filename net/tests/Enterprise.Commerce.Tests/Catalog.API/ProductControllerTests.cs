@@ -121,9 +121,9 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private IEnumerable<Product> GetPreconfiguredProduct()
         {
-            var products = new List<Product>()
+            var products = new List<Product>
             {
-                new Product()
+                new Product
                 {
                     Id = "1",
                     AvailableStock = 1,
@@ -134,9 +134,9 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                     Price = 100,
                     OverallRating = 0,
                     TotalFavorites = 0,
-                    TotalReviews = 0,
+                    TotalReviews = 0
                 },
-                new Product()
+                new Product
                 {
                     Id = "2",
                     AvailableStock = 1,
@@ -147,7 +147,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                     Price = 100,
                     OverallRating = 0,
                     TotalFavorites = 0,
-                    TotalReviews = 0,
+                    TotalReviews = 0
                 }
             };
             return products;
@@ -157,7 +157,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             var manufacturers = new List<Manufacturer>
             {
-                new Manufacturer()
+                new Manufacturer
                 {
                     Name = "manufacturer1",
                     Description = "test",
@@ -171,7 +171,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             var categories = new List<Category>
             {
-                new Category()
+                new Category
                 {
                     Name = "category1",
                     Description = "test",
@@ -183,27 +183,27 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private IEnumerable<ProductImage> GetPreconfiguredProductImage(string productId)
         {
-            return new List<ProductImage>()
+            return new List<ProductImage>
             {
-                new ProductImage()
+                new ProductImage
                 {
                     ImageName = "image1",
                     ImageUrl = "image.png",
                     ProductId = productId
                 },
-                new ProductImage()
+                new ProductImage
                 {
                     ImageName = "image2",
                     ImageUrl = "image.png",
                     ProductId = productId
                 },
-                new ProductImage()
+                new ProductImage
                 {
                     ImageName = "image3",
                     ImageUrl = "image.png",
                     ProductId = productId
                 },
-                new ProductImage()
+                new ProductImage
                 {
                     ImageName = "image4",
                     ImageUrl = "image.png",
@@ -214,14 +214,14 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private IEnumerable<ProductColor> GetPreconfigureProductColor(string productId)
         {
-            return new List<ProductColor>()
+            return new List<ProductColor>
             {
-                new ProductColor()
+                new ProductColor
                 {
                     Name = "Color1",
                     ProductId = productId
                 },
-                new ProductColor()
+                new ProductColor
                 {
                     Name = "Color2",
                     ProductId = productId
@@ -231,7 +231,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private ProductViewModel GetTestProductViewModelEmptyImage()
         {
-            return new ProductViewModel()
+            return new ProductViewModel
             {
                 Description = "Test",
                 Name = "Test Product",
@@ -279,10 +279,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -316,10 +313,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -353,10 +347,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -435,13 +426,13 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var cancellationToken = new CancellationToken();
             //Arrange
 
-            var productViewModel = new ProductViewModel()
+            var productViewModel = new ProductViewModel
             {
                 CategoryId = 0,
                 ManufacturerId = 0,
                 ProductImages = new ProductImage[1]
                 {
-                    new ProductImage()
+                    new ProductImage
                     {
                         Id = 1,
                         ImageName = "test"
@@ -463,12 +454,9 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             //Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
-            var productToAdd = new ProductViewModel()
+            var productToAdd = new ProductViewModel
             {
                 ProductImages = GetPreconfiguredProductImage(expectedProduct.First().Id).ToArray(),
                 Name = expectedProduct.First().Name,
@@ -501,10 +489,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -533,10 +518,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -563,10 +545,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
@@ -603,15 +582,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 
             var id = (await _catalogContextFixture.Context.Products.FirstOrDefaultAsync(
-                cancellationToken: cancellationToken)).Id;
+                cancellationToken)).Id;
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
@@ -641,10 +617,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Arrange
             var expectedProduct = await _catalogContextFixture.Context.Products.ToListAsync(cancellationToken);
 
-            if (expectedProduct.IsNullOrEmpty())
-            {
-                expectedProduct = await SeedProduct(cancellationToken);
-            }
+            if (expectedProduct.IsNullOrEmpty()) expectedProduct = await SeedProduct(cancellationToken);
 
             Assert.NotEmpty(expectedProduct);
 

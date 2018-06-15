@@ -14,8 +14,9 @@ namespace Payment.API
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
@@ -28,5 +29,6 @@ namespace Payment.API
                 })
                 .UseApplicationInsights()
                 .Build();
+        }
     }
 }

@@ -40,7 +40,6 @@ namespace Payment.API
             RegisterAppInsights(services);
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
@@ -50,36 +49,27 @@ namespace Payment.API
 
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection);
                 });
-            }
             else
-            {
                 services.AddSingleton<IRabbitMqPersistentConnection>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
-                    var factory = new ConnectionFactory()
+                    var factory = new ConnectionFactory
                     {
                         HostName = Configuration["EventBusConnection"]
                     };
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-                    {
                         factory.UserName = Configuration["EventBusUserName"];
-                    }
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-                    {
                         factory.Password = Configuration["EventBusPassword"];
-                    }
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
 
                     return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
                 });
-            }
 
             services.AddHealthChecks(checks =>
             {
@@ -101,10 +91,7 @@ namespace Payment.API
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
+            if (!string.IsNullOrEmpty(pathBase)) app.UsePathBase(pathBase);
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
@@ -118,18 +105,11 @@ namespace Payment.API
             services.AddApplicationInsightsTelemetry(Configuration);
             var orchestratorType = Configuration.GetValue<string>("OrchestratorType");
 
-            if (orchestratorType?.ToUpper() == "K8S")
-            {
-                // Enable K8s telemetry initializer
-                services.EnableKubernetes();
-            }
+            if (orchestratorType?.ToUpper() == "K8S") services.EnableKubernetes();
 
             if (orchestratorType?.ToUpper() == "SF")
-            {
-                // Enable SF telemetry initializer
-                services.AddSingleton<ITelemetryInitializer>((serviceProvider) =>
+                services.AddSingleton<ITelemetryInitializer>(serviceProvider =>
                     new FabricTelemetryInitializer());
-            }
         }
 
         private void RegisterEventBus(IServiceCollection services)
@@ -137,7 +117,6 @@ namespace Payment.API
             var subscriptionClientName = Configuration["SubscriptionClientName"];
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
                 services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
                 {
                     var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
@@ -148,9 +127,7 @@ namespace Payment.API
                     return new EventBusServiceBus(serviceBusPersisterConnection, logger,
                         eventBusSubcriptionsManager, subscriptionClientName, iLifetimeScope);
                 });
-            }
             else
-            {
                 services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
                 {
                     var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
@@ -160,14 +137,11 @@ namespace Payment.API
 
                     var retryCount = 5;
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-                    {
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-                    }
 
                     return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope,
                         eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
-            }
 
             services.AddTransient<OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();

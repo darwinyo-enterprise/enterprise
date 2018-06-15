@@ -105,10 +105,7 @@ namespace Catalog.API.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] int pageIndex = 0)
         {
-            if (pageIndex < 0 || pageSize <= 0)
-            {
-                return BadRequest(new {Message = $"Invalid pagination request."});
-            }
+            if (pageIndex < 0 || pageSize <= 0) return BadRequest(new {Message = $"Invalid pagination request."});
 
             var root = (IQueryable<Manufacturer>) _catalogContext.Manufacturers;
 

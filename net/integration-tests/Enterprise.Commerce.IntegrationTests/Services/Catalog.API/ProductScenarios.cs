@@ -92,9 +92,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 // Delete Foreach image in directory and eventually delete folder when its empty.
                 foreach (var image in verifyProduct.ProductImages)
-                {
                     _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
-                }
 
                 ctx.ProductImages.RemoveRange(verifyProduct.ProductImages);
                 ctx.ProductColors.RemoveRange(verifyProduct.ProductColors);
@@ -119,7 +117,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             return insertedProduct;
         }
 
-        [Fact, TestPriority(7)]
+        [Fact]
+        [TestPriority(7)]
         public async Task Add_product_response_ok_status_code_should_add_file_in_directory()
         {
             using (var server = CreateServer())
@@ -164,7 +163,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(8)]
+        [Fact]
+        [TestPriority(8)]
         public async Task Add_product_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -178,10 +178,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                         .SingleOrDefaultAsync(x => x.Name == productViewModel.Name);
 
                 if (verifyProduct != null)
-                {
                     await server.CreateClient()
                         .DeleteAsync(Delete.DeleteProduct(verifyProduct.Id));
-                }
 
                 var content = new StringContent(JsonConvert.SerializeObject(productViewModel), Encoding.UTF8,
                     "application/json");
@@ -198,7 +196,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(11)]
+        [Fact]
+        [TestPriority(11)]
         public async Task Delete_product_should_delete_file_and_folder_in_directory()
         {
             using (var server = CreateServer())
@@ -223,7 +222,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(12)]
+        [Fact]
+        [TestPriority(12)]
         public async Task Delete_product_should_properly_delete_record_in_db()
         {
             using (var server = CreateServer())
@@ -241,7 +241,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(14)]
+        [Fact]
+        [TestPriority(14)]
         public async Task Get_paginated_hot_catalog_response_ok_status_code_should_return_paginated_products()
         {
             using (var server = CreateServer())
@@ -266,7 +267,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(15)]
+        [Fact]
+        [TestPriority(15)]
         public async Task Get_paginated_latest_catalog_response_ok_status_code_should_return_paginated_products()
         {
             using (var server = CreateServer())
@@ -291,7 +293,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(3)]
+        [Fact]
+        [TestPriority(3)]
         public async Task Get_product_by_id_response_ok_status_code()
         {
             using (var server = CreateServer())
@@ -304,7 +307,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(5)]
+        [Fact]
+        [TestPriority(5)]
         public async Task Get_product_by_id_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
@@ -324,7 +328,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(4)]
+        [Fact]
+        [TestPriority(4)]
         public async Task Get_Product_by_id_response_ok_status_code_with_correct_result()
         {
             using (var server = CreateServer())
@@ -349,7 +354,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     HasExpiry = productSelected.HasExpiry ? "True" : "False",
                     ExpireDate = productSelected.ExpireDate.ToShortDateString(),
                     Discount = productSelected.Discount,
-                    Stock = productSelected.AvailableStock,
+                    Stock = productSelected.AvailableStock
                 };
 
                 var response = await server.CreateClient()
@@ -377,7 +382,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(6)]
+        [Fact]
+        [TestPriority(6)]
         public async Task Get_product_image_by_id_response_file_result()
         {
             using (var server = CreateServer())
@@ -391,7 +397,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(16)]
+        [Fact]
+        [TestPriority(16)]
         public async Task Get_product_info_by_id_response_ok_status_code()
         {
             using (var server = CreateServer())
@@ -404,7 +411,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(17)]
+        [Fact]
+        [TestPriority(17)]
         public async Task Get_product_info_by_id_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
@@ -424,7 +432,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(18)]
+        [Fact]
+        [TestPriority(18)]
         public async Task Get_Product_info_by_id_response_ok_status_code_with_correct_result()
         {
             using (var server = CreateServer())
@@ -437,7 +446,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     .Include(x => x.Manufacturer)
                     .FirstOrDefaultAsync();
 
-                var productViewModel = new ProductDetailViewModel()
+                var productViewModel = new ProductDetailViewModel
                 {
                     CategoryId = productSelected.CategoryId,
                     ManufacturerId = productSelected.ManufacturerId,
@@ -494,7 +503,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(13)]
+        [Fact]
+        [TestPriority(13)]
         public async Task
             Get_product_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
         {
@@ -517,7 +527,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(1)]
+        [Fact]
+        [TestPriority(1)]
         public async Task Get_product_response_ok_status_code_should_return_all_products()
         {
             using (var server = CreateServer())
@@ -540,7 +551,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(2)]
+        [Fact]
+        [TestPriority(2)]
         public async Task Get_product_response_ok_status_code_with_http_urls()
         {
             using (var server = CreateServer())
@@ -557,7 +569,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(10)]
+        [Fact]
+        [TestPriority(10)]
         public async Task Update_product_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -640,7 +653,8 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
-        [Fact, TestPriority(9)]
+        [Fact]
+        [TestPriority(9)]
         public async Task Update_product_response_ok_status_code_should_replace_file_in_directory()
         {
             using (var server = CreateServer())

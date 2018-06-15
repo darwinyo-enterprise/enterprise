@@ -4,7 +4,7 @@ using Order.Infrastructure.Idempotency;
 
 namespace Order.Infrastructure.EntityConfigurations
 {
-    class ClientRequestEntityTypeConfiguration
+    internal class ClientRequestEntityTypeConfiguration
         : IEntityTypeConfiguration<ClientRequest>
     {
         public void Configure(EntityTypeBuilder<ClientRequest> requestConfiguration)

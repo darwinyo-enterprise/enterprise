@@ -7,7 +7,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Order.API.Infrastructure.Middlewares
 {
-    class ByPassAuthMiddleware
+    internal class ByPassAuthMiddleware
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;
@@ -25,10 +25,7 @@ namespace Order.API.Infrastructure.Middlewares
             if (path == "/noauth")
             {
                 var userid = context.Request.Query["userid"];
-                if (!string.IsNullOrEmpty(userid))
-                {
-                    _currentUserId = userid;
-                }
+                if (!string.IsNullOrEmpty(userid)) _currentUserId = userid;
 
                 context.Response.StatusCode = 200;
                 context.Response.ContentType = "text/string";
@@ -51,9 +48,7 @@ namespace Order.API.Infrastructure.Middlewares
                 {
                     var header = authHeader.FirstOrDefault();
                     if (!string.IsNullOrEmpty(header) && header.StartsWith("Email ") && header.Length > "Email ".Length)
-                    {
                         currentUserId = header.Substring("Email ".Length);
-                    }
                 }
 
 

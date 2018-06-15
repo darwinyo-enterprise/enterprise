@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Order.API.Extensions;
-using Order.API.Infrastructure.Services;
 
 namespace Order.API.Application.Commands
 {
@@ -18,10 +16,8 @@ namespace Order.API.Application.Commands
             var order = Domain.AggregatesModel.OrderAggregate.Order.NewDraft();
             var orderItems = message.Items.Select(i => i.ToOrderItemDTO());
             foreach (var item in orderItems)
-            {
                 order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl,
                     item.Units);
-            }
 
             return Task.FromResult(OrderDraftDTO.FromOrder(order));
         }
@@ -35,7 +31,7 @@ namespace Order.API.Application.Commands
 
         public static OrderDraftDTO FromOrder(Domain.AggregatesModel.OrderAggregate.Order order)
         {
-            return new OrderDraftDTO()
+            return new OrderDraftDTO
             {
                 OrderItems = order.OrderItems.Select(oi => new CreateOrderCommand.OrderItemDTO
                 {

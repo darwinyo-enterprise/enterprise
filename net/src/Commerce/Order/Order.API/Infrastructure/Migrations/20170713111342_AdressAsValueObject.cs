@@ -8,59 +8,59 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_orders_address_AddressId",
+                "FK_orders_address_AddressId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_orders_paymentmethods_PaymentMethodId",
+                "FK_orders_paymentmethods_PaymentMethodId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropTable(
-                name: "address",
-                schema: "ordering");
+                "address",
+                "ordering");
 
             migrationBuilder.DropIndex(
-                name: "IX_orders_AddressId",
+                "IX_orders_AddressId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "AddressId",
+                "AddressId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.AddColumn<string>(
-                name: "Address_City",
+                "Address_City",
                 schema: "ordering",
                 table: "orders",
                 type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Address_Country",
+                "Address_Country",
                 schema: "ordering",
                 table: "orders",
                 type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Address_State",
+                "Address_State",
                 schema: "ordering",
                 table: "orders",
                 type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Address_Street",
+                "Address_Street",
                 schema: "ordering",
                 table: "orders",
                 type: "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Address_ZipCode",
+                "Address_ZipCode",
                 schema: "ordering",
                 table: "orders",
                 type: "nvarchar(max)",
@@ -70,43 +70,43 @@ namespace Order.API.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_orders_paymentmethods_PaymentMethodId",
+                "FK_orders_paymentmethods_PaymentMethodId",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "Address_City",
+                "Address_City",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "Address_Country",
+                "Address_Country",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "Address_State",
+                "Address_State",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "Address_Street",
+                "Address_Street",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.DropColumn(
-                name: "Address_ZipCode",
+                "Address_ZipCode",
                 schema: "ordering",
                 table: "orders");
 
             migrationBuilder.AddColumn<int>(
-                name: "AddressId",
+                "AddressId",
                 schema: "ordering",
                 table: "orders",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "address",
+                "address",
                 schema: "ordering",
                 columns: table => new
                 {
@@ -122,13 +122,13 @@ namespace Order.API.Infrastructure.Migrations
                 constraints: table => { table.PrimaryKey("PK_address", x => x.Id); });
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_AddressId",
+                "IX_orders_AddressId",
                 schema: "ordering",
                 table: "orders",
                 column: "AddressId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_orders_address_AddressId",
+                "FK_orders_address_AddressId",
                 schema: "ordering",
                 table: "orders",
                 column: "AddressId",

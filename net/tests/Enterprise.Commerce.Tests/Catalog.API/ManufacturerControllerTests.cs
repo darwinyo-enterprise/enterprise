@@ -94,7 +94,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private Manufacturer GetTestManufacturerEmptyImage()
         {
-            return new Manufacturer()
+            return new Manufacturer
             {
                 Description = "Test",
                 ImageUrl = "",
@@ -125,15 +125,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 
             var id = (await _catalogContextFixture.Context.Manufacturers.FirstOrDefaultAsync(
-                cancellationToken: cancellationToken)).Id;
+                cancellationToken)).Id;
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
@@ -150,10 +147,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 
@@ -191,10 +185,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 
@@ -230,10 +221,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 
@@ -269,10 +257,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             // Act
             var manufacturerController = new ManufacturerController(_catalogContextFixture.Context,
@@ -319,10 +304,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 
@@ -348,10 +330,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var expectedManufacturer =
                 await _catalogContextFixture.Context.Manufacturers.ToListAsync(cancellationToken);
 
-            if (expectedManufacturer.IsNullOrEmpty())
-            {
-                expectedManufacturer = await SeedManufacturer(cancellationToken);
-            }
+            if (expectedManufacturer.IsNullOrEmpty()) expectedManufacturer = await SeedManufacturer(cancellationToken);
 
             Assert.NotEmpty(expectedManufacturer);
 

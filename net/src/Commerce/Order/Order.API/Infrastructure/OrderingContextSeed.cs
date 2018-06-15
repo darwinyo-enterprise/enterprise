@@ -45,11 +45,9 @@ namespace Order.API.Infrastructure
                     }
 
                     if (!context.OrderStatus.Any())
-                    {
                         context.OrderStatus.AddRange(useCustomizationData
                             ? GetOrderStatusFromFile(contentRootPath, logger)
                             : GetPredefinedOrderStatus());
-                    }
 
                     await context.SaveChangesAsync();
                 }
@@ -58,12 +56,9 @@ namespace Order.API.Infrastructure
 
         private IEnumerable<CardType> GetCardTypesFromFile(string contentRootPath, ILogger<OrderingContextSeed> log)
         {
-            string csvFileCardTypes = Path.Combine(contentRootPath, "Setup", "CardTypes.csv");
+            var csvFileCardTypes = Path.Combine(contentRootPath, "Setup", "CardTypes.csv");
 
-            if (!File.Exists(csvFileCardTypes))
-            {
-                return GetPredefinedCardTypes();
-            }
+            if (!File.Exists(csvFileCardTypes)) return GetPredefinedCardTypes();
 
             string[] csvheaders;
             try
@@ -77,7 +72,7 @@ namespace Order.API.Infrastructure
                 return GetPredefinedCardTypes();
             }
 
-            int id = 1;
+            var id = 1;
             return File.ReadAllLines(csvFileCardTypes)
                 .Skip(1) // skip header column
                 .SelectTry(x => CreateCardType(x, ref id))
@@ -91,17 +86,14 @@ namespace Order.API.Infrastructure
 
         private CardType CreateCardType(string value, ref int id)
         {
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new Exception("Orderstatus is null or empty");
-            }
+            if (string.IsNullOrEmpty(value)) throw new Exception("Orderstatus is null or empty");
 
             return new CardType(id++, value.Trim('"').Trim());
         }
 
         private IEnumerable<CardType> GetPredefinedCardTypes()
         {
-            return new List<CardType>()
+            return new List<CardType>
             {
                 CardType.Amex,
                 CardType.Visa,
@@ -112,12 +104,9 @@ namespace Order.API.Infrastructure
         private IEnumerable<OrderStatus> GetOrderStatusFromFile(string contentRootPath,
             ILogger<OrderingContextSeed> log)
         {
-            string csvFileOrderStatus = Path.Combine(contentRootPath, "Setup", "OrderStatus.csv");
+            var csvFileOrderStatus = Path.Combine(contentRootPath, "Setup", "OrderStatus.csv");
 
-            if (!File.Exists(csvFileOrderStatus))
-            {
-                return GetPredefinedOrderStatus();
-            }
+            if (!File.Exists(csvFileOrderStatus)) return GetPredefinedOrderStatus();
 
             string[] csvheaders;
             try
@@ -131,7 +120,7 @@ namespace Order.API.Infrastructure
                 return GetPredefinedOrderStatus();
             }
 
-            int id = 1;
+            var id = 1;
             return File.ReadAllLines(csvFileOrderStatus)
                 .Skip(1) // skip header row
                 .SelectTry(x => CreateOrderStatus(x, ref id))
@@ -145,17 +134,14 @@ namespace Order.API.Infrastructure
 
         private OrderStatus CreateOrderStatus(string value, ref int id)
         {
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new Exception("Orderstatus is null or empty");
-            }
+            if (string.IsNullOrEmpty(value)) throw new Exception("Orderstatus is null or empty");
 
             return new OrderStatus(id++, value.Trim('"').Trim().ToLowerInvariant());
         }
 
         private IEnumerable<OrderStatus> GetPredefinedOrderStatus()
         {
-            return new List<OrderStatus>()
+            return new List<OrderStatus>
             {
                 OrderStatus.Submitted,
                 OrderStatus.AwaitingValidation,
@@ -168,21 +154,15 @@ namespace Order.API.Infrastructure
 
         private string[] GetHeaders(string[] requiredHeaders, string csvfile)
         {
-            string[] csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
+            var csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
 
             if (csvheaders.Count() != requiredHeaders.Count())
-            {
                 throw new Exception(
                     $"requiredHeader count '{requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
-            }
 
             foreach (var requiredHeader in requiredHeaders)
-            {
                 if (!csvheaders.Contains(requiredHeader))
-                {
                     throw new Exception($"does not contain required header '{requiredHeader}'");
-                }
-            }
 
             return csvheaders;
         }
@@ -191,9 +171,9 @@ namespace Order.API.Infrastructure
         private Policy CreatePolicy(ILogger<OrderingContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().WaitAndRetryAsync(
-                retryCount: retries,
-                sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                onRetry: (exception, timeSpan, retry, ctx) =>
+                retries,
+                retry => TimeSpan.FromSeconds(5),
+                (exception, timeSpan, retry, ctx) =>
                 {
                     logger.LogTrace(
                         $"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");

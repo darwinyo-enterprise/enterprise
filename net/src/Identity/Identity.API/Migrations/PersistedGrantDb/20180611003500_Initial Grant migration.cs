@@ -8,8 +8,8 @@ namespace Identity.API.Migrations.PersistedGrantDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PersistedGrants",
-                columns: table => new
+                "PersistedGrants",
+                table => new
                 {
                     Key = table.Column<string>(maxLength: 200, nullable: false),
                     ClientId = table.Column<string>(maxLength: 200, nullable: false),
@@ -22,15 +22,15 @@ namespace Identity.API.Migrations.PersistedGrantDb
                 constraints: table => { table.PrimaryKey("PK_PersistedGrants", x => x.Key); });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersistedGrants_SubjectId_ClientId_Type",
-                table: "PersistedGrants",
-                columns: new[] {"SubjectId", "ClientId", "Type"});
+                "IX_PersistedGrants_SubjectId_ClientId_Type",
+                "PersistedGrants",
+                new[] {"SubjectId", "ClientId", "Type"});
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PersistedGrants");
+                "PersistedGrants");
         }
     }
 }

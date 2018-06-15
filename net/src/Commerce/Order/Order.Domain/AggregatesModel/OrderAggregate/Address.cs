@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Enterprise.Abstraction;
 
 namespace Order.Domain.AggregatesModel.OrderAggregate
@@ -19,11 +18,11 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             ZipCode = zipcode;
         }
 
-        public String Street { get; }
-        public String City { get; }
-        public String State { get; }
-        public String Country { get; }
-        public String ZipCode { get; }
+        public string Street { get; }
+        public string City { get; }
+        public string State { get; }
+        public string Country { get; }
+        public string ZipCode { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

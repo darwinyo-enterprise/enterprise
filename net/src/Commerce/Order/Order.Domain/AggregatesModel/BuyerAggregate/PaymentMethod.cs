@@ -9,10 +9,10 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
     {
         private string _alias;
         private string _cardHolderName;
-        private string _cardNumber;
+        private readonly string _cardNumber;
 
-        private int _cardTypeId;
-        private DateTime _expiration;
+        private readonly int _cardTypeId;
+        private readonly DateTime _expiration;
         private string _securityNumber;
 
 
@@ -33,10 +33,7 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
                 ? cardHolderName
                 : throw new OrderingDomainException(nameof(cardHolderName));
 
-            if (expiration < DateTime.UtcNow)
-            {
-                throw new OrderingDomainException(nameof(expiration));
-            }
+            if (expiration < DateTime.UtcNow) throw new OrderingDomainException(nameof(expiration));
 
             _alias = alias;
             _expiration = expiration;

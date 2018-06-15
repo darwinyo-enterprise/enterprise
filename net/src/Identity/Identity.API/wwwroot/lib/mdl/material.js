@@ -87,7 +87,7 @@
     };
 
     componentHandler = (function() {
-        'use strict';
+        "use strict";
 
         /** @type {!Array<componentHandler.ComponentConfig>} */
         var registeredComponents_ = [];
@@ -95,7 +95,7 @@
         /** @type {!Array<componentHandler.Component>} */
         var createdComponents_ = [];
 
-        var componentConfigProperty_ = 'mdlComponentConfigInternal_';
+        var componentConfigProperty_ = "mdlComponentConfigInternal_";
 
         /**
          * Searches registered components for a class we are interested in using.
@@ -109,7 +109,7 @@
         function findRegisteredClass_(name, optReplace) {
             for (var i = 0; i < registeredComponents_.length; i++) {
                 if (registeredComponents_[i].className === name) {
-                    if (typeof optReplace !== 'undefined') {
+                    if (typeof optReplace !== "undefined") {
                         registeredComponents_[i] = optReplace;
                     }
                     return registeredComponents_[i];
@@ -126,9 +126,9 @@
          * @private
          */
         function getUpgradedListOfElement_(element) {
-            var dataUpgraded = element.getAttribute('data-upgraded');
+            var dataUpgraded = element.getAttribute("data-upgraded");
             // Use `['']` as default value to conform the `,name,name...` style.
-            return dataUpgraded === null ? [''] : dataUpgraded.split(',');
+            return dataUpgraded === null ? [""] : dataUpgraded.split(",");
         }
 
         /**
@@ -154,14 +154,14 @@
          * @returns {!Event}
          */
         function createEvent_(eventType, bubbles, cancelable) {
-            if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+            if ("CustomEvent" in window && typeof window.CustomEvent === "function") {
                 return new CustomEvent(eventType,
                     {
                         bubbles: bubbles,
                         cancelable: cancelable
                     });
             } else {
-                var ev = document.createEvent('Events');
+                var ev = document.createEvent("Events");
                 ev.initEvent(eventType, bubbles, cancelable);
                 return ev;
             }
@@ -177,22 +177,22 @@
          * type will have.
          */
         function upgradeDomInternal(optJsClass, optCssClass) {
-            if (typeof optJsClass === 'undefined' &&
-                typeof optCssClass === 'undefined') {
+            if (typeof optJsClass === "undefined" &&
+                typeof optCssClass === "undefined") {
                 for (var i = 0; i < registeredComponents_.length; i++) {
                     upgradeDomInternal(registeredComponents_[i].className,
                         registeredComponents_[i].cssClass);
                 }
             } else {
                 var jsClass = /** @type {string} */ (optJsClass);
-                if (typeof optCssClass === 'undefined') {
+                if (typeof optCssClass === "undefined") {
                     var registeredClass = findRegisteredClass_(jsClass);
                     if (registeredClass) {
                         optCssClass = registeredClass.cssClass;
                     }
                 }
 
-                var elements = document.querySelectorAll('.' + optCssClass);
+                var elements = document.querySelectorAll("." + optCssClass);
                 for (var n = 0; n < elements.length; n++) {
                     upgradeElementInternal(elements[n], jsClass);
                 }
@@ -208,11 +208,11 @@
          */
         function upgradeElementInternal(element, optJsClass) {
             // Verify argument type.
-            if (!(typeof element === 'object' && element instanceof Element)) {
-                throw new Error('Invalid argument provided to upgrade MDL element.');
+            if (!(typeof element === "object" && element instanceof Element)) {
+                throw new Error("Invalid argument provided to upgrade MDL element.");
             }
             // Allow upgrade to be canceled by canceling emitted event.
-            var upgradingEv = createEvent_('mdl-componentupgrading', true, true);
+            var upgradingEv = createEvent_("mdl-componentupgrading", true, true);
             element.dispatchEvent(upgradingEv);
             if (upgradingEv.defaultPrevented) {
                 return;
@@ -242,7 +242,7 @@
                 if (registeredClass) {
                     // Mark element as upgraded.
                     upgradedList.push(registeredClass.className);
-                    element.setAttribute('data-upgraded', upgradedList.join(','));
+                    element.setAttribute("data-upgraded", upgradedList.join(","));
                     var instance = new registeredClass.classConstructor(element);
                     instance[componentConfigProperty_] = registeredClass;
                     createdComponents_.push(instance);
@@ -257,10 +257,10 @@
                     }
                 } else {
                     throw new Error(
-                        'Unable to find a registered component for the given class.');
+                        "Unable to find a registered component for the given class.");
                 }
 
-                var upgradedEv = createEvent_('mdl-componentupgraded', true, false);
+                var upgradedEv = createEvent_("mdl-componentupgraded", true, false);
                 element.dispatchEvent(upgradedEv);
             }
         }
@@ -300,37 +300,37 @@
             // this method, we need to allow for both the dot and array syntax for
             // property access. You'll therefore see the `foo.bar || foo['bar']`
             // pattern repeated across this method.
-            var widgetMissing = (typeof config.widget === 'undefined' &&
-                typeof config['widget'] === 'undefined');
+            var widgetMissing = (typeof config.widget === "undefined" &&
+                typeof config["widget"] === "undefined");
             var widget = true;
 
             if (!widgetMissing) {
-                widget = config.widget || config['widget'];
+                widget = config.widget || config["widget"];
             }
 
             var newConfig = /** @type {componentHandler.ComponentConfig} */ ({
-                classConstructor: config.constructor || config['constructor'],
-                className: config.classAsString || config['classAsString'],
-                cssClass: config.cssClass || config['cssClass'],
+                classConstructor: config.constructor || config["constructor"],
+                className: config.classAsString || config["classAsString"],
+                cssClass: config.cssClass || config["cssClass"],
                 widget: widget,
                 callbacks: []
             });
 
             registeredComponents_.forEach(function(item) {
                 if (item.cssClass === newConfig.cssClass) {
-                    throw new Error('The provided cssClass has already been registered: ' + item.cssClass);
+                    throw new Error("The provided cssClass has already been registered: " + item.cssClass);
                 }
                 if (item.className === newConfig.className) {
-                    throw new Error('The provided className has already been registered');
+                    throw new Error("The provided className has already been registered");
                 }
             });
 
             if (config.constructor.prototype
                 .hasOwnProperty(componentConfigProperty_)) {
                 throw new Error(
-                    'MDL component classes must not have ' +
+                    "MDL component classes must not have " +
                     componentConfigProperty_ +
-                    ' defined as a property.');
+                    " defined as a property.");
             }
 
             var found = findRegisteredClass_(config.classAsString, newConfig);
@@ -379,12 +379,12 @@
                 var componentIndex = createdComponents_.indexOf(component);
                 createdComponents_.splice(componentIndex, 1);
 
-                var upgrades = component.element_.getAttribute('data-upgraded').split(',');
+                var upgrades = component.element_.getAttribute("data-upgraded").split(",");
                 var componentPlace = upgrades.indexOf(component[componentConfigProperty_].classAsString);
                 upgrades.splice(componentPlace, 1);
-                component.element_.setAttribute('data-upgraded', upgrades.join(','));
+                component.element_.setAttribute("data-upgraded", upgrades.join(","));
 
-                var ev = createEvent_('mdl-componentdowngraded', true, false);
+                var ev = createEvent_("mdl-componentdowngraded", true, false);
                 component.element_.dispatchEvent(ev);
             }
         }
@@ -411,7 +411,7 @@
             } else if (nodes instanceof Node) {
                 downgradeNode(nodes);
             } else {
-                throw new Error('Invalid argument provided to downgrade MDL nodes.');
+                throw new Error("Invalid argument provided to downgrade MDL nodes.");
             }
         }
 
@@ -471,32 +471,32 @@
 
 // Export all symbols, for the benefit of Closure compiler.
 // No effect on uncompiled code.
-    componentHandler['upgradeDom'] = componentHandler.upgradeDom;
-    componentHandler['upgradeElement'] = componentHandler.upgradeElement;
-    componentHandler['upgradeElements'] = componentHandler.upgradeElements;
-    componentHandler['upgradeAllRegistered'] =
+    componentHandler["upgradeDom"] = componentHandler.upgradeDom;
+    componentHandler["upgradeElement"] = componentHandler.upgradeElement;
+    componentHandler["upgradeElements"] = componentHandler.upgradeElements;
+    componentHandler["upgradeAllRegistered"] =
         componentHandler.upgradeAllRegistered;
-    componentHandler['registerUpgradedCallback'] =
+    componentHandler["registerUpgradedCallback"] =
         componentHandler.registerUpgradedCallback;
-    componentHandler['register'] = componentHandler.register;
-    componentHandler['downgradeElements'] = componentHandler.downgradeElements;
+    componentHandler["register"] = componentHandler.register;
+    componentHandler["downgradeElements"] = componentHandler.downgradeElements;
     window.componentHandler = componentHandler;
-    window['componentHandler'] = componentHandler;
+    window["componentHandler"] = componentHandler;
 
-    window.addEventListener('load',
+    window.addEventListener("load",
         function() {
-            'use strict';
+            "use strict";
 
             /**
              * Performs a "Cutting the mustard" test. If the browser supports the features
              * tested, adds a mdl-js class to the <html> element. It then upgrades all MDL
              * components requiring JavaScript.
              */
-            if ('classList' in document.createElement('div') &&
-                'querySelector' in document &&
-                'addEventListener' in window &&
+            if ("classList" in document.createElement("div") &&
+                "querySelector" in document &&
+                "addEventListener" in window &&
                 Array.prototype.forEach) {
-                document.documentElement.classList.add('mdl-js');
+                document.documentElement.classList.add("mdl-js");
                 componentHandler.upgradeAllRegistered();
             } else {
                 /**
@@ -525,18 +525,18 @@
         Date.now = function() {
             return new Date().getTime();
         };
-        Date['now'] = Date.now;
+        Date["now"] = Date.now;
     }
     var vendors = [
-        'webkit',
-        'moz'
+        "webkit",
+        "moz"
     ];
     for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
         var vp = vendors[i];
-        window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame'];
-        window['requestAnimationFrame'] = window.requestAnimationFrame;
-        window['cancelAnimationFrame'] = window.cancelAnimationFrame;
+        window.requestAnimationFrame = window[vp + "RequestAnimationFrame"];
+        window.cancelAnimationFrame = window[vp + "CancelAnimationFrame"] || window[vp + "CancelRequestAnimationFrame"];
+        window["requestAnimationFrame"] = window.requestAnimationFrame;
+        window["cancelAnimationFrame"] = window.cancelAnimationFrame;
     }
     if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) ||
         !window.requestAnimationFrame ||
@@ -555,8 +555,8 @@
                 nextTime - now);
         };
         window.cancelAnimationFrame = clearTimeout;
-        window['requestAnimationFrame'] = window.requestAnimationFrame;
-        window['cancelAnimationFrame'] = window.cancelAnimationFrame;
+        window["requestAnimationFrame"] = window.requestAnimationFrame;
+        window["cancelAnimationFrame"] = window.cancelAnimationFrame;
     }
 /**
  * @license
@@ -586,7 +586,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialButton'] = MaterialButton;
+    window["MaterialButton"] = MaterialButton;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -603,9 +603,9 @@
    * @private
    */
     MaterialButton.prototype.CssClasses_ = {
-        RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_CONTAINER: 'mdl-button__ripple-container',
-        RIPPLE: 'mdl-ripple'
+        RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_CONTAINER: "mdl-button__ripple-container",
+        RIPPLE: "mdl-ripple"
     };
 /**
    * Handle blur of element.
@@ -627,7 +627,7 @@
     MaterialButton.prototype.disable = function() {
         this.element_.disabled = true;
     };
-    MaterialButton.prototype['disable'] = MaterialButton.prototype.disable;
+    MaterialButton.prototype["disable"] = MaterialButton.prototype.disable;
 /**
    * Enable button.
    *
@@ -636,33 +636,33 @@
     MaterialButton.prototype.enable = function() {
         this.element_.disabled = false;
     };
-    MaterialButton.prototype['enable'] = MaterialButton.prototype.enable;
+    MaterialButton.prototype["enable"] = MaterialButton.prototype.enable;
 /**
    * Initialize element.
    */
     MaterialButton.prototype.init = function() {
         if (this.element_) {
             if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
-                var rippleContainer = document.createElement('span');
+                var rippleContainer = document.createElement("span");
                 rippleContainer.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
-                this.rippleElement_ = document.createElement('span');
+                this.rippleElement_ = document.createElement("span");
                 this.rippleElement_.classList.add(this.CssClasses_.RIPPLE);
                 rippleContainer.appendChild(this.rippleElement_);
                 this.boundRippleBlurHandler = this.blurHandler_.bind(this);
-                this.rippleElement_.addEventListener('mouseup', this.boundRippleBlurHandler);
+                this.rippleElement_.addEventListener("mouseup", this.boundRippleBlurHandler);
                 this.element_.appendChild(rippleContainer);
             }
             this.boundButtonBlurHandler = this.blurHandler_.bind(this);
-            this.element_.addEventListener('mouseup', this.boundButtonBlurHandler);
-            this.element_.addEventListener('mouseleave', this.boundButtonBlurHandler);
+            this.element_.addEventListener("mouseup", this.boundButtonBlurHandler);
+            this.element_.addEventListener("mouseleave", this.boundButtonBlurHandler);
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialButton,
-        classAsString: 'MaterialButton',
-        cssClass: 'mdl-js-button',
+        classAsString: "MaterialButton",
+        cssClass: "mdl-js-button",
         widget: true
     });
 /**
@@ -694,7 +694,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialCheckbox'] = MaterialCheckbox;
+    window["MaterialCheckbox"] = MaterialCheckbox;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -711,19 +711,19 @@
    * @private
    */
     MaterialCheckbox.prototype.CssClasses_ = {
-        INPUT: 'mdl-checkbox__input',
-        BOX_OUTLINE: 'mdl-checkbox__box-outline',
-        FOCUS_HELPER: 'mdl-checkbox__focus-helper',
-        TICK_OUTLINE: 'mdl-checkbox__tick-outline',
-        RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE_CONTAINER: 'mdl-checkbox__ripple-container',
-        RIPPLE_CENTER: 'mdl-ripple--center',
-        RIPPLE: 'mdl-ripple',
-        IS_FOCUSED: 'is-focused',
-        IS_DISABLED: 'is-disabled',
-        IS_CHECKED: 'is-checked',
-        IS_UPGRADED: 'is-upgraded'
+        INPUT: "mdl-checkbox__input",
+        BOX_OUTLINE: "mdl-checkbox__box-outline",
+        FOCUS_HELPER: "mdl-checkbox__focus-helper",
+        TICK_OUTLINE: "mdl-checkbox__tick-outline",
+        RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE_CONTAINER: "mdl-checkbox__ripple-container",
+        RIPPLE_CENTER: "mdl-ripple--center",
+        RIPPLE: "mdl-ripple",
+        IS_FOCUSED: "is-focused",
+        IS_DISABLED: "is-disabled",
+        IS_CHECKED: "is-checked",
+        IS_UPGRADED: "is-upgraded"
     };
 /**
    * Handle change of state.
@@ -796,7 +796,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
         }
     };
-    MaterialCheckbox.prototype['checkToggleState'] = MaterialCheckbox.prototype.checkToggleState;
+    MaterialCheckbox.prototype["checkToggleState"] = MaterialCheckbox.prototype.checkToggleState;
 /**
    * Check the inputs disabled state and update display.
    *
@@ -809,7 +809,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialCheckbox.prototype['checkDisabled'] = MaterialCheckbox.prototype.checkDisabled;
+    MaterialCheckbox.prototype["checkDisabled"] = MaterialCheckbox.prototype.checkDisabled;
 /**
    * Disable checkbox.
    *
@@ -819,7 +819,7 @@
         this.inputElement_.disabled = true;
         this.updateClasses_();
     };
-    MaterialCheckbox.prototype['disable'] = MaterialCheckbox.prototype.disable;
+    MaterialCheckbox.prototype["disable"] = MaterialCheckbox.prototype.disable;
 /**
    * Enable checkbox.
    *
@@ -829,7 +829,7 @@
         this.inputElement_.disabled = false;
         this.updateClasses_();
     };
-    MaterialCheckbox.prototype['enable'] = MaterialCheckbox.prototype.enable;
+    MaterialCheckbox.prototype["enable"] = MaterialCheckbox.prototype.enable;
 /**
    * Check checkbox.
    *
@@ -839,7 +839,7 @@
         this.inputElement_.checked = true;
         this.updateClasses_();
     };
-    MaterialCheckbox.prototype['check'] = MaterialCheckbox.prototype.check;
+    MaterialCheckbox.prototype["check"] = MaterialCheckbox.prototype.check;
 /**
    * Uncheck checkbox.
    *
@@ -849,31 +849,31 @@
         this.inputElement_.checked = false;
         this.updateClasses_();
     };
-    MaterialCheckbox.prototype['uncheck'] = MaterialCheckbox.prototype.uncheck;
+    MaterialCheckbox.prototype["uncheck"] = MaterialCheckbox.prototype.uncheck;
 /**
    * Initialize element.
    */
     MaterialCheckbox.prototype.init = function() {
         if (this.element_) {
-            this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
-            var boxOutline = document.createElement('span');
+            this.inputElement_ = this.element_.querySelector("." + this.CssClasses_.INPUT);
+            var boxOutline = document.createElement("span");
             boxOutline.classList.add(this.CssClasses_.BOX_OUTLINE);
-            var tickContainer = document.createElement('span');
+            var tickContainer = document.createElement("span");
             tickContainer.classList.add(this.CssClasses_.FOCUS_HELPER);
-            var tickOutline = document.createElement('span');
+            var tickOutline = document.createElement("span");
             tickOutline.classList.add(this.CssClasses_.TICK_OUTLINE);
             boxOutline.appendChild(tickOutline);
             this.element_.appendChild(tickContainer);
             this.element_.appendChild(boxOutline);
             if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
                 this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
-                this.rippleContainerElement_ = document.createElement('span');
+                this.rippleContainerElement_ = document.createElement("span");
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_EFFECT);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
                 this.boundRippleMouseUp = this.onMouseUp_.bind(this);
-                this.rippleContainerElement_.addEventListener('mouseup', this.boundRippleMouseUp);
-                var ripple = document.createElement('span');
+                this.rippleContainerElement_.addEventListener("mouseup", this.boundRippleMouseUp);
+                var ripple = document.createElement("span");
                 ripple.classList.add(this.CssClasses_.RIPPLE);
                 this.rippleContainerElement_.appendChild(ripple);
                 this.element_.appendChild(this.rippleContainerElement_);
@@ -882,10 +882,10 @@
             this.boundInputOnFocus = this.onFocus_.bind(this);
             this.boundInputOnBlur = this.onBlur_.bind(this);
             this.boundElementMouseUp = this.onMouseUp_.bind(this);
-            this.inputElement_.addEventListener('change', this.boundInputOnChange);
-            this.inputElement_.addEventListener('focus', this.boundInputOnFocus);
-            this.inputElement_.addEventListener('blur', this.boundInputOnBlur);
-            this.element_.addEventListener('mouseup', this.boundElementMouseUp);
+            this.inputElement_.addEventListener("change", this.boundInputOnChange);
+            this.inputElement_.addEventListener("focus", this.boundInputOnFocus);
+            this.inputElement_.addEventListener("blur", this.boundInputOnBlur);
+            this.element_.addEventListener("mouseup", this.boundElementMouseUp);
             this.updateClasses_();
             this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
         }
@@ -894,8 +894,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialCheckbox,
-        classAsString: 'MaterialCheckbox',
-        cssClass: 'mdl-js-checkbox',
+        classAsString: "MaterialCheckbox",
+        cssClass: "mdl-js-checkbox",
         widget: true
     });
 /**
@@ -927,7 +927,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialIconToggle'] = MaterialIconToggle;
+    window["MaterialIconToggle"] = MaterialIconToggle;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -944,15 +944,15 @@
    * @private
    */
     MaterialIconToggle.prototype.CssClasses_ = {
-        INPUT: 'mdl-icon-toggle__input',
-        JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE_CONTAINER: 'mdl-icon-toggle__ripple-container',
-        RIPPLE_CENTER: 'mdl-ripple--center',
-        RIPPLE: 'mdl-ripple',
-        IS_FOCUSED: 'is-focused',
-        IS_DISABLED: 'is-disabled',
-        IS_CHECKED: 'is-checked'
+        INPUT: "mdl-icon-toggle__input",
+        JS_RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE_CONTAINER: "mdl-icon-toggle__ripple-container",
+        RIPPLE_CENTER: "mdl-ripple--center",
+        RIPPLE: "mdl-ripple",
+        IS_FOCUSED: "is-focused",
+        IS_DISABLED: "is-disabled",
+        IS_CHECKED: "is-checked"
     };
 /**
    * Handle change of state.
@@ -1025,7 +1025,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
         }
     };
-    MaterialIconToggle.prototype['checkToggleState'] = MaterialIconToggle.prototype.checkToggleState;
+    MaterialIconToggle.prototype["checkToggleState"] = MaterialIconToggle.prototype.checkToggleState;
 /**
    * Check the inputs disabled state and update display.
    *
@@ -1038,7 +1038,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialIconToggle.prototype['checkDisabled'] = MaterialIconToggle.prototype.checkDisabled;
+    MaterialIconToggle.prototype["checkDisabled"] = MaterialIconToggle.prototype.checkDisabled;
 /**
    * Disable icon toggle.
    *
@@ -1048,7 +1048,7 @@
         this.inputElement_.disabled = true;
         this.updateClasses_();
     };
-    MaterialIconToggle.prototype['disable'] = MaterialIconToggle.prototype.disable;
+    MaterialIconToggle.prototype["disable"] = MaterialIconToggle.prototype.disable;
 /**
    * Enable icon toggle.
    *
@@ -1058,7 +1058,7 @@
         this.inputElement_.disabled = false;
         this.updateClasses_();
     };
-    MaterialIconToggle.prototype['enable'] = MaterialIconToggle.prototype.enable;
+    MaterialIconToggle.prototype["enable"] = MaterialIconToggle.prototype.enable;
 /**
    * Check icon toggle.
    *
@@ -1068,7 +1068,7 @@
         this.inputElement_.checked = true;
         this.updateClasses_();
     };
-    MaterialIconToggle.prototype['check'] = MaterialIconToggle.prototype.check;
+    MaterialIconToggle.prototype["check"] = MaterialIconToggle.prototype.check;
 /**
    * Uncheck icon toggle.
    *
@@ -1078,22 +1078,22 @@
         this.inputElement_.checked = false;
         this.updateClasses_();
     };
-    MaterialIconToggle.prototype['uncheck'] = MaterialIconToggle.prototype.uncheck;
+    MaterialIconToggle.prototype["uncheck"] = MaterialIconToggle.prototype.uncheck;
 /**
    * Initialize element.
    */
     MaterialIconToggle.prototype.init = function() {
         if (this.element_) {
-            this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+            this.inputElement_ = this.element_.querySelector("." + this.CssClasses_.INPUT);
             if (this.element_.classList.contains(this.CssClasses_.JS_RIPPLE_EFFECT)) {
                 this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
-                this.rippleContainerElement_ = document.createElement('span');
+                this.rippleContainerElement_ = document.createElement("span");
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.JS_RIPPLE_EFFECT);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
                 this.boundRippleMouseUp = this.onMouseUp_.bind(this);
-                this.rippleContainerElement_.addEventListener('mouseup', this.boundRippleMouseUp);
-                var ripple = document.createElement('span');
+                this.rippleContainerElement_.addEventListener("mouseup", this.boundRippleMouseUp);
+                var ripple = document.createElement("span");
                 ripple.classList.add(this.CssClasses_.RIPPLE);
                 this.rippleContainerElement_.appendChild(ripple);
                 this.element_.appendChild(this.rippleContainerElement_);
@@ -1102,20 +1102,20 @@
             this.boundInputOnFocus = this.onFocus_.bind(this);
             this.boundInputOnBlur = this.onBlur_.bind(this);
             this.boundElementOnMouseUp = this.onMouseUp_.bind(this);
-            this.inputElement_.addEventListener('change', this.boundInputOnChange);
-            this.inputElement_.addEventListener('focus', this.boundInputOnFocus);
-            this.inputElement_.addEventListener('blur', this.boundInputOnBlur);
-            this.element_.addEventListener('mouseup', this.boundElementOnMouseUp);
+            this.inputElement_.addEventListener("change", this.boundInputOnChange);
+            this.inputElement_.addEventListener("focus", this.boundInputOnFocus);
+            this.inputElement_.addEventListener("blur", this.boundInputOnBlur);
+            this.element_.addEventListener("mouseup", this.boundElementOnMouseUp);
             this.updateClasses_();
-            this.element_.classList.add('is-upgraded');
+            this.element_.classList.add("is-upgraded");
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialIconToggle,
-        classAsString: 'MaterialIconToggle',
-        cssClass: 'mdl-js-icon-toggle',
+        classAsString: "MaterialIconToggle",
+        cssClass: "mdl-js-icon-toggle",
         widget: true
     });
 /**
@@ -1147,7 +1147,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialMenu'] = MaterialMenu;
+    window["MaterialMenu"] = MaterialMenu;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -1185,24 +1185,24 @@
    * @private
    */
     MaterialMenu.prototype.CssClasses_ = {
-        CONTAINER: 'mdl-menu__container',
-        OUTLINE: 'mdl-menu__outline',
-        ITEM: 'mdl-menu__item',
-        ITEM_RIPPLE_CONTAINER: 'mdl-menu__item-ripple-container',
-        RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE: 'mdl-ripple',
+        CONTAINER: "mdl-menu__container",
+        OUTLINE: "mdl-menu__outline",
+        ITEM: "mdl-menu__item",
+        ITEM_RIPPLE_CONTAINER: "mdl-menu__item-ripple-container",
+        RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE: "mdl-ripple",
         // Statuses
-        IS_UPGRADED: 'is-upgraded',
-        IS_VISIBLE: 'is-visible',
-        IS_ANIMATING: 'is-animating',
+        IS_UPGRADED: "is-upgraded",
+        IS_VISIBLE: "is-visible",
+        IS_ANIMATING: "is-animating",
         // Alignment options
-        BOTTOM_LEFT: 'mdl-menu--bottom-left',
+        BOTTOM_LEFT: "mdl-menu--bottom-left",
         // This is the default.
-        BOTTOM_RIGHT: 'mdl-menu--bottom-right',
-        TOP_LEFT: 'mdl-menu--top-left',
-        TOP_RIGHT: 'mdl-menu--top-right',
-        UNALIGNED: 'mdl-menu--unaligned'
+        BOTTOM_RIGHT: "mdl-menu--bottom-right",
+        TOP_LEFT: "mdl-menu--top-left",
+        TOP_RIGHT: "mdl-menu--top-right",
+        UNALIGNED: "mdl-menu--unaligned"
     };
 /**
    * Initialize element.
@@ -1210,47 +1210,47 @@
     MaterialMenu.prototype.init = function() {
         if (this.element_) {
             // Create container for the menu.
-            var container = document.createElement('div');
+            var container = document.createElement("div");
             container.classList.add(this.CssClasses_.CONTAINER);
             this.element_.parentElement.insertBefore(container, this.element_);
             this.element_.parentElement.removeChild(this.element_);
             container.appendChild(this.element_);
             this.container_ = container;
             // Create outline for the menu (shadow and background).
-            var outline = document.createElement('div');
+            var outline = document.createElement("div");
             outline.classList.add(this.CssClasses_.OUTLINE);
             this.outline_ = outline;
             container.insertBefore(outline, this.element_);
             // Find the "for" element and bind events to it.
-            var forElId = this.element_.getAttribute('for') || this.element_.getAttribute('data-mdl-for');
+            var forElId = this.element_.getAttribute("for") || this.element_.getAttribute("data-mdl-for");
             var forEl = null;
             if (forElId) {
                 forEl = document.getElementById(forElId);
                 if (forEl) {
                     this.forElement_ = forEl;
-                    forEl.addEventListener('click', this.handleForClick_.bind(this));
-                    forEl.addEventListener('keydown', this.handleForKeyboardEvent_.bind(this));
+                    forEl.addEventListener("click", this.handleForClick_.bind(this));
+                    forEl.addEventListener("keydown", this.handleForKeyboardEvent_.bind(this));
                 }
             }
-            var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+            var items = this.element_.querySelectorAll("." + this.CssClasses_.ITEM);
             this.boundItemKeydown_ = this.handleItemKeyboardEvent_.bind(this);
             this.boundItemClick_ = this.handleItemClick_.bind(this);
             for (var i = 0; i < items.length; i++) {
                 // Add a listener to each menu item.
-                items[i].addEventListener('click', this.boundItemClick_);
+                items[i].addEventListener("click", this.boundItemClick_);
                 // Add a tab index to each menu item.
-                items[i].tabIndex = '-1';
+                items[i].tabIndex = "-1";
                 // Add a keyboard listener to each menu item.
-                items[i].addEventListener('keydown', this.boundItemKeydown_);
+                items[i].addEventListener("keydown", this.boundItemKeydown_);
             }
             // Add ripple classes to each item, if the user has enabled ripples.
             if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
                 this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
                 for (i = 0; i < items.length; i++) {
                     var item = items[i];
-                    var rippleContainer = document.createElement('span');
+                    var rippleContainer = document.createElement("span");
                     rippleContainer.classList.add(this.CssClasses_.ITEM_RIPPLE_CONTAINER);
-                    var ripple = document.createElement('span');
+                    var ripple = document.createElement("span");
                     ripple.classList.add(this.CssClasses_.RIPPLE);
                     rippleContainer.appendChild(ripple);
                     item.appendChild(rippleContainer);
@@ -1290,20 +1290,20 @@
             if (this.element_.classList.contains(this.CssClasses_.UNALIGNED)) {
             } else if (this.element_.classList.contains(this.CssClasses_.BOTTOM_RIGHT)) {
                 // Position below the "for" element, aligned to its right.
-                this.container_.style.right = forRect.right - rect.right + 'px';
-                this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + 'px';
+                this.container_.style.right = forRect.right - rect.right + "px";
+                this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + "px";
             } else if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT)) {
                 // Position above the "for" element, aligned to its left.
-                this.container_.style.left = this.forElement_.offsetLeft + 'px';
-                this.container_.style.bottom = forRect.bottom - rect.top + 'px';
+                this.container_.style.left = this.forElement_.offsetLeft + "px";
+                this.container_.style.bottom = forRect.bottom - rect.top + "px";
             } else if (this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
                 // Position above the "for" element, aligned to its right.
-                this.container_.style.right = forRect.right - rect.right + 'px';
-                this.container_.style.bottom = forRect.bottom - rect.top + 'px';
+                this.container_.style.right = forRect.right - rect.right + "px";
+                this.container_.style.bottom = forRect.bottom - rect.top + "px";
             } else {
                 // Default: position below the "for" element, aligned to its left.
-                this.container_.style.left = this.forElement_.offsetLeft + 'px';
-                this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + 'px';
+                this.container_.style.left = this.forElement_.offsetLeft + "px";
+                this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + "px";
             }
         }
         this.toggle(evt);
@@ -1316,7 +1316,7 @@
    */
     MaterialMenu.prototype.handleForKeyboardEvent_ = function(evt) {
         if (this.element_ && this.container_ && this.forElement_) {
-            var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM + ':not([disabled])');
+            var items = this.element_.querySelectorAll("." + this.CssClasses_.ITEM + ":not([disabled])");
             if (items && items.length > 0 && this.container_.classList.contains(this.CssClasses_.IS_VISIBLE)) {
                 if (evt.keyCode === this.Keycodes_.UP_ARROW) {
                     evt.preventDefault();
@@ -1336,7 +1336,7 @@
    */
     MaterialMenu.prototype.handleItemKeyboardEvent_ = function(evt) {
         if (this.element_ && this.container_) {
-            var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM + ':not([disabled])');
+            var items = this.element_.querySelectorAll("." + this.CssClasses_.ITEM + ":not([disabled])");
             if (items && items.length > 0 && this.container_.classList.contains(this.CssClasses_.IS_VISIBLE)) {
                 var currentIndex = Array.prototype.slice.call(items).indexOf(evt.target);
                 if (evt.keyCode === this.Keycodes_.UP_ARROW) {
@@ -1356,9 +1356,9 @@
                 } else if (evt.keyCode === this.Keycodes_.SPACE || evt.keyCode === this.Keycodes_.ENTER) {
                     evt.preventDefault();
                     // Send mousedown and mouseup to trigger ripple.
-                    var e = new MouseEvent('mousedown');
+                    var e = new MouseEvent("mousedown");
                     evt.target.dispatchEvent(e);
-                    e = new MouseEvent('mouseup');
+                    e = new MouseEvent("mouseup");
                     evt.target.dispatchEvent(e);
                     // Send click.
                     evt.target.click();
@@ -1376,7 +1376,7 @@
    * @private
    */
     MaterialMenu.prototype.handleItemClick_ = function(evt) {
-        if (evt.target.hasAttribute('disabled')) {
+        if (evt.target.hasAttribute("disabled")) {
             evt.stopPropagation();
         } else {
             // Wait some time before closing menu, so the user can see the ripple.
@@ -1400,19 +1400,19 @@
     MaterialMenu.prototype.applyClip_ = function(height, width) {
         if (this.element_.classList.contains(this.CssClasses_.UNALIGNED)) {
             // Do not clip.
-            this.element_.style.clip = '';
+            this.element_.style.clip = "";
         } else if (this.element_.classList.contains(this.CssClasses_.BOTTOM_RIGHT)) {
             // Clip to the top right corner of the menu.
-            this.element_.style.clip = 'rect(0 ' + width + 'px ' + '0 ' + width + 'px)';
+            this.element_.style.clip = "rect(0 " + width + "px " + "0 " + width + "px)";
         } else if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT)) {
             // Clip to the bottom left corner of the menu.
-            this.element_.style.clip = 'rect(' + height + 'px 0 ' + height + 'px 0)';
+            this.element_.style.clip = "rect(" + height + "px 0 " + height + "px 0)";
         } else if (this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
             // Clip to the bottom right corner of the menu.
-            this.element_.style.clip = 'rect(' + height + 'px ' + width + 'px ' + height + 'px ' + width + 'px)';
+            this.element_.style.clip = "rect(" + height + "px " + width + "px " + height + "px " + width + "px)";
         } else {
             // Default: do not clip (same as clipping to the top left corner).
-            this.element_.style.clip = '';
+            this.element_.style.clip = "";
         }
     };
 /**
@@ -1430,8 +1430,8 @@
    * @private
    */
     MaterialMenu.prototype.addAnimationEndListener_ = function() {
-        this.element_.addEventListener('transitionend', this.removeAnimationEndListener_);
-        this.element_.addEventListener('webkitTransitionEnd', this.removeAnimationEndListener_);
+        this.element_.addEventListener("transitionend", this.removeAnimationEndListener_);
+        this.element_.addEventListener("webkitTransitionEnd", this.removeAnimationEndListener_);
     };
 /**
    * Displays the menu.
@@ -1444,23 +1444,23 @@
             var height = this.element_.getBoundingClientRect().height;
             var width = this.element_.getBoundingClientRect().width;
             // Apply the inner element's size to the container and outline.
-            this.container_.style.width = width + 'px';
-            this.container_.style.height = height + 'px';
-            this.outline_.style.width = width + 'px';
-            this.outline_.style.height = height + 'px';
+            this.container_.style.width = width + "px";
+            this.container_.style.height = height + "px";
+            this.outline_.style.width = width + "px";
+            this.outline_.style.height = height + "px";
             var transitionDuration =
                 this.Constant_.TRANSITION_DURATION_SECONDS * this.Constant_.TRANSITION_DURATION_FRACTION;
             // Calculate transition delays for individual menu items, so that they fade
             // in one at a time.
-            var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+            var items = this.element_.querySelectorAll("." + this.CssClasses_.ITEM);
             for (var i = 0; i < items.length; i++) {
                 var itemDelay = null;
                 if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT) ||
                     this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
                     itemDelay = (height - items[i].offsetTop - items[i].offsetHeight) / height * transitionDuration +
-                        's';
+                        "s";
                 } else {
-                    itemDelay = items[i].offsetTop / height * transitionDuration + 's';
+                    itemDelay = items[i].offsetTop / height * transitionDuration + "s";
                 }
                 items[i].style.transitionDelay = itemDelay;
             }
@@ -1470,7 +1470,7 @@
             // Also make it visible. This triggers the transitions.
             window.requestAnimationFrame(function() {
                 this.element_.classList.add(this.CssClasses_.IS_ANIMATING);
-                this.element_.style.clip = 'rect(0 ' + width + 'px ' + height + 'px 0)';
+                this.element_.style.clip = "rect(0 " + width + "px " + height + "px 0)";
                 this.container_.classList.add(this.CssClasses_.IS_VISIBLE);
             }.bind(this));
             // Clean up after the animation is complete.
@@ -1484,14 +1484,14 @@
                 // Also check if the clicked element is a menu item
                 // if so, do nothing.
                 if (e !== evt && !this.closing_ && e.target.parentNode !== this.element_) {
-                    document.removeEventListener('click', callback);
+                    document.removeEventListener("click", callback);
                     this.hide();
                 }
             }.bind(this);
-            document.addEventListener('click', callback);
+            document.addEventListener("click", callback);
         }
     };
-    MaterialMenu.prototype['show'] = MaterialMenu.prototype.show;
+    MaterialMenu.prototype["show"] = MaterialMenu.prototype.show;
 /**
    * Hides the menu.
    *
@@ -1499,10 +1499,10 @@
    */
     MaterialMenu.prototype.hide = function() {
         if (this.element_ && this.container_ && this.outline_) {
-            var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+            var items = this.element_.querySelectorAll("." + this.CssClasses_.ITEM);
             // Remove all transition delays; menu items fade out concurrently.
             for (var i = 0; i < items.length; i++) {
-                items[i].style.removeProperty('transition-delay');
+                items[i].style.removeProperty("transition-delay");
             }
             // Measure the inner element.
             var rect = this.element_.getBoundingClientRect();
@@ -1517,7 +1517,7 @@
             this.addAnimationEndListener_();
         }
     };
-    MaterialMenu.prototype['hide'] = MaterialMenu.prototype.hide;
+    MaterialMenu.prototype["hide"] = MaterialMenu.prototype.hide;
 /**
    * Displays or hides the menu, depending on current state.
    *
@@ -1530,13 +1530,13 @@
             this.show(evt);
         }
     };
-    MaterialMenu.prototype['toggle'] = MaterialMenu.prototype.toggle;
+    MaterialMenu.prototype["toggle"] = MaterialMenu.prototype.toggle;
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialMenu,
-        classAsString: 'MaterialMenu',
-        cssClass: 'mdl-js-menu',
+        classAsString: "MaterialMenu",
+        cssClass: "mdl-js-menu",
         widget: true
     });
 /**
@@ -1568,7 +1568,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialProgress'] = MaterialProgress;
+    window["MaterialProgress"] = MaterialProgress;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -1584,7 +1584,7 @@
    * @enum {string}
    * @private
    */
-    MaterialProgress.prototype.CssClasses_ = { INDETERMINATE_CLASS: 'mdl-progress__indeterminate' };
+    MaterialProgress.prototype.CssClasses_ = { INDETERMINATE_CLASS: "mdl-progress__indeterminate" };
 /**
    * Set the current progress of the progressbar.
    *
@@ -1595,9 +1595,9 @@
         if (this.element_.classList.contains(this.CssClasses_.INDETERMINATE_CLASS)) {
             return;
         }
-        this.progressbar_.style.width = p + '%';
+        this.progressbar_.style.width = p + "%";
     };
-    MaterialProgress.prototype['setProgress'] = MaterialProgress.prototype.setProgress;
+    MaterialProgress.prototype["setProgress"] = MaterialProgress.prototype.setProgress;
 /**
    * Set the current progress of the buffer.
    *
@@ -1605,39 +1605,39 @@
    * @public
    */
     MaterialProgress.prototype.setBuffer = function(p) {
-        this.bufferbar_.style.width = p + '%';
-        this.auxbar_.style.width = 100 - p + '%';
+        this.bufferbar_.style.width = p + "%";
+        this.auxbar_.style.width = 100 - p + "%";
     };
-    MaterialProgress.prototype['setBuffer'] = MaterialProgress.prototype.setBuffer;
+    MaterialProgress.prototype["setBuffer"] = MaterialProgress.prototype.setBuffer;
 /**
    * Initialize element.
    */
     MaterialProgress.prototype.init = function() {
         if (this.element_) {
-            var el = document.createElement('div');
-            el.className = 'progressbar bar bar1';
+            var el = document.createElement("div");
+            el.className = "progressbar bar bar1";
             this.element_.appendChild(el);
             this.progressbar_ = el;
-            el = document.createElement('div');
-            el.className = 'bufferbar bar bar2';
+            el = document.createElement("div");
+            el.className = "bufferbar bar bar2";
             this.element_.appendChild(el);
             this.bufferbar_ = el;
-            el = document.createElement('div');
-            el.className = 'auxbar bar bar3';
+            el = document.createElement("div");
+            el.className = "auxbar bar bar3";
             this.element_.appendChild(el);
             this.auxbar_ = el;
-            this.progressbar_.style.width = '0%';
-            this.bufferbar_.style.width = '100%';
-            this.auxbar_.style.width = '0%';
-            this.element_.classList.add('is-upgraded');
+            this.progressbar_.style.width = "0%";
+            this.bufferbar_.style.width = "100%";
+            this.auxbar_.style.width = "0%";
+            this.element_.classList.add("is-upgraded");
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialProgress,
-        classAsString: 'MaterialProgress',
-        cssClass: 'mdl-js-progress',
+        classAsString: "MaterialProgress",
+        cssClass: "mdl-js-progress",
         widget: true
     });
 /**
@@ -1669,7 +1669,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialRadio'] = MaterialRadio;
+    window["MaterialRadio"] = MaterialRadio;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -1686,19 +1686,19 @@
    * @private
    */
     MaterialRadio.prototype.CssClasses_ = {
-        IS_FOCUSED: 'is-focused',
-        IS_DISABLED: 'is-disabled',
-        IS_CHECKED: 'is-checked',
-        IS_UPGRADED: 'is-upgraded',
-        JS_RADIO: 'mdl-js-radio',
-        RADIO_BTN: 'mdl-radio__button',
-        RADIO_OUTER_CIRCLE: 'mdl-radio__outer-circle',
-        RADIO_INNER_CIRCLE: 'mdl-radio__inner-circle',
-        RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE_CONTAINER: 'mdl-radio__ripple-container',
-        RIPPLE_CENTER: 'mdl-ripple--center',
-        RIPPLE: 'mdl-ripple'
+        IS_FOCUSED: "is-focused",
+        IS_DISABLED: "is-disabled",
+        IS_CHECKED: "is-checked",
+        IS_UPGRADED: "is-upgraded",
+        JS_RADIO: "mdl-js-radio",
+        RADIO_BTN: "mdl-radio__button",
+        RADIO_OUTER_CIRCLE: "mdl-radio__outer-circle",
+        RADIO_INNER_CIRCLE: "mdl-radio__inner-circle",
+        RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE_CONTAINER: "mdl-radio__ripple-container",
+        RIPPLE_CENTER: "mdl-ripple--center",
+        RIPPLE: "mdl-ripple"
     };
 /**
    * Handle change of state.
@@ -1711,11 +1711,11 @@
         // them to update their classes.
         var radios = document.getElementsByClassName(this.CssClasses_.JS_RADIO);
         for (var i = 0; i < radios.length; i++) {
-            var button = radios[i].querySelector('.' + this.CssClasses_.RADIO_BTN);
+            var button = radios[i].querySelector("." + this.CssClasses_.RADIO_BTN);
             // Different name == different group, so no point updating those.
-            if (button.getAttribute('name') === this.btnElement_.getAttribute('name')) {
-                if (typeof radios[i]['MaterialRadio'] !== 'undefined') {
-                    radios[i]['MaterialRadio'].updateClasses_();
+            if (button.getAttribute("name") === this.btnElement_.getAttribute("name")) {
+                if (typeof radios[i]["MaterialRadio"] !== "undefined") {
+                    radios[i]["MaterialRadio"].updateClasses_();
                 }
             }
         }
@@ -1782,7 +1782,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialRadio.prototype['checkDisabled'] = MaterialRadio.prototype.checkDisabled;
+    MaterialRadio.prototype["checkDisabled"] = MaterialRadio.prototype.checkDisabled;
 /**
    * Check the components toggled state.
    *
@@ -1795,7 +1795,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
         }
     };
-    MaterialRadio.prototype['checkToggleState'] = MaterialRadio.prototype.checkToggleState;
+    MaterialRadio.prototype["checkToggleState"] = MaterialRadio.prototype.checkToggleState;
 /**
    * Disable radio.
    *
@@ -1805,7 +1805,7 @@
         this.btnElement_.disabled = true;
         this.updateClasses_();
     };
-    MaterialRadio.prototype['disable'] = MaterialRadio.prototype.disable;
+    MaterialRadio.prototype["disable"] = MaterialRadio.prototype.disable;
 /**
    * Enable radio.
    *
@@ -1815,7 +1815,7 @@
         this.btnElement_.disabled = false;
         this.updateClasses_();
     };
-    MaterialRadio.prototype['enable'] = MaterialRadio.prototype.enable;
+    MaterialRadio.prototype["enable"] = MaterialRadio.prototype.enable;
 /**
    * Check radio.
    *
@@ -1825,7 +1825,7 @@
         this.btnElement_.checked = true;
         this.onChange_(null);
     };
-    MaterialRadio.prototype['check'] = MaterialRadio.prototype.check;
+    MaterialRadio.prototype["check"] = MaterialRadio.prototype.check;
 /**
    * Uncheck radio.
    *
@@ -1835,40 +1835,40 @@
         this.btnElement_.checked = false;
         this.onChange_(null);
     };
-    MaterialRadio.prototype['uncheck'] = MaterialRadio.prototype.uncheck;
+    MaterialRadio.prototype["uncheck"] = MaterialRadio.prototype.uncheck;
 /**
    * Initialize element.
    */
     MaterialRadio.prototype.init = function() {
         if (this.element_) {
-            this.btnElement_ = this.element_.querySelector('.' + this.CssClasses_.RADIO_BTN);
+            this.btnElement_ = this.element_.querySelector("." + this.CssClasses_.RADIO_BTN);
             this.boundChangeHandler_ = this.onChange_.bind(this);
             this.boundFocusHandler_ = this.onChange_.bind(this);
             this.boundBlurHandler_ = this.onBlur_.bind(this);
             this.boundMouseUpHandler_ = this.onMouseup_.bind(this);
-            var outerCircle = document.createElement('span');
+            var outerCircle = document.createElement("span");
             outerCircle.classList.add(this.CssClasses_.RADIO_OUTER_CIRCLE);
-            var innerCircle = document.createElement('span');
+            var innerCircle = document.createElement("span");
             innerCircle.classList.add(this.CssClasses_.RADIO_INNER_CIRCLE);
             this.element_.appendChild(outerCircle);
             this.element_.appendChild(innerCircle);
             var rippleContainer;
             if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
                 this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
-                rippleContainer = document.createElement('span');
+                rippleContainer = document.createElement("span");
                 rippleContainer.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
                 rippleContainer.classList.add(this.CssClasses_.RIPPLE_EFFECT);
                 rippleContainer.classList.add(this.CssClasses_.RIPPLE_CENTER);
-                rippleContainer.addEventListener('mouseup', this.boundMouseUpHandler_);
-                var ripple = document.createElement('span');
+                rippleContainer.addEventListener("mouseup", this.boundMouseUpHandler_);
+                var ripple = document.createElement("span");
                 ripple.classList.add(this.CssClasses_.RIPPLE);
                 rippleContainer.appendChild(ripple);
                 this.element_.appendChild(rippleContainer);
             }
-            this.btnElement_.addEventListener('change', this.boundChangeHandler_);
-            this.btnElement_.addEventListener('focus', this.boundFocusHandler_);
-            this.btnElement_.addEventListener('blur', this.boundBlurHandler_);
-            this.element_.addEventListener('mouseup', this.boundMouseUpHandler_);
+            this.btnElement_.addEventListener("change", this.boundChangeHandler_);
+            this.btnElement_.addEventListener("focus", this.boundFocusHandler_);
+            this.btnElement_.addEventListener("blur", this.boundBlurHandler_);
+            this.element_.addEventListener("mouseup", this.boundMouseUpHandler_);
             this.updateClasses_();
             this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
         }
@@ -1877,8 +1877,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialRadio,
-        classAsString: 'MaterialRadio',
-        cssClass: 'mdl-js-radio',
+        classAsString: "MaterialRadio",
+        cssClass: "mdl-js-radio",
         widget: true
     });
 /**
@@ -1912,7 +1912,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialSlider'] = MaterialSlider;
+    window["MaterialSlider"] = MaterialSlider;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -1929,13 +1929,13 @@
    * @private
    */
     MaterialSlider.prototype.CssClasses_ = {
-        IE_CONTAINER: 'mdl-slider__ie-container',
-        SLIDER_CONTAINER: 'mdl-slider__container',
-        BACKGROUND_FLEX: 'mdl-slider__background-flex',
-        BACKGROUND_LOWER: 'mdl-slider__background-lower',
-        BACKGROUND_UPPER: 'mdl-slider__background-upper',
-        IS_LOWEST_VALUE: 'is-lowest-value',
-        IS_UPGRADED: 'is-upgraded'
+        IE_CONTAINER: "mdl-slider__ie-container",
+        SLIDER_CONTAINER: "mdl-slider__container",
+        BACKGROUND_FLEX: "mdl-slider__background-flex",
+        BACKGROUND_LOWER: "mdl-slider__background-lower",
+        BACKGROUND_UPPER: "mdl-slider__background-upper",
+        IS_LOWEST_VALUE: "is-lowest-value",
+        IS_UPGRADED: "is-upgraded"
     };
 /**
    * Handle input on element.
@@ -1983,7 +1983,7 @@
         // Discard the original event and create a new event that
         // is on the slider element.
         event.preventDefault();
-        var newEvent = new MouseEvent('mousedown',
+        var newEvent = new MouseEvent("mousedown",
             {
                 target: event.target,
                 buttons: event.buttons,
@@ -2021,7 +2021,7 @@
     MaterialSlider.prototype.disable = function() {
         this.element_.disabled = true;
     };
-    MaterialSlider.prototype['disable'] = MaterialSlider.prototype.disable;
+    MaterialSlider.prototype["disable"] = MaterialSlider.prototype.disable;
 /**
    * Enable slider.
    *
@@ -2030,7 +2030,7 @@
     MaterialSlider.prototype.enable = function() {
         this.element_.disabled = false;
     };
-    MaterialSlider.prototype['enable'] = MaterialSlider.prototype.enable;
+    MaterialSlider.prototype["enable"] = MaterialSlider.prototype.enable;
 /**
    * Update slider value.
    *
@@ -2038,12 +2038,12 @@
    * @public
    */
     MaterialSlider.prototype.change = function(value) {
-        if (typeof value !== 'undefined') {
+        if (typeof value !== "undefined") {
             this.element_.value = value;
         }
         this.updateValueStyles_();
     };
-    MaterialSlider.prototype['change'] = MaterialSlider.prototype.change;
+    MaterialSlider.prototype["change"] = MaterialSlider.prototype.change;
 /**
    * Initialize element.
    */
@@ -2053,7 +2053,7 @@
                 // Since we need to specify a very large height in IE due to
                 // implementation limitations, we add a parent here that trims it down to
                 // a reasonable size.
-                var containerIE = document.createElement('div');
+                var containerIE = document.createElement("div");
                 containerIE.classList.add(this.CssClasses_.IE_CONTAINER);
                 this.element_.parentElement.insertBefore(containerIE, this.element_);
                 this.element_.parentElement.removeChild(this.element_);
@@ -2062,18 +2062,18 @@
                 // For non-IE browsers, we need a div structure that sits behind the
                 // slider and allows us to style the left and right sides of it with
                 // different colors.
-                var container = document.createElement('div');
+                var container = document.createElement("div");
                 container.classList.add(this.CssClasses_.SLIDER_CONTAINER);
                 this.element_.parentElement.insertBefore(container, this.element_);
                 this.element_.parentElement.removeChild(this.element_);
                 container.appendChild(this.element_);
-                var backgroundFlex = document.createElement('div');
+                var backgroundFlex = document.createElement("div");
                 backgroundFlex.classList.add(this.CssClasses_.BACKGROUND_FLEX);
                 container.appendChild(backgroundFlex);
-                this.backgroundLower_ = document.createElement('div');
+                this.backgroundLower_ = document.createElement("div");
                 this.backgroundLower_.classList.add(this.CssClasses_.BACKGROUND_LOWER);
                 backgroundFlex.appendChild(this.backgroundLower_);
-                this.backgroundUpper_ = document.createElement('div');
+                this.backgroundUpper_ = document.createElement("div");
                 this.backgroundUpper_.classList.add(this.CssClasses_.BACKGROUND_UPPER);
                 backgroundFlex.appendChild(this.backgroundUpper_);
             }
@@ -2081,10 +2081,10 @@
             this.boundChangeHandler = this.onChange_.bind(this);
             this.boundMouseUpHandler = this.onMouseUp_.bind(this);
             this.boundContainerMouseDownHandler = this.onContainerMouseDown_.bind(this);
-            this.element_.addEventListener('input', this.boundInputHandler);
-            this.element_.addEventListener('change', this.boundChangeHandler);
-            this.element_.addEventListener('mouseup', this.boundMouseUpHandler);
-            this.element_.parentElement.addEventListener('mousedown', this.boundContainerMouseDownHandler);
+            this.element_.addEventListener("input", this.boundInputHandler);
+            this.element_.addEventListener("change", this.boundChangeHandler);
+            this.element_.addEventListener("mouseup", this.boundMouseUpHandler);
+            this.element_.parentElement.addEventListener("mousedown", this.boundContainerMouseDownHandler);
             this.updateValueStyles_();
             this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
         }
@@ -2093,8 +2093,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialSlider,
-        classAsString: 'MaterialSlider',
-        cssClass: 'mdl-js-slider',
+        classAsString: "MaterialSlider",
+        cssClass: "mdl-js-slider",
         widget: true
     });
 /**
@@ -2122,13 +2122,13 @@
    */
     var MaterialSnackbar = function MaterialSnackbar(element) {
         this.element_ = element;
-        this.textElement_ = this.element_.querySelector('.' + this.cssClasses_.MESSAGE);
-        this.actionElement_ = this.element_.querySelector('.' + this.cssClasses_.ACTION);
+        this.textElement_ = this.element_.querySelector("." + this.cssClasses_.MESSAGE);
+        this.actionElement_ = this.element_.querySelector("." + this.cssClasses_.ACTION);
         if (!this.textElement_) {
-            throw new Error('There must be a message element for a snackbar.');
+            throw new Error("There must be a message element for a snackbar.");
         }
         if (!this.actionElement_) {
-            throw new Error('There must be an action element for a snackbar.');
+            throw new Error("There must be an action element for a snackbar.");
         }
         this.active = false;
         this.actionHandler_ = undefined;
@@ -2137,7 +2137,7 @@
         this.queuedNotifications_ = [];
         this.setActionHidden_(true);
     };
-    window['MaterialSnackbar'] = MaterialSnackbar;
+    window["MaterialSnackbar"] = MaterialSnackbar;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -2157,10 +2157,10 @@
    * @private
    */
     MaterialSnackbar.prototype.cssClasses_ = {
-        SNACKBAR: 'mdl-snackbar',
-        MESSAGE: 'mdl-snackbar__text',
-        ACTION: 'mdl-snackbar__action',
-        ACTIVE: 'mdl-snackbar--active'
+        SNACKBAR: "mdl-snackbar",
+        MESSAGE: "mdl-snackbar__text",
+        ACTION: "mdl-snackbar__action",
+        ACTIVE: "mdl-snackbar--active"
     };
 /**
    * Display the snackbar.
@@ -2168,15 +2168,15 @@
    * @private
    */
     MaterialSnackbar.prototype.displaySnackbar_ = function() {
-        this.element_.setAttribute('aria-hidden', 'true');
+        this.element_.setAttribute("aria-hidden", "true");
         if (this.actionHandler_) {
             this.actionElement_.textContent = this.actionText_;
-            this.actionElement_.addEventListener('click', this.actionHandler_);
+            this.actionElement_.addEventListener("click", this.actionHandler_);
             this.setActionHidden_(false);
         }
         this.textElement_.textContent = this.message_;
         this.element_.classList.add(this.cssClasses_.ACTIVE);
-        this.element_.setAttribute('aria-hidden', 'false');
+        this.element_.setAttribute("aria-hidden", "false");
         setTimeout(this.cleanup_.bind(this), this.timeout_);
     };
 /**
@@ -2187,34 +2187,34 @@
    */
     MaterialSnackbar.prototype.showSnackbar = function(data) {
         if (data === undefined) {
-            throw new Error('Please provide a data object with at least a message to display.');
+            throw new Error("Please provide a data object with at least a message to display.");
         }
-        if (data['message'] === undefined) {
-            throw new Error('Please provide a message to be displayed.');
+        if (data["message"] === undefined) {
+            throw new Error("Please provide a message to be displayed.");
         }
-        if (data['actionHandler'] && !data['actionText']) {
-            throw new Error('Please provide action text with the handler.');
+        if (data["actionHandler"] && !data["actionText"]) {
+            throw new Error("Please provide action text with the handler.");
         }
         if (this.active) {
             this.queuedNotifications_.push(data);
         } else {
             this.active = true;
-            this.message_ = data['message'];
-            if (data['timeout']) {
-                this.timeout_ = data['timeout'];
+            this.message_ = data["message"];
+            if (data["timeout"]) {
+                this.timeout_ = data["timeout"];
             } else {
                 this.timeout_ = 2750;
             }
-            if (data['actionHandler']) {
-                this.actionHandler_ = data['actionHandler'];
+            if (data["actionHandler"]) {
+                this.actionHandler_ = data["actionHandler"];
             }
-            if (data['actionText']) {
-                this.actionText_ = data['actionText'];
+            if (data["actionText"]) {
+                this.actionText_ = data["actionText"];
             }
             this.displaySnackbar_();
         }
     };
-    MaterialSnackbar.prototype['showSnackbar'] = MaterialSnackbar.prototype.showSnackbar;
+    MaterialSnackbar.prototype["showSnackbar"] = MaterialSnackbar.prototype.showSnackbar;
 /**
    * Check if the queue has items within it.
    * If it does, display the next entry.
@@ -2234,12 +2234,12 @@
     MaterialSnackbar.prototype.cleanup_ = function() {
         this.element_.classList.remove(this.cssClasses_.ACTIVE);
         setTimeout(function() {
-                this.element_.setAttribute('aria-hidden', 'true');
-                this.textElement_.textContent = '';
-                if (!Boolean(this.actionElement_.getAttribute('aria-hidden'))) {
+                this.element_.setAttribute("aria-hidden", "true");
+                this.textElement_.textContent = "";
+                if (!Boolean(this.actionElement_.getAttribute("aria-hidden"))) {
                     this.setActionHidden_(true);
-                    this.actionElement_.textContent = '';
-                    this.actionElement_.removeEventListener('click', this.actionHandler_);
+                    this.actionElement_.textContent = "";
+                    this.actionElement_.removeEventListener("click", this.actionHandler_);
                 }
                 this.actionHandler_ = undefined;
                 this.message_ = undefined;
@@ -2257,17 +2257,17 @@
    */
     MaterialSnackbar.prototype.setActionHidden_ = function(value) {
         if (value) {
-            this.actionElement_.setAttribute('aria-hidden', 'true');
+            this.actionElement_.setAttribute("aria-hidden", "true");
         } else {
-            this.actionElement_.removeAttribute('aria-hidden');
+            this.actionElement_.removeAttribute("aria-hidden");
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialSnackbar,
-        classAsString: 'MaterialSnackbar',
-        cssClass: 'mdl-js-snackbar',
+        classAsString: "MaterialSnackbar",
+        cssClass: "mdl-js-snackbar",
         widget: true
     });
 /**
@@ -2299,7 +2299,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialSpinner'] = MaterialSpinner;
+    window["MaterialSpinner"] = MaterialSpinner;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -2316,12 +2316,12 @@
    * @private
    */
     MaterialSpinner.prototype.CssClasses_ = {
-        MDL_SPINNER_LAYER: 'mdl-spinner__layer',
-        MDL_SPINNER_CIRCLE_CLIPPER: 'mdl-spinner__circle-clipper',
-        MDL_SPINNER_CIRCLE: 'mdl-spinner__circle',
-        MDL_SPINNER_GAP_PATCH: 'mdl-spinner__gap-patch',
-        MDL_SPINNER_LEFT: 'mdl-spinner__left',
-        MDL_SPINNER_RIGHT: 'mdl-spinner__right'
+        MDL_SPINNER_LAYER: "mdl-spinner__layer",
+        MDL_SPINNER_CIRCLE_CLIPPER: "mdl-spinner__circle-clipper",
+        MDL_SPINNER_CIRCLE: "mdl-spinner__circle",
+        MDL_SPINNER_GAP_PATCH: "mdl-spinner__gap-patch",
+        MDL_SPINNER_LEFT: "mdl-spinner__left",
+        MDL_SPINNER_RIGHT: "mdl-spinner__right"
     };
 /**
    * Auxiliary method to create a spinner layer.
@@ -2330,15 +2330,15 @@
    * @public
    */
     MaterialSpinner.prototype.createLayer = function(index) {
-        var layer = document.createElement('div');
+        var layer = document.createElement("div");
         layer.classList.add(this.CssClasses_.MDL_SPINNER_LAYER);
-        layer.classList.add(this.CssClasses_.MDL_SPINNER_LAYER + '-' + index);
-        var leftClipper = document.createElement('div');
+        layer.classList.add(this.CssClasses_.MDL_SPINNER_LAYER + "-" + index);
+        var leftClipper = document.createElement("div");
         leftClipper.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER);
         leftClipper.classList.add(this.CssClasses_.MDL_SPINNER_LEFT);
-        var gapPatch = document.createElement('div');
+        var gapPatch = document.createElement("div");
         gapPatch.classList.add(this.CssClasses_.MDL_SPINNER_GAP_PATCH);
-        var rightClipper = document.createElement('div');
+        var rightClipper = document.createElement("div");
         rightClipper.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER);
         rightClipper.classList.add(this.CssClasses_.MDL_SPINNER_RIGHT);
         var circleOwners = [
@@ -2347,7 +2347,7 @@
             rightClipper
         ];
         for (var i = 0; i < circleOwners.length; i++) {
-            var circle = document.createElement('div');
+            var circle = document.createElement("div");
             circle.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE);
             circleOwners[i].appendChild(circle);
         }
@@ -2356,7 +2356,7 @@
         layer.appendChild(rightClipper);
         this.element_.appendChild(layer);
     };
-    MaterialSpinner.prototype['createLayer'] = MaterialSpinner.prototype.createLayer;
+    MaterialSpinner.prototype["createLayer"] = MaterialSpinner.prototype.createLayer;
 /**
    * Stops the spinner animation.
    * Public method for users who need to stop the spinner for any reason.
@@ -2364,9 +2364,9 @@
    * @public
    */
     MaterialSpinner.prototype.stop = function() {
-        this.element_.classList.remove('is-active');
+        this.element_.classList.remove("is-active");
     };
-    MaterialSpinner.prototype['stop'] = MaterialSpinner.prototype.stop;
+    MaterialSpinner.prototype["stop"] = MaterialSpinner.prototype.stop;
 /**
    * Starts the spinner animation.
    * Public method for users who need to manually start the spinner for any reason
@@ -2375,9 +2375,9 @@
    * @public
    */
     MaterialSpinner.prototype.start = function() {
-        this.element_.classList.add('is-active');
+        this.element_.classList.add("is-active");
     };
-    MaterialSpinner.prototype['start'] = MaterialSpinner.prototype.start;
+    MaterialSpinner.prototype["start"] = MaterialSpinner.prototype.start;
 /**
    * Initialize element.
    */
@@ -2386,15 +2386,15 @@
             for (var i = 1; i <= this.Constant_.MDL_SPINNER_LAYER_COUNT; i++) {
                 this.createLayer(i);
             }
-            this.element_.classList.add('is-upgraded');
+            this.element_.classList.add("is-upgraded");
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialSpinner,
-        classAsString: 'MaterialSpinner',
-        cssClass: 'mdl-js-spinner',
+        classAsString: "MaterialSpinner",
+        cssClass: "mdl-js-spinner",
         widget: true
     });
 /**
@@ -2426,7 +2426,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialSwitch'] = MaterialSwitch;
+    window["MaterialSwitch"] = MaterialSwitch;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -2443,18 +2443,18 @@
    * @private
    */
     MaterialSwitch.prototype.CssClasses_ = {
-        INPUT: 'mdl-switch__input',
-        TRACK: 'mdl-switch__track',
-        THUMB: 'mdl-switch__thumb',
-        FOCUS_HELPER: 'mdl-switch__focus-helper',
-        RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE_CONTAINER: 'mdl-switch__ripple-container',
-        RIPPLE_CENTER: 'mdl-ripple--center',
-        RIPPLE: 'mdl-ripple',
-        IS_FOCUSED: 'is-focused',
-        IS_DISABLED: 'is-disabled',
-        IS_CHECKED: 'is-checked'
+        INPUT: "mdl-switch__input",
+        TRACK: "mdl-switch__track",
+        THUMB: "mdl-switch__thumb",
+        FOCUS_HELPER: "mdl-switch__focus-helper",
+        RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE_CONTAINER: "mdl-switch__ripple-container",
+        RIPPLE_CENTER: "mdl-ripple--center",
+        RIPPLE: "mdl-ripple",
+        IS_FOCUSED: "is-focused",
+        IS_DISABLED: "is-disabled",
+        IS_CHECKED: "is-checked"
     };
 /**
    * Handle change of state.
@@ -2527,7 +2527,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialSwitch.prototype['checkDisabled'] = MaterialSwitch.prototype.checkDisabled;
+    MaterialSwitch.prototype["checkDisabled"] = MaterialSwitch.prototype.checkDisabled;
 /**
    * Check the components toggled state.
    *
@@ -2540,7 +2540,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
         }
     };
-    MaterialSwitch.prototype['checkToggleState'] = MaterialSwitch.prototype.checkToggleState;
+    MaterialSwitch.prototype["checkToggleState"] = MaterialSwitch.prototype.checkToggleState;
 /**
    * Disable switch.
    *
@@ -2550,7 +2550,7 @@
         this.inputElement_.disabled = true;
         this.updateClasses_();
     };
-    MaterialSwitch.prototype['disable'] = MaterialSwitch.prototype.disable;
+    MaterialSwitch.prototype["disable"] = MaterialSwitch.prototype.disable;
 /**
    * Enable switch.
    *
@@ -2560,7 +2560,7 @@
         this.inputElement_.disabled = false;
         this.updateClasses_();
     };
-    MaterialSwitch.prototype['enable'] = MaterialSwitch.prototype.enable;
+    MaterialSwitch.prototype["enable"] = MaterialSwitch.prototype.enable;
 /**
    * Activate switch.
    *
@@ -2570,7 +2570,7 @@
         this.inputElement_.checked = true;
         this.updateClasses_();
     };
-    MaterialSwitch.prototype['on'] = MaterialSwitch.prototype.on;
+    MaterialSwitch.prototype["on"] = MaterialSwitch.prototype.on;
 /**
    * Deactivate switch.
    *
@@ -2580,18 +2580,18 @@
         this.inputElement_.checked = false;
         this.updateClasses_();
     };
-    MaterialSwitch.prototype['off'] = MaterialSwitch.prototype.off;
+    MaterialSwitch.prototype["off"] = MaterialSwitch.prototype.off;
 /**
    * Initialize element.
    */
     MaterialSwitch.prototype.init = function() {
         if (this.element_) {
-            this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
-            var track = document.createElement('div');
+            this.inputElement_ = this.element_.querySelector("." + this.CssClasses_.INPUT);
+            var track = document.createElement("div");
             track.classList.add(this.CssClasses_.TRACK);
-            var thumb = document.createElement('div');
+            var thumb = document.createElement("div");
             thumb.classList.add(this.CssClasses_.THUMB);
-            var focusHelper = document.createElement('span');
+            var focusHelper = document.createElement("span");
             focusHelper.classList.add(this.CssClasses_.FOCUS_HELPER);
             thumb.appendChild(focusHelper);
             this.element_.appendChild(track);
@@ -2599,12 +2599,12 @@
             this.boundMouseUpHandler = this.onMouseUp_.bind(this);
             if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
                 this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
-                this.rippleContainerElement_ = document.createElement('span');
+                this.rippleContainerElement_ = document.createElement("span");
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_EFFECT);
                 this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
-                this.rippleContainerElement_.addEventListener('mouseup', this.boundMouseUpHandler);
-                var ripple = document.createElement('span');
+                this.rippleContainerElement_.addEventListener("mouseup", this.boundMouseUpHandler);
+                var ripple = document.createElement("span");
                 ripple.classList.add(this.CssClasses_.RIPPLE);
                 this.rippleContainerElement_.appendChild(ripple);
                 this.element_.appendChild(this.rippleContainerElement_);
@@ -2612,20 +2612,20 @@
             this.boundChangeHandler = this.onChange_.bind(this);
             this.boundFocusHandler = this.onFocus_.bind(this);
             this.boundBlurHandler = this.onBlur_.bind(this);
-            this.inputElement_.addEventListener('change', this.boundChangeHandler);
-            this.inputElement_.addEventListener('focus', this.boundFocusHandler);
-            this.inputElement_.addEventListener('blur', this.boundBlurHandler);
-            this.element_.addEventListener('mouseup', this.boundMouseUpHandler);
+            this.inputElement_.addEventListener("change", this.boundChangeHandler);
+            this.inputElement_.addEventListener("focus", this.boundFocusHandler);
+            this.inputElement_.addEventListener("blur", this.boundBlurHandler);
+            this.element_.addEventListener("mouseup", this.boundMouseUpHandler);
             this.updateClasses_();
-            this.element_.classList.add('is-upgraded');
+            this.element_.classList.add("is-upgraded");
         }
     };
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialSwitch,
-        classAsString: 'MaterialSwitch',
-        cssClass: 'mdl-js-switch',
+        classAsString: "MaterialSwitch",
+        cssClass: "mdl-js-switch",
         widget: true
     });
 /**
@@ -2658,7 +2658,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialTabs'] = MaterialTabs;
+    window["MaterialTabs"] = MaterialTabs;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -2675,14 +2675,14 @@
    * @private
    */
     MaterialTabs.prototype.CssClasses_ = {
-        TAB_CLASS: 'mdl-tabs__tab',
-        PANEL_CLASS: 'mdl-tabs__panel',
-        ACTIVE_CLASS: 'is-active',
-        UPGRADED_CLASS: 'is-upgraded',
-        MDL_JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        MDL_RIPPLE_CONTAINER: 'mdl-tabs__ripple-container',
-        MDL_RIPPLE: 'mdl-ripple',
-        MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events'
+        TAB_CLASS: "mdl-tabs__tab",
+        PANEL_CLASS: "mdl-tabs__panel",
+        ACTIVE_CLASS: "is-active",
+        UPGRADED_CLASS: "is-upgraded",
+        MDL_JS_RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        MDL_RIPPLE_CONTAINER: "mdl-tabs__ripple-container",
+        MDL_RIPPLE: "mdl-ripple",
+        MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events"
     };
 /**
    * Handle clicks to a tabs component
@@ -2694,8 +2694,8 @@
             this.element_.classList.add(this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS);
         }
         // Select element tabs, document panels
-        this.tabs_ = this.element_.querySelectorAll('.' + this.CssClasses_.TAB_CLASS);
-        this.panels_ = this.element_.querySelectorAll('.' + this.CssClasses_.PANEL_CLASS);
+        this.tabs_ = this.element_.querySelectorAll("." + this.CssClasses_.TAB_CLASS);
+        this.panels_ = this.element_.querySelectorAll("." + this.CssClasses_.PANEL_CLASS);
         // Create new tabs for each tab element
         for (var i = 0; i < this.tabs_.length; i++) {
             new MaterialTab(this.tabs_[i], this);
@@ -2741,20 +2741,20 @@
     function MaterialTab(tab, ctx) {
         if (tab) {
             if (ctx.element_.classList.contains(ctx.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
-                var rippleContainer = document.createElement('span');
+                var rippleContainer = document.createElement("span");
                 rippleContainer.classList.add(ctx.CssClasses_.MDL_RIPPLE_CONTAINER);
                 rippleContainer.classList.add(ctx.CssClasses_.MDL_JS_RIPPLE_EFFECT);
-                var ripple = document.createElement('span');
+                var ripple = document.createElement("span");
                 ripple.classList.add(ctx.CssClasses_.MDL_RIPPLE);
                 rippleContainer.appendChild(ripple);
                 tab.appendChild(rippleContainer);
             }
-            tab.addEventListener('click',
+            tab.addEventListener("click",
                 function(e) {
-                    if (tab.getAttribute('href').charAt(0) === '#') {
+                    if (tab.getAttribute("href").charAt(0) === "#") {
                         e.preventDefault();
-                        var href = tab.href.split('#')[1];
-                        var panel = ctx.element_.querySelector('#' + href);
+                        var href = tab.href.split("#")[1];
+                        var panel = ctx.element_.querySelector("#" + href);
                         ctx.resetTabState_();
                         ctx.resetPanelState_();
                         tab.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
@@ -2768,8 +2768,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialTabs,
-        classAsString: 'MaterialTabs',
-        cssClass: 'mdl-js-tabs'
+        classAsString: "MaterialTabs",
+        cssClass: "mdl-js-tabs"
     });
 /**
  * @license
@@ -2801,7 +2801,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialTextfield'] = MaterialTextfield;
+    window["MaterialTextfield"] = MaterialTextfield;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -2810,7 +2810,7 @@
    */
     MaterialTextfield.prototype.Constant_ = {
         NO_MAX_ROWS: -1,
-        MAX_ROWS_ATTRIBUTE: 'maxrows'
+        MAX_ROWS_ATTRIBUTE: "maxrows"
     };
 /**
    * Store strings for class names defined by this component that are used in
@@ -2821,14 +2821,14 @@
    * @private
    */
     MaterialTextfield.prototype.CssClasses_ = {
-        LABEL: 'mdl-textfield__label',
-        INPUT: 'mdl-textfield__input',
-        IS_DIRTY: 'is-dirty',
-        IS_FOCUSED: 'is-focused',
-        IS_DISABLED: 'is-disabled',
-        IS_INVALID: 'is-invalid',
-        IS_UPGRADED: 'is-upgraded',
-        HAS_PLACEHOLDER: 'has-placeholder'
+        LABEL: "mdl-textfield__label",
+        INPUT: "mdl-textfield__input",
+        IS_DIRTY: "is-dirty",
+        IS_FOCUSED: "is-focused",
+        IS_DISABLED: "is-disabled",
+        IS_INVALID: "is-invalid",
+        IS_UPGRADED: "is-upgraded",
+        HAS_PLACEHOLDER: "has-placeholder"
     };
 /**
    * Handle input being entered.
@@ -2837,7 +2837,7 @@
    * @private
    */
     MaterialTextfield.prototype.onKeyDown_ = function(event) {
-        var currentRowCount = event.target.value.split('\n').length;
+        var currentRowCount = event.target.value.split("\n").length;
         if (event.keyCode === 13) {
             if (currentRowCount >= this.maxRows) {
                 event.preventDefault();
@@ -2895,20 +2895,20 @@
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialTextfield.prototype['checkDisabled'] = MaterialTextfield.prototype.checkDisabled;
+    MaterialTextfield.prototype["checkDisabled"] = MaterialTextfield.prototype.checkDisabled;
 /**
   * Check the focus state and update field accordingly.
   *
   * @public
   */
     MaterialTextfield.prototype.checkFocus = function() {
-        if (Boolean(this.element_.querySelector(':focus'))) {
+        if (Boolean(this.element_.querySelector(":focus"))) {
             this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
         } else {
             this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
         }
     };
-    MaterialTextfield.prototype['checkFocus'] = MaterialTextfield.prototype.checkFocus;
+    MaterialTextfield.prototype["checkFocus"] = MaterialTextfield.prototype.checkFocus;
 /**
    * Check the validity state and update field accordingly.
    *
@@ -2923,7 +2923,7 @@
             }
         }
     };
-    MaterialTextfield.prototype['checkValidity'] = MaterialTextfield.prototype.checkValidity;
+    MaterialTextfield.prototype["checkValidity"] = MaterialTextfield.prototype.checkValidity;
 /**
    * Check the dirty state and update field accordingly.
    *
@@ -2936,7 +2936,7 @@
             this.element_.classList.remove(this.CssClasses_.IS_DIRTY);
         }
     };
-    MaterialTextfield.prototype['checkDirty'] = MaterialTextfield.prototype.checkDirty;
+    MaterialTextfield.prototype["checkDirty"] = MaterialTextfield.prototype.checkDirty;
 /**
    * Disable text field.
    *
@@ -2946,7 +2946,7 @@
         this.input_.disabled = true;
         this.updateClasses_();
     };
-    MaterialTextfield.prototype['disable'] = MaterialTextfield.prototype.disable;
+    MaterialTextfield.prototype["disable"] = MaterialTextfield.prototype.disable;
 /**
    * Enable text field.
    *
@@ -2956,7 +2956,7 @@
         this.input_.disabled = false;
         this.updateClasses_();
     };
-    MaterialTextfield.prototype['enable'] = MaterialTextfield.prototype.enable;
+    MaterialTextfield.prototype["enable"] = MaterialTextfield.prototype.enable;
 /**
    * Update text field value.
    *
@@ -2964,17 +2964,17 @@
    * @public
    */
     MaterialTextfield.prototype.change = function(value) {
-        this.input_.value = value || '';
+        this.input_.value = value || "";
         this.updateClasses_();
     };
-    MaterialTextfield.prototype['change'] = MaterialTextfield.prototype.change;
+    MaterialTextfield.prototype["change"] = MaterialTextfield.prototype.change;
 /**
    * Initialize element.
    */
     MaterialTextfield.prototype.init = function() {
         if (this.element_) {
-            this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
-            this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+            this.label_ = this.element_.querySelector("." + this.CssClasses_.LABEL);
+            this.input_ = this.element_.querySelector("." + this.CssClasses_.INPUT);
             if (this.input_) {
                 if (this.input_.hasAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE)) {
                     this.maxRows = parseInt(this.input_.getAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE), 10);
@@ -2982,22 +2982,22 @@
                         this.maxRows = this.Constant_.NO_MAX_ROWS;
                     }
                 }
-                if (this.input_.hasAttribute('placeholder')) {
+                if (this.input_.hasAttribute("placeholder")) {
                     this.element_.classList.add(this.CssClasses_.HAS_PLACEHOLDER);
                 }
                 this.boundUpdateClassesHandler = this.updateClasses_.bind(this);
                 this.boundFocusHandler = this.onFocus_.bind(this);
                 this.boundBlurHandler = this.onBlur_.bind(this);
                 this.boundResetHandler = this.onReset_.bind(this);
-                this.input_.addEventListener('input', this.boundUpdateClassesHandler);
-                this.input_.addEventListener('focus', this.boundFocusHandler);
-                this.input_.addEventListener('blur', this.boundBlurHandler);
-                this.input_.addEventListener('reset', this.boundResetHandler);
+                this.input_.addEventListener("input", this.boundUpdateClassesHandler);
+                this.input_.addEventListener("focus", this.boundFocusHandler);
+                this.input_.addEventListener("blur", this.boundBlurHandler);
+                this.input_.addEventListener("reset", this.boundResetHandler);
                 if (this.maxRows !== this.Constant_.NO_MAX_ROWS) {
                     // TODO: This should handle pasting multi line text.
                     // Currently doesn't.
                     this.boundKeyDownHandler = this.onKeyDown_.bind(this);
-                    this.input_.addEventListener('keydown', this.boundKeyDownHandler);
+                    this.input_.addEventListener("keydown", this.boundKeyDownHandler);
                 }
                 var invalid = this.element_.classList.contains(this.CssClasses_.IS_INVALID);
                 this.updateClasses_();
@@ -3005,7 +3005,7 @@
                 if (invalid) {
                     this.element_.classList.add(this.CssClasses_.IS_INVALID);
                 }
-                if (this.input_.hasAttribute('autofocus')) {
+                if (this.input_.hasAttribute("autofocus")) {
                     this.element_.focus();
                     this.checkFocus();
                 }
@@ -3016,8 +3016,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialTextfield,
-        classAsString: 'MaterialTextfield',
-        cssClass: 'mdl-js-textfield',
+        classAsString: "MaterialTextfield",
+        cssClass: "mdl-js-textfield",
         widget: true
     });
 /**
@@ -3049,7 +3049,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialTooltip'] = MaterialTooltip;
+    window["MaterialTooltip"] = MaterialTooltip;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -3066,11 +3066,11 @@
    * @private
    */
     MaterialTooltip.prototype.CssClasses_ = {
-        IS_ACTIVE: 'is-active',
-        BOTTOM: 'mdl-tooltip--bottom',
-        LEFT: 'mdl-tooltip--left',
-        RIGHT: 'mdl-tooltip--right',
-        TOP: 'mdl-tooltip--top'
+        IS_ACTIVE: "is-active",
+        BOTTOM: "mdl-tooltip--bottom",
+        LEFT: "mdl-tooltip--left",
+        RIGHT: "mdl-tooltip--right",
+        TOP: "mdl-tooltip--top"
     };
 /**
    * Handle mouseenter for tooltip.
@@ -3088,29 +3088,29 @@
             this.element_.classList.contains(this.CssClasses_.RIGHT)) {
             left = props.width / 2;
             if (top + marginTop < 0) {
-                this.element_.style.top = '0';
-                this.element_.style.marginTop = '0';
+                this.element_.style.top = "0";
+                this.element_.style.marginTop = "0";
             } else {
-                this.element_.style.top = top + 'px';
-                this.element_.style.marginTop = marginTop + 'px';
+                this.element_.style.top = top + "px";
+                this.element_.style.marginTop = marginTop + "px";
             }
         } else {
             if (left + marginLeft < 0) {
-                this.element_.style.left = '0';
-                this.element_.style.marginLeft = '0';
+                this.element_.style.left = "0";
+                this.element_.style.marginLeft = "0";
             } else {
-                this.element_.style.left = left + 'px';
-                this.element_.style.marginLeft = marginLeft + 'px';
+                this.element_.style.left = left + "px";
+                this.element_.style.marginLeft = marginLeft + "px";
             }
         }
         if (this.element_.classList.contains(this.CssClasses_.TOP)) {
-            this.element_.style.top = props.top - this.element_.offsetHeight - 10 + 'px';
+            this.element_.style.top = props.top - this.element_.offsetHeight - 10 + "px";
         } else if (this.element_.classList.contains(this.CssClasses_.RIGHT)) {
-            this.element_.style.left = props.left + props.width + 10 + 'px';
+            this.element_.style.left = props.left + props.width + 10 + "px";
         } else if (this.element_.classList.contains(this.CssClasses_.LEFT)) {
-            this.element_.style.left = props.left - this.element_.offsetWidth - 10 + 'px';
+            this.element_.style.left = props.left - this.element_.offsetWidth - 10 + "px";
         } else {
-            this.element_.style.top = props.top + props.height + 10 + 'px';
+            this.element_.style.top = props.top + props.height + 10 + "px";
         }
         this.element_.classList.add(this.CssClasses_.IS_ACTIVE);
     };
@@ -3127,22 +3127,22 @@
    */
     MaterialTooltip.prototype.init = function() {
         if (this.element_) {
-            var forElId = this.element_.getAttribute('for') || this.element_.getAttribute('data-mdl-for');
+            var forElId = this.element_.getAttribute("for") || this.element_.getAttribute("data-mdl-for");
             if (forElId) {
                 this.forElement_ = document.getElementById(forElId);
             }
             if (this.forElement_) {
                 // It's left here because it prevents accidental text selection on Android
-                if (!this.forElement_.hasAttribute('tabindex')) {
-                    this.forElement_.setAttribute('tabindex', '0');
+                if (!this.forElement_.hasAttribute("tabindex")) {
+                    this.forElement_.setAttribute("tabindex", "0");
                 }
                 this.boundMouseEnterHandler = this.handleMouseEnter_.bind(this);
                 this.boundMouseLeaveAndScrollHandler = this.hideTooltip_.bind(this);
-                this.forElement_.addEventListener('mouseenter', this.boundMouseEnterHandler, false);
-                this.forElement_.addEventListener('touchend', this.boundMouseEnterHandler, false);
-                this.forElement_.addEventListener('mouseleave', this.boundMouseLeaveAndScrollHandler, false);
-                window.addEventListener('scroll', this.boundMouseLeaveAndScrollHandler, true);
-                window.addEventListener('touchstart', this.boundMouseLeaveAndScrollHandler);
+                this.forElement_.addEventListener("mouseenter", this.boundMouseEnterHandler, false);
+                this.forElement_.addEventListener("touchend", this.boundMouseEnterHandler, false);
+                this.forElement_.addEventListener("mouseleave", this.boundMouseLeaveAndScrollHandler, false);
+                window.addEventListener("scroll", this.boundMouseLeaveAndScrollHandler, true);
+                window.addEventListener("touchstart", this.boundMouseLeaveAndScrollHandler);
             }
         }
     };
@@ -3150,8 +3150,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialTooltip,
-        classAsString: 'MaterialTooltip',
-        cssClass: 'mdl-tooltip'
+        classAsString: "MaterialTooltip",
+        cssClass: "mdl-tooltip"
     });
 /**
  * @license
@@ -3182,7 +3182,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialLayout'] = MaterialLayout;
+    window["MaterialLayout"] = MaterialLayout;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -3190,12 +3190,12 @@
    * @private
    */
     MaterialLayout.prototype.Constant_ = {
-        MAX_WIDTH: '(max-width: 1024px)',
+        MAX_WIDTH: "(max-width: 1024px)",
         TAB_SCROLL_PIXELS: 100,
         RESIZE_TIMEOUT: 100,
-        MENU_ICON: '&#xE5D2;',
-        CHEVRON_LEFT: 'chevron_left',
-        CHEVRON_RIGHT: 'chevron_right'
+        MENU_ICON: "&#xE5D2;",
+        CHEVRON_LEFT: "chevron_left",
+        CHEVRON_RIGHT: "chevron_right"
     };
 /**
    * Keycodes, for code readability.
@@ -3229,41 +3229,41 @@
    * @private
    */
     MaterialLayout.prototype.CssClasses_ = {
-        CONTAINER: 'mdl-layout__container',
-        HEADER: 'mdl-layout__header',
-        DRAWER: 'mdl-layout__drawer',
-        CONTENT: 'mdl-layout__content',
-        DRAWER_BTN: 'mdl-layout__drawer-button',
-        ICON: 'material-icons',
-        JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        RIPPLE_CONTAINER: 'mdl-layout__tab-ripple-container',
-        RIPPLE: 'mdl-ripple',
-        RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        HEADER_SEAMED: 'mdl-layout__header--seamed',
-        HEADER_WATERFALL: 'mdl-layout__header--waterfall',
-        HEADER_SCROLL: 'mdl-layout__header--scroll',
-        FIXED_HEADER: 'mdl-layout--fixed-header',
-        OBFUSCATOR: 'mdl-layout__obfuscator',
-        TAB_BAR: 'mdl-layout__tab-bar',
-        TAB_CONTAINER: 'mdl-layout__tab-bar-container',
-        TAB: 'mdl-layout__tab',
-        TAB_BAR_BUTTON: 'mdl-layout__tab-bar-button',
-        TAB_BAR_LEFT_BUTTON: 'mdl-layout__tab-bar-left-button',
-        TAB_BAR_RIGHT_BUTTON: 'mdl-layout__tab-bar-right-button',
-        TAB_MANUAL_SWITCH: 'mdl-layout__tab-manual-switch',
-        PANEL: 'mdl-layout__tab-panel',
-        HAS_DRAWER: 'has-drawer',
-        HAS_TABS: 'has-tabs',
-        HAS_SCROLLING_HEADER: 'has-scrolling-header',
-        CASTING_SHADOW: 'is-casting-shadow',
-        IS_COMPACT: 'is-compact',
-        IS_SMALL_SCREEN: 'is-small-screen',
-        IS_DRAWER_OPEN: 'is-visible',
-        IS_ACTIVE: 'is-active',
-        IS_UPGRADED: 'is-upgraded',
-        IS_ANIMATING: 'is-animating',
-        ON_LARGE_SCREEN: 'mdl-layout--large-screen-only',
-        ON_SMALL_SCREEN: 'mdl-layout--small-screen-only'
+        CONTAINER: "mdl-layout__container",
+        HEADER: "mdl-layout__header",
+        DRAWER: "mdl-layout__drawer",
+        CONTENT: "mdl-layout__content",
+        DRAWER_BTN: "mdl-layout__drawer-button",
+        ICON: "material-icons",
+        JS_RIPPLE_EFFECT: "mdl-js-ripple-effect",
+        RIPPLE_CONTAINER: "mdl-layout__tab-ripple-container",
+        RIPPLE: "mdl-ripple",
+        RIPPLE_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        HEADER_SEAMED: "mdl-layout__header--seamed",
+        HEADER_WATERFALL: "mdl-layout__header--waterfall",
+        HEADER_SCROLL: "mdl-layout__header--scroll",
+        FIXED_HEADER: "mdl-layout--fixed-header",
+        OBFUSCATOR: "mdl-layout__obfuscator",
+        TAB_BAR: "mdl-layout__tab-bar",
+        TAB_CONTAINER: "mdl-layout__tab-bar-container",
+        TAB: "mdl-layout__tab",
+        TAB_BAR_BUTTON: "mdl-layout__tab-bar-button",
+        TAB_BAR_LEFT_BUTTON: "mdl-layout__tab-bar-left-button",
+        TAB_BAR_RIGHT_BUTTON: "mdl-layout__tab-bar-right-button",
+        TAB_MANUAL_SWITCH: "mdl-layout__tab-manual-switch",
+        PANEL: "mdl-layout__tab-panel",
+        HAS_DRAWER: "has-drawer",
+        HAS_TABS: "has-tabs",
+        HAS_SCROLLING_HEADER: "has-scrolling-header",
+        CASTING_SHADOW: "is-casting-shadow",
+        IS_COMPACT: "is-compact",
+        IS_SMALL_SCREEN: "is-small-screen",
+        IS_DRAWER_OPEN: "is-visible",
+        IS_ACTIVE: "is-active",
+        IS_UPGRADED: "is-upgraded",
+        IS_ANIMATING: "is-animating",
+        ON_LARGE_SCREEN: "mdl-layout--large-screen-only",
+        ON_SMALL_SCREEN: "mdl-layout--small-screen-only"
     };
 /**
    * Handles scrolling on the content.
@@ -3326,7 +3326,7 @@
    * @private
    */
     MaterialLayout.prototype.drawerToggleHandler_ = function(evt) {
-        if (evt && evt.type === 'keydown') {
+        if (evt && evt.type === "keydown") {
             if (evt.keyCode === this.Keycodes_.SPACE || evt.keyCode === this.Keycodes_.ENTER) {
                 // prevent scrolling in drawer nav
                 evt.preventDefault();
@@ -3382,27 +3382,27 @@
   * @public
   */
     MaterialLayout.prototype.toggleDrawer = function() {
-        var drawerButton = this.element_.querySelector('.' + this.CssClasses_.DRAWER_BTN);
+        var drawerButton = this.element_.querySelector("." + this.CssClasses_.DRAWER_BTN);
         this.drawer_.classList.toggle(this.CssClasses_.IS_DRAWER_OPEN);
         this.obfuscator_.classList.toggle(this.CssClasses_.IS_DRAWER_OPEN);
         // Set accessibility properties.
         if (this.drawer_.classList.contains(this.CssClasses_.IS_DRAWER_OPEN)) {
-            this.drawer_.setAttribute('aria-hidden', 'false');
-            drawerButton.setAttribute('aria-expanded', 'true');
+            this.drawer_.setAttribute("aria-hidden", "false");
+            drawerButton.setAttribute("aria-expanded", "true");
         } else {
-            this.drawer_.setAttribute('aria-hidden', 'true');
-            drawerButton.setAttribute('aria-expanded', 'false');
+            this.drawer_.setAttribute("aria-hidden", "true");
+            drawerButton.setAttribute("aria-expanded", "false");
         }
     };
-    MaterialLayout.prototype['toggleDrawer'] = MaterialLayout.prototype.toggleDrawer;
+    MaterialLayout.prototype["toggleDrawer"] = MaterialLayout.prototype.toggleDrawer;
 /**
    * Initialize element.
    */
     MaterialLayout.prototype.init = function() {
         if (this.element_) {
-            var container = document.createElement('div');
+            var container = document.createElement("div");
             container.classList.add(this.CssClasses_.CONTAINER);
-            var focusedElement = this.element_.querySelector(':focus');
+            var focusedElement = this.element_.querySelector(":focus");
             this.element_.parentElement.insertBefore(container, this.element_);
             this.element_.parentElement.removeChild(this.element_);
             container.appendChild(this.element_);
@@ -3423,20 +3423,20 @@
                     this.content_ = child;
                 }
             }
-            window.addEventListener('pageshow',
+            window.addEventListener("pageshow",
                 function(e) {
                     if (e.persisted) {
                         // when page is loaded from back/forward cache
                         // trigger repaint to let layout scroll in safari
-                        this.element_.style.overflowY = 'hidden';
+                        this.element_.style.overflowY = "hidden";
                         requestAnimationFrame(function() {
-                            this.element_.style.overflowY = '';
+                            this.element_.style.overflowY = "";
                         }.bind(this));
                     }
                 }.bind(this),
                 false);
             if (this.header_) {
-                this.tabBar_ = this.header_.querySelector('.' + this.CssClasses_.TAB_BAR);
+                this.tabBar_ = this.header_.querySelector("." + this.CssClasses_.TAB_BAR);
             }
             var mode = this.Mode_.STANDARD;
             if (this.header_) {
@@ -3444,8 +3444,8 @@
                     mode = this.Mode_.SEAMED;
                 } else if (this.header_.classList.contains(this.CssClasses_.HEADER_WATERFALL)) {
                     mode = this.Mode_.WATERFALL;
-                    this.header_.addEventListener('transitionend', this.headerTransitionEndHandler_.bind(this));
-                    this.header_.addEventListener('click', this.headerClickHandler_.bind(this));
+                    this.header_.addEventListener("transitionend", this.headerTransitionEndHandler_.bind(this));
+                    this.header_.addEventListener("click", this.headerClickHandler_.bind(this));
                 } else if (this.header_.classList.contains(this.CssClasses_.HEADER_SCROLL)) {
                     mode = this.Mode_.SCROLL;
                     container.classList.add(this.CssClasses_.HAS_SCROLLING_HEADER);
@@ -3464,20 +3464,20 @@
                     // Add and remove shadows depending on scroll position.
                     // Also add/remove auxiliary class for styling of the compact version of
                     // the header.
-                    this.content_.addEventListener('scroll', this.contentScrollHandler_.bind(this));
+                    this.content_.addEventListener("scroll", this.contentScrollHandler_.bind(this));
                     this.contentScrollHandler_();
                 }
             }
             // Add drawer toggling button to our layout, if we have an openable drawer.
             if (this.drawer_) {
-                var drawerButton = this.element_.querySelector('.' + this.CssClasses_.DRAWER_BTN);
+                var drawerButton = this.element_.querySelector("." + this.CssClasses_.DRAWER_BTN);
                 if (!drawerButton) {
-                    drawerButton = document.createElement('div');
-                    drawerButton.setAttribute('aria-expanded', 'false');
-                    drawerButton.setAttribute('role', 'button');
-                    drawerButton.setAttribute('tabindex', '0');
+                    drawerButton = document.createElement("div");
+                    drawerButton.setAttribute("aria-expanded", "false");
+                    drawerButton.setAttribute("role", "button");
+                    drawerButton.setAttribute("tabindex", "0");
                     drawerButton.classList.add(this.CssClasses_.DRAWER_BTN);
-                    var drawerButtonIcon = document.createElement('i');
+                    var drawerButtonIcon = document.createElement("i");
                     drawerButtonIcon.classList.add(this.CssClasses_.ICON);
                     drawerButtonIcon.innerHTML = this.Constant_.MENU_ICON;
                     drawerButton.appendChild(drawerButtonIcon);
@@ -3489,8 +3489,8 @@
                     //If drawer has ON_SMALL_SCREEN class then add it to the drawer toggle button as well.
                     drawerButton.classList.add(this.CssClasses_.ON_SMALL_SCREEN);
                 }
-                drawerButton.addEventListener('click', this.drawerToggleHandler_.bind(this));
-                drawerButton.addEventListener('keydown', this.drawerToggleHandler_.bind(this));
+                drawerButton.addEventListener("click", this.drawerToggleHandler_.bind(this));
+                drawerButton.addEventListener("keydown", this.drawerToggleHandler_.bind(this));
                 // Add a class if the layout has a drawer, for altering the left padding.
                 // Adds the HAS_DRAWER to the elements since this.header_ may or may
                 // not be present.
@@ -3502,13 +3502,13 @@
                 } else {
                     this.element_.insertBefore(drawerButton, this.content_);
                 }
-                var obfuscator = document.createElement('div');
+                var obfuscator = document.createElement("div");
                 obfuscator.classList.add(this.CssClasses_.OBFUSCATOR);
                 this.element_.appendChild(obfuscator);
-                obfuscator.addEventListener('click', this.drawerToggleHandler_.bind(this));
+                obfuscator.addEventListener("click", this.drawerToggleHandler_.bind(this));
                 this.obfuscator_ = obfuscator;
-                this.drawer_.addEventListener('keydown', this.keyboardEventHandler_.bind(this));
-                this.drawer_.setAttribute('aria-hidden', 'true');
+                this.drawer_.addEventListener("keydown", this.keyboardEventHandler_.bind(this));
+                this.drawer_.setAttribute("aria-hidden", "true");
             }
             // Keep an eye on screen size, and add/remove auxiliary class for styling
             // of small screens.
@@ -3518,29 +3518,29 @@
             // Initialize tabs, if any.
             if (this.header_ && this.tabBar_) {
                 this.element_.classList.add(this.CssClasses_.HAS_TABS);
-                var tabContainer = document.createElement('div');
+                var tabContainer = document.createElement("div");
                 tabContainer.classList.add(this.CssClasses_.TAB_CONTAINER);
                 this.header_.insertBefore(tabContainer, this.tabBar_);
                 this.header_.removeChild(this.tabBar_);
-                var leftButton = document.createElement('div');
+                var leftButton = document.createElement("div");
                 leftButton.classList.add(this.CssClasses_.TAB_BAR_BUTTON);
                 leftButton.classList.add(this.CssClasses_.TAB_BAR_LEFT_BUTTON);
-                var leftButtonIcon = document.createElement('i');
+                var leftButtonIcon = document.createElement("i");
                 leftButtonIcon.classList.add(this.CssClasses_.ICON);
                 leftButtonIcon.textContent = this.Constant_.CHEVRON_LEFT;
                 leftButton.appendChild(leftButtonIcon);
-                leftButton.addEventListener('click',
+                leftButton.addEventListener("click",
                     function() {
                         this.tabBar_.scrollLeft -= this.Constant_.TAB_SCROLL_PIXELS;
                     }.bind(this));
-                var rightButton = document.createElement('div');
+                var rightButton = document.createElement("div");
                 rightButton.classList.add(this.CssClasses_.TAB_BAR_BUTTON);
                 rightButton.classList.add(this.CssClasses_.TAB_BAR_RIGHT_BUTTON);
-                var rightButtonIcon = document.createElement('i');
+                var rightButtonIcon = document.createElement("i");
                 rightButtonIcon.classList.add(this.CssClasses_.ICON);
                 rightButtonIcon.textContent = this.Constant_.CHEVRON_RIGHT;
                 rightButton.appendChild(rightButtonIcon);
-                rightButton.addEventListener('click',
+                rightButton.addEventListener("click",
                     function() {
                         this.tabBar_.scrollLeft += this.Constant_.TAB_SCROLL_PIXELS;
                     }.bind(this));
@@ -3561,7 +3561,7 @@
                         rightButton.classList.remove(this.CssClasses_.IS_ACTIVE);
                     }
                 }.bind(this);
-                this.tabBar_.addEventListener('scroll', tabUpdateHandler);
+                this.tabBar_.addEventListener("scroll", tabUpdateHandler);
                 tabUpdateHandler();
                 // Update tabs when the window resizes.
                 var windowResizeHandler = function() {
@@ -3575,13 +3575,13 @@
                         }.bind(this),
                         this.Constant_.RESIZE_TIMEOUT);
                 }.bind(this);
-                window.addEventListener('resize', windowResizeHandler);
+                window.addEventListener("resize", windowResizeHandler);
                 if (this.tabBar_.classList.contains(this.CssClasses_.JS_RIPPLE_EFFECT)) {
                     this.tabBar_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
                 }
                 // Select element tabs, document panels
-                var tabs = this.tabBar_.querySelectorAll('.' + this.CssClasses_.TAB);
-                var panels = this.content_.querySelectorAll('.' + this.CssClasses_.PANEL);
+                var tabs = this.tabBar_.querySelectorAll("." + this.CssClasses_.TAB);
+                var panels = this.content_.querySelectorAll("." + this.CssClasses_.PANEL);
                 // Create new tabs for each tab element
                 for (var i = 0; i < tabs.length; i++) {
                     new MaterialLayoutTab(tabs[i], tabs, panels, this);
@@ -3605,8 +3605,8 @@
          * Auxiliary method to programmatically select a tab in the UI.
          */
         function selectTab() {
-            var href = tab.href.split('#')[1];
-            var panel = layout.content_.querySelector('#' + href);
+            var href = tab.href.split("#")[1];
+            var panel = layout.content_.querySelector("#" + href);
             layout.resetTabState_(tabs);
             layout.resetPanelState_(panels);
             tab.classList.add(layout.CssClasses_.IS_ACTIVE);
@@ -3614,18 +3614,18 @@
         }
 
         if (layout.tabBar_.classList.contains(layout.CssClasses_.JS_RIPPLE_EFFECT)) {
-            var rippleContainer = document.createElement('span');
+            var rippleContainer = document.createElement("span");
             rippleContainer.classList.add(layout.CssClasses_.RIPPLE_CONTAINER);
             rippleContainer.classList.add(layout.CssClasses_.JS_RIPPLE_EFFECT);
-            var ripple = document.createElement('span');
+            var ripple = document.createElement("span");
             ripple.classList.add(layout.CssClasses_.RIPPLE);
             rippleContainer.appendChild(ripple);
             tab.appendChild(rippleContainer);
         }
         if (!layout.tabBar_.classList.contains(layout.CssClasses_.TAB_MANUAL_SWITCH)) {
-            tab.addEventListener('click',
+            tab.addEventListener("click",
                 function(e) {
-                    if (tab.getAttribute('href').charAt(0) === '#') {
+                    if (tab.getAttribute("href").charAt(0) === "#") {
                         e.preventDefault();
                         selectTab();
                     }
@@ -3634,13 +3634,13 @@
         tab.show = selectTab;
     }
 
-    window['MaterialLayoutTab'] = MaterialLayoutTab;
+    window["MaterialLayoutTab"] = MaterialLayoutTab;
 // The component registers itself. It can assume componentHandler is available
 // in the global scope.
     componentHandler.register({
         constructor: MaterialLayout,
-        classAsString: 'MaterialLayout',
-        cssClass: 'mdl-js-layout'
+        classAsString: "MaterialLayout",
+        cssClass: "mdl-js-layout"
     });
 /**
  * @license
@@ -3671,7 +3671,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialDataTable'] = MaterialDataTable;
+    window["MaterialDataTable"] = MaterialDataTable;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -3688,11 +3688,11 @@
    * @private
    */
     MaterialDataTable.prototype.CssClasses_ = {
-        DATA_TABLE: 'mdl-data-table',
-        SELECTABLE: 'mdl-data-table--selectable',
-        SELECT_ELEMENT: 'mdl-data-table__select',
-        IS_SELECTED: 'is-selected',
-        IS_UPGRADED: 'is-upgraded'
+        DATA_TABLE: "mdl-data-table",
+        SELECTABLE: "mdl-data-table--selectable",
+        SELECT_ELEMENT: "mdl-data-table__select",
+        IS_SELECTED: "is-selected",
+        IS_UPGRADED: "is-upgraded"
     };
 /**
    * Generates and returns a function that toggles the selection state of a
@@ -3719,14 +3719,14 @@
                 var el;
                 if (checkbox.checked) {
                     for (i = 0; i < opt_rows.length; i++) {
-                        el = opt_rows[i].querySelector('td').querySelector('.mdl-checkbox');
-                        el['MaterialCheckbox'].check();
+                        el = opt_rows[i].querySelector("td").querySelector(".mdl-checkbox");
+                        el["MaterialCheckbox"].check();
                         opt_rows[i].classList.add(this.CssClasses_.IS_SELECTED);
                     }
                 } else {
                     for (i = 0; i < opt_rows.length; i++) {
-                        el = opt_rows[i].querySelector('td').querySelector('.mdl-checkbox');
-                        el['MaterialCheckbox'].uncheck();
+                        el = opt_rows[i].querySelector("td").querySelector(".mdl-checkbox");
+                        el["MaterialCheckbox"].uncheck();
                         opt_rows[i].classList.remove(this.CssClasses_.IS_SELECTED);
                     }
                 }
@@ -3742,25 +3742,25 @@
    * @private
    */
     MaterialDataTable.prototype.createCheckbox_ = function(row, opt_rows) {
-        var label = document.createElement('label');
+        var label = document.createElement("label");
         var labelClasses = [
-            'mdl-checkbox',
-            'mdl-js-checkbox',
-            'mdl-js-ripple-effect',
+            "mdl-checkbox",
+            "mdl-js-checkbox",
+            "mdl-js-ripple-effect",
             this.CssClasses_.SELECT_ELEMENT
         ];
-        label.className = labelClasses.join(' ');
-        var checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.classList.add('mdl-checkbox__input');
+        label.className = labelClasses.join(" ");
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("mdl-checkbox__input");
         if (row) {
             checkbox.checked = row.classList.contains(this.CssClasses_.IS_SELECTED);
-            checkbox.addEventListener('change', this.selectRow_(checkbox, row));
+            checkbox.addEventListener("change", this.selectRow_(checkbox, row));
         } else if (opt_rows) {
-            checkbox.addEventListener('change', this.selectRow_(checkbox, null, opt_rows));
+            checkbox.addEventListener("change", this.selectRow_(checkbox, null, opt_rows));
         }
         label.appendChild(checkbox);
-        componentHandler.upgradeElement(label, 'MaterialCheckbox');
+        componentHandler.upgradeElement(label, "MaterialCheckbox");
         return label;
     };
 /**
@@ -3768,20 +3768,20 @@
    */
     MaterialDataTable.prototype.init = function() {
         if (this.element_) {
-            var firstHeader = this.element_.querySelector('th');
-            var bodyRows = Array.prototype.slice.call(this.element_.querySelectorAll('tbody tr'));
-            var footRows = Array.prototype.slice.call(this.element_.querySelectorAll('tfoot tr'));
+            var firstHeader = this.element_.querySelector("th");
+            var bodyRows = Array.prototype.slice.call(this.element_.querySelectorAll("tbody tr"));
+            var footRows = Array.prototype.slice.call(this.element_.querySelectorAll("tfoot tr"));
             var rows = bodyRows.concat(footRows);
             if (this.element_.classList.contains(this.CssClasses_.SELECTABLE)) {
-                var th = document.createElement('th');
+                var th = document.createElement("th");
                 var headerCheckbox = this.createCheckbox_(null, rows);
                 th.appendChild(headerCheckbox);
                 firstHeader.parentElement.insertBefore(th, firstHeader);
                 for (var i = 0; i < rows.length; i++) {
-                    var firstCell = rows[i].querySelector('td');
+                    var firstCell = rows[i].querySelector("td");
                     if (firstCell) {
-                        var td = document.createElement('td');
-                        if (rows[i].parentNode.nodeName.toUpperCase() === 'TBODY') {
+                        var td = document.createElement("td");
+                        if (rows[i].parentNode.nodeName.toUpperCase() === "TBODY") {
                             var rowCheckbox = this.createCheckbox_(rows[i]);
                             td.appendChild(rowCheckbox);
                         }
@@ -3796,8 +3796,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialDataTable,
-        classAsString: 'MaterialDataTable',
-        cssClass: 'mdl-js-data-table'
+        classAsString: "MaterialDataTable",
+        cssClass: "mdl-js-data-table"
     });
 /**
  * @license
@@ -3828,7 +3828,7 @@
         // Initialize instance.
         this.init();
     };
-    window['MaterialRipple'] = MaterialRipple;
+    window["MaterialRipple"] = MaterialRipple;
 /**
    * Store constants in one place so they can be updated easily.
    *
@@ -3836,11 +3836,11 @@
    * @private
    */
     MaterialRipple.prototype.Constant_ = {
-        INITIAL_SCALE: 'scale(0.0001, 0.0001)',
-        INITIAL_SIZE: '1px',
-        INITIAL_OPACITY: '0.4',
-        FINAL_OPACITY: '0',
-        FINAL_SCALE: ''
+        INITIAL_SCALE: "scale(0.0001, 0.0001)",
+        INITIAL_SIZE: "1px",
+        INITIAL_OPACITY: "0.4",
+        FINAL_OPACITY: "0",
+        FINAL_SCALE: ""
     };
 /**
    * Store strings for class names defined by this component that are used in
@@ -3851,11 +3851,11 @@
    * @private
    */
     MaterialRipple.prototype.CssClasses_ = {
-        RIPPLE_CENTER: 'mdl-ripple--center',
-        RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
-        RIPPLE: 'mdl-ripple',
-        IS_ANIMATING: 'is-animating',
-        IS_VISIBLE: 'is-visible'
+        RIPPLE_CENTER: "mdl-ripple--center",
+        RIPPLE_EFFECT_IGNORE_EVENTS: "mdl-js-ripple-effect--ignore-events",
+        RIPPLE: "mdl-ripple",
+        IS_ANIMATING: "is-animating",
+        IS_VISIBLE: "is-visible"
     };
 /**
    * Handle mouse / finger down on element.
@@ -3869,14 +3869,14 @@
             this.boundHeight = rect.height;
             this.boundWidth = rect.width;
             this.rippleSize_ = Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2 + 2;
-            this.rippleElement_.style.width = this.rippleSize_ + 'px';
-            this.rippleElement_.style.height = this.rippleSize_ + 'px';
+            this.rippleElement_.style.width = this.rippleSize_ + "px";
+            this.rippleElement_.style.height = this.rippleSize_ + "px";
         }
         this.rippleElement_.classList.add(this.CssClasses_.IS_VISIBLE);
-        if (event.type === 'mousedown' && this.ignoringMouseDown_) {
+        if (event.type === "mousedown" && this.ignoringMouseDown_) {
             this.ignoringMouseDown_ = false;
         } else {
-            if (event.type === 'touchstart') {
+            if (event.type === "touchstart") {
                 this.ignoringMouseDown_ = true;
             }
             var frameCount = this.getFrameCount();
@@ -3927,7 +3927,7 @@
         if (this.element_) {
             var recentering = this.element_.classList.contains(this.CssClasses_.RIPPLE_CENTER);
             if (!this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT_IGNORE_EVENTS)) {
-                this.rippleElement_ = this.element_.querySelector('.' + this.CssClasses_.RIPPLE);
+                this.rippleElement_ = this.element_.querySelector("." + this.CssClasses_.RIPPLE);
                 this.frameCount_ = 0;
                 this.rippleSize_ = 0;
                 this.x_ = 0;
@@ -3937,13 +3937,13 @@
                 // mouse down after a touch start.
                 this.ignoringMouseDown_ = false;
                 this.boundDownHandler = this.downHandler_.bind(this);
-                this.element_.addEventListener('mousedown', this.boundDownHandler);
-                this.element_.addEventListener('touchstart', this.boundDownHandler);
+                this.element_.addEventListener("mousedown", this.boundDownHandler);
+                this.element_.addEventListener("touchstart", this.boundDownHandler);
                 this.boundUpHandler = this.upHandler_.bind(this);
-                this.element_.addEventListener('mouseup', this.boundUpHandler);
-                this.element_.addEventListener('mouseleave', this.boundUpHandler);
-                this.element_.addEventListener('touchend', this.boundUpHandler);
-                this.element_.addEventListener('blur', this.boundUpHandler);
+                this.element_.addEventListener("mouseup", this.boundUpHandler);
+                this.element_.addEventListener("mouseleave", this.boundUpHandler);
+                this.element_.addEventListener("touchend", this.boundUpHandler);
+                this.element_.addEventListener("blur", this.boundUpHandler);
                 /**
              * Getter for frameCount_.
              * @return {number} the frame count.
@@ -3983,18 +3983,18 @@
                         var transformString;
                         var scale;
                         var size;
-                        var offset = 'translate(' + this.x_ + 'px, ' + this.y_ + 'px)';
+                        var offset = "translate(" + this.x_ + "px, " + this.y_ + "px)";
                         if (start) {
                             scale = this.Constant_.INITIAL_SCALE;
                             size = this.Constant_.INITIAL_SIZE;
                         } else {
                             scale = this.Constant_.FINAL_SCALE;
-                            size = this.rippleSize_ + 'px';
+                            size = this.rippleSize_ + "px";
                             if (recentering) {
-                                offset = 'translate(' + this.boundWidth / 2 + 'px, ' + this.boundHeight / 2 + 'px)';
+                                offset = "translate(" + this.boundWidth / 2 + "px, " + this.boundHeight / 2 + "px)";
                             }
                         }
-                        transformString = 'translate(-50%, -50%) ' + offset + scale;
+                        transformString = "translate(-50%, -50%) " + offset + scale;
                         this.rippleElement_.style.webkitTransform = transformString;
                         this.rippleElement_.style.msTransform = transformString;
                         this.rippleElement_.style.transform = transformString;
@@ -4022,8 +4022,8 @@
 // in the global scope.
     componentHandler.register({
         constructor: MaterialRipple,
-        classAsString: 'MaterialRipple',
-        cssClass: 'mdl-js-ripple-effect',
+        classAsString: "MaterialRipple",
+        cssClass: "mdl-js-ripple-effect",
         widget: false
     });
 }());

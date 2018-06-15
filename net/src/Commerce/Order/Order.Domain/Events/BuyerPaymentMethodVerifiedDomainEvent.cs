@@ -13,8 +13,8 @@ namespace Order.Domain.Events
             OrderId = orderId;
         }
 
-        public Buyer Buyer { get; private set; }
-        public PaymentMethod Payment { get; private set; }
-        public int OrderId { get; private set; }
+        public Buyer Buyer { get; }
+        public PaymentMethod Payment { get; }
+        public int OrderId { get; }
     }
 }
