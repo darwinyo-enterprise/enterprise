@@ -7,13 +7,15 @@ using Dapper;
 namespace Order.API.Application.Queries
 {
     public class OrderQueries
-        :IOrderQueries
+        : IOrderQueries
     {
         private string _connectionString = string.Empty;
 
         public OrderQueries(string constr)
         {
-            _connectionString = !string.IsNullOrWhiteSpace(constr) ? constr : throw new ArgumentNullException(nameof(constr));
+            _connectionString = !string.IsNullOrWhiteSpace(constr)
+                ? constr
+                : throw new ArgumentNullException(nameof(constr));
         }
 
 
@@ -24,7 +26,7 @@ namespace Order.API.Application.Queries
                 connection.Open();
 
                 var result = await connection.QueryAsync<dynamic>(
-                   @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
+                    @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
                         o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
                         os.Name as status, 
                         oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
@@ -32,8 +34,8 @@ namespace Order.API.Application.Queries
                         LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
                         LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
                         WHERE o.Id=@id"
-                        , new { id }
-                    );
+                    , new {id}
+                );
 
                 if (result.AsList().Count == 0)
                     throw new KeyNotFoundException();
@@ -48,7 +50,8 @@ namespace Order.API.Application.Queries
             {
                 connection.Open();
 
-                return await connection.QueryAsync<OrderSummary>(@"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
+                return await connection.QueryAsync<OrderSummary>(
+                    @"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
                      FROM [ordering].[Orders] o
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
                      LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
@@ -89,7 +92,7 @@ namespace Order.API.Application.Queries
                 {
                     productname = item.productname,
                     units = item.units,
-                    unitprice = (double)item.unitprice,
+                    unitprice = (double) item.unitprice,
                     pictureurl = item.pictureurl
                 };
 

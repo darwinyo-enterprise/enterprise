@@ -38,10 +38,7 @@ namespace Order.API.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false),
                     IdentityGuid = table.Column<string>(maxLength: 200, nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_buyers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_buyers", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "cardtypes",
@@ -51,10 +48,7 @@ namespace Order.API.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false, defaultValue: 1),
                     Name = table.Column<string>(maxLength: 200, nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_cardtypes", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_cardtypes", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "address",
@@ -62,17 +56,15 @@ namespace Order.API.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     City = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Street = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_address", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_address", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "orderstatus",
@@ -82,10 +74,7 @@ namespace Order.API.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false, defaultValue: 1),
                     Name = table.Column<string>(maxLength: 200, nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_orderstatus", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_orderstatus", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "paymentmethods",

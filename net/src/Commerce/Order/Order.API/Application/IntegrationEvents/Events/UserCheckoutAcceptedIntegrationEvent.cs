@@ -6,6 +6,28 @@ namespace Order.API.Application.IntegrationEvents.Events
 {
     public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
     {
+        public UserCheckoutAcceptedIntegrationEvent(string userId, string userName, string city, string street,
+            string state, string country, string zipCode, string cardNumber, string cardHolderName,
+            DateTime cardExpiration, string cardSecurityNumber, int cardTypeId, string buyer, Guid requestId,
+            CustomerBasket basket)
+        {
+            UserId = userId;
+            City = city;
+            Street = street;
+            State = state;
+            Country = country;
+            ZipCode = zipCode;
+            CardNumber = cardNumber;
+            CardHolderName = cardHolderName;
+            CardExpiration = cardExpiration;
+            CardSecurityNumber = cardSecurityNumber;
+            CardTypeId = cardTypeId;
+            Buyer = buyer;
+            Basket = basket;
+            RequestId = requestId;
+            UserName = userName;
+        }
+
         public string UserId { get; }
 
         public string UserName { get; }
@@ -35,28 +57,5 @@ namespace Order.API.Application.IntegrationEvents.Events
         public Guid RequestId { get; set; }
 
         public CustomerBasket Basket { get; }
-
-        public UserCheckoutAcceptedIntegrationEvent(string userId, string userName, string city, string street,
-            string state, string country, string zipCode, string cardNumber, string cardHolderName,
-            DateTime cardExpiration, string cardSecurityNumber, int cardTypeId, string buyer, Guid requestId,
-            CustomerBasket basket)
-        {
-            UserId = userId;
-            City = city;
-            Street = street;
-            State = state;
-            Country = country;
-            ZipCode = zipCode;
-            CardNumber = cardNumber;
-            CardHolderName = cardHolderName;
-            CardExpiration = cardExpiration;
-            CardSecurityNumber = cardSecurityNumber;
-            CardTypeId = cardTypeId;
-            Buyer = buyer;
-            Basket = basket;
-            RequestId = requestId;
-            UserName = userName;
-        }
-
     }
 }

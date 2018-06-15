@@ -9,23 +9,23 @@
         <div class="col-md-12">
             <section>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                    <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="ReturnUrl"/>
                     <h4>ARE YOU REGISTERED?</h4>
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Email" class="control-label form-label"></label>
-                        <input asp-for="Email" class="form-control form-input form-input-center" />
+                        <input asp-for="Email" class="form-control form-input form-input-center"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password" class="control-label form-label"></label>
-                        <input asp-for="Password" class="form-control form-input form-input-center" />
+                        <input asp-for="Password" class="form-control form-input form-input-center"/>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <div class="checkbox">
                             <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
+                                <input asp-for="RememberMe"/>
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>
                         </div>

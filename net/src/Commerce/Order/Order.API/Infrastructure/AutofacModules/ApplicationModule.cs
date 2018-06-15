@@ -7,25 +7,22 @@ using Order.Domain.AggregatesModel.BuyerAggregate;
 using Order.Domain.AggregatesModel.OrderAggregate;
 using Order.Infrastructure.Idempotency;
 using Order.Infrastructure.Repositories;
+using Module = Autofac.Module;
 
 namespace Order.API.Infrastructure.AutofacModules
 {
-
     public class ApplicationModule
-        :Autofac.Module
+        : Module
     {
-
-        public string QueriesConnectionString { get; }
-
         public ApplicationModule(string qconstr)
         {
             QueriesConnectionString = qconstr;
-
         }
+
+        public string QueriesConnectionString { get; }
 
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.Register(c => new OrderQueries(QueriesConnectionString))
                 .As<IOrderQueries>()
                 .InstancePerLifetimeScope();
@@ -39,12 +36,11 @@ namespace Order.API.Infrastructure.AutofacModules
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RequestManager>()
-               .As<IRequestManager>()
-               .InstancePerLifetimeScope();
+                .As<IRequestManager>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
-
         }
     }
 }

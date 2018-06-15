@@ -1,11 +1,10 @@
 ﻿namespace Order.API.Application.DomainEventHandlers.OrderStartedEvent
 {
     public class SendEmailToCustomerWhenOrderStartedDomainEventHandler
-                   //: IAsyncNotificationHandler<OrderStartedDomainEvent>
-    { 
+        //: IAsyncNotificationHandler<OrderStartedDomainEvent>
+    {
         public SendEmailToCustomerWhenOrderStartedDomainEventHandler()
         {
-        
         }
 
         //public async Task Handle(OrderStartedDomainEvent orderNotification)

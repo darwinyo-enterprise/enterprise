@@ -5,7 +5,8 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.API.Application.IntegrationEvents.EventHandling
 {
-    public class GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>
+    public class
+        GracePeriodConfirmedIntegrationEventHandler : IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 
@@ -15,11 +16,11 @@ namespace Order.API.Application.IntegrationEvents.EventHandling
         }
 
         /// <summary>
-        /// Event handler which confirms that the grace period
-        /// has been completed and order will not initially be cancelled.
-        /// Therefore, the order process continues for validation. 
+        ///     Event handler which confirms that the grace period
+        ///     has been completed and order will not initially be cancelled.
+        ///     Therefore, the order process continues for validation.
         /// </summary>
-        /// <param name="event">       
+        /// <param name="event">
         /// </param>
         /// <returns></returns>
         public async Task Handle(GracePeriodConfirmedIntegrationEvent @event)

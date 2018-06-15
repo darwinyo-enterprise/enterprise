@@ -21,9 +21,7 @@ namespace Order.Infrastructure
                 .ForEach(entity => entity.Entity.ClearDomainEvents());
 
             var tasks = domainEvents
-                .Select(async (domainEvent) => {
-                    await mediator.Publish(domainEvent);
-                });
+                .Select(async (domainEvent) => { await mediator.Publish(domainEvent); });
 
             await Task.WhenAll(tasks);
         }

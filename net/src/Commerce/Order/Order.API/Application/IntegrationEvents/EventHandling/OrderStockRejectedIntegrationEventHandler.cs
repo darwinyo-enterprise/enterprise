@@ -6,7 +6,8 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.API.Application.IntegrationEvents.EventHandling
 {
-    public class OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
+    public class
+        OrderStockRejectedIntegrationEventHandler : IIntegrationEventHandler<OrderStockRejectedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;
 

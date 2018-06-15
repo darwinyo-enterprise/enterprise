@@ -45,8 +45,6 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private readonly IOptionsSnapshot<CatalogSettings> _settings;
 
-        #region Utility
-
         private async Task<List<Product>> SeedProduct(CancellationToken cancellationToken)
         {
             var expectedManufacturer =
@@ -117,6 +115,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                     await _catalogContextFixture.Context.SaveChangesAsync(cancellationToken);
                 }
             }
+
             return expectedProduct;
         }
 
@@ -167,6 +166,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
             return manufacturers;
         }
+
         private IEnumerable<Category> GetPreconfigureCategory()
         {
             var categories = new List<Category>
@@ -180,6 +180,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
             return categories;
         }
+
         private IEnumerable<ProductImage> GetPreconfiguredProductImage(string productId)
         {
             return new List<ProductImage>()
@@ -244,23 +245,19 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
         }
 
-        #endregion
-
         /// <summary>
-        /// GET:
-        /// Product Id => ok
-        /// Paginated Product List => ok
-        /// Prouct Image => ok
-        /// 
-        /// TODO: Pagination tests
-        /// GetPaginatedCatalogAsync
-        /// GetPaginatedCatalogByNameAsync
-        /// GetPaginatedCatalogByCategoryOrManufacturerAsync
+        ///     GET:
+        ///     Product Id => ok
+        ///     Paginated Product List => ok
+        ///     Prouct Image => ok
+        ///     TODO: Pagination tests
+        ///     GetPaginatedCatalogAsync
+        ///     GetPaginatedCatalogByNameAsync
+        ///     GetPaginatedCatalogByCategoryOrManufacturerAsync
         /// </summary>
         /// <returns></returns>
+
         #region Get
-
-
         [Fact]
         public async Task Get_product_info_by_id_response_bad_request_with_message_when_id_null_or_empty()
         {
@@ -286,6 +283,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             {
                 expectedProduct = await SeedProduct(cancellationToken);
             }
+
             Assert.NotEmpty(expectedProduct);
 
             var id = expectedProduct.LastOrDefault()?.Id + "z";
@@ -322,6 +320,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             {
                 expectedProduct = await SeedProduct(cancellationToken);
             }
+
             Assert.NotEmpty(expectedProduct);
 
             var id = expectedProduct.LastOrDefault()?.Id + "z";
@@ -369,7 +368,8 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                 _fileUtilityFixture.FileUtility, _settings);
             if (lastProductImageId != null)
             {
-                var response = await productController.GetProductImageAsync(lastProductImageId.Value, cancellationToken);
+                var response =
+                    await productController.GetProductImageAsync(lastProductImageId.Value, cancellationToken);
                 Assert.IsType<NotFoundResult>(response);
             }
             else
@@ -379,7 +379,8 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         }
 
         [Fact]
-        public async Task Get_product_list_response_bad_request_with_message_when_pagination_index_is_negative_or_page_size_zero_or_negative()
+        public async Task
+            Get_product_list_response_bad_request_with_message_when_pagination_index_is_negative_or_page_size_zero_or_negative()
         {
             var cancellationToken = new CancellationToken();
 
@@ -394,13 +395,13 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         #endregion
 
         /// <summary>
-        /// POST :
-        ///  AddNewProductAsync => Ok
-        ///  
-        /// TODO :
-        /// RateProductAsync
+        ///     POST :
+        ///     AddNewProductAsync => Ok
+        ///     TODO :
+        ///     RateProductAsync
         /// </summary>
         /// <returns></returns>
+
         #region Post
         [Fact]
         public async Task Post_product_response_bad_request_with_message_when_product_null()
@@ -414,6 +415,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
+
         [Fact]
         public async Task Post_product_response_bad_request_with_message_when_product_image_is_empty()
         {
@@ -421,10 +423,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await productController.AddNewProductAsync(GetTestProductViewModelEmptyImage(), cancellationToken);
+            var response =
+                await productController.AddNewProductAsync(GetTestProductViewModelEmptyImage(), cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
+
         [Fact]
         public async Task Post_product_response_bad_request_with_message_when_product_has_no_category_or_manufacturer()
         {
@@ -451,6 +455,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
+
         [Fact]
         public async Task Post_product_response_bad_request_with_message_when_product_exists()
         {
@@ -481,15 +486,14 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         #endregion
 
         /// <summary>
-        /// PUT :
-        /// UpdateProductAsync => ok
-        /// 
-        /// TODO :
-        /// UpdateInventoryAsync
+        ///     PUT :
+        ///     UpdateProductAsync => ok
+        ///     TODO :
+        ///     UpdateInventoryAsync
         /// </summary>
         /// <returns></returns>
-        #region Put
 
+        #region Put
         [Fact]
         public async Task Update_product_response_not_found_with_message_when_item_not_exists()
         {
@@ -514,14 +518,16 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                    _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings);
             var response = await productController.UpdateProductAsync(id, productToUpdate, cancellationToken);
             var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
 
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
+
         [Fact]
-        public async Task Update_product_response_bad_request_with_message_when_product_has_no_category_or_manufacturer()
+        public async Task
+            Update_product_response_bad_request_with_message_when_product_has_no_category_or_manufacturer()
         {
             var cancellationToken = new CancellationToken();
             // Arrange
@@ -548,8 +554,10 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
+
         [Fact]
-        public async Task Update_product_response_bad_request_with_message_when_item_image_url_or_image_name_is_not_provided()
+        public async Task
+            Update_product_response_bad_request_with_message_when_item_image_url_or_image_name_is_not_provided()
         {
             var cancellationToken = new CancellationToken();
             // Arrange
@@ -582,12 +590,12 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         #endregion
 
         /// <summary>
-        /// DELETE :
-        /// DeleteProductAsync => ok
+        ///     DELETE :
+        ///     DeleteProductAsync => ok
         /// </summary>
         /// <returns></returns>
-        #region Delete
 
+        #region Delete
         [Fact]
         public async Task Delete_product_response_bad_request_with_message_when_product_hooked_with_product()
         {
@@ -602,7 +610,8 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             Assert.NotEmpty(expectedProduct);
 
-            var id = (await _catalogContextFixture.Context.Products.FirstOrDefaultAsync(cancellationToken: cancellationToken)).Id;
+            var id = (await _catalogContextFixture.Context.Products.FirstOrDefaultAsync(
+                cancellationToken: cancellationToken)).Id;
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);

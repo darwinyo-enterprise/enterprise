@@ -10,9 +10,10 @@ namespace Catalog.API.ViewModels
         public string CatalogId { get; set; }
 
         /// <summary>
-        /// Catalog Name
+        ///     Catalog Name
         /// </summary>
         public string Name { get; set; }
+
         public decimal Price { get; set; }
         public decimal OverallRating { get; set; }
         public int TotalFavorites { get; set; }

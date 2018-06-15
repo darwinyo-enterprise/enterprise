@@ -9,7 +9,7 @@ namespace Order.API.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_orderItems_orders_OrderId",
                 schema: "ordering",
-                table: "orderItems");                       
+                table: "orderItems");
 
             migrationBuilder.AddColumn<string>(
                 name: "Name",

@@ -16,10 +16,7 @@ namespace Order.API.Infrastructure.Migrations
                     Name = table.Column<string>(nullable: false),
                     Time = table.Column<DateTime>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_requests", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_requests", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

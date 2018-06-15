@@ -18,15 +18,15 @@ namespace Order.API.Infrastructure
 {
     public class OrderingContextSeed
     {
-        public  async Task SeedAsync(OrderingContext context, IHostingEnvironment env,IOptions<OrderSettings> settings, ILogger<OrderingContextSeed> logger)
+        public async Task SeedAsync(OrderingContext context, IHostingEnvironment env, IOptions<OrderSettings> settings,
+            ILogger<OrderingContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(OrderingContextSeed));
 
             await policy.ExecuteAsync(async () =>
             {
-
                 var useCustomizationData = settings.Value
-                .UseCustomizationData;
+                    .UseCustomizationData;
 
                 var contentRootPath = env.ContentRootPath;
 
@@ -38,8 +38,8 @@ namespace Order.API.Infrastructure
                     if (!context.CardTypes.Any())
                     {
                         context.CardTypes.AddRange(useCustomizationData
-                                                ? GetCardTypesFromFile(contentRootPath, logger)
-                                                : GetPredefinedCardTypes());
+                            ? GetCardTypesFromFile(contentRootPath, logger)
+                            : GetPredefinedCardTypes());
 
                         await context.SaveChangesAsync();
                     }
@@ -47,8 +47,8 @@ namespace Order.API.Infrastructure
                     if (!context.OrderStatus.Any())
                     {
                         context.OrderStatus.AddRange(useCustomizationData
-                                                ? GetOrderStatusFromFile(contentRootPath, logger)
-                                                : GetPredefinedOrderStatus());
+                            ? GetOrderStatusFromFile(contentRootPath, logger)
+                            : GetPredefinedOrderStatus());
                     }
 
                     await context.SaveChangesAsync();
@@ -68,7 +68,7 @@ namespace Order.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "CardType" };
+                string[] requiredHeaders = {"CardType"};
                 csvheaders = GetHeaders(requiredHeaders, csvFileCardTypes);
             }
             catch (Exception ex)
@@ -79,10 +79,14 @@ namespace Order.API.Infrastructure
 
             int id = 1;
             return File.ReadAllLines(csvFileCardTypes)
-                                        .Skip(1) // skip header column
-                                        .SelectTry(x => CreateCardType(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
-                                        .Where(x => x != null);
+                .Skip(1) // skip header column
+                .SelectTry(x => CreateCardType(x, ref id))
+                .OnCaughtException(ex =>
+                {
+                    log.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null);
         }
 
         private CardType CreateCardType(string value, ref int id)
@@ -95,7 +99,7 @@ namespace Order.API.Infrastructure
             return new CardType(id++, value.Trim('"').Trim());
         }
 
-        private  IEnumerable<CardType> GetPredefinedCardTypes()
+        private IEnumerable<CardType> GetPredefinedCardTypes()
         {
             return new List<CardType>()
             {
@@ -105,7 +109,8 @@ namespace Order.API.Infrastructure
             };
         }
 
-        private IEnumerable<OrderStatus> GetOrderStatusFromFile(string contentRootPath, ILogger<OrderingContextSeed> log)
+        private IEnumerable<OrderStatus> GetOrderStatusFromFile(string contentRootPath,
+            ILogger<OrderingContextSeed> log)
         {
             string csvFileOrderStatus = Path.Combine(contentRootPath, "Setup", "OrderStatus.csv");
 
@@ -117,7 +122,7 @@ namespace Order.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "OrderStatus" };
+                string[] requiredHeaders = {"OrderStatus"};
                 csvheaders = GetHeaders(requiredHeaders, csvFileOrderStatus);
             }
             catch (Exception ex)
@@ -128,10 +133,14 @@ namespace Order.API.Infrastructure
 
             int id = 1;
             return File.ReadAllLines(csvFileOrderStatus)
-                                        .Skip(1) // skip header row
-                                        .SelectTry(x => CreateOrderStatus(x, ref id))
-                                        .OnCaughtException(ex => { log.LogError(ex.Message); return null; })
-                                        .Where(x => x != null);
+                .Skip(1) // skip header row
+                .SelectTry(x => CreateOrderStatus(x, ref id))
+                .OnCaughtException(ex =>
+                {
+                    log.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null);
         }
 
         private OrderStatus CreateOrderStatus(string value, ref int id)
@@ -163,7 +172,8 @@ namespace Order.API.Infrastructure
 
             if (csvheaders.Count() != requiredHeaders.Count())
             {
-                throw new Exception($"requiredHeader count '{ requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
+                throw new Exception(
+                    $"requiredHeader count '{requiredHeaders.Count()}' is different then read header '{csvheaders.Count()}'");
             }
 
             foreach (var requiredHeader in requiredHeaders)
@@ -177,18 +187,18 @@ namespace Order.API.Infrastructure
             return csvheaders;
         }
 
-     
-        private Policy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
+
+        private Policy CreatePolicy(ILogger<OrderingContextSeed> logger, string prefix, int retries = 3)
         {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogTrace($"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
-                    }
-                );
+            return Policy.Handle<SqlException>().WaitAndRetryAsync(
+                retryCount: retries,
+                sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
+                onRetry: (exception, timeSpan, retry, ctx) =>
+                {
+                    logger.LogTrace(
+                        $"[{prefix}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {retries}");
+                }
+            );
         }
     }
 }

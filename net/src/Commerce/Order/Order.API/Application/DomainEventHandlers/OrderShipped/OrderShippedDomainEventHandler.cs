@@ -12,15 +12,15 @@ using Order.Domain.Events;
 namespace Order.API.Application.DomainEventHandlers.OrderShipped
 {
     public class OrderShippedDomainEventHandler
-                   : INotificationHandler<OrderShippedDomainEvent>
+        : INotificationHandler<OrderShippedDomainEvent>
     {
-        private readonly IOrderRepository _orderRepository;
         private readonly IBuyerRepository _buyerRepository;
-        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
         private readonly ILoggerFactory _logger;
+        private readonly IOrderingIntegrationEventService _orderingIntegrationEventService;
+        private readonly IOrderRepository _orderRepository;
 
         public OrderShippedDomainEventHandler(
-            IOrderRepository orderRepository, 
+            IOrderRepository orderRepository,
             ILoggerFactory logger,
             IBuyerRepository buyerRepository,
             IOrderingIntegrationEventService orderingIntegrationEventService)
@@ -34,14 +34,16 @@ namespace Order.API.Application.DomainEventHandlers.OrderShipped
         public async Task Handle(OrderShippedDomainEvent orderShippedDomainEvent, CancellationToken cancellationToken)
         {
             _logger.CreateLogger(nameof(OrderShippedDomainEvent))
-             .LogTrace($"Order with Id: {orderShippedDomainEvent.Order.Id} has been successfully updated with " +
-                       $"a status order id: {OrderStatus.Shipped.Id}");
+                .LogTrace($"Order with Id: {orderShippedDomainEvent.Order.Id} has been successfully updated with " +
+                          $"a status order id: {OrderStatus.Shipped.Id}");
 
             var order = await _orderRepository.GetAsync(orderShippedDomainEvent.Order.Id);
             var buyer = await _buyerRepository.FindByIdAsync(order.GetBuyerId.Value.ToString());
 
-            var orderStatusChangedToShippedIntegrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToShippedIntegrationEvent);
+            var orderStatusChangedToShippedIntegrationEvent =
+                new OrderStatusChangedToShippedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(
+                orderStatusChangedToShippedIntegrationEvent);
         }
     }
 }

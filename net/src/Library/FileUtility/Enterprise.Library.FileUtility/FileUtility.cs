@@ -51,26 +51,6 @@ namespace Enterprise.Library.FileUtility
         }
 
         /// <summary>
-        /// TODO: Test this manually.
-        /// </summary>
-        /// <param name="folderName"></param>
-        /// <returns></returns>
-        public void CleanImageFiles(string folderName)
-        {
-            var webRootPath = _hostingEnvironment.WebRootPath;
-            var newPath = Path.Combine(webRootPath, folderName);
-
-            if (Directory.Exists(newPath))
-            {
-                foreach (var file in Directory.GetFiles(newPath))
-                {
-                    file.Remove(0);
-                }
-            };
-
-        }
-
-        /// <summary>
         ///     read file from hosting web root.
         /// </summary>
         /// <param name="folderName">
@@ -111,6 +91,22 @@ namespace Enterprise.Library.FileUtility
             File.Delete(path);
 
             if (Directory.GetFiles(dirPath).Length == 0) Directory.Delete(dirPath);
+        }
+
+        /// <summary>
+        ///     TODO: Test this manually.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        public void CleanImageFiles(string folderName)
+        {
+            var webRootPath = _hostingEnvironment.WebRootPath;
+            var newPath = Path.Combine(webRootPath, folderName);
+
+            if (Directory.Exists(newPath))
+                foreach (var file in Directory.GetFiles(newPath))
+                    file.Remove(0);
+            ;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Order.API.Infrastructure.Middlewares
     {
         private readonly RequestDelegate _next;
         private string _currentUserId;
+
         public ByPassAuthMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -28,6 +29,7 @@ namespace Order.API.Infrastructure.Middlewares
                 {
                     _currentUserId = userid;
                 }
+
                 context.Response.StatusCode = 200;
                 context.Response.ContentType = "text/string";
                 await context.Response.WriteAsync($"User set to {_currentUserId}");
@@ -57,16 +59,19 @@ namespace Order.API.Infrastructure.Middlewares
 
                 if (!string.IsNullOrEmpty(currentUserId))
                 {
-                    var user = new ClaimsIdentity(new[] {
-                    new Claim("emails", currentUserId),
-                    new Claim("name", "Test user"),
-                    new Claim("nonce", Guid.NewGuid().ToString()),
-                    new Claim("ttp://schemas.microsoft.com/identity/claims/identityprovider", "ByPassAuthMiddleware"),
-                    new Claim("nonce", Guid.NewGuid().ToString()),
-                    new Claim("sub", "1234"),
-                    new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname","User"),
-                    new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname","Microsoft")}
-                    , "ByPassAuth");
+                    var user = new ClaimsIdentity(new[]
+                        {
+                            new Claim("emails", currentUserId),
+                            new Claim("name", "Test user"),
+                            new Claim("nonce", Guid.NewGuid().ToString()),
+                            new Claim("ttp://schemas.microsoft.com/identity/claims/identityprovider",
+                                "ByPassAuthMiddleware"),
+                            new Claim("nonce", Guid.NewGuid().ToString()),
+                            new Claim("sub", "1234"),
+                            new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname", "User"),
+                            new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname", "Microsoft")
+                        }
+                        , "ByPassAuth");
 
                     context.User = new ClaimsPrincipal(user);
                 }

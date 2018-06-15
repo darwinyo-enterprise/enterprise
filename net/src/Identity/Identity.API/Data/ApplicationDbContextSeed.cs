@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Identity.API.Extensions;
@@ -40,6 +39,7 @@ namespace Identity.API.Data
 
                         await context.SaveChangesAsync();
                     }
+
                     if (!context.Roles.Any())
                     {
                         context.Roles.AddRange(useCustomizationData
@@ -48,10 +48,11 @@ namespace Identity.API.Data
 
                         await context.SaveChangesAsync();
                     }
+
                     if (!context.UserRoles.Any())
                     {
                         context.UserRoles.AddRange(useCustomizationData
-                            ? GetUserRolesFromFile(contentRootPath, logger,context)
+                            ? GetUserRolesFromFile(contentRootPath, logger, context)
                             : GetDefaultUserRole(context));
 
                         await context.SaveChangesAsync();
@@ -112,6 +113,7 @@ namespace Identity.API.Data
 
             return users;
         }
+
         private IEnumerable<ApplicationRole> GetRolesFromFile(string contentRootPath, ILogger logger)
         {
             var csvFileUsers = Path.Combine(contentRootPath, "Setup", "Roles.csv");
@@ -149,7 +151,8 @@ namespace Identity.API.Data
             return roles;
         }
 
-        private IEnumerable<ApplicationUserRole> GetUserRolesFromFile(string contentRootPath, ILogger logger,ApplicationDbContext ctx)
+        private IEnumerable<ApplicationUserRole> GetUserRolesFromFile(string contentRootPath, ILogger logger,
+            ApplicationDbContext ctx)
         {
             var csvFileUsers = Path.Combine(contentRootPath, "Setup", "UserRoles.csv");
 
@@ -160,7 +163,7 @@ namespace Identity.API.Data
             {
                 string[] requiredHeaders =
                 {
-                    "role","username"
+                    "role", "username"
                 };
                 csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
             }
@@ -174,7 +177,7 @@ namespace Identity.API.Data
             var userRoles = File.ReadAllLines(csvFileUsers)
                 .Skip(1) // skip header column
                 .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                .SelectTry(column => CreateApplicationUserRole(column, csvheaders,ctx))
+                .SelectTry(column => CreateApplicationUserRole(column, csvheaders, ctx))
                 .OnCaughtException(ex =>
                 {
                     logger.LogError(ex.Message);
@@ -224,6 +227,7 @@ namespace Identity.API.Data
 
             return user;
         }
+
         private ApplicationRole CreateApplicationRole(string[] column, string[] headers)
         {
             if (column.Count() != headers.Count())
@@ -236,7 +240,9 @@ namespace Identity.API.Data
 
             return role;
         }
-        private ApplicationUserRole CreateApplicationUserRole(string[] column, string[] headers,ApplicationDbContext ctx)
+
+        private ApplicationUserRole CreateApplicationUserRole(string[] column, string[] headers,
+            ApplicationDbContext ctx)
         {
             if (column.Count() != headers.Count())
                 throw new Exception(
@@ -290,22 +296,24 @@ namespace Identity.API.Data
                 user
             };
         }
+
         private IEnumerable<ApplicationRole> GetDefaultRole()
         {
             var role = new List<ApplicationRole>
             {
-                new ApplicationRole( "Admin"),
+                new ApplicationRole("Admin"),
                 new ApplicationRole("End User")
             };
             return role;
         }
+
         private IEnumerable<ApplicationUserRole> GetDefaultUserRole(ApplicationDbContext ctx)
         {
             var users = ctx.Users.ToList();
             var roles = ctx.Roles.ToList();
             var role = new List<ApplicationUserRole>
             {
-                new ApplicationUserRole( )
+                new ApplicationUserRole()
                 {
                     UserId = users[0].Id,
                     RoleId = roles[0].Id

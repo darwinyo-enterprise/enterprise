@@ -35,6 +35,7 @@ namespace Identity.API.Data
                 {
                     context.Clients.Add(client.ToEntity());
                 }
+
                 await context.SaveChangesAsync();
             }
             // Checking always for old redirects to fix existing deployments
@@ -43,7 +44,8 @@ namespace Identity.API.Data
             // ref: https://github.com/dotnet-architecture/eShopOnContainers/issues/586
             else
             {
-                List<ClientRedirectUri> oldRedirects = (await context.Clients.Include(c => c.RedirectUris).ToListAsync())
+                List<ClientRedirectUri> oldRedirects =
+                    (await context.Clients.Include(c => c.RedirectUris).ToListAsync())
                     .SelectMany(c => c.RedirectUris)
                     .Where(ru => ru.RedirectUri.EndsWith("/o2c.html"))
                     .ToList();
@@ -55,6 +57,7 @@ namespace Identity.API.Data
                         ru.RedirectUri = ru.RedirectUri.Replace("/o2c.html", "/oauth2-redirect.html");
                         context.Update(ru.Client);
                     }
+
                     await context.SaveChangesAsync();
                 }
             }
@@ -65,6 +68,7 @@ namespace Identity.API.Data
                 {
                     context.IdentityResources.Add(resource.ToEntity());
                 }
+
                 await context.SaveChangesAsync();
             }
 

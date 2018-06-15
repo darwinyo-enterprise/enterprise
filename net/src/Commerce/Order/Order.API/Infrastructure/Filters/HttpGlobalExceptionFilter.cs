@@ -25,23 +25,23 @@ namespace Order.API.Infrastructure.Filters
                 context.Exception,
                 context.Exception.Message);
 
-            if (context.Exception.GetType() == typeof(OrderingDomainException)) 
+            if (context.Exception.GetType() == typeof(OrderingDomainException))
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { context.Exception.Message }
+                    Messages = new[] {context.Exception.Message}
                 };
 
                 // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
                 //It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
                 context.Result = new BadRequestObjectResult(json);
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             }
             else
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { "An error occur.Try it again." }
+                    Messages = new[] {"An error occur.Try it again."}
                 };
 
                 if (env.IsDevelopment())
@@ -52,8 +52,9 @@ namespace Order.API.Infrastructure.Filters
                 // Result asigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
                 // It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
                 context.Result = new InternalServerErrorObjectResult(json);
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;                
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             }
+
             context.ExceptionHandled = true;
         }
 

@@ -5,7 +5,7 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.API.Application.IntegrationEvents.EventHandling
 {
-    public class OrderPaymentFailedIntegrationEventHandler : 
+    public class OrderPaymentFailedIntegrationEventHandler :
         IIntegrationEventHandler<OrderPaymentFailedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;

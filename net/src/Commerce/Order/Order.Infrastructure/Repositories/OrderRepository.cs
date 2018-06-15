@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Enterprise.Abstraction;
-using Microsoft.EntityFrameworkCore;
 using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.Infrastructure.Repositories
@@ -19,7 +18,6 @@ namespace Order.Infrastructure.Repositories
         public Domain.AggregatesModel.OrderAggregate.Order Add(Domain.AggregatesModel.OrderAggregate.Order order)
         {
             return _context.Orders.Add(order).Entity;
-
         }
 
         public async Task<Domain.AggregatesModel.OrderAggregate.Order> GetAsync(int orderId)

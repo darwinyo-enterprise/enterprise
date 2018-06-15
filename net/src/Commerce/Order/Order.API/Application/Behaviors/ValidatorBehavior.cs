@@ -12,7 +12,8 @@ namespace Order.API.Application.Behaviors
         private readonly IValidator<TRequest>[] _validators;
         public ValidatorBehavior(IValidator<TRequest>[] validators) => _validators = validators;
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+            RequestHandlerDelegate<TResponse> next)
         {
             var failures = _validators
                 .Select(v => v.Validate(request))
@@ -23,7 +24,8 @@ namespace Order.API.Application.Behaviors
             if (failures.Any())
             {
                 throw new OrderingDomainException(
-                    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+                    $"Command Validation Errors for type {typeof(TRequest).Name}",
+                    new ValidationException("Validation exception", failures));
             }
 
             var response = await next();

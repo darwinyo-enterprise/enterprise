@@ -5,11 +5,6 @@ namespace Order.API.Application.IntegrationEvents.Events
 {
     public class OrderStatusChangedToPaidIntegrationEvent : IntegrationEvent
     {
-        public int OrderId { get; }
-        public string OrderStatus { get; }
-        public string BuyerName { get; }
-        public IEnumerable<OrderStockItem> OrderStockItems { get; }
-
         public OrderStatusChangedToPaidIntegrationEvent(int orderId,
             string orderStatus,
             string buyerName,
@@ -20,5 +15,10 @@ namespace Order.API.Application.IntegrationEvents.Events
             OrderStatus = orderStatus;
             BuyerName = buyerName;
         }
+
+        public int OrderId { get; }
+        public string OrderStatus { get; }
+        public string BuyerName { get; }
+        public IEnumerable<OrderStockItem> OrderStockItems { get; }
     }
 }

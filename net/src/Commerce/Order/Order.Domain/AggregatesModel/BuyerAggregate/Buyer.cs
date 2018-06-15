@@ -7,29 +7,31 @@ using Order.Domain.Events;
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
     public class Buyer
-      : Entity, IAggregateRoot
+        : Entity, IAggregateRoot
     {
-        public string IdentityGuid { get; private set; }
+        private List<PaymentMethod> _paymentMethods;
 
-        public string Name { get; private set; }
-
-        private List<PaymentMethod> _paymentMethods;        
-
-        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
-
-        protected Buyer() {
-
+        protected Buyer()
+        {
             _paymentMethods = new List<PaymentMethod>();
         }
 
         public Buyer(string identity, string name) : this()
         {
-            IdentityGuid = !string.IsNullOrWhiteSpace(identity) ? identity : throw new ArgumentNullException(nameof(identity));
+            IdentityGuid = !string.IsNullOrWhiteSpace(identity)
+                ? identity
+                : throw new ArgumentNullException(nameof(identity));
             Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
         }
 
+        public string IdentityGuid { get; private set; }
+
+        public string Name { get; private set; }
+
+        public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
+
         public PaymentMethod VerifyOrAddPaymentMethod(
-            int cardTypeId, string alias, string cardNumber, 
+            int cardTypeId, string alias, string cardNumber,
             string securityNumber, string cardHolderName, DateTime expiration, int orderId)
         {
             var existingPayment = _paymentMethods.Where(p => p.IsEqualTo(cardTypeId, cardNumber, expiration))
@@ -43,7 +45,8 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             }
             else
             {
-                var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
+                var payment = new PaymentMethod(cardTypeId, alias, cardNumber, securityNumber, cardHolderName,
+                    expiration);
 
                 _paymentMethods.Add(payment);
 
@@ -51,6 +54,6 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
 
                 return payment;
             }
-        }       
+        }
     }
 }

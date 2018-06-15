@@ -264,6 +264,7 @@ namespace Catalog.API
 
             app.UseAuthentication();
         }
+
         private void RegisterEventBus(IServiceCollection services)
         {
             var subscriptionClientName = Configuration["SubscriptionClientName"];

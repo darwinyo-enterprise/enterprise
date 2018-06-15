@@ -43,10 +43,10 @@ namespace Identity.API.Configuration
                     ClientName = "Enterprise Commerce Client App SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["CommerceClientSpa"]}/" },
+                    RedirectUris = {$"{clientsUrl["CommerceClientSpa"]}/"},
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["CommerceClientSpa"]}/" },
-                    AllowedCorsOrigins =     { $"{clientsUrl["CommerceClientSpa"]}" },
+                    PostLogoutRedirectUris = {$"{clientsUrl["CommerceClientSpa"]}/"},
+                    AllowedCorsOrigins = {$"{clientsUrl["CommerceClientSpa"]}"},
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -62,10 +62,10 @@ namespace Identity.API.Configuration
                     ClientName = "Enterprise Commerce Admin App SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["CommerceAdminSpa"]}/" },
+                    RedirectUris = {$"{clientsUrl["CommerceAdminSpa"]}/"},
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["CommerceAdminSpa"]}/" },
-                    AllowedCorsOrigins =     { $"{clientsUrl["CommerceAdminSpa"]}" },
+                    PostLogoutRedirectUris = {$"{clientsUrl["CommerceAdminSpa"]}/"},
+                    AllowedCorsOrigins = {$"{clientsUrl["CommerceAdminSpa"]}"},
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -82,8 +82,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["CatalogApi"]}/swagger/oauth2-redirect.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["CatalogApi"]}/swagger/"},
 
                     AllowedScopes =
                     {
@@ -97,8 +97,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["BasketApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["BasketApi"]}/swagger/oauth2-redirect.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["BasketApi"]}/swagger/"},
 
                     AllowedScopes =
                     {
@@ -112,8 +112,8 @@ namespace Identity.API.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{clientsUrl["OrderingApi"]}/swagger/" },
+                    RedirectUris = {$"{clientsUrl["OrderingApi"]}/swagger/oauth2-redirect.html"},
+                    PostLogoutRedirectUris = {$"{clientsUrl["OrderingApi"]}/swagger/"},
 
                     AllowedScopes =
                     {

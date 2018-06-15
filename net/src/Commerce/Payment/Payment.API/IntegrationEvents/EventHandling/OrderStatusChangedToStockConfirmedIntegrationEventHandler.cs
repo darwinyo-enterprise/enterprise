@@ -6,18 +6,18 @@ using Payment.API.IntegrationEvents.Events;
 
 namespace Payment.API.IntegrationEvents.EventHandling
 {
-    public class OrderStatusChangedToStockConfirmedIntegrationEventHandler : 
+    public class OrderStatusChangedToStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent>
     {
         private readonly IEventBus _eventBus;
         private readonly PaymentSettings _settings;
 
-        public OrderStatusChangedToStockConfirmedIntegrationEventHandler(IEventBus eventBus, 
+        public OrderStatusChangedToStockConfirmedIntegrationEventHandler(IEventBus eventBus,
             IOptionsSnapshot<PaymentSettings> settings)
         {
             _eventBus = eventBus;
             _settings = settings.Value;
-        }         
+        }
 
         public async Task Handle(OrderStatusChangedToStockConfirmedIntegrationEvent @event)
         {

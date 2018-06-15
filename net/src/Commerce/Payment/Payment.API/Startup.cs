@@ -1,24 +1,24 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Payment.API.IntegrationEvents.EventHandling;
-using Payment.API.IntegrationEvents.Events;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Enterprise.Extensions.HealthChecks;
 using Enterprise.Extensions.HealthChecks.Checks;
 using Enterprise.Library.EventBus;
 using Enterprise.Library.EventBus.Abstractions;
 using Enterprise.Library.EventBus.RabbitMQ;
+using Enterprise.Library.EventBus.RabbitMQ.Abstractions;
 using Enterprise.Library.EventBus.ServiceBus;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.ServiceFabric;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.ServiceBus;
-using Enterprise.Library.EventBus.RabbitMQ.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Payment.API.IntegrationEvents.EventHandling;
+using Payment.API.IntegrationEvents.Events;
 using RabbitMQ.Client;
 
 namespace Payment.API
@@ -83,7 +83,8 @@ namespace Payment.API
 
             services.AddHealthChecks(checks =>
             {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                checks.AddValueTaskCheck("HTTP Endpoint",
+                    () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
             });
 
             RegisterEventBus(services);
@@ -122,6 +123,7 @@ namespace Payment.API
                 // Enable K8s telemetry initializer
                 services.EnableKubernetes();
             }
+
             if (orchestratorType?.ToUpper() == "SF")
             {
                 // Enable SF telemetry initializer
@@ -162,7 +164,8 @@ namespace Payment.API
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
                     }
 
-                    return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope,
+                        eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
             }
 
@@ -173,7 +176,9 @@ namespace Payment.API
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent, OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
+            eventBus
+                .Subscribe<OrderStatusChangedToStockConfirmedIntegrationEvent,
+                    OrderStatusChangedToStockConfirmedIntegrationEventHandler>();
         }
     }
 }

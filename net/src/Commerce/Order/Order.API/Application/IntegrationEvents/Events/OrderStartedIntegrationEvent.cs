@@ -7,9 +7,9 @@ namespace Order.API.Application.IntegrationEvents.Events
     // An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
     public class OrderStartedIntegrationEvent : IntegrationEvent
     {
-        public string UserId { get; set; }
-
         public OrderStartedIntegrationEvent(string userId)
             => UserId = userId;
+
+        public string UserId { get; set; }
     }
 }

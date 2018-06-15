@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Models;
@@ -32,24 +31,26 @@ namespace Catalog.API.Helpers
         }
 
         /// <summary>
-        /// Used for make image url to be base64 url, single item single image
+        ///     Used for make image url to be base64 url, single item single image
         /// </summary>
         /// <param name="item">Model has image</param>
         /// <param name="fileUtility">file utility helper</param>
         /// <param name="folderName">folder group name => Manufacturer, Product, Category</param>
         /// <param name="cancellationToken"></param>
         /// <returns>base64 format image model</returns>
-        public static async Task<T> GetImageBase64UrlAsync(T item, IFileUtility fileUtility, string folderName, CancellationToken cancellationToken)
+        public static async Task<T> GetImageBase64UrlAsync(T item, IFileUtility fileUtility, string folderName,
+            CancellationToken cancellationToken)
         {
             var imageFileExtension = Path.GetExtension(item.ImageName);
 
             var buffer = await fileUtility.ReadFileAsync(folderName + "/" + item.Id, item.ImageName, cancellationToken);
-            item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," + Convert.ToBase64String(buffer);
+            item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," +
+                            Convert.ToBase64String(buffer);
             return item;
         }
 
         /// <summary>
-        /// Used for make image url to be base64 url which has header id means has multiple images
+        ///     Used for make image url to be base64 url which has header id means has multiple images
         /// </summary>
         /// <param name="id">header id => product id</param>
         /// <param name="item">Model has image</param>
@@ -57,12 +58,14 @@ namespace Catalog.API.Helpers
         /// <param name="folderName">folder group name => Manufacturer, Product, Category</param>
         /// <param name="cancellationToken"></param>
         /// <returns>base64 format image model</returns>
-        public static async Task<T> GetImageBase64UrlAsync(string id, T item, IFileUtility fileUtility, string folderName, CancellationToken cancellationToken)
+        public static async Task<T> GetImageBase64UrlAsync(string id, T item, IFileUtility fileUtility,
+            string folderName, CancellationToken cancellationToken)
         {
             var imageFileExtension = Path.GetExtension(item.ImageName);
 
             var buffer = await fileUtility.ReadFileAsync(folderName + "/" + id, item.ImageName, cancellationToken);
-            item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," + Convert.ToBase64String(buffer);
+            item.ImageUrl = "data:image/" + imageFileExtension.Substring(1) + ";base64," +
+                            Convert.ToBase64String(buffer);
             return item;
         }
     }

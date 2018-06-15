@@ -6,7 +6,8 @@ namespace Order.API.Extensions
 {
     public static class BasketItemExtensions
     {
-        public static IEnumerable<CreateOrderCommand.OrderItemDTO> ToOrderItemsDTO(this IEnumerable<BasketItem> basketItems)
+        public static IEnumerable<CreateOrderCommand.OrderItemDTO> ToOrderItemsDTO(
+            this IEnumerable<BasketItem> basketItems)
         {
             foreach (var item in basketItems)
             {

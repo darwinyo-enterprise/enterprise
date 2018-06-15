@@ -18,10 +18,7 @@ namespace Order.API.Infrastructure.IntegrationEventMigrations
                     State = table.Column<int>(nullable: false),
                     TimesSent = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId);
-                });
+                constraints: table => { table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -5,7 +5,7 @@ using Order.Domain.AggregatesModel.OrderAggregate;
 
 namespace Order.API.Application.IntegrationEvents.EventHandling
 {
-    public class OrderStockConfirmedIntegrationEventHandler : 
+    public class OrderStockConfirmedIntegrationEventHandler :
         IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>
     {
         private readonly IOrderRepository _orderRepository;

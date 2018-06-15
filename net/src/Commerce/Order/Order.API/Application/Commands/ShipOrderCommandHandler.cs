@@ -8,7 +8,7 @@ namespace Order.API.Application.Commands
 {
     // Regular CommandHandler
     public class ShipOrderCommandHandler : IRequestHandler<ShipOrderCommand, bool>
-    {        
+    {
         private readonly IOrderRepository _orderRepository;
 
         public ShipOrderCommandHandler(IOrderRepository orderRepository)
@@ -17,15 +17,15 @@ namespace Order.API.Application.Commands
         }
 
         /// <summary>
-        /// Handler which processes the command when
-        /// administrator executes ship order from app
+        ///     Handler which processes the command when
+        ///     administrator executes ship order from app
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         public async Task<bool> Handle(ShipOrderCommand command, CancellationToken cancellationToken)
         {
             var orderToUpdate = await _orderRepository.GetAsync(command.OrderNumber);
-            if(orderToUpdate == null)
+            if (orderToUpdate == null)
             {
                 return false;
             }
@@ -39,13 +39,14 @@ namespace Order.API.Application.Commands
     // Use for Idempotency in Command process
     public class ShipOrderIdentifiedCommandHandler : IdentifiedCommandHandler<ShipOrderCommand, bool>
     {
-        public ShipOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager)
+        public ShipOrderIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator,
+            requestManager)
         {
         }
 
         protected override bool CreateResultForDuplicateRequest()
         {
-            return true;                // Ignore duplicate requests for processing order.
+            return true; // Ignore duplicate requests for processing order.
         }
     }
 }

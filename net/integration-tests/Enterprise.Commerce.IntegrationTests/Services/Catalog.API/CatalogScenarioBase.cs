@@ -49,6 +49,11 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             public const int PageSize = 10;
             public const int PageIndex = 0;
 
+            private static string Paginated(int pageIndex, int pageCount)
+            {
+                return $"?pageIndex={pageIndex}&pageSize={pageCount}";
+            }
+
             #region Manufacturer
 
             public static string Manufacturers = "api/v1/manufacturer";
@@ -67,10 +72,12 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return "api/v1/manufacturer/list" + Paginated(PageIndex, PageSize);
             }
+
             public static string ManufacturerPaginatedItem()
             {
                 return "api/v1/manufacturer/paginated" + Paginated(PageIndex, PageSize);
             }
+
             #endregion
 
             #region Category
@@ -86,14 +93,17 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return "api/v1/category/image" + categoryId;
             }
+
             public static string CategoryListPaginatedItem()
             {
                 return "api/v1/category/list" + Paginated(PageIndex, PageSize);
             }
+
             public static string CategoryPaginatedItem()
             {
                 return "api/v1/category/paginated" + Paginated(PageIndex, PageSize);
             }
+
             #endregion
 
             #region Product
@@ -102,14 +112,17 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return "api/v1/product" + Paginated(PageIndex, PageSize);
             }
+
             public static string HotProductPaginatedItem()
             {
                 return "api/v1/product/hot" + Paginated(PageIndex, PageSize);
             }
+
             public static string LatestProductPaginatedItem()
             {
                 return "api/v1/product/latest" + Paginated(PageIndex, PageSize);
             }
+
             public static string ProductListPaginatedItem()
             {
                 return "api/v1/product/list" + Paginated(PageIndex, PageSize);
@@ -146,11 +159,6 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
 
             #endregion
-
-            private static string Paginated(int pageIndex, int pageCount)
-            {
-                return $"?pageIndex={pageIndex}&pageSize={pageCount}";
-            }
         }
 
         public static class Post
@@ -218,6 +226,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return $"api/v1/manufacturer/{id}";
             }
+
             #endregion
 
             #region Category
@@ -226,6 +235,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return $"api/v1/category/{id}";
             }
+
             #endregion
 
             #region Product
@@ -234,6 +244,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 return $"api/v1/product/{id}";
             }
+
             #endregion
         }
     }

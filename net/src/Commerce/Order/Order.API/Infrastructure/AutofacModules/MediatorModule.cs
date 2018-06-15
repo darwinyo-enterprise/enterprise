@@ -7,10 +7,11 @@ using Order.API.Application.Behaviors;
 using Order.API.Application.Commands;
 using Order.API.Application.DomainEventHandlers.OrderStartedEvent;
 using Order.API.Application.Validations;
+using Module = Autofac.Module;
 
 namespace Order.API.Infrastructure.AutofacModules
 {
-    public class MediatorModule : Autofac.Module
+    public class MediatorModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -22,7 +23,8 @@ namespace Order.API.Infrastructure.AutofacModules
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             // Register the DomainEventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
-            builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler)
+                    .GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
 
             // Register the Command's Validators (Validators based on FluentValidation library)
@@ -35,7 +37,11 @@ namespace Order.API.Infrastructure.AutofacModules
             builder.Register<SingleInstanceFactory>(context =>
             {
                 var componentContext = context.Resolve<IComponentContext>();
-                return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
+                return t =>
+                {
+                    object o;
+                    return componentContext.TryResolve(t, out o) ? o : null;
+                };
             });
 
             builder.Register<MultiInstanceFactory>(context =>
@@ -44,14 +50,14 @@ namespace Order.API.Infrastructure.AutofacModules
 
                 return t =>
                 {
-                    var resolved = (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+                    var resolved =
+                        (IEnumerable<object>) componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
                     return resolved;
                 };
             });
 
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-
         }
     }
 }

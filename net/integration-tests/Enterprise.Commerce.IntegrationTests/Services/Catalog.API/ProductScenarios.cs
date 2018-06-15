@@ -95,6 +95,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 {
                     _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
                 }
+
                 ctx.ProductImages.RemoveRange(verifyProduct.ProductImages);
                 ctx.ProductColors.RemoveRange(verifyProduct.ProductColors);
                 ctx.ProductRatings.RemoveRange(verifyProduct.ProductRatings);
@@ -240,6 +241,56 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
+        [Fact, TestPriority(14)]
+        public async Task Get_paginated_hot_catalog_response_ok_status_code_should_return_paginated_products()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.HotProductPaginatedItem());
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
+                        await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var count = await ctx.Products.CountAsync();
+
+                Assert.Equal(count, result.Count);
+                Assert.Equal(Get.PageSize, result.Data.Count());
+                Assert.Equal(Get.PageSize, result.PageSize);
+                Assert.Equal(Get.PageIndex, result.PageIndex);
+            }
+        }
+
+        [Fact, TestPriority(15)]
+        public async Task Get_paginated_latest_catalog_response_ok_status_code_should_return_paginated_products()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.LatestProductPaginatedItem());
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
+                        await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var count = await ctx.Products.CountAsync();
+
+                Assert.Equal(count, result.Count);
+                Assert.Equal(Get.PageSize, result.Data.Count());
+                Assert.Equal(Get.PageSize, result.PageSize);
+                Assert.Equal(Get.PageIndex, result.PageIndex);
+            }
+        }
+
         [Fact, TestPriority(3)]
         public async Task Get_product_by_id_response_ok_status_code()
         {
@@ -340,8 +391,112 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
+        [Fact, TestPriority(16)]
+        public async Task Get_product_info_by_id_response_ok_status_code()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var searchedProductId = (await ctx.Products.FirstAsync()).Id;
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(searchedProductId));
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        [Fact, TestPriority(17)]
+        public async Task Get_product_info_by_id_response_ok_status_code_return_base64_instead_of_http_url()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var actual = await ctx.Products.FirstOrDefaultAsync();
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(actual.Id));
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
+
+                foreach (var image in result.ProductImages) Assert.Contains("http", image.ImageUrl);
+            }
+        }
+
+        [Fact, TestPriority(18)]
+        public async Task Get_Product_info_by_id_response_ok_status_code_with_correct_result()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var productSelected = await ctx.Products
+                    .Include(x => x.ProductImages)
+                    .Include(x => x.ProductColors)
+                    .Include(x => x.ProductRatings)
+                    .Include(x => x.Manufacturer)
+                    .FirstOrDefaultAsync();
+
+                var productViewModel = new ProductDetailViewModel()
+                {
+                    CategoryId = productSelected.CategoryId,
+                    ManufacturerId = productSelected.ManufacturerId,
+                    ManufacturerName = productSelected.Manufacturer.Name,
+                    Description = productSelected.Description,
+                    Id = productSelected.Id,
+                    Name = productSelected.Name,
+                    Price = productSelected.Price,
+                    ProductColors = productSelected.ProductColors.ToArray(),
+                    ProductImages = productSelected.ProductImages.ToArray(),
+                    Location = productSelected.Location,
+                    MinPurchase = productSelected.MinPurchase,
+                    Sold = productSelected.TotalSold,
+                    HasExpiry = productSelected.HasExpiry ? "True" : "False",
+                    ExpireDate = productSelected.ExpireDate.ToShortDateString(),
+                    LastUpdated = productSelected.LastUpdated.Value.ToShortDateString(),
+                    Discount = productSelected.Discount,
+                    Stock = productSelected.AvailableStock,
+                    Favorites = productSelected.TotalFavorites,
+                    Reviews = productSelected.TotalReviews,
+                    OverallRating = productSelected.OverallRating,
+                    WishlistCount = productSelected.TotalWishlist
+                };
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ItemInfoById(productViewModel.Id));
+
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
+
+                Assert.Equal(productViewModel.CategoryId, result.CategoryId);
+                Assert.Equal(productViewModel.ManufacturerId, result.ManufacturerId);
+                Assert.Equal(productViewModel.ManufacturerName, result.ManufacturerName);
+                Assert.Equal(productViewModel.Price, result.Price);
+                Assert.Equal(productViewModel.Name, result.Name);
+                Assert.Equal(productViewModel.Description, result.Description);
+                Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
+                Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
+                Assert.Equal(productViewModel.Id, result.Id);
+                Assert.Equal(productViewModel.Location, result.Location);
+                Assert.Equal(productViewModel.MinPurchase, result.MinPurchase);
+                Assert.Equal(productViewModel.Sold, result.Sold);
+                Assert.Equal(productViewModel.HasExpiry, result.HasExpiry);
+                Assert.Equal(productViewModel.ExpireDate, result.ExpireDate);
+                Assert.Equal(productViewModel.LastUpdated, result.LastUpdated);
+                Assert.Equal(productViewModel.Discount, result.Discount);
+                Assert.Equal(productViewModel.Stock, result.Stock);
+                Assert.Equal(productViewModel.Favorites, result.Favorites);
+                Assert.Equal(productViewModel.Reviews, result.Reviews);
+                Assert.Equal(productViewModel.OverallRating, result.OverallRating);
+                Assert.Equal(productViewModel.WishlistCount, result.WishlistCount);
+            }
+        }
+
         [Fact, TestPriority(13)]
-        public async Task Get_product_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
+        public async Task
+            Get_product_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
         {
             using (var server = CreateServer())
             {
@@ -573,159 +728,6 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                                     productImage.ImageName;
                     Assert.True(File.Exists(targetDir));
                 }
-            }
-        }
-
-        [Fact, TestPriority(14)]
-        public async Task Get_paginated_hot_catalog_response_ok_status_code_should_return_paginated_products()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.HotProductPaginatedItem());
-
-                response.EnsureSuccessStatusCode();
-
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
-                        await response.Content.ReadAsStringAsync());
-
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-
-                var count = await ctx.Products.CountAsync();
-
-                Assert.Equal(count, result.Count);
-                Assert.Equal(Get.PageSize, result.Data.Count());
-                Assert.Equal(Get.PageSize, result.PageSize);
-                Assert.Equal(Get.PageIndex, result.PageIndex);
-            }
-        }
-
-        [Fact, TestPriority(15)]
-        public async Task Get_paginated_latest_catalog_response_ok_status_code_should_return_paginated_products()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.LatestProductPaginatedItem());
-
-                response.EnsureSuccessStatusCode();
-
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedCatalogViewModel<CatalogItemViewModel>>(
-                        await response.Content.ReadAsStringAsync());
-
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-
-                var count = await ctx.Products.CountAsync();
-
-                Assert.Equal(count, result.Count);
-                Assert.Equal(Get.PageSize, result.Data.Count());
-                Assert.Equal(Get.PageSize, result.PageSize);
-                Assert.Equal(Get.PageIndex, result.PageIndex);
-            }
-        }
-
-        [Fact, TestPriority(16)]
-        public async Task Get_product_info_by_id_response_ok_status_code()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var searchedProductId = (await ctx.Products.FirstAsync()).Id;
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemInfoById(searchedProductId));
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Fact, TestPriority(17)]
-        public async Task Get_product_info_by_id_response_ok_status_code_return_base64_instead_of_http_url()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var actual = await ctx.Products.FirstOrDefaultAsync();
-
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemInfoById(actual.Id));
-
-                response.EnsureSuccessStatusCode();
-
-                var result =
-                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
-
-                foreach (var image in result.ProductImages) Assert.Contains("http", image.ImageUrl);
-            }
-        }
-
-        [Fact, TestPriority(18)]
-        public async Task Get_Product_info_by_id_response_ok_status_code_with_correct_result()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var productSelected = await ctx.Products
-                    .Include(x => x.ProductImages)
-                    .Include(x => x.ProductColors)
-                    .Include(x => x.ProductRatings)
-                    .Include(x => x.Manufacturer)
-                    .FirstOrDefaultAsync();
-
-                var productViewModel = new ProductDetailViewModel()
-                {
-                    CategoryId = productSelected.CategoryId,
-                    ManufacturerId = productSelected.ManufacturerId,
-                    ManufacturerName = productSelected.Manufacturer.Name,
-                    Description = productSelected.Description,
-                    Id = productSelected.Id,
-                    Name = productSelected.Name,
-                    Price = productSelected.Price,
-                    ProductColors = productSelected.ProductColors.ToArray(),
-                    ProductImages = productSelected.ProductImages.ToArray(),
-                    Location = productSelected.Location,
-                    MinPurchase = productSelected.MinPurchase,
-                    Sold = productSelected.TotalSold,
-                    HasExpiry = productSelected.HasExpiry ? "True" : "False",
-                    ExpireDate = productSelected.ExpireDate.ToShortDateString(),
-                    LastUpdated = productSelected.LastUpdated.Value.ToShortDateString(),
-                    Discount = productSelected.Discount,
-                    Stock = productSelected.AvailableStock,
-                    Favorites = productSelected.TotalFavorites,
-                    Reviews = productSelected.TotalReviews,
-                    OverallRating = productSelected.OverallRating,
-                    WishlistCount = productSelected.TotalWishlist
-                };
-
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ItemInfoById(productViewModel.Id));
-
-                response.EnsureSuccessStatusCode();
-
-                var result =
-                    JsonConvert.DeserializeObject<ProductDetailViewModel>(await response.Content.ReadAsStringAsync());
-
-                Assert.Equal(productViewModel.CategoryId, result.CategoryId);
-                Assert.Equal(productViewModel.ManufacturerId, result.ManufacturerId);
-                Assert.Equal(productViewModel.ManufacturerName, result.ManufacturerName);
-                Assert.Equal(productViewModel.Price, result.Price);
-                Assert.Equal(productViewModel.Name, result.Name);
-                Assert.Equal(productViewModel.Description, result.Description);
-                Assert.Equal(productViewModel.ProductColors.Length, result.ProductColors.Length);
-                Assert.Equal(productViewModel.ProductImages.Length, result.ProductImages.Length);
-                Assert.Equal(productViewModel.Id, result.Id);
-                Assert.Equal(productViewModel.Location, result.Location);
-                Assert.Equal(productViewModel.MinPurchase, result.MinPurchase);
-                Assert.Equal(productViewModel.Sold, result.Sold);
-                Assert.Equal(productViewModel.HasExpiry, result.HasExpiry);
-                Assert.Equal(productViewModel.ExpireDate, result.ExpireDate);
-                Assert.Equal(productViewModel.LastUpdated, result.LastUpdated);
-                Assert.Equal(productViewModel.Discount, result.Discount);
-                Assert.Equal(productViewModel.Stock, result.Stock);
-                Assert.Equal(productViewModel.Favorites, result.Favorites);
-                Assert.Equal(productViewModel.Reviews, result.Reviews);
-                Assert.Equal(productViewModel.OverallRating, result.OverallRating);
-                Assert.Equal(productViewModel.WishlistCount, result.WishlistCount);
             }
         }
     }

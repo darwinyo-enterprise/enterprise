@@ -7,7 +7,7 @@ namespace Order.API.Application.Validations
     {
         public IdentifiedCommandValidator()
         {
-            RuleFor(command => command.Id).NotEmpty();    
+            RuleFor(command => command.Id).NotEmpty();
         }
     }
 }

@@ -13,16 +13,18 @@ namespace Order.API.Application.IntegrationEvents
 {
     public class OrderingIntegrationEventService : IOrderingIntegrationEventService
     {
-        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
         private readonly IEventBus _eventBus;
-        private readonly OrderingContext _orderingContext;
         private readonly IIntegrationEventLogService _eventLogService;
+        private readonly Func<DbConnection, IIntegrationEventLogService> _integrationEventLogServiceFactory;
+        private readonly OrderingContext _orderingContext;
 
         public OrderingIntegrationEventService(IEventBus eventBus, OrderingContext orderingContext,
-        Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
+            Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
-            _integrationEventLogServiceFactory = integrationEventLogServiceFactory ?? throw new ArgumentNullException(nameof(integrationEventLogServiceFactory));
+            _integrationEventLogServiceFactory = integrationEventLogServiceFactory ??
+                                                 throw new ArgumentNullException(
+                                                     nameof(integrationEventLogServiceFactory));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
         }
@@ -39,10 +41,12 @@ namespace Order.API.Application.IntegrationEvents
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
             await ResilientTransaction.New(_orderingContext)
-                .ExecuteAsync(async () => {
+                .ExecuteAsync(async () =>
+                {
                     // Achieving atomicity between original ordering database operation and the IntegrationEventLog thanks to a local transaction
                     await _orderingContext.SaveChangesAsync();
-                    await _eventLogService.SaveEventAsync(evt, _orderingContext.Database.CurrentTransaction.GetDbTransaction());
+                    await _eventLogService.SaveEventAsync(evt,
+                        _orderingContext.Database.CurrentTransaction.GetDbTransaction());
                 });
         }
     }

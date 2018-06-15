@@ -5,13 +5,11 @@ namespace Order.API.Application.Commands
 {
     public class CancelOrderCommand : IRequest<bool>
     {
-
-        [DataMember]
-        public int OrderNumber { get; private set; }
-
         public CancelOrderCommand(int orderNumber)
         {
             OrderNumber = orderNumber;
         }
+
+        [DataMember] public int OrderNumber { get; private set; }
     }
 }

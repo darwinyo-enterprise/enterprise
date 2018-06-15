@@ -225,7 +225,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "name", "description", "imagename" };
+                string[] requiredHeaders = {"name", "description", "imagename"};
                 csvheaders = GetHeaders(csvFileManufacturers, requiredHeaders);
             }
             catch (Exception ex)
@@ -233,6 +233,7 @@ namespace Catalog.API.Infrastructure
                 logger.LogError(ex.Message);
                 return GetPreconfiguredManufacturer();
             }
+
             CleanImageDirectory("Manufacturer");
             return File.ReadAllLines(csvFileManufacturers)
                 .Skip(1) // skip header row
@@ -300,7 +301,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "id", "name" };
+                string[] requiredHeaders = {"id", "name"};
                 csvheaders = GetHeaders(csvFileUsers, requiredHeaders);
             }
             catch (Exception ex)
@@ -362,7 +363,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "name", "description", "imagename" };
+                string[] requiredHeaders = {"name", "description", "imagename"};
                 csvheaders = GetHeaders(csvFileCategorys, requiredHeaders);
             }
             catch (Exception ex)
@@ -370,6 +371,7 @@ namespace Catalog.API.Infrastructure
                 logger.LogError(ex.Message);
                 return GetPreconfiguredCategory();
             }
+
             CleanImageDirectory("Category");
             return File.ReadAllLines(csvFileCategorys)
                 .Skip(1) // skip header row
@@ -439,8 +441,8 @@ namespace Catalog.API.Infrastructure
                 string[] requiredHeaders =
                 {
                     "id", "name", "price", "overallrating", "totalfavorites", "totalreviews", "description",
-                    "lastupdated", "lastupdatedby", "availablestock", "manufacturerid", "categoryid","location",
-                    "minpurchase","sold","hasexpiry","expiredate","discount","totalwishlist"
+                    "lastupdated", "lastupdatedby", "availablestock", "manufacturerid", "categoryid", "location",
+                    "minpurchase", "sold", "hasexpiry", "expiredate", "discount", "totalwishlist"
                 };
                 csvheaders = GetHeaders(csvFileProducts, requiredHeaders);
             }
@@ -510,7 +512,8 @@ namespace Catalog.API.Infrastructure
             if (string.IsNullOrEmpty(name)) throw new Exception("catalog location is empty");
 
             var minpurchase = column[Array.IndexOf(headers, "minpurchase")].Trim('"').Trim();
-            if (!int.TryParse(minpurchase, out var minpurchaseResult)) throw new Exception("catalog minpurchase is not number");
+            if (!int.TryParse(minpurchase, out var minpurchaseResult))
+                throw new Exception("catalog minpurchase is not number");
 
             var sold = column[Array.IndexOf(headers, "sold")].Trim('"').Trim();
             if (!int.TryParse(sold, out var solds)) throw new Exception("catalog sold is not number");
@@ -530,7 +533,8 @@ namespace Catalog.API.Infrastructure
             if (!int.TryParse(discount, out var discounts)) throw new Exception("catalog discount is not number");
 
             var totalWishlist = column[Array.IndexOf(headers, "totalwishlist")].Trim('"').Trim();
-            if (!int.TryParse(totalWishlist, out var totalWishlists)) throw new Exception("catalog totalwishlist is not number");
+            if (!int.TryParse(totalWishlist, out var totalWishlists))
+                throw new Exception("catalog totalwishlist is not number");
 
             return new Product
             {
@@ -575,7 +579,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "productid", "name" };
+                string[] requiredHeaders = {"productid", "name"};
                 csvheaders = GetHeaders(csvFileProductColors, requiredHeaders);
             }
             catch (Exception ex)
@@ -634,7 +638,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "productid", "imagename" };
+                string[] requiredHeaders = {"productid", "imagename"};
                 csvheaders = GetHeaders(csvFileProductImages, requiredHeaders);
             }
             catch (Exception ex)
@@ -721,7 +725,7 @@ namespace Catalog.API.Infrastructure
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "productid", "userid", "rate" };
+                string[] requiredHeaders = {"productid", "userid", "rate"};
                 csvheaders = GetHeaders(csvFileProductRatings, requiredHeaders);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Abstraction;
@@ -14,35 +15,27 @@ namespace Order.Infrastructure
     public class OrderingContext : DbContext, IUnitOfWork
     {
         public const string DEFAULT_SCHEMA = "ordering";
-        public DbSet<Domain.AggregatesModel.OrderAggregate.Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<PaymentMethod> Payments { get; set; }
-        public DbSet<Buyer> Buyers { get; set; }
-        public DbSet<CardType> CardTypes { get; set; }
-        public DbSet<OrderStatus> OrderStatus { get; set; }
 
         private readonly IMediator _mediator;
 
-        private OrderingContext(DbContextOptions<OrderingContext> options) : base (options) { }
+        private OrderingContext(DbContextOptions<OrderingContext> options) : base(options)
+        {
+        }
 
         public OrderingContext(DbContextOptions<OrderingContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
 
-            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
+            Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new PaymentMethodEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration()); 
-        }
+        public DbSet<Domain.AggregatesModel.OrderAggregate.Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<PaymentMethod> Payments { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
+        public DbSet<CardType> CardTypes { get; set; }
+        public DbSet<OrderStatus> OrderStatus { get; set; }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -59,7 +52,18 @@ namespace Order.Infrastructure
             var result = await SaveChangesAsync();
 
             return true;
-        }        
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentMethodEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
+        }
     }
 
     public class OrderingContextDesignFactory : IDesignTimeDbContextFactory<OrderingContext>
@@ -67,19 +71,22 @@ namespace Order.Infrastructure
         public OrderingContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
-                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+                .UseSqlServer(
+                    "Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
 
-            return new OrderingContext(optionsBuilder.Options,new NoMediator());
+            return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator
         {
-            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+            public Task Publish<TNotification>(TNotification notification,
+                CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
             {
                 return Task.CompletedTask;
             }
 
-            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+                CancellationToken cancellationToken = default(CancellationToken))
             {
                 return Task.FromResult<TResponse>(default(TResponse));
             }

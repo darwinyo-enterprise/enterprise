@@ -6,13 +6,9 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
 {
     public class Address : ValueObject
     {
-        public String Street { get; }
-        public String City { get; }
-        public String State { get; }
-        public String Country { get; }
-        public String ZipCode { get; }
-
-        private Address() { }
+        private Address()
+        {
+        }
 
         public Address(string street, string city, string state, string country, string zipcode)
         {
@@ -22,6 +18,12 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             Country = country;
             ZipCode = zipcode;
         }
+
+        public String Street { get; }
+        public String City { get; }
+        public String State { get; }
+        public String Country { get; }
+        public String ZipCode { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -58,7 +58,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
         [Fact,
-        TestPriority(7)]
+         TestPriority(7)]
         public async Task Add_manufacturer_response_ok_status_code_should_add_file_in_directory()
         {
             using (var server = CreateServer())
@@ -94,7 +94,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
 
         [Fact,
-        TestPriority(8)]
+         TestPriority(8)]
         public async Task Add_manufacturer_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -125,7 +125,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
         [Fact,
-        TestPriority(11)]
+         TestPriority(11)]
         public async Task Delete_manufacturer_should_delete_file_and_folder_in_directory()
         {
             using (var server = CreateServer())
@@ -147,7 +147,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
 
         [Fact,
-        TestPriority(12)]
+         TestPriority(12)]
         public async Task Delete_manufacturer_should_properly_delete_record_in_db()
         {
             using (var server = CreateServer())
@@ -165,7 +165,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
         [Fact,
-        TestPriority(3)]
+         TestPriority(3)]
         public async Task Get_manufacturer_by_id_response_ok_status_code()
         {
             var searchedManufacturerId = 1;
@@ -178,80 +178,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
         [Fact,
-        TestPriority(1)]
-        public async Task Get_manufacturer_response_ok_status_code_should_return_all_manufacturers()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.Manufacturers);
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
-
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-
-                var actual = await ctx.Manufacturers.ToListAsync();
-                Assert.Equal(actual.Count, result.Count);
-            }
-        }
-
-        [Fact,
-        TestPriority(2)]
-        public async Task Get_manufacturer_response_ok_status_code_with_http_urls()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.Manufacturers);
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
-
-                Assert.Contains("http", result[0].ImageUrl);
-            }
-        }
-
-        [Fact,
-        TestPriority(6)]
-        public async Task Get_manufacturer_image_by_id_response_file_result()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
-
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerImageById(actual.Id.ToString()));
-                Assert.IsType<StreamContent>(response.Content);
-            }
-        }
-
-        [Fact,
-        TestPriority(4)]
-        public async Task Get_manufacturer_by_id_response_ok_status_code_with_correct_result()
-        {
-            using (var server = CreateServer())
-            {
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-                var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
-
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerById(actual.Id));
-
-                response.EnsureSuccessStatusCode();
-
-                var result = JsonConvert.DeserializeObject<Manufacturer>(await response.Content.ReadAsStringAsync());
-
-                Assert.Equal(actual.Name, result.Name);
-                Assert.Equal(actual.Description, result.Description);
-                Assert.Equal(actual.ImageName, result.ImageName);
-                Assert.Equal(actual.Id, result.Id);
-            }
-        }
-
-        [Fact,
-        TestPriority(5)]
+         TestPriority(5)]
         public async Task Get_manufacturer_by_id_response_ok_status_code_return_base64_instead_of_http_url()
         {
             using (var server = CreateServer())
@@ -274,9 +201,127 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             }
         }
 
+        [Fact,
+         TestPriority(4)]
+        public async Task Get_manufacturer_by_id_response_ok_status_code_with_correct_result()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerById(actual.Id));
+
+                response.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<Manufacturer>(await response.Content.ReadAsStringAsync());
+
+                Assert.Equal(actual.Name, result.Name);
+                Assert.Equal(actual.Description, result.Description);
+                Assert.Equal(actual.ImageName, result.ImageName);
+                Assert.Equal(actual.Id, result.Id);
+            }
+        }
 
         [Fact,
-        TestPriority(10)]
+         TestPriority(6)]
+        public async Task Get_manufacturer_image_by_id_response_file_result()
+        {
+            using (var server = CreateServer())
+            {
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+                var actual = await ctx.Manufacturers.FirstOrDefaultAsync();
+
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerImageById(actual.Id.ToString()));
+                Assert.IsType<StreamContent>(response.Content);
+            }
+        }
+
+
+        [Fact,
+         TestPriority(13)]
+        public async Task
+            Get_manufacturer_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerListPaginatedItem());
+                response.EnsureSuccessStatusCode();
+                var result =
+                    JsonConvert.DeserializeObject<PaginatedListViewModel<ItemViewModel>>(
+                        await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var actual = await ctx.Manufacturers.ToListAsync();
+                Assert.Equal(actual.Count, result.Count);
+                Assert.Equal(Get.PageIndex, result.PageIndex);
+                Assert.Equal(Get.PageSize, result.PageSize);
+                Assert.Equal(Get.PageSize, result.ListData.Count());
+            }
+        }
+
+        [Fact,
+         TestPriority(1)]
+        public async Task Get_manufacturer_response_ok_status_code_should_return_all_manufacturers()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Manufacturers);
+                response.EnsureSuccessStatusCode();
+                var result =
+                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var actual = await ctx.Manufacturers.ToListAsync();
+                Assert.Equal(actual.Count, result.Count);
+            }
+        }
+
+        [Fact,
+         TestPriority(2)]
+        public async Task Get_manufacturer_response_ok_status_code_with_http_urls()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.Manufacturers);
+                response.EnsureSuccessStatusCode();
+                var result =
+                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
+
+                Assert.Contains("http", result[0].ImageUrl);
+            }
+        }
+
+        [Fact,
+         TestPriority(14)]
+        public async Task Get_paginated_manufacturer_response_ok_status_code_and_correct_item_count()
+        {
+            using (var server = CreateServer())
+            {
+                var response = await server.CreateClient()
+                    .GetAsync(Get.ManufacturerPaginatedItem());
+                response.EnsureSuccessStatusCode();
+
+                var result =
+                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
+
+                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
+
+                var expectation = await ctx.Manufacturers.Take(10).ToListAsync();
+                Assert.Equal(result.Count, expectation.Count);
+            }
+        }
+
+
+        [Fact,
+         TestPriority(10)]
         public async Task Update_manufacturer_response_ok_status_code_should_persisted_in_db()
         {
             using (var server = CreateServer())
@@ -304,7 +349,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
         }
 
         [Fact,
-        TestPriority(9)]
+         TestPriority(9)]
         public async Task Update_manufacturer_response_ok_status_code_should_replace_file_in_directory()
         {
             using (var server = CreateServer())
@@ -334,49 +379,5 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                 Assert.True(File.Exists(targetDir));
             }
         }
-
-
-        [Fact,
-        TestPriority(13)]
-        public async Task Get_manufacturer_list_response_ok_status_code_and_correct_pagination_info_should_return_paginated_item()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerListPaginatedItem());
-                response.EnsureSuccessStatusCode();
-                var result =
-                    JsonConvert.DeserializeObject<PaginatedListViewModel<ItemViewModel>>(await response.Content.ReadAsStringAsync());
-
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-
-                var actual = await ctx.Manufacturers.ToListAsync();
-                Assert.Equal(actual.Count, result.Count);
-                Assert.Equal(Get.PageIndex, result.PageIndex);
-                Assert.Equal(Get.PageSize, result.PageSize);
-                Assert.Equal(Get.PageSize, result.ListData.Count());
-            }
-        }
-
-        [Fact,
-         TestPriority(14)]
-        public async Task Get_paginated_manufacturer_response_ok_status_code_and_correct_item_count()
-        {
-            using (var server = CreateServer())
-            {
-                var response = await server.CreateClient()
-                    .GetAsync(Get.ManufacturerPaginatedItem());
-                response.EnsureSuccessStatusCode();
-
-                var result =
-                    JsonConvert.DeserializeObject<List<Manufacturer>>(await response.Content.ReadAsStringAsync());
-
-                var ctx = server.Host.Services.GetRequiredService<CatalogContext>();
-
-                var expectation = await ctx.Manufacturers.Take(10).ToListAsync();
-                Assert.Equal(result.Count, expectation.Count);
-            }
-        }
-
     }
 }

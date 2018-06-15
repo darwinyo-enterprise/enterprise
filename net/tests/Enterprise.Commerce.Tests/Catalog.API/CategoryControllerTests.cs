@@ -42,8 +42,6 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private readonly IOptionsSnapshot<CatalogSettings> _settings;
 
-        #region Utility
-
         private async Task<List<Category>> SeedCategory(CancellationToken cancellationToken)
         {
             var expectedCategory =
@@ -66,12 +64,18 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         {
             return new List<Category>
             {
-                new Category {Name = "Microsoft", Description = "None", ImageName = "Microsoft.png",ImageUrl = "TestUrl"},
-                new Category {Name = "Asus", Description = "None", ImageName = "Asus.png",ImageUrl = "TestUrl"},
-                new Category {Name = "Apple", Description = "None", ImageName = "Apple.png",ImageUrl = "TestUrl"},
-                new Category {Name = "Google", Description = "None", ImageName = "Google.png",ImageUrl = "TestUrl"},
-                new Category {Name = "Docker", Description = "None", ImageName = "Docker.png",ImageUrl = "TestUrl"},
-                new Category {Name = "Sony", Description = "None", ImageName = "Sony.png",ImageUrl = "TestUrl"}
+                new Category
+                {
+                    Name = "Microsoft",
+                    Description = "None",
+                    ImageName = "Microsoft.png",
+                    ImageUrl = "TestUrl"
+                },
+                new Category {Name = "Asus", Description = "None", ImageName = "Asus.png", ImageUrl = "TestUrl"},
+                new Category {Name = "Apple", Description = "None", ImageName = "Apple.png", ImageUrl = "TestUrl"},
+                new Category {Name = "Google", Description = "None", ImageName = "Google.png", ImageUrl = "TestUrl"},
+                new Category {Name = "Docker", Description = "None", ImageName = "Docker.png", ImageUrl = "TestUrl"},
+                new Category {Name = "Sony", Description = "None", ImageName = "Sony.png", ImageUrl = "TestUrl"}
             };
         }
 
@@ -86,9 +90,69 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
         }
 
-        #endregion
+        [Fact]
+        public async Task Delete_Category_response_bad_request_with_message_when_Category_hooked_with_product()
+        {
+            var cancellationToken = new CancellationToken();
 
-        #region Get
+            var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
+
+            if (expectedCategory.IsNullOrEmpty())
+            {
+                expectedCategory = await SeedCategory(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedCategory);
+
+            var id = (await _catalogContextFixture.Context.Categories.FirstOrDefaultAsync()).Id;
+
+            // Act
+            var categoryController = new CategoryController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        [Fact]
+        public async Task Delete_Category_response_bad_request_with_message_when_id_less_or_equals_zero()
+        {
+            var id = 0;
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var categoryController = new CategoryController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
+
+        [Fact]
+        public async Task Delete_Category_response_not_found_with_message_when_item_not_found()
+        {
+            var cancellationToken = new CancellationToken();
+            // Arrange
+            var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
+
+            if (expectedCategory.IsNullOrEmpty())
+            {
+                expectedCategory = await SeedCategory(cancellationToken);
+            }
+
+            Assert.NotEmpty(expectedCategory);
+
+            // ReSharper disable once PossibleNullReferenceException
+            var id = expectedCategory.LastOrDefault().Id++;
+
+            // Act
+            var categoryController = new CategoryController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
+            var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
+
+            Assert.Contains("Message", responseMessage.Value.ToString());
+        }
 
         [Fact]
         public async Task Get_Category_by_id_response_bad_request_with_message_when_id_less_or_equals_zero()
@@ -115,6 +179,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             {
                 expectedCategory = await SeedCategory(cancellationToken);
             }
+
             Assert.NotEmpty(expectedCategory);
 
             // ReSharper disable once PossibleNullReferenceException
@@ -166,7 +231,8 @@ namespace Enterprise.Commerce.Tests.Catalog.API
         }
 
         [Fact]
-        public async Task Get_category_list_response_bad_request_with_message_when_pagination_index_is_negative_or_page_size_zero_or_negative()
+        public async Task
+            Get_category_list_response_bad_request_with_message_when_pagination_index_is_negative_or_page_size_zero_or_negative()
         {
             var cancellationToken = new CancellationToken();
 
@@ -177,32 +243,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
-        #endregion
 
-        #region Post
-        [Fact]
-        public async Task Post_Category_response_bad_request_with_message_when_Category_null()
-        {
-            var cancellationToken = new CancellationToken();
-
-            // Act
-            var categoryController = new CategoryController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.AddNewCategoryAsync(null, cancellationToken);
-            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
-            Assert.Contains("Message", badRequestResponse.Value.ToString());
-        }
-        [Fact]
-        public async Task Post_Category_response_bad_request_with_message_when_Category_image_is_empty()
-        {
-            var cancellationToken = new CancellationToken();
-            // Act
-            var categoryController = new CategoryController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.AddNewCategoryAsync(GetTestCategoryEmptyImage(), cancellationToken);
-            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
-            Assert.Contains("Message", badRequestResponse.Value.ToString());
-        }
         [Fact]
         public async Task Post_Category_response_bad_request_with_message_when_Category_exists()
         {
@@ -223,38 +264,34 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
 
-        #endregion
-
-        #region Put
-
         [Fact]
-        public async Task Update_Category_response_not_found_with_message_when_item_not_exists()
+        public async Task Post_Category_response_bad_request_with_message_when_Category_image_is_empty()
         {
             var cancellationToken = new CancellationToken();
-            // Arrange
-            var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
-
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
-
-            Assert.NotEmpty(expectedCategory);
-
-            // ReSharper disable once PossibleNullReferenceException
-            var id = expectedCategory.LastOrDefault().Id++;
-
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
-                    _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.UpdateCategoryAsync(id, expectedCategory[0], cancellationToken);
-            var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
-
-            Assert.Contains("Message", responseMessage.Value.ToString());
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await categoryController.AddNewCategoryAsync(GetTestCategoryEmptyImage(), cancellationToken);
+            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", badRequestResponse.Value.ToString());
         }
 
         [Fact]
-        public async Task Update_Category_response_bad_request_with_message_when_item_image_url_or_image_name_is_not_provided()
+        public async Task Post_Category_response_bad_request_with_message_when_Category_null()
+        {
+            var cancellationToken = new CancellationToken();
+
+            // Act
+            var categoryController = new CategoryController(_catalogContextFixture.Context,
+                _fileUtilityFixture.FileUtility, _settings);
+            var response = await categoryController.AddNewCategoryAsync(null, cancellationToken);
+            var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Contains("Message", badRequestResponse.Value.ToString());
+        }
+
+        [Fact]
+        public async Task
+            Update_Category_response_bad_request_with_message_when_item_image_url_or_image_name_is_not_provided()
         {
             var cancellationToken = new CancellationToken();
             // Arrange
@@ -280,49 +317,8 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
 
-        #endregion
-
-        #region Delete
-
         [Fact]
-        public async Task Delete_Category_response_bad_request_with_message_when_Category_hooked_with_product()
-        {
-            var cancellationToken = new CancellationToken();
-
-            var expectedCategory = await _catalogContextFixture.Context.Categories.ToListAsync(cancellationToken);
-
-            if (expectedCategory.IsNullOrEmpty())
-            {
-                expectedCategory = await SeedCategory(cancellationToken);
-            }
-            Assert.NotEmpty(expectedCategory);
-
-            var id = (await _catalogContextFixture.Context.Categories.FirstOrDefaultAsync()).Id;
-            
-            // Act
-            var categoryController = new CategoryController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
-            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
-            Assert.Contains("Message", responseMessage.Value.ToString());
-        }
-
-        [Fact]
-        public async Task Delete_Category_response_bad_request_with_message_when_id_less_or_equals_zero()
-        {
-            var id = 0;
-            var cancellationToken = new CancellationToken();
-
-            // Act
-            var categoryController = new CategoryController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
-            var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
-            Assert.Contains("Message", responseMessage.Value.ToString());
-        }
-
-        [Fact]
-        public async Task Delete_Category_response_not_found_with_message_when_item_not_found()
+        public async Task Update_Category_response_not_found_with_message_when_item_not_exists()
         {
             var cancellationToken = new CancellationToken();
             // Arrange
@@ -341,12 +337,10 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             // Act
             var categoryController = new CategoryController(_catalogContextFixture.Context,
                 _fileUtilityFixture.FileUtility, _settings);
-            var response = await categoryController.DeleteCategoryAsync(id, cancellationToken);
+            var response = await categoryController.UpdateCategoryAsync(id, expectedCategory[0], cancellationToken);
             var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
 
             Assert.Contains("Message", responseMessage.Value.ToString());
         }
-
-        #endregion
     }
 }

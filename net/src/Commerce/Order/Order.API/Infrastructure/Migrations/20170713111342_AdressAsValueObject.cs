@@ -65,7 +65,6 @@ namespace Order.API.Infrastructure.Migrations
                 table: "orders",
                 type: "nvarchar(max)",
                 nullable: true);
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -112,17 +111,15 @@ namespace Order.API.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     City = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Street = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_address", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_address", x => x.Id); });
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_AddressId",
