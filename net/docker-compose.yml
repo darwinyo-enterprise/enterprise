@@ -13,15 +13,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.7.4-management-alpine
 
-  # basket.api:
-  #   image: darwinyo/basket.api:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: src/Commerce/Basket/Basket.API/Dockerfile
-  #   depends_on:
-  #     - basket.data
-  #     - identity.api
-  #     - rabbitmq
+  basket.api:
+    image: darwinyo/basket.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Commerce/Basket/Basket.API/Dockerfile
+    depends_on:
+      - basket.data
+      - identity.api
+      - rabbitmq
 
   catalog.api:
     image: darwinyo/catalog.api:${TAG:-latest}

@@ -7,7 +7,8 @@ import {
   AppState,
   RegisterLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
-  Alert
+  Alert,
+  StorageService
 } from '@enterprise/core';
 
 import {
@@ -36,9 +37,9 @@ import {
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
 import { ListItemActionState, ListItemActionStateModel, ChangePagination, ResetPagination } from '@enterprise/material/list-item-actions';
+import { Observable } from 'rxjs';
 
 export interface CategoryStateModel {
   categories: Category[];
@@ -57,7 +58,9 @@ const defaults: CategoryStateModel = {
   defaults: defaults
 })
 export class CategoryState {
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService, private storageService: StorageService) {
+    this.setAccessToken();
+  }
   //#region Selectors
   @Selector()
   static getCategories(state: CategoryStateModel) {
@@ -74,6 +77,10 @@ export class CategoryState {
     return state.paginatedCategories;
   }
   //#endregion
+
+  setAccessToken() {
+    this.categoryService.configuration.accessToken = this.storageService.retrieve('authorizationData');
+  }
 
   //#region Commands and Event
 

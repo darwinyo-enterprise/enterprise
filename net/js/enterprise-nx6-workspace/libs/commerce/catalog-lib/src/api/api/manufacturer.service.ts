@@ -74,6 +74,14 @@ export class ManufacturerService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (oauth2) required
+        if (this.configuration.accessToken) {
+            let accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -112,6 +120,14 @@ export class ManufacturerService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (oauth2) required
+        if (this.configuration.accessToken) {
+            let accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -153,6 +169,14 @@ export class ManufacturerService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (oauth2) required
+        if (this.configuration.accessToken) {
+            let accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -284,6 +308,14 @@ export class ManufacturerService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (oauth2) required
+        if (this.configuration.accessToken) {
+            let accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'application/json'
@@ -368,6 +400,14 @@ export class ManufacturerService {
     public apiV1ManufacturerPost(manufacturer?: Manufacturer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (oauth2) required
+        if (this.configuration.accessToken) {
+            let accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [

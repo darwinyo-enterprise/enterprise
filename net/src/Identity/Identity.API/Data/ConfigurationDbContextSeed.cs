@@ -22,6 +22,7 @@ namespace Identity.API.Data
             clientUrls.Add("CommerceAdminSpa", configuration.GetValue<string>("CommerceAdminSpaClient"));
             clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
             clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("CatalogApi", configuration.GetValue<string>("CatalogApiClient"));
             clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
             clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
             clientUrls.Add("MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient"));

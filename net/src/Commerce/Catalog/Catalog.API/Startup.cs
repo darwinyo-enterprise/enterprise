@@ -216,7 +216,7 @@ namespace Catalog.API
                         $"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json",
                         "Catalog.API V1");
 
-                    c.OAuthClientId("catalogwaggerui");
+                    c.OAuthClientId("catalogswaggerui");
                     c.OAuthAppName("Catalog Swagger UI");
                 });
 

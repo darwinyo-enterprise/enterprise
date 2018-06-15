@@ -12,8 +12,8 @@ const appRoutes: Routes = [
 
     { path: 'product-detail/:id', component: DetailCatalogComponent },
 
-    { path: '**', component: PageNotFoundComponent },
     { path: 'not-authorized', component: NotAuthorizedComponent },
+    { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

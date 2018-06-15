@@ -7,7 +7,8 @@ import {
   AppState,
   RegisterLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
-  Alert
+  Alert,
+  StorageService
 } from '@enterprise/core';
 
 import {
@@ -69,7 +70,9 @@ const defaults: ProductStateModel = {
   defaults: defaults
 })
 export class ProductState {
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private storageService: StorageService) {
+    this.setAccessToken();
+  }
   //#region Selectors
   @Selector()
   static getProducts(state: ProductStateModel) {
@@ -97,6 +100,10 @@ export class ProductState {
     return state.selectedProductDetailInfo;
   }
   //#endregion
+
+  setAccessToken() {
+    this.productService.configuration.accessToken = this.storageService.retrieve('authorizationData');
+  }
 
   //#region Commands and Event
 

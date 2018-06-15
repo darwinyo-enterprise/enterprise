@@ -7,7 +7,8 @@ import {
   AppState,
   RegisterLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
-  Alert
+  Alert,
+  StorageService
 } from '@enterprise/core';
 
 import {
@@ -56,7 +57,9 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-  constructor(private manufacturerService: ManufacturerService) { }
+  constructor(private manufacturerService: ManufacturerService,private storageService:StorageService) {
+    this.setAccessToken();
+   }
   //#region Selectors
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {
@@ -74,6 +77,9 @@ export class ManufacturerState {
   }
   //#endregion
 
+  setAccessToken() {
+    this.manufacturerService.configuration.accessToken = this.storageService.retrieve('authorizationData');
+  }
   //#region Commands and Event
 
   // DOne

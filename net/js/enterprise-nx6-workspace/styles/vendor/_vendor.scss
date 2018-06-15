@@ -74,12 +74,13 @@ mat-list {
   height: 4rem !important;
 }
 
-.mat-form-field-infix {
-  border-top: 0rem solid transparent !important;
-}
-
-.mat-form-field-appearance-legacy .mat-form-field-wrapper {
-  padding-bottom: 0px !important;
+.nav-search-box {
+  & .mat-form-field-infix {
+    border-top: 0rem solid transparent !important;
+  }
+  & .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+  }
 }
 
 .mat-menu-panel {

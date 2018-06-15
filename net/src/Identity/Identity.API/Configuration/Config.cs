@@ -77,6 +77,21 @@ namespace Identity.API.Configuration
                 },
                 new Client
                 {
+                    ClientId = "catalogswaggerui",
+                    ClientName = "Catalog Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["CatalogApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "catalog"
+                    }
+                },
+                new Client
+                {
                     ClientId = "basketswaggerui",
                     ClientName = "Basket Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
