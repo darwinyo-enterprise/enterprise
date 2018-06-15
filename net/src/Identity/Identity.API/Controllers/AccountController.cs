@@ -185,6 +185,7 @@ namespace Identity.API.Controllers
 
             // delete authentication cookie
             await HttpContext.SignOutAsync();
+            await _loginService.SignOut();
 
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());

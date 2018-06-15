@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Identity.API.Extensions;
@@ -36,6 +37,22 @@ namespace Identity.API.Data
                         context.Users.AddRange(useCustomizationData
                             ? GetUsersFromFile(contentRootPath, logger)
                             : GetDefaultUser());
+
+                        await context.SaveChangesAsync();
+                    }
+                    if (!context.Roles.Any())
+                    {
+                        context.Roles.AddRange(useCustomizationData
+                            ? GetRolesFromFile(contentRootPath, logger)
+                            : GetDefaultRole());
+
+                        await context.SaveChangesAsync();
+                    }
+                    if (!context.UserRoles.Any())
+                    {
+                        context.UserRoles.AddRange(useCustomizationData
+                            ? GetUserRolesFromFile(contentRootPath, logger,context)
+                            : GetDefaultUserRole(context));
 
                         await context.SaveChangesAsync();
                     }
@@ -95,6 +112,79 @@ namespace Identity.API.Data
 
             return users;
         }
+        private IEnumerable<ApplicationRole> GetRolesFromFile(string contentRootPath, ILogger logger)
+        {
+            var csvFileUsers = Path.Combine(contentRootPath, "Setup", "Roles.csv");
+
+            if (!File.Exists(csvFileUsers)) return GetDefaultRole();
+
+            string[] csvheaders;
+            try
+            {
+                string[] requiredHeaders =
+                {
+                    "role"
+                };
+                csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+
+                return GetDefaultRole();
+            }
+
+            var roles = File.ReadAllLines(csvFileUsers)
+                .Skip(1) // skip header column
+                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                .SelectTry(column => CreateApplicationRole(column, csvheaders))
+                .OnCaughtException(ex =>
+                {
+                    logger.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null)
+                .ToList();
+
+            return roles;
+        }
+
+        private IEnumerable<ApplicationUserRole> GetUserRolesFromFile(string contentRootPath, ILogger logger,ApplicationDbContext ctx)
+        {
+            var csvFileUsers = Path.Combine(contentRootPath, "Setup", "UserRoles.csv");
+
+            if (!File.Exists(csvFileUsers)) return GetDefaultUserRole(ctx);
+
+            string[] csvheaders;
+            try
+            {
+                string[] requiredHeaders =
+                {
+                    "role","username"
+                };
+                csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+
+                return GetDefaultUserRole(ctx);
+            }
+
+            var userRoles = File.ReadAllLines(csvFileUsers)
+                .Skip(1) // skip header column
+                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                .SelectTry(column => CreateApplicationUserRole(column, csvheaders,ctx))
+                .OnCaughtException(ex =>
+                {
+                    logger.LogError(ex.Message);
+                    return null;
+                })
+                .Where(x => x != null)
+                .ToList();
+
+            return userRoles;
+        }
 
         private ApplicationUser CreateApplicationUser(string[] column, string[] headers)
         {
@@ -134,6 +224,38 @@ namespace Identity.API.Data
 
             return user;
         }
+        private ApplicationRole CreateApplicationRole(string[] column, string[] headers)
+        {
+            if (column.Count() != headers.Count())
+                throw new Exception(
+                    $"column count '{column.Count()}' not the same as headers count'{headers.Count()}'");
+
+            var roleString = column[Array.IndexOf(headers, "role")].Trim('"').Trim();
+
+            var role = new ApplicationRole(roleString);
+
+            return role;
+        }
+        private ApplicationUserRole CreateApplicationUserRole(string[] column, string[] headers,ApplicationDbContext ctx)
+        {
+            if (column.Count() != headers.Count())
+                throw new Exception(
+                    $"column count '{column.Count()}' not the same as headers count'{headers.Count()}'");
+
+            var roleString = column[Array.IndexOf(headers, "role")].Trim('"').Trim();
+            var userString = column[Array.IndexOf(headers, "username")].Trim('"').Trim();
+
+            var roleId = ctx.Roles.First(x => x.Name == roleString).Id;
+            var userId = ctx.Users.First(x => x.UserName == userString).Id;
+
+            var userRole = new ApplicationUserRole()
+            {
+                RoleId = roleId,
+                UserId = userId
+            };
+
+            return userRole;
+        }
 
         private IEnumerable<ApplicationUser> GetDefaultUser()
         {
@@ -167,6 +289,34 @@ namespace Identity.API.Data
             {
                 user
             };
+        }
+        private IEnumerable<ApplicationRole> GetDefaultRole()
+        {
+            var role = new List<ApplicationRole>
+            {
+                new ApplicationRole( "Admin"),
+                new ApplicationRole("End User")
+            };
+            return role;
+        }
+        private IEnumerable<ApplicationUserRole> GetDefaultUserRole(ApplicationDbContext ctx)
+        {
+            var users = ctx.Users.ToList();
+            var roles = ctx.Roles.ToList();
+            var role = new List<ApplicationUserRole>
+            {
+                new ApplicationUserRole( )
+                {
+                    UserId = users[0].Id,
+                    RoleId = roles[0].Id
+                },
+                new ApplicationUserRole()
+                {
+                    UserId = users[1].Id,
+                    RoleId = roles[1].Id
+                },
+            };
+            return role;
         }
 
         private static string[] GetHeaders(string[] requiredHeaders, string csvfile)

@@ -7,5 +7,6 @@ namespace Identity.API.Services
         Task<bool> ValidateCredentials(T user, string password);
         Task<T> FindByUsername(string user);
         Task SignIn(T user);
+        Task SignOut();
     }
 }

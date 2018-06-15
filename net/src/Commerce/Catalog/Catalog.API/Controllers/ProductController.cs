@@ -10,6 +10,7 @@ using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Catalog.API.ViewModels;
 using Enterprise.Library.FileUtility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -350,6 +351,7 @@ namespace Catalog.API.Controllers
         /// <returns>Product</returns>
         // GET api/v1/Product/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProductViewModel), (int)HttpStatusCode.OK)]
@@ -463,6 +465,7 @@ namespace Catalog.API.Controllers
         /// <returns>Product</returns>
         // GET api/v1/Product/list
         [HttpGet("list")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetListProductsAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
@@ -502,6 +505,7 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Product
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddNewProductAsync([FromBody] ProductViewModel product,
@@ -622,6 +626,7 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Product/5
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -701,6 +706,7 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // DELETE api/v1/Product/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]

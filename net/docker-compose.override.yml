@@ -19,49 +19,50 @@ services:
   #   ports:
   #     - "5103:80"
 
-  # catalog.api:
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ASPNETCORE_URLS=http://0.0.0.0:80
-  #     - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd}
-  #     - ManufacturerImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/manufacturer/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
-  #     - ProductImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/product/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
-  #     - CategoryImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/category/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
-  #     - identityUrl=http://identity.api           #Local: You need to open your local dev-machine firewall at range 5100-5110.
-  #     - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
-  #     - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
-  #     - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
-  #     - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}         
-  #     - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
-  #     - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
-  #     - UseCustomizationData=True
-  #     - AzureServiceBusEnabled=False
-  #     - AzureStorageEnabled=False
-  #     - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-  #     - OrchestratorType=${ORCHESTRATOR_TYPE}
-  #   ports:
-  #     - "5101:80"
-
-  # identity.api:
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ASPNETCORE_URLS=http://0.0.0.0:80
-  #     - SpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:4201
-  #     - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql.data;Database=Enterprise.Commerce.Service.IdentityDb;User Id=sa;Password=P@ssw0rd} 
-  #     - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
-  #     - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
-  #     - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
-  #     - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
-  #     - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
-  #     - UseCustomizationData=True  
-  #     - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-  #     - OrchestratorType=${ORCHESTRATOR_TYPE}
-  #   ports:
-  #     - "5105:80"
-
-  commerce.admin:
+  catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${ESHOP_AZURE_CATALOG_DB:-Server=sql.data;Database=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd}
+      - ManufacturerImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/manufacturer/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - ProductImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/product/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - CategoryImageBaseUrl=${ESHOP_AZURE_STORAGE_CATALOG_URL:-http://localhost:5101/api/v1/category/image/}   #Local: You need to open your local dev-machine firewall at range 5100-5110
+      - identityUrl=http://identity.api           #Local: You need to open your local dev-machine firewall at range 5100-5110.
+      - IdentityUrlExternal=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}         
+      - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
+      - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
+      - UseCustomizationData=True
+      - AzureServiceBusEnabled=False
+      - AzureStorageEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
-      - "4000:4000"
+      - "5101:80"
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - CommerceAdminSpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:4200
+      - CommerceClientSpaClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:4201
+      - ConnectionString=${ESHOP_AZURE_IDENTITY_DB:-Server=sql.data;Database=Enterprise.Commerce.Service.IdentityDb;User Id=sa;Password=P@ssw0rd} 
+      - MvcClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5100              #Local: You need to open your local dev-machine firewall at range 5100-5110. 
+      - LocationApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5109
+      - MarketingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5110
+      - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
+      - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
+      - UseCustomizationData=True  
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5105:80"
+
+  # commerce.admin:
+  #   ports:
+  #     - "4000:4000"
     # environment:
     #   - identityUrl=http://identity.api
       

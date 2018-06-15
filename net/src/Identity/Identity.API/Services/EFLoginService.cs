@@ -29,5 +29,10 @@ namespace Identity.API.Services
         {
             return _signInManager.SignInAsync(user, true);
         }
+
+        public async Task SignOut()
+        {
+            await _signInManager.SignOutAsync();
+        }
     }
 }

@@ -22,15 +22,17 @@ import {
   Logout,
   Login,
   LoggedOut,
-  LoadConfiguration
+  LoadConfiguration,
+  LoadAuthSettings
 } from './app.actions';
 import { SecurityService } from './services/security/security.service';
 import { IConfiguration } from './models/configuration.model';
 
 export interface AppStateModel {
   configuration: IConfiguration,
+  authSettings: Oidc.UserManagerSettings,
   authenticated: boolean;
-  username: string;
+  userData: any;
   alertMessage: string;
   errorMessage: string;
   progressLoading: number;
@@ -42,8 +44,9 @@ export interface AppStateModel {
 
 const defaults: AppStateModel = {
   configuration: null,
+  authSettings: null,
   authenticated: false,
-  username: '',
+  userData: null,
   alertMessage: '',
   errorMessage: '',
   progressLoading: 0,
@@ -112,8 +115,13 @@ export class AppState {
     return state.authenticated;
   }
   @Selector()
-  static username(state: AppStateModel) {
-    return state.username;
+  static userData(state: AppStateModel) {
+    return state.userData;
+  }
+
+  @Selector()
+  static authSettings(state: AppStateModel) {
+    return state.authSettings;
   }
 
   //#endregion
@@ -176,7 +184,8 @@ export class AppState {
     { patchState, getState }: StateContext<AppStateModel>
   ) {
     const state = getState();
-    this.securityService.Authorize(state.configuration.identityUrl);
+    this.securityService.Initialize(state.configuration.identityUrl, state.authSettings);
+    this.securityService.Authorize();
   }
 
   /** Logout Command */
@@ -185,7 +194,8 @@ export class AppState {
     { patchState, getState }: StateContext<AppStateModel>
   ) {
     const state = getState();
-    this.securityService.Logoff(state.configuration.identityUrl);
+    this.securityService.Initialize(state.configuration.identityUrl, state.authSettings);
+    this.securityService.Logoff();
   }
 
   /** Logged Event */
@@ -196,7 +206,7 @@ export class AppState {
   ) {
     patchState({
       authenticated: true,
-      username: payload
+      userData: payload
     });
   }
 
@@ -207,7 +217,7 @@ export class AppState {
   ) {
     patchState({
       authenticated: false,
-      username: ''
+      userData: null
     });
     console.log(getState());
   }
@@ -218,9 +228,11 @@ export class AppState {
     { getState, patchState, dispatch }: StateContext<AppStateModel>
   ) {
     const state = getState();
+    this.securityService.Initialize(state.configuration.identityUrl, state.authSettings);
+    this.securityService.getUserData();
     this.securityService.authenticationChallenge$.subscribe(res => {
       if (res) {
-        dispatch(new Logged(this.securityService.UserData.email));
+        dispatch(new Logged(this.securityService.UserData));
       } else {
         dispatch(LoggedOut);
       }
@@ -236,6 +248,17 @@ export class AppState {
   ) {
     patchState({
       configuration: payload
+    })
+  }
+
+  /** Load auth setting Command */
+  @Action(LoadAuthSettings)
+  loadAuthSettings(
+    { patchState }: StateContext<AppStateModel>,
+    { payload }: LoadAuthSettings
+  ) {
+    patchState({
+      authSettings: payload
     })
   }
 

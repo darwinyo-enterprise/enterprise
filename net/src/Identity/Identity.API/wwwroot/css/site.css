@@ -4,7 +4,6 @@
 
 .page-container {
     height: 80vh;
-    padding-top: 6rem;
 }
 
 .navbar-header {
@@ -202,6 +201,7 @@ select::-ms-expand {
 
 .error-page {
     text-align: center;
+    padding-top: 6rem;
 }
 
 .error-content {
@@ -796,7 +796,9 @@ form .col-md-4 {
     display: inline-block;
     margin-left: 20px;
 }
-
+.logout-page {
+    padding-top: 6rem;
+}
 .logout-icon {
     background-image: url('../images/logout.PNG');
     display: inline-block;

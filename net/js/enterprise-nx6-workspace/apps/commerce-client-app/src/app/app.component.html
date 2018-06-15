@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex logo="assets:enterprise" email="{{(username|async)||'guest'}}">
+  <td-navigation-drawer flex logo="assets:enterprise" name="{{username}}" email="{{userEmail}}">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -117,6 +117,7 @@
               <img src="/assets/brand_footer.svg">
             </mat-icon>
             <p class="mat-body-1">&copy; Copyright 2018 Enterprise, Inc. All rights reserved.</p>
+
           </div>
         </div>
       </div>

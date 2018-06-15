@@ -39,14 +39,33 @@ namespace Identity.API.Configuration
                 // JavaScript Client
                 new Client
                 {
-                    ClientId = "js",
-                    ClientName = "Enterprise SPA OpenId Client",
+                    ClientId = "js_commerce_client",
+                    ClientName = "Enterprise Commerce Client App SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris =           { $"{clientsUrl["Spa"]}/" },
+                    RedirectUris =           { $"{clientsUrl["CommerceClientSpa"]}/" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientsUrl["Spa"]}/" },
-                    AllowedCorsOrigins =     { $"{clientsUrl["Spa"]}" },
+                    PostLogoutRedirectUris = { $"{clientsUrl["CommerceClientSpa"]}/" },
+                    AllowedCorsOrigins =     { $"{clientsUrl["CommerceClientSpa"]}" },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "orders",
+                        "basket",
+                        "catalog"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "js_commerce_admin",
+                    ClientName = "Enterprise Commerce Admin App SPA OpenId Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris =           { $"{clientsUrl["CommerceAdminSpa"]}/" },
+                    RequireConsent = false,
+                    PostLogoutRedirectUris = { $"{clientsUrl["CommerceAdminSpa"]}/" },
+                    AllowedCorsOrigins =     { $"{clientsUrl["CommerceAdminSpa"]}" },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

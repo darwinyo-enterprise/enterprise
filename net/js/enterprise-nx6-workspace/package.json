@@ -84,6 +84,7 @@
     "intl": "^1.2.5",
     "ngrx-store-freeze": "0.2.2",
     "node-fetch": "^2.1.2",
+    "oidc-client": "^1.5.1",
     "preboot": "^6.0.0-beta.4",
     "rxjs": "6.0.0",
     "rxjs-compat": "6.0.0",

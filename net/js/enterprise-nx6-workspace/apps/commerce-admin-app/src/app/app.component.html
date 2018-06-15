@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex logo="assets:enterprise" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex logo="assets:enterprise" name="{{username}}" email="{{userEmail}}">
     <mat-nav-list [tdLayoutClose]="!media.query('gt-sm')">
       <a *ngFor="let item of appmenu" mat-list-item (click)="onAppNavigateBtnClicked(item)">
         <mat-icon matListIcon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -29,21 +29,21 @@
         <mat-card class="nav-search-box" flex="20">
           <td-search-box [alwaysVisible]="true" #searchBox placeholder="Search" [showUnderline]="false"></td-search-box>
         </mat-card>
-        <ng-template [ngIf]="false">
+        <ng-template [ngIf]="(isAuthenticated | async)">
           <span class="nav-account">
             Welcome,
-            <a href="#">Darwin Yo</a>
+            <a href="#">{{username}}</a>
           </span>
-          <button mat-button class="nav-button">
+          <button id="logout-btn" mat-button class="nav-button" (click)="onLogoutBtnClicked()">
             <mat-icon>exit_to_app</mat-icon>
             Logout
           </button>
         </ng-template>
-        <ng-template [ngIf]="true">
-          <button mat-button class="nav-button">
+        <ng-template [ngIf]="!(isAuthenticated | async)">
+          <button id="login-btn" mat-button class="nav-button" (click)="onLoginBtnClicked()">
             Login
           </button>
-          <button mat-button class="nav-button">
+          <button id="register-btn" mat-button class="nav-button" (click)="onRegisterBtnClicked()">
             Register
           </button>
         </ng-template>

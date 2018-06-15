@@ -9,7 +9,7 @@ import { Select } from '@ngxs/store';
 import { AppState } from '../../app.state';
 import { IConfiguration } from '../../models/configuration.model';
 import { takeLast, take } from 'rxjs/operators';
-
+import * as Oidc from 'oidc-client';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,11 @@ export class SecurityService {
   private headers: HttpHeaders;
   private storage: StorageService;
   private authenticationSource = new Subject<boolean>();
+  private authorityUrl: string;
   authenticationChallenge$ = this.authenticationSource.asObservable();
-
+  userManager: Oidc.UserManager;
   public UserData: any;
+  settings: Oidc.UserManagerSettings;
 
   constructor(private _http: HttpClient, private _router: Router, private route: ActivatedRoute, private _storageService: StorageService) {
     this.headers = new HttpHeaders();
@@ -41,97 +43,49 @@ export class SecurityService {
   public GetToken(): any {
     return this.storage.retrieve('authorizationData');
   }
+  public Initialize(authorityUrl: string, settings: Oidc.UserManagerSettings) {
+    this.authorityUrl = authorityUrl;
+    this.settings = settings;
+    this.userManager = new Oidc.UserManager(this.settings);
+  }
+  public SetAuthorizationData(token: any, id_token: any) {
+    if (this.storage.retrieve('authorizationData') !== '') {
+      this.storage.store('authorizationData', '');
+    }
 
-  public Authorize(authorityUrl: string) {
-    this.resetAuthorizationData();
+    this.storage.store('authorizationData', token);
+    this.storage.store('authorizationDataIdToken', id_token);
+    this.IsAuthorized = true;
+    this.storage.store('IsAuthorized', true);
 
-    const authorizationUrl = authorityUrl + '/connect/authorize';
-    const client_id = 'js';
-    const redirect_uri = location.origin + '/';
-    const response_type = 'id_token token';
-    const scope = 'openid profile orders basket catalog';
-    const nonce = 'N' + Math.random() + '' + Date.now();
-    const state = Date.now() + '' + Math.random();
-
-    this.storage.store('authStateControl', state);
-    this.storage.store('authNonce', nonce);
-
-    const url =
-      authorizationUrl + '?' +
-      'response_type=' + encodeURI(response_type) + '&' +
-      'client_id=' + encodeURI(client_id) + '&' +
-      'redirect_uri=' + encodeURI(redirect_uri) + '&' +
-      'scope=' + encodeURI(scope) + '&' +
-      'nonce=' + encodeURI(nonce) + '&' +
-      'state=' + encodeURI(state);
-
-    window.location.href = url;
+    this.getUserData();
   }
 
-  public AuthorizedCallback(authorityUrl: string) {
+  public Authorize() {
     this.resetAuthorizationData();
+    this.userManager.signinRedirect();
+  }
 
-    const hash = window.location.hash.substr(1);
-
-    const result: any = hash.split('&').reduce((res: any, item: string) => {
-      const parts = item.split('=');
-      res[parts[0]] = parts[1];
-      return res;
-    }, {});
-
-    console.log(result);
-
-    let token = '';
-    let id_token = '';
-    let authResponseIsValid = false;
-
-    if (!result.error) {
-
-      if (result.state !== this.storage.retrieve('authStateControl')) {
-        console.log('AuthorizedCallback incorrect state');
+  public AuthorizedCallback() {
+    this.resetAuthorizationData();
+    this.userManager.signinRedirectCallback().then(user => {
+      if (user) {
+        this.SetAuthorizationData(user.access_token, user.id_token);
       } else {
-
-        token = result.access_token;
-        id_token = result.id_token;
-
-        const dataIdToken: any = this.getDataFromToken(id_token);
-        console.log(dataIdToken);
-
-        // validate nonce
-        if (dataIdToken.nonce !== this.storage.retrieve('authNonce')) {
-          console.log('AuthorizedCallback incorrect nonce');
-        } else {
-          this.storage.store('authNonce', '');
-          this.storage.store('authStateControl', '');
-
-          authResponseIsValid = true;
-          console.log('AuthorizedCallback state and nonce validated, returning access token');
-        }
+        console.log('error');
       }
-    }
-
-
-    if (authResponseIsValid) {
-      this.setAuthorizationData(token, id_token, authorityUrl);
-    }
+    });
   }
 
-  public Logoff(authorityUrl: string) {
-    const authorizationUrl = authorityUrl + '/connect/endsession';
-    const id_token_hint = this.storage.retrieve('authorizationDataIdToken');
-    const post_logout_redirect_uri = location.origin + '/';
-
-    const url =
-      authorizationUrl + '?' +
-      'id_token_hint=' + encodeURI(id_token_hint) + '&' +
-      'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
+  public Logoff() {
+    this.userManager.signoutRedirect();
 
     this.resetAuthorizationData();
 
     // emit observable
     this.authenticationSource.next(false);
-    window.location.href = url;
   }
+
 
   resetAuthorizationData() {
     this.storage.store('authorizationData', '');
@@ -151,18 +105,7 @@ export class SecurityService {
     this.IsAuthorized = true;
     this.storage.store('IsAuthorized', true);
 
-    this.getUserData(authorityUrl)
-      .subscribe(data => {
-        this.UserData = data;
-        this.storage.store('userData', data);
-        // emit observable
-        this.authenticationSource.next(true);
-        window.location.href = location.origin;
-      },
-        error => this.handleError(error),
-        () => {
-          console.log(this.UserData);
-        });
+    this.getUserData();
   }
 
   handleError(error: any) {
@@ -204,14 +147,17 @@ export class SecurityService {
     return data;
   }
 
-  getUserData(authorityUrl: string): Observable<string[]> {
-    this.setHeaders();
-    if (authorityUrl === '')
-      authorityUrl = this.storage.retrieve('IdentityUrl');
-
-    return this._http.get<string[]>(authorityUrl + '/connect/userinfo', {
-      headers: this.headers
-    });
+  getUserData() {
+    this.userManager.getUser().then(data => {
+      if (data) {
+        this.UserData = data;
+        this.storage.store('userData', data);
+        // emit observable
+        this.authenticationSource.next(true);
+      } else {
+        this.authenticationSource.next(false);
+      }
+    }).catch(error => this.handleError(error))
   }
 
   setHeaders() {

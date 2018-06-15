@@ -65,7 +65,8 @@ export class Login {
 /** Logged Event */
 export class Logged {
   static readonly type = '[APP] LOGGED';
-  constructor(public payload: string) { }
+  /** user data */
+  constructor(public payload: any) { }
 }
 /** Logged Out Event */
 export class LoggedOut {
@@ -88,4 +89,10 @@ export class SubscribeUser {
 export class LoadConfiguration {
   static readonly type = '[APP] LOAD CONFIGURATION';
   constructor(public payload: IConfiguration) { }
+}
+
+/** Load auth settings Command */
+export class LoadAuthSettings {
+  static readonly type = '[APP] LOAD AUTH SETTINGS';
+  constructor(public payload: Oidc.UserManagerSettings) { }
 }

@@ -18,7 +18,8 @@ namespace Identity.API.Data
             var clientUrls = new Dictionary<string, string>();
 
             clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
-            clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("CommerceClientSpa", configuration.GetValue<string>("CommerceClientSpaClient"));
+            clientUrls.Add("CommerceAdminSpa", configuration.GetValue<string>("CommerceAdminSpaClient"));
             clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
             clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
             clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));

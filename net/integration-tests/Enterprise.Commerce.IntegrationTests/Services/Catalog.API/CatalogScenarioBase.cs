@@ -24,7 +24,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
                     .Build()
                 )
                 .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
-                .UseStartup<Startup>();
+                .UseStartup<CatalogTestsStartup>();
 
             var testServer = new TestServer(webHostBuilder);
 

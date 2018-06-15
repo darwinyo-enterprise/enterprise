@@ -5,6 +5,8 @@ jobs:
         - cd net/
         - docker-compose -f docker-compose.yml -f docker-compose.override.yml up --no-start
         - docker images
+        - docker push darwinyo/commerce.admin
+        - docker push darwinyo/commerce.client
         
 
     # - stage: sass-unit-test

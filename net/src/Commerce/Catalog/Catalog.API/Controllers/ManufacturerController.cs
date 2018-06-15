@@ -10,6 +10,7 @@ using Catalog.API.Infrastructure;
 using Catalog.API.Models;
 using Catalog.API.ViewModels;
 using Enterprise.Library.FileUtility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -96,6 +97,7 @@ namespace Catalog.API.Controllers
         /// <returns>Manufacturer</returns>
         // GET api/v1/Manufacturer/list
         [HttpGet("list")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedListViewModel<ItemViewModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetListManufacturersAsync(CancellationToken cancellationToken, [FromQuery] int pageSize = 10,
@@ -131,6 +133,7 @@ namespace Catalog.API.Controllers
         /// <returns>Manufacturer</returns>
         // GET api/v1/Manufacturer/5
         [HttpGet("{id}")] //Done
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Manufacturer), (int)HttpStatusCode.OK)]
@@ -170,6 +173,7 @@ namespace Catalog.API.Controllers
         /// <returns></returns>
         // POST api/v1/Manufacturer
         [HttpPost] //Done
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> AddNewManufacturerAsync([FromBody] Manufacturer manufacturer,
@@ -266,6 +270,7 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // PUT api/v1/Manufacturer/5
         [HttpPut("{id}")] // Done
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -309,6 +314,7 @@ namespace Catalog.API.Controllers
         /// <param name="cancellationToken"></param>
         // DELETE api/v1/Manufacturer/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]

@@ -47,7 +47,7 @@ namespace Identity.API
                         sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -74,7 +74,7 @@ namespace Identity.API
 
             var connectionString = Configuration["ConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
+            
             // Adds IdentityServer
             services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddSigningCredential(Certificate.Get())

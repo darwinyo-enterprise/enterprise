@@ -1,3 +1,8 @@
+import { IConfiguration } from "@enterprise/core/src";
+
 export const environment = {
-  production: true
+  production: true,
+  configuration: <IConfiguration>{
+    identityUrl: process.env.identityUrl
+  }
 };

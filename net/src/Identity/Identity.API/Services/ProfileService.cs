@@ -29,8 +29,8 @@ namespace Identity.API.Services
             var user = await _userManager.FindByIdAsync(subjectId);
             if (user == null)
                 throw new ArgumentException("Invalid subject identifier");
-
-            var claims = GetClaimsFromUser(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var claims = GetClaimsFromUser(user, roles);
             context.IssuedClaims = claims.ToList();
         }
 
@@ -64,7 +64,7 @@ namespace Identity.API.Services
             }
         }
 
-        private IEnumerable<Claim> GetClaimsFromUser(ApplicationUser user)
+        private IEnumerable<Claim> GetClaimsFromUser(ApplicationUser user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -104,6 +104,11 @@ namespace Identity.API.Services
 
             if (!string.IsNullOrWhiteSpace(user.ZipCode))
                 claims.Add(new Claim("address_zip_code", user.ZipCode));
+
+            foreach (var claim in roles)
+            {
+                claims.Add(new Claim("roles", claim));
+            }
 
             if (_userManager.SupportsUserEmail)
                 claims.AddRange(new[]
