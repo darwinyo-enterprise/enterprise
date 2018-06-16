@@ -4,6 +4,7 @@ using Enterprise.Library.HealthChecks;
 using Enterprise.Library.IntegrationEventLog;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,9 @@ namespace Catalog.API
                         .SeedAsync(context, env, settings, logger)
                         .Wait();
                 })
-                .MigrateDbContext<IntegrationEventLogContext>((_, __) => { })
+                .MigrateDbContext<IntegrationEventLogContext>((_, __) =>
+                {
+                })
                 .Run();
         }
 

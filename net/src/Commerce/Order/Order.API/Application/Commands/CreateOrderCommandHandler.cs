@@ -43,7 +43,7 @@ namespace Order.API.Application.Commands
             _orderRepository.Add(order);
 
             return await _orderRepository.UnitOfWork
-                .SaveEntitiesAsync();
+                .SaveEntitiesAsync(cancellationToken);
         }
     }
 

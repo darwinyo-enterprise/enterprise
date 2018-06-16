@@ -43,7 +43,7 @@ namespace Order.API.Application.IntegrationEvents
             await ResilientTransaction.New(_orderingContext)
                 .ExecuteAsync(async () =>
                 {
-                    // Achieving atomicity between original ordering database operation and the IntegrationEventLog thanks to a local transaction
+                    // Achieving atomicity between original Ordering database operation and the IntegrationEventLog thanks to a local transaction
                     await _orderingContext.SaveChangesAsync();
                     await _eventLogService.SaveEventAsync(evt,
                         _orderingContext.Database.CurrentTransaction.GetDbTransaction());

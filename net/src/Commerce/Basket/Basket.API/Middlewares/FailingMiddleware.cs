@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Basket.API.Infrastructure.Middlewares
+namespace Basket.API.Middlewares
 {
     public class FailingMiddleware
     {

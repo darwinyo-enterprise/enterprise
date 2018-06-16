@@ -4,6 +4,7 @@ using Identity.API.Data;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,9 @@ namespace Identity.API
         public static void Main(string[] args)
         {
             BuildWebHost(args)
-                .MigrateDbContext<PersistedGrantDbContext>((_, __) => { })
+                .MigrateDbContext<PersistedGrantDbContext>((_, __) =>
+                {
+                })
                 .MigrateDbContext<ApplicationDbContext>((context, services) =>
                 {
                     var env = services.GetService<IHostingEnvironment>();

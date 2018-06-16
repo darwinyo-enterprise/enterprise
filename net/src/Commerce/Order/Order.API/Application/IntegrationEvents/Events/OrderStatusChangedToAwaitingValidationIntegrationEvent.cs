@@ -22,13 +22,13 @@ namespace Order.API.Application.IntegrationEvents.Events
 
     public class OrderStockItem
     {
-        public OrderStockItem(int productId, int units)
+        public OrderStockItem(string productId, int units)
         {
             ProductId = productId;
             Units = units;
         }
 
-        public int ProductId { get; }
+        public string ProductId { get; }
         public int Units { get; }
     }
 }

@@ -6,7 +6,6 @@ using Castle.Core.Internal;
 using Catalog.API;
 using Catalog.API.Controllers;
 using Catalog.API.Models;
-using Enterprise.Commerce.IntegrationTests.Fixture;
 using Enterprise.Commerce.Tests.Fixture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

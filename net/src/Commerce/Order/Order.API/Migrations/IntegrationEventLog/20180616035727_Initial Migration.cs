@@ -1,15 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
 
-namespace Order.API.Infrastructure.IntegrationEventMigrations
+namespace Order.API.Migrations.IntegrationEventLog
 {
-    public partial class IntegrationEventInitial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                "IntegrationEventLog",
-                table => new
+                name: "IntegrationEventLog",
+                columns: table => new
                 {
                     EventId = table.Column<Guid>(nullable: false),
                     Content = table.Column<string>(nullable: false),
@@ -18,13 +19,16 @@ namespace Order.API.Infrastructure.IntegrationEventMigrations
                     State = table.Column<int>(nullable: false),
                     TimesSent = table.Column<int>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IntegrationEventLog", x => x.EventId);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "IntegrationEventLog");
+                name: "IntegrationEventLog");
         }
     }
 }

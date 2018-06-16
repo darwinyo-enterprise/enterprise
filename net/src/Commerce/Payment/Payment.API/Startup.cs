@@ -130,7 +130,7 @@ namespace Payment.API
             else
                 services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
                 {
-                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
+                    var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
                     var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                     var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
                     var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
@@ -139,7 +139,7 @@ namespace Payment.API
                     if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
                         retryCount = int.Parse(Configuration["EventBusRetryCount"]);
 
-                    return new EventBusRabbitMq(rabbitMQPersistentConnection, logger, iLifetimeScope,
+                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope,
                         eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                 });
 

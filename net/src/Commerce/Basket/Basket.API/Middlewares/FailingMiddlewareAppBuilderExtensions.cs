@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 
-namespace Basket.API.Infrastructure.Middlewares
+namespace Basket.API.Middlewares
 {
     public static class FailingMiddlewareAppBuilderExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Basket.API.Infrastructure.ActionResults
+namespace Basket.API.ActionResults
 {
     public class InternalServerErrorObjectResult : ObjectResult
     {

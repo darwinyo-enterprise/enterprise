@@ -9,14 +9,14 @@ namespace Order.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Buyer> buyerConfiguration)
         {
-            buyerConfiguration.ToTable("buyers", OrderingContext.DEFAULT_SCHEMA);
+            buyerConfiguration.ToTable("Buyers", OrderingContext.DefaultSchema);
 
             buyerConfiguration.HasKey(b => b.Id);
 
             buyerConfiguration.Ignore(b => b.DomainEvents);
 
             buyerConfiguration.Property(b => b.Id)
-                .ForSqlServerUseSequenceHiLo("buyerseq", OrderingContext.DEFAULT_SCHEMA);
+                .ForSqlServerUseSequenceHiLo("buyerseq", OrderingContext.DefaultSchema);
 
             buyerConfiguration.Property(b => b.IdentityGuid)
                 .HasMaxLength(200)

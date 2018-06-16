@@ -17,9 +17,9 @@ namespace Enterprise.Abstraction
             Name = name;
         }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
-        public int Id { get; }
+        public int Id { get; private set; }
 
         public int CompareTo(object other)
         {

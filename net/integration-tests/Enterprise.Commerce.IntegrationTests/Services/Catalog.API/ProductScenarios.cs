@@ -79,7 +79,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
 
         private async Task<Product> SeedTestProductAsync(CatalogContext ctx, TestServer server)
         {
-            var _fileUtility = server.Host.Services.GetRequiredService<IFileUtility>();
+            var fileUtility = server.Host.Services.GetRequiredService<IFileUtility>();
             var viewModel = await GetTestProductVIewModelAsync(ctx);
             var verifyProduct =
                 await ctx.Products
@@ -92,7 +92,7 @@ namespace Enterprise.Commerce.IntegrationTests.Services.Catalog.API
             {
                 // Delete Foreach image in directory and eventually delete folder when its empty.
                 foreach (var image in verifyProduct.ProductImages)
-                    _fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
+                    fileUtility.DeleteFile("ProductImage/" + image.ProductId, image.ImageName);
 
                 ctx.ProductImages.RemoveRange(verifyProduct.ProductImages);
                 ctx.ProductColors.RemoveRange(verifyProduct.ProductColors);

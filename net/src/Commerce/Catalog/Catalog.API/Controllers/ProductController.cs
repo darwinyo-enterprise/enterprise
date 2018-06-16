@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Catalog.API.Helpers;
 using Catalog.API.Infrastructure;
+using Catalog.API.IntegrationEvents;
+using Catalog.API.IntegrationEvents.Events;
 using Catalog.API.Models;
 using Catalog.API.ViewModels;
 using Enterprise.Library.FileUtility;
@@ -24,13 +26,15 @@ namespace Catalog.API.Controllers
         private readonly CatalogContext _catalogContext;
         private readonly IFileUtility _fileUtility;
         private readonly CatalogSettings _settings;
+        private readonly ICatalogIntegrationEventService _catalogIntegrationEventService;
 
         public ProductController(CatalogContext catalogContext,
-            IFileUtility fileUtility, IOptionsSnapshot<CatalogSettings> settings)
+            IFileUtility fileUtility, IOptionsSnapshot<CatalogSettings> settings, ICatalogIntegrationEventService catalogIntegrationEventService)
         {
             _catalogContext = catalogContext ??
                               throw new ArgumentNullException(nameof(catalogContext));
             _fileUtility = fileUtility;
+            _catalogIntegrationEventService = catalogIntegrationEventService;
             _settings = settings.Value;
         }
 
@@ -681,14 +685,18 @@ namespace Catalog.API.Controllers
                     .SingleOrDefaultAsync(i => i.Id == id, cancellationToken);
 
                 if (item == null) return NotFound(new {Message = $"Item with id {updateModel.Id} not found."});
+
                 if (updateModel.CategoryId <= 0 || updateModel.ManufacturerId <= 0)
                     return BadRequest(new
                     {
                         Message = $"Cant update Product when category and manufacturer is not assign."
                     });
                 if (updateModel.ProductImages == null || updateModel.ProductImages.Length <= 0)
-                    return BadRequest(new {Message = "Cant update product with 0 image"});
+                    return BadRequest(new { Message = "Cant update product with 0 image" });
 
+                var oldPrice = item.Price;
+                var raiseProductPriceChangedEvent = oldPrice != updateModel.Price;
+                
                 updateModel.Id = id;
 
                 #region Clean all Images and colors
@@ -709,10 +717,9 @@ namespace Catalog.API.Controllers
                 #endregion
 
                 #region Mapping
-
+                // Update current product
                 item.Description = updateModel.Description;
-                // TODO: Replace this with real identity
-                item.LastUpdatedBy = "1";
+                item.LastUpdatedBy = updateModel.ActorId;
                 item.LastUpdated = DateTime.Now;
                 item.Name = updateModel.Name;
                 item.CategoryId = updateModel.CategoryId;
@@ -729,7 +736,22 @@ namespace Catalog.API.Controllers
                 // Update current product
                 _catalogContext.Products.Update(item);
 
-                await _catalogContext.SaveChangesAsync(cancellationToken);
+
+                if (raiseProductPriceChangedEvent) // Save product's data and publish integration event through the Event Bus if price has changed
+                {
+                    //Create Integration Event to be published through the Event Bus
+                    var priceChangedEvent = new ProductPriceChangedIntegrationEvent(item.Id, updateModel.Price, oldPrice);
+
+                    // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
+                    await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(priceChangedEvent);
+
+                    // Publish through the Event Bus and mark the saved event as published
+                    await _catalogIntegrationEventService.PublishThroughEventBusAsync(priceChangedEvent);
+                }
+                else // Just save the updated product because the Product's Price hasn't changed.
+                {
+                    await _catalogContext.SaveChangesAsync(cancellationToken);
+                }
 
                 return CreatedAtAction(nameof(UpdateProductAsync), new
                 {

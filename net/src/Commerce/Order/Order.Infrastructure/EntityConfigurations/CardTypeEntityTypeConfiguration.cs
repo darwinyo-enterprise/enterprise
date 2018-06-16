@@ -9,7 +9,7 @@ namespace Order.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CardType> cardTypesConfiguration)
         {
-            cardTypesConfiguration.ToTable("cardtypes", OrderingContext.DEFAULT_SCHEMA);
+            cardTypesConfiguration.ToTable("CardTypes", OrderingContext.DefaultSchema);
 
             cardTypesConfiguration.HasKey(ct => ct.Id);
 

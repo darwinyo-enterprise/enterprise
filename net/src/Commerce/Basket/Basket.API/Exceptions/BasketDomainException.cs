@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Basket.API.Infrastructure.Exceptions
+namespace Basket.API.Exceptions
 {
     /// <summary>
     ///     Exception type for app exceptions

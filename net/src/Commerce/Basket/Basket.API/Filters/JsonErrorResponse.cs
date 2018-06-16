@@ -1,4 +1,4 @@
-﻿namespace Basket.API.Infrastructure.Filters
+﻿namespace Basket.API.Filters
 {
     public class JsonErrorResponse
     {

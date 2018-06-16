@@ -7,14 +7,14 @@ namespace Catalog.API.IntegrationEvents.Events
     // An Integration Event is an event that can cause side effects to other microsrvices, Bounded-Contexts or external systems.
     public class ProductPriceChangedIntegrationEvent : IntegrationEvent
     {
-        public ProductPriceChangedIntegrationEvent(int productId, decimal newPrice, decimal oldPrice)
+        public ProductPriceChangedIntegrationEvent(string productId, decimal newPrice, decimal oldPrice)
         {
             ProductId = productId;
             NewPrice = newPrice;
             OldPrice = oldPrice;
         }
 
-        public int ProductId { get; }
+        public string ProductId { get; }
 
         public decimal NewPrice { get; }
 

@@ -21,6 +21,7 @@ namespace Order.API.Application.Commands
         ///     customer executes cancel order from app
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<bool> Handle(CancelOrderCommand command, CancellationToken cancellationToken)
         {

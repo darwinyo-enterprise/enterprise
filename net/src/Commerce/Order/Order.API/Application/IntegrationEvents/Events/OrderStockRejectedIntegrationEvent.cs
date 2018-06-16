@@ -19,13 +19,13 @@ namespace Order.API.Application.IntegrationEvents.Events
 
     public class ConfirmedOrderStockItem
     {
-        public ConfirmedOrderStockItem(int productId, bool hasStock)
+        public ConfirmedOrderStockItem(string productId, bool hasStock)
         {
             ProductId = productId;
             HasStock = hasStock;
         }
 
-        public int ProductId { get; }
+        public string ProductId { get; }
         public bool HasStock { get; }
     }
 }

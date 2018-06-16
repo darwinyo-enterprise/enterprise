@@ -51,7 +51,7 @@ namespace Order.API.Infrastructure.AutofacModules
                 return t =>
                 {
                     var resolved =
-                        (IEnumerable<object>) componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+                        (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
                     return resolved;
                 };
             });

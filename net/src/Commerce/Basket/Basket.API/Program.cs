@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Basket.API.Infrastructure.Middlewares;
+using Basket.API.Middlewares;
 using Enterprise.Library.HealthChecks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

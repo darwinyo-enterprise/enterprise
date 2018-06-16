@@ -9,7 +9,7 @@ namespace Order.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<OrderItem> orderItemConfiguration)
         {
-            orderItemConfiguration.ToTable("orderItems", OrderingContext.DEFAULT_SCHEMA);
+            orderItemConfiguration.ToTable("OrderItem", OrderingContext.DefaultSchema);
 
             orderItemConfiguration.HasKey(o => o.Id);
 
@@ -24,7 +24,7 @@ namespace Order.Infrastructure.EntityConfigurations
             orderItemConfiguration.Property<decimal>("Discount")
                 .IsRequired();
 
-            orderItemConfiguration.Property<int>("ProductId")
+            orderItemConfiguration.Property<string>("ProductId")
                 .IsRequired();
 
             orderItemConfiguration.Property<string>("ProductName")

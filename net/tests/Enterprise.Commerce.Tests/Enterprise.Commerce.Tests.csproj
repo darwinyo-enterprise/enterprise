@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="Moq" Version="4.8.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
@@ -17,6 +17,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Commerce\Catalog\Catalog.API\Catalog.API.csproj" />
+    <ProjectReference Include="..\..\src\Commerce\Order\Order.API\Order.API.csproj" />
+    <ProjectReference Include="..\..\src\Commerce\Order\Order.Domain\Order.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Commerce\Order\Order.Infrastructure\Order.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Identity\Identity.API\Identity.API.csproj" />
+    <ProjectReference Include="..\..\src\Library\Resilience\Enterprise.Library.Resilience.Http\Enterprise.Library.Resilience.Http.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Order.API\" />
   </ItemGroup>
 
 </Project>

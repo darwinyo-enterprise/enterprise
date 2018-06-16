@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Basket.API.Infrastructure.Filters
+namespace Basket.API.Filters
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {

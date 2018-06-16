@@ -102,6 +102,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{A1E6AB
 		src\Library\HealthChecks\common\Guard.cs = src\Library\HealthChecks\common\Guard.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resilience", "Resilience", "{2F62F23D-CFD2-4977-8D27-4AB009DC8301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enterprise.Library.Resilience.Http", "src\Library\Resilience\Enterprise.Library.Resilience.Http\Enterprise.Library.Resilience.Http.csproj", "{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -208,6 +212,10 @@ Global
 		{F563DD3C-3066-4FC1-8B35-4DD47F09DE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F563DD3C-3066-4FC1-8B35-4DD47F09DE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F563DD3C-3066-4FC1-8B35-4DD47F09DE57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -252,6 +260,8 @@ Global
 		{2A5D170D-FE06-4F3E-9E8B-FA96DD1EE321} = {701DD8C3-ECB0-4A01-9ABE-25A4F38F0DAD}
 		{F563DD3C-3066-4FC1-8B35-4DD47F09DE57} = {D7CE7A34-6B26-4943-978E-BB8D46A56C43}
 		{A1E6AB29-FD36-425D-BCC2-76EF93FF5D88} = {F5A6A326-F457-4BA4-B289-A8546E664A35}
+		{2F62F23D-CFD2-4977-8D27-4AB009DC8301} = {A2A5FB03-1DD5-41A1-8D6C-9863B8837478}
+		{82D9AD03-9FA0-4DCB-82F8-B2D7C5BF6464} = {2F62F23D-CFD2-4977-8D27-4AB009DC8301}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {848A472E-7567-47EF-B122-B016D364DC30}

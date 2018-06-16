@@ -12,7 +12,7 @@ namespace Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     [Migration("20180606163037_change Id length to 36")]
-    partial class changeIdlengthto36
+    partial class ChangeIdlengthto36
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

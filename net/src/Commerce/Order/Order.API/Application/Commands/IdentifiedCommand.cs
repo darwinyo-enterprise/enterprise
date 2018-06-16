@@ -3,8 +3,8 @@ using MediatR;
 
 namespace Order.API.Application.Commands
 {
-    public class IdentifiedCommand<T, R> : IRequest<R>
-        where T : IRequest<R>
+    public class IdentifiedCommand<T, TR> : IRequest<TR>
+        where T : IRequest<TR>
     {
         public IdentifiedCommand(T command, Guid id)
         {

@@ -95,7 +95,7 @@ namespace Basket.API.Controllers
                 basketCheckout.Buyer, basketCheckout.RequestId, basket);
 
             // Once basket is checkout, sends an integration event to
-            // ordering.api to convert basket to order and proceeds with
+            // Ordering.api to convert basket to order and proceeds with
             // order creation process
             _eventBus.Publish(eventMessage);
 

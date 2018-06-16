@@ -30,9 +30,9 @@ namespace Order.API.Application.Queries
                         o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
                         os.Name as status, 
                         oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
-                        FROM ordering.Orders o
-                        LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid 
-                        LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id
+                        FROM Ordering.Orders o
+                        LEFT JOIN Ordering.OrderItems oi ON o.Id = oi.orderid 
+                        LEFT JOIN Ordering.OrderStatus os on o.OrderStatusId = os.Id
                         WHERE o.Id=@id"
                     , new {id}
                 );
@@ -52,9 +52,9 @@ namespace Order.API.Application.Queries
 
                 return await connection.QueryAsync<OrderSummary>(
                     @"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
-                     FROM [ordering].[Orders] o
-                     LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
-                     LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id                     
+                     FROM [Ordering].[Orders] o
+                     LEFT JOIN[Ordering].[OrderItems] oi ON  o.Id = oi.orderid 
+                     LEFT JOIN[Ordering].[OrderStatus] os on o.OrderStatusId = os.Id                     
                      GROUP BY o.[Id], o.[OrderDate], os.[Name] 
                      ORDER BY o.[Id]");
             }
@@ -66,7 +66,7 @@ namespace Order.API.Application.Queries
             {
                 connection.Open();
 
-                return await connection.QueryAsync<CardType>("SELECT * FROM ordering.cardtypes");
+                return await connection.QueryAsync<CardType>("SELECT * FROM Ordering.CardTypes");
             }
         }
 
@@ -74,30 +74,30 @@ namespace Order.API.Application.Queries
         {
             var order = new Order
             {
-                ordernumber = result[0].ordernumber,
-                date = result[0].date,
-                status = result[0].status,
-                description = result[0].description,
-                street = result[0].street,
-                city = result[0].city,
-                zipcode = result[0].zipcode,
-                country = result[0].country,
-                orderitems = new List<Orderitem>(),
-                total = 0
+                Ordernumber = result[0].ordernumber,
+                Date = result[0].date,
+                Status = result[0].status,
+                Description = result[0].description,
+                Street = result[0].street,
+                City = result[0].city,
+                Zipcode = result[0].zipcode,
+                Country = result[0].country,
+                Orderitems = new List<Orderitem>(),
+                Total = 0
             };
 
             foreach (var item in result)
             {
                 var orderitem = new Orderitem
                 {
-                    productname = item.productname,
-                    units = item.units,
-                    unitprice = (double) item.unitprice,
-                    pictureurl = item.pictureurl
+                    Productname = item.productname,
+                    Units = item.units,
+                    Unitprice = (double) item.unitprice,
+                    Pictureurl = item.pictureurl
                 };
 
-                order.total += item.units * item.unitprice;
-                order.orderitems.Add(orderitem);
+                order.Total += item.units * item.unitprice;
+                order.Orderitems.Add(orderitem);
             }
 
             return order;

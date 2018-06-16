@@ -4,7 +4,7 @@ using Order.API.Application.Models;
 
 namespace Order.API.Application.Commands
 {
-    public class CreateOrderDraftCommand : IRequest<OrderDraftDTO>
+    public class CreateOrderDraftCommand : IRequest<OrderDraftDto>
     {
         public CreateOrderDraftCommand(string buyerId, IEnumerable<BasketItem> items)
         {

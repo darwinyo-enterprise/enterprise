@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Catalog.API;
 using Catalog.API.Controllers;
+using Catalog.API.IntegrationEvents;
 using Catalog.API.Models;
 using Catalog.API.ViewModels;
-using Enterprise.Commerce.IntegrationTests.Fixture;
 using Enterprise.Commerce.Tests.Fixture;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +34,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
             _catalogContextFixture = catalogContextFixture;
             _fileUtilityFixture = fileUtilityFixture;
-
+            _catalogIntegrationEventServiceMock = new Mock<ICatalogIntegrationEventService>();
             var settings = new Mock<IOptionsSnapshot<CatalogSettings>>();
             settings.Setup(x => x.Value).Returns(catalogSettings);
             _settings = settings.Object;
@@ -42,7 +42,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
         private readonly CatalogContextFixture _catalogContextFixture;
         private readonly FileUtilityFixture _fileUtilityFixture;
-
+        private Mock<ICatalogIntegrationEventService> _catalogIntegrationEventServiceMock;
         private readonly IOptionsSnapshot<CatalogSettings> _settings;
 
         private async Task<List<Product>> SeedProduct(CancellationToken cancellationToken)
@@ -266,7 +266,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetProductInfoByIdAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -287,7 +287,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetProductInfoByIdAsync(id, cancellationToken);
             Assert.IsType<NotFoundResult>(response);
         }
@@ -300,7 +300,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetProductByIdAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -321,7 +321,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetProductByIdAsync(id, cancellationToken);
             Assert.IsType<NotFoundResult>(response);
         }
@@ -334,7 +334,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetProductImageAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -356,7 +356,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             if (lastProductImageId != null)
             {
                 var response =
@@ -377,7 +377,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.GetListProductsAsync(cancellationToken, 0, -10);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -401,7 +401,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.AddNewProductAsync(null, cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
@@ -413,7 +413,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var cancellationToken = new CancellationToken();
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response =
                 await productController.AddNewProductAsync(GetTestProductViewModelEmptyImage(), cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
@@ -441,7 +441,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.AddNewProductAsync(productViewModel, cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
@@ -465,7 +465,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             };
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.AddNewProductAsync(productToAdd, cancellationToken);
             var badRequestResponse = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", badRequestResponse.Value.ToString());
@@ -503,7 +503,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.UpdateProductAsync(id, productToUpdate, cancellationToken);
             var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
 
@@ -530,7 +530,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var id = expectedProduct[0].Id;
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.UpdateProductAsync(id, productToUpdate, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
 
@@ -559,7 +559,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
             var id = expectedProduct[0].Id;
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.UpdateProductAsync(id, productToUpdate, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
 
@@ -590,7 +590,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
                 cancellationToken)).Id;
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.DeleteProductAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -604,7 +604,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.DeleteProductAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<BadRequestObjectResult>(response);
             Assert.Contains("Message", responseMessage.Value.ToString());
@@ -626,7 +626,7 @@ namespace Enterprise.Commerce.Tests.Catalog.API
 
             // Act
             var productController = new ProductController(_catalogContextFixture.Context,
-                _fileUtilityFixture.FileUtility, _settings);
+                _fileUtilityFixture.FileUtility, _settings, _catalogIntegrationEventServiceMock.Object);
             var response = await productController.DeleteProductAsync(id, cancellationToken);
             var responseMessage = Assert.IsType<NotFoundObjectResult>(response);
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using Enterprise.Library.HealthChecks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Order.BackgroundTasks
 {
@@ -10,11 +12,15 @@ namespace Order.BackgroundTasks
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .Build();
-        }
+                .UseHealthChecks("/hc")
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddDebug();
+                    builder.AddConsole();
+                }).Build();
     }
 }

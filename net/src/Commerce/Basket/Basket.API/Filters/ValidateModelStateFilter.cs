@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Basket.API.Infrastructure.Filters
+namespace Basket.API.Filters
 {
     public class ValidateModelStateFilter : ActionFilterAttribute
     {

@@ -9,7 +9,7 @@ namespace Order.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<OrderStatus> orderStatusConfiguration)
         {
-            orderStatusConfiguration.ToTable("orderstatus", OrderingContext.DEFAULT_SCHEMA);
+            orderStatusConfiguration.ToTable("OrderStatus", OrderingContext.DefaultSchema);
 
             orderStatusConfiguration.HasKey(o => o.Id);
 

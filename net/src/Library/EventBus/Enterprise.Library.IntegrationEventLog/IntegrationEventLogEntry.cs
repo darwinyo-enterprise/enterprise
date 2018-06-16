@@ -9,6 +9,10 @@ namespace Enterprise.Library.IntegrationEventLog
     /// </summary>
     public class IntegrationEventLogEntry
     {
+        public IntegrationEventLogEntry()
+        {
+            
+        }
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
             EventId = @event.Id;

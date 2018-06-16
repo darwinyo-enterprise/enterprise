@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Catalog.API.Migrations
 {
-    public partial class changeIdlengthto36 : Migration
+    public partial class ChangeIdlengthto36 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

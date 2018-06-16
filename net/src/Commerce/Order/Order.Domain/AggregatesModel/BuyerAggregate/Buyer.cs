@@ -24,9 +24,9 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
         }
 
-        public string IdentityGuid { get; }
+        public string IdentityGuid { get;private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public IEnumerable<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
@@ -34,8 +34,8 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
             int cardTypeId, string alias, string cardNumber,
             string securityNumber, string cardHolderName, DateTime expiration, int orderId)
         {
-            var existingPayment = _paymentMethods.Where(p => p.IsEqualTo(cardTypeId, cardNumber, expiration))
-                .SingleOrDefault();
+            var existingPayment = _paymentMethods
+                .SingleOrDefault(p => p.IsEqualTo(cardTypeId, cardNumber, expiration));
 
             if (existingPayment != null)
             {

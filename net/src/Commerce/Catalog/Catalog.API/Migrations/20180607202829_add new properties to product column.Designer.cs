@@ -12,7 +12,7 @@ namespace Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     [Migration("20180607202829_add new properties to product column")]
-    partial class addnewpropertiestoproductcolumn
+    partial class Addnewpropertiestoproductcolumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

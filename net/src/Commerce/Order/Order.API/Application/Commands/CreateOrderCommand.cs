@@ -21,11 +21,11 @@ namespace Order.API.Application.Commands
     public class CreateOrderCommand
         : IRequest<bool>
     {
-        [DataMember] private readonly List<OrderItemDTO> _orderItems;
+        [DataMember] private readonly List<OrderItemDto> _orderItems;
 
         public CreateOrderCommand()
         {
-            _orderItems = new List<OrderItemDTO>();
+            _orderItems = new List<OrderItemDto>();
         }
 
         public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city,
@@ -33,7 +33,7 @@ namespace Order.API.Application.Commands
             string cardNumber, string cardHolderName, DateTime cardExpiration,
             string cardSecurityNumber, int cardTypeId) : this()
         {
-            _orderItems = basketItems.ToOrderItemsDTO().ToList();
+            _orderItems = basketItems.ToOrderItemsDto().ToList();
             UserId = userId;
             UserName = userName;
             City = city;
@@ -73,12 +73,12 @@ namespace Order.API.Application.Commands
 
         [DataMember] public int CardTypeId { get; private set; }
 
-        [DataMember] public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
+        [DataMember] public IEnumerable<OrderItemDto> OrderItems => _orderItems;
 
 
-        public class OrderItemDTO
+        public class OrderItemDto
         {
-            public int ProductId { get; set; }
+            public string ProductId { get; set; }
 
             public string ProductName { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Enterprise.Abstraction;
 using Order.Domain.Exceptions;
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Order.Domain.AggregatesModel.BuyerAggregate
 {
@@ -9,10 +10,10 @@ namespace Order.Domain.AggregatesModel.BuyerAggregate
     {
         private string _alias;
         private string _cardHolderName;
-        private readonly string _cardNumber;
+        private string _cardNumber;
 
-        private readonly int _cardTypeId;
-        private readonly DateTime _expiration;
+        private int _cardTypeId;
+        private DateTime _expiration;
         private string _securityNumber;
 
 

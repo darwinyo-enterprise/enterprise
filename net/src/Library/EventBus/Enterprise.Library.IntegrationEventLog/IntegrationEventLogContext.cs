@@ -49,7 +49,11 @@ namespace Enterprise.Library.IntegrationEventLog
         {
             var optionsBuilder = new DbContextOptionsBuilder<IntegrationEventLogContext>()
                 .UseSqlServer(
-                    "Server=.;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;Integrated Security=true");
+                    "Server=.;Initial Catalog=Enterprise.Commerce.Services.IntegrationEventLog;Integrated Security=true", b =>
+                     {
+                         //b.MigrationsAssembly("Catalog.API");
+                         //b.MigrationsAssembly("Order.API");
+                     });
 
             return new IntegrationEventLogContext(optionsBuilder.Options);
         }

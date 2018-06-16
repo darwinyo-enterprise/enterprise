@@ -2,7 +2,7 @@
 using Catalog.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Enterprise.Commerce.IntegrationTests.Fixture
+namespace Enterprise.Commerce.Tests.Fixture
 {
     public class CatalogContextFixture : IDisposable
     {

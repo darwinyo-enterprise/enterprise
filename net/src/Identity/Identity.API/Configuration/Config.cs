@@ -107,7 +107,7 @@ namespace Identity.API.Configuration
                 },
                 new Client
                 {
-                    ClientId = "orderingswaggerui",
+                    ClientId = "Orderingswaggerui",
                     ClientName = "Ordering Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,

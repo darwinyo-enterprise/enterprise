@@ -10,9 +10,9 @@ namespace Order.API.Application.Commands
     ///     a requestid sent by client is used to detect duplicate requests.
     /// </summary>
     /// <typeparam name="T">Type of the command handler that performs the operation if request is not duplicated</typeparam>
-    /// <typeparam name="R">Return value of the inner command handler</typeparam>
-    public class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<T, R>, R>
-        where T : IRequest<R>
+    /// <typeparam name="TR">Return value of the inner command handler</typeparam>
+    public class IdentifiedCommandHandler<T, TR> : IRequestHandler<IdentifiedCommand<T, TR>, TR>
+        where T : IRequest<TR>
     {
         private readonly IMediator _mediator;
         private readonly IRequestManager _requestManager;
@@ -29,8 +29,9 @@ namespace Order.API.Application.Commands
         ///     just enqueues the original inner command.
         /// </summary>
         /// <param name="message">IdentifiedCommand which contains both original command & request ID</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>Return value of inner command or default value if request same ID was found</returns>
-        public async Task<R> Handle(IdentifiedCommand<T, R> message, CancellationToken cancellationToken)
+        public async Task<TR> Handle(IdentifiedCommand<T, TR> message, CancellationToken cancellationToken)
         {
             var alreadyExists = await _requestManager.ExistAsync(message.Id);
             if (alreadyExists)
@@ -47,7 +48,7 @@ namespace Order.API.Application.Commands
             }
             catch
             {
-                return default(R);
+                return default(TR);
             }
         }
 
@@ -55,9 +56,9 @@ namespace Order.API.Application.Commands
         ///     Creates the result value to return if a previous request was found
         /// </summary>
         /// <returns></returns>
-        protected virtual R CreateResultForDuplicateRequest()
+        protected virtual TR CreateResultForDuplicateRequest()
         {
-            return default(R);
+            return default(TR);
         }
     }
 }

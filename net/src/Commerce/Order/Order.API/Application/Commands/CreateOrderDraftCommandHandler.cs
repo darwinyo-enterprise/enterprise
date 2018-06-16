@@ -9,31 +9,31 @@ namespace Order.API.Application.Commands
 {
     // Regular CommandHandler
     public class CreateOrderDraftCommandHandler
-        : IRequestHandler<CreateOrderDraftCommand, OrderDraftDTO>
+        : IRequestHandler<CreateOrderDraftCommand, OrderDraftDto>
     {
-        public Task<OrderDraftDTO> Handle(CreateOrderDraftCommand message, CancellationToken cancellationToken)
+        public Task<OrderDraftDto> Handle(CreateOrderDraftCommand message, CancellationToken cancellationToken)
         {
             var order = Domain.AggregatesModel.OrderAggregate.Order.NewDraft();
-            var orderItems = message.Items.Select(i => i.ToOrderItemDTO());
+            var orderItems = message.Items.Select(i => i.ToOrderItemDto());
             foreach (var item in orderItems)
                 order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice, item.Discount, item.PictureUrl,
                     item.Units);
 
-            return Task.FromResult(OrderDraftDTO.FromOrder(order));
+            return Task.FromResult(OrderDraftDto.FromOrder(order));
         }
     }
 
 
-    public class OrderDraftDTO
+    public class OrderDraftDto
     {
-        public IEnumerable<CreateOrderCommand.OrderItemDTO> OrderItems { get; set; }
+        public IEnumerable<CreateOrderCommand.OrderItemDto> OrderItems { get; set; }
         public decimal Total { get; set; }
 
-        public static OrderDraftDTO FromOrder(Domain.AggregatesModel.OrderAggregate.Order order)
+        public static OrderDraftDto FromOrder(Domain.AggregatesModel.OrderAggregate.Order order)
         {
-            return new OrderDraftDTO
+            return new OrderDraftDto
             {
-                OrderItems = order.OrderItems.Select(oi => new CreateOrderCommand.OrderItemDTO
+                OrderItems = order.OrderItems.Select(oi => new CreateOrderCommand.OrderItemDto
                 {
                     Discount = oi.GetCurrentDiscount(),
                     ProductId = oi.ProductId,

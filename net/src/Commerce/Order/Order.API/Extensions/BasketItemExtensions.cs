@@ -6,17 +6,17 @@ namespace Order.API.Extensions
 {
     public static class BasketItemExtensions
     {
-        public static IEnumerable<CreateOrderCommand.OrderItemDTO> ToOrderItemsDTO(
+        public static IEnumerable<CreateOrderCommand.OrderItemDto> ToOrderItemsDto(
             this IEnumerable<BasketItem> basketItems)
         {
-            foreach (var item in basketItems) yield return item.ToOrderItemDTO();
+            foreach (var item in basketItems) yield return item.ToOrderItemDto();
         }
 
-        public static CreateOrderCommand.OrderItemDTO ToOrderItemDTO(this BasketItem item)
+        public static CreateOrderCommand.OrderItemDto ToOrderItemDto(this BasketItem item)
         {
-            return new CreateOrderCommand.OrderItemDTO
+            return new CreateOrderCommand.OrderItemDto
             {
-                ProductId = int.TryParse(item.ProductId, out var id) ? id : -1,
+                ProductId = item.ProductId,
                 ProductName = item.ProductName,
                 PictureUrl = item.PictureUrl,
                 UnitPrice = item.UnitPrice,

@@ -40,6 +40,7 @@ services:
       dockerfile: src/Identity/Identity.API/Dockerfile
     depends_on:
       - sql.data
+      - rabbitmq
 
   # commerce.admin:
   #   image: darwinyo/commerce.admin:${TAG:-latest}
@@ -61,6 +62,8 @@ services:
     depends_on:
       - sql.data
       - rabbitmq
+      - catalog.api
+      - basket.api
 
   order.backgroundtasks:
     image: darwinyo/order.backgroundtasks:${TAG:-latest}

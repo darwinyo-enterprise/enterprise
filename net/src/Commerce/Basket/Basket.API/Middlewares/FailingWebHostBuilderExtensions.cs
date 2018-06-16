@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Basket.API.Infrastructure.Middlewares
+namespace Basket.API.Middlewares
 {
     public static class WebHostBuildertExtensions
     {

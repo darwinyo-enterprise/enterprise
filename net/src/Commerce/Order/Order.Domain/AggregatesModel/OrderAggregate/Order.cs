@@ -49,7 +49,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         }
 
         // Address is a Value Object pattern example persisted as EF Core 2.0 owned entity
-        public Address Address { get; }
+        public Address Address { get; private set; }
 
         public int? GetBuyerId { get; private set; }
 
@@ -66,11 +66,11 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         // This Order AggregateRoot's method "AddOrderitem()" should be the only way to add Items to the Order,
         // so any behavior (discounts, etc.) and validations are controlled by the AggregateRoot 
         // in order to maintain consistency between the whole Aggregate. 
-        public void AddOrderItem(int productId, string productName, decimal unitPrice, decimal discount,
+        public void AddOrderItem(string productId, string productName, decimal unitPrice, decimal discount,
             string pictureUrl, int units = 1)
         {
-            var existingOrderForProduct = _orderItems.Where(o => o.ProductId == productId)
-                .SingleOrDefault();
+            var existingOrderForProduct = _orderItems
+                .SingleOrDefault(o => o.ProductId == productId);
 
             if (existingOrderForProduct != null)
             {
@@ -99,6 +99,8 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
         {
             GetBuyerId = id;
         }
+
+        #region Update Status
 
         public void SetAwaitingValidationStatus()
         {
@@ -152,7 +154,7 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
             AddDomainEvent(new OrderCancelledDomainEvent(this));
         }
 
-        public void SetCancelledStatusWhenStockIsRejected(IEnumerable<int> orderStockRejectedItems)
+        public void SetCancelledStatusWhenStockIsRejected(IEnumerable<string> orderStockRejectedItems)
         {
             if (_orderStatusId == OrderStatus.AwaitingValidation.Id)
             {
@@ -166,6 +168,9 @@ namespace Order.Domain.AggregatesModel.OrderAggregate
                 _description = $"The product items don't have stock: ({itemsStockRejectedDescription}).";
             }
         }
+
+
+        #endregion
 
         private void AddOrderStartedDomainEvent(string userId, string userName, int cardTypeId, string cardNumber,
             string cardSecurityNumber, string cardHolderName, DateTime cardExpiration)

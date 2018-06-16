@@ -14,7 +14,7 @@ namespace Order.Infrastructure
 {
     public class OrderingContext : DbContext, IUnitOfWork
     {
-        public const string DEFAULT_SCHEMA = "ordering";
+        public const string DefaultSchema = "Ordering";
 
         private readonly IMediator _mediator;
 
@@ -72,7 +72,7 @@ namespace Order.Infrastructure
         {
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
                 .UseSqlServer(
-                    "Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+                    "Server=.;Initial Catalog=Enterprise.Commerce.Services.OrderingDb;Integrated Security=true",b=>b.MigrationsAssembly("Order.API"));
 
             return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
