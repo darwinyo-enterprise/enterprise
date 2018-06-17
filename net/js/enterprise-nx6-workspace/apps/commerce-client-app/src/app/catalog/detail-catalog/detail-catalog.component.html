@@ -85,7 +85,7 @@
       </div>
       <div class="product-detail__container__header__action-container__row">
         <em-counter (counterChanged)="onCounterChanged($event)" [maxOrder]="productDetail.stock"></em-counter>
-        <button mat-button class="product-detail-action__add-to-card-btn">
+        <button mat-button class="product-detail-action__add-to-card-btn" (click)="onAddBtnClicked()">
           Add to cart
         </button>
       </div>

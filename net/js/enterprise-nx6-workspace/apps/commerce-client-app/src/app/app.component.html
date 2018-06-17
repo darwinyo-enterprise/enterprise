@@ -27,8 +27,8 @@
         <mat-menu #shoppingCartMenu="matMenu">
           <td-menu class="cart-menu">
             <div td-menu-header class="mat-subhead">Cart</div>
-            <em-cart-menu [cartItems]="cartItem"></em-cart-menu>
-            <a mat-button color="accent" td-menu-footer>
+            <em-cart-menu></em-cart-menu>
+            <a mat-button color="accent" td-menu-footer (click)="onViewAllCartClicked()">
               View Cart
             </a>
           </td-menu>

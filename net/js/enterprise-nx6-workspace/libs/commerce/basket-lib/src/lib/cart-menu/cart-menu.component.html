@@ -1,13 +1,13 @@
-<mat-nav-list *ngIf="cartItems?.length>0" id="cart-menu-list">
-  <ng-template ngFor let-item [ngForOf]="cartItems">
+<mat-nav-list *ngIf="(cartItems$ | async)?.length>0" id="cart-menu-list">
+  <ng-template ngFor let-item [ngForOf]="(cartItems$ | async)">
     <div mat-list-item class="cart-menu__item" (click)="onCartItemClicked()">
       <div class="cart-menu__item__image">
-        <img src="{{item.image}}" alt="" srcset="">
+        <img src="{{item.pictureUrl}}" alt="" srcset="">
       </div>
       <div class="cart-menu__item__info">
         <div class="cart-menu__item__info__title">
           <a>
-            {{item.title}}
+            {{item.productName}}
           </a>
         </div>
         <div class="cart-menu__item__info__quantity">
@@ -15,14 +15,17 @@
         </div>
       </div>
       <div class="cart-menu__item__total-price">
-        Total: $ {{item.quantity * item.price}}
+        <span class="cart-menu__item__old-price" *ngIf="item.oldUnitPrice">
+          $ {{item.oldUnitPrice}}
+        </span>
+        Total: $ {{item.quantity * item.unitPrice}}
       </div>
     </div>
 
     <mat-divider></mat-divider>
   </ng-template>
 </mat-nav-list>
-<div class="cart-menu-empty" *ngIf="cartItems?.length==0">
+<div class="cart-menu-empty" *ngIf="(cartItems$ | async)?.length==0">
   <span class="cart-menu-empty__title">Your Cart Empty</span>
   <span class="cart-menu-empty__content">
     please add item to cart.

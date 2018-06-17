@@ -66,12 +66,14 @@ services:
   #     - "4000:4000"
     # environment:
     #   - identityUrl=http://identity.api
+    #   - signalrUrl=http://order.signalrhub
       
   # commerce.client:
   #   ports:
   #     - "4001:4000"
   #   environment:
   #     - identityUrl=http://identity.api
+  #     - signalrUrl=http://order.signalrhub
 
   order.api:
     environment:
@@ -158,3 +160,18 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+
+  order.signalrhub:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
+      - AzureServiceBusEnabled=False
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - identityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
+    ports:
+      - "5112:80"
+

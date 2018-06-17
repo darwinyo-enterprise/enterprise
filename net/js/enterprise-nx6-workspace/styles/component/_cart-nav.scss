@@ -47,11 +47,18 @@
       width: 30%;
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
       font-size: $font-size-sm;
       font-family: 'Mina';
       color: $alert-color;
+    }
+    &__old-price {
+      font-size: $font-size-xs;
+      text-decoration: line-through;
+      width: 95%;
+      padding-bottom: 0.3rem;
+      text-align: end;
     }
   }
 }

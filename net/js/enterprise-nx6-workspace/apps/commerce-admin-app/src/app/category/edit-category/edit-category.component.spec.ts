@@ -38,6 +38,9 @@ describe('EditCategoryComponent', () => {
         providers: [
           {
             provide: CategoryService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1CategoryByIdPut(): Observable<any> {
                 return of();
               },

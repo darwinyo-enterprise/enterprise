@@ -65,3 +65,14 @@ export class ItemBasketAdded {
     static readonly type = '[COMMERCE] ITEM BASKET ADDED';
     constructor() { }
 }
+
+/** Clear Basket for testing */
+export class ClearBasket {
+    static readonly type = '[COMMERCE] CLEAR ITEM BASKET';
+    constructor() { }
+}
+/** Clear Old price Basket for testing */
+export class ClearBasketOldPrice {
+    static readonly type = '[COMMERCE] CLEAR OLD PRICE ITEM BASKET';
+    constructor() { }
+}

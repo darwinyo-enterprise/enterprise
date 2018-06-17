@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BaseTestPage } from '@enterprise/core/testing/src';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store } from '@ngxs/store';
-import { AppState, Logged, LoggedOut, LoadConfiguration, SubscribeUser, Logout, Login } from '@enterprise/core/src';
+import { AppState, Logged, LoggedOut, LoadConfiguration, SubscribeUser, Logout, Login, LoadAuthSettings } from '@enterprise/core/src';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material';
 import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
@@ -99,18 +99,24 @@ describe('AppComponent', () => {
 
     storeSpy = spyOn(store, 'dispatch').and.callThrough();
   });
-
+  const userData = {
+    profile: {
+      name: 'firstname',
+      last_name: 'lastname',
+      email: 'test@enterprise.com'
+    }
+  }
   describe('UI Tests', () => {
     it('should hide login, and register button when user authenticated', () => {
       let auth: boolean;
       component.isAuthenticated.subscribe(x => auth = x);
-      store.dispatch(new Logged('test@enterprise.com'));
+      store.dispatch(new Logged(userData));
       fixture.detectChanges();
       expect(page.cartBtn).not.toBeNull();
       expect(page.logoutBtn).not.toBeNull();
     })
     it('should display cart menu and log out button when user authenticated', () => {
-      store.dispatch(new Logged('test@enterprise.com'));
+      store.dispatch(new Logged(userData));
       fixture.detectChanges();
       expect(page.loginBtn).toBeNull();
       expect(page.registerBtn).toBeNull();
@@ -132,7 +138,7 @@ describe('AppComponent', () => {
   describe('Functionality Tests', () => {
     it('should dispatch load configuration, and Subscribe user on init', () => {
       component.ngOnInit();
-      expect(store.dispatch).toHaveBeenCalledWith([new LoadConfiguration(environment.configuration), SubscribeUser]);
+      expect(store.dispatch).toHaveBeenCalledWith([new LoadAuthSettings(component.settings), SubscribeUser]);
     })
   })
 });

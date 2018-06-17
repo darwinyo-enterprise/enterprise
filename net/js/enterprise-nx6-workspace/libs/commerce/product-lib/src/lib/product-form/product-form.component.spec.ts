@@ -105,6 +105,9 @@ describe('ProductFormComponent', () => {
         providers: [ProductService,
           {
             provide: ManufacturerService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1ManufacturerGet(): Observable<Manufacturer[]> {
 
                 return of(ManufacturersMock);
@@ -112,6 +115,9 @@ describe('ProductFormComponent', () => {
             }
           }, {
             provide: CategoryService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1CategoryGet(): Observable<Category[]> {
 
                 return of(CategoriesMock);

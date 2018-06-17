@@ -7,6 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Polly" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
   </ItemGroup>
 </Project>

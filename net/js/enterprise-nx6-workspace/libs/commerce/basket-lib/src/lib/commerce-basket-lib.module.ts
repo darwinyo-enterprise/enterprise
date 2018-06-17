@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartMenuComponent } from './cart-menu/cart-menu.component';
+import { SharedModule } from '@enterprise/shared/src';
+import { ListCartComponent } from './list-cart/list-cart.component';
+import { BasketState } from './shared/basket.state';
+import { NgxsModule } from '@ngxs/store';
+import { ApiModule } from '../api/api.module';
 @NgModule({
-  imports: [CommonModule],
-  declarations: [CartMenuComponent],
-  exports: [CartMenuComponent]
+  imports: [CommonModule, SharedModule,
+    NgxsModule.forFeature([BasketState]),
+    ApiModule],
+  declarations: [CartMenuComponent, ListCartComponent],
+  exports: [CartMenuComponent, ListCartComponent, ApiModule]
 })
 export class CommerceBasketLibModule { }

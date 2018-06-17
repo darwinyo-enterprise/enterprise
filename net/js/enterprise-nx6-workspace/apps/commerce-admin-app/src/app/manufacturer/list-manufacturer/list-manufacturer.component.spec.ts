@@ -54,6 +54,9 @@ describe('ListManufacturerComponent', () => {
         providers: [
           {
             provide: ManufacturerService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1ManufacturerListGet(): Observable<PaginatedListViewModelItemViewModel> {
 
                 return of(PaginatedManufacturersMock);

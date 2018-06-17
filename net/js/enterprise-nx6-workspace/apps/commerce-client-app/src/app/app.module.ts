@@ -13,6 +13,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { OrderModule } from './order/order.module';
 import { CommerceBasketLibModule } from '@enterprise/commerce/basket-lib/src';
+import { CommerceOrderLibModule } from '@enterprise/commerce/order-lib/src';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { CommerceBasketLibModule } from '@enterprise/commerce/basket-lib/src';
     AppRoutingModule,
     CatalogModule,
     CommerceBasketLibModule,
+    CommerceOrderLibModule,
     OrderModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],

@@ -66,6 +66,10 @@
           color: $alert-color;
         }
       }
+      &__info{
+        color: $alert-color;
+        font-size: $font-size-sm;
+      }
     }
     &__quantity {
       @extend %flex-start-center;
@@ -94,6 +98,13 @@
       &__price {
         color: $alert-color;
         padding-left: 0.5rem;
+      }
+      &__old-price {
+        color: $link-hover-color;
+        font-size: $font-size-xs;
+        text-decoration: line-through;
+        padding-bottom: 1rem;
+        text-align: end;
       }
     }
   }

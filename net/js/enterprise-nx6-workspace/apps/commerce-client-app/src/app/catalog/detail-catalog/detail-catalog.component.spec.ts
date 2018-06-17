@@ -10,6 +10,8 @@ import { CategoryService, ProductDetailViewModel, ProductService } from '@enterp
 import { Observable, of } from 'rxjs';
 import { ProductDetailViewModelMocks } from '@enterprise/commerce/product-lib/src';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { BasketItem, BasketService, CustomerBasket, BasketState, CustomerBasketMock } from '@enterprise/commerce/basket-lib/src';
+import { AddItemBasket } from '@enterprise/commerce/basket-lib';
 
 export class DetailCatalogPage extends BaseTestPage<DetailCatalogComponent> {
   constructor(public fixture: ComponentFixture<DetailCatalogComponent>) {
@@ -74,20 +76,35 @@ describe('DetailCatalogComponent', () => {
   let fixture: ComponentFixture<DetailCatalogComponent>;
   let page: DetailCatalogPage;
   let store: Store;
+  let storeSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DetailCatalogComponent],
       imports: [
         HttpClientModule,
-        NgxsModule.forRoot([ProductState])],
+        NgxsModule.forRoot([ProductState, BasketState])],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: ProductService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1ProductInfoByIdGet(id: string): Observable<ProductDetailViewModel> {
 
               return of(ProductDetailViewModelMocks);
+            }
+          }
+        },
+        {
+          provide: BasketService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
+            apiV1BasketPost(id: string): Observable<CustomerBasket> {
+
+              return of(CustomerBasketMock);
             }
           }
         },
@@ -104,7 +121,7 @@ describe('DetailCatalogComponent', () => {
     component = fixture.componentInstance;
     page = new DetailCatalogPage(fixture);
     store = TestBed.get(Store);
-
+    storeSpy = spyOn(store, 'dispatch').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -187,6 +204,18 @@ describe('DetailCatalogComponent', () => {
       component.quantity = 12;
       fixture.detectChanges();
       expect(page.productDetailActionPrice.innerHTML).not.toEqual(old);
+    })
+    it('should dispatch add cart when add button clicked', () => {
+      component.ngOnInit();
+      const basketItem: BasketItem = <BasketItem>{
+        productId: component.productDetail.id,
+        pictureUrl: component.productDetail.productImages[0].imageUrl,
+        productName: component.productDetail.name,
+        quantity: component.quantity,
+        unitPrice: component.productDetail.price
+      };
+      page.addCartButton.click();
+      expect(store.dispatch).toHaveBeenCalledWith(new AddItemBasket(basketItem))
     })
   })
 });

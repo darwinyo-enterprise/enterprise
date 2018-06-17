@@ -54,6 +54,9 @@ describe('ListProductComponent', () => {
                 providers: [
                     {
                         provide: ProductService, useValue: {
+                            configuration: {
+                                accessToken: ''
+                            },
                             apiV1ProductListGet(): Observable<ProductViewModel[]> {
 
                                 return of(ProductViewModelsMock);

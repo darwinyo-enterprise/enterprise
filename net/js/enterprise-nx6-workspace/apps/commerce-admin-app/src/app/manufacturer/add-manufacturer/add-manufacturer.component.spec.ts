@@ -36,6 +36,9 @@ describe('AddManufacturerComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [{
           provide: ManufacturerService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1ManufacturerPost(): Observable<any> {
 
               return of();

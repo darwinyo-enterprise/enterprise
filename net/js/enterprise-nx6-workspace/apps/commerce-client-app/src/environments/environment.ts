@@ -8,6 +8,7 @@ import { IConfiguration } from "@enterprise/core";
 export const environment = {
   production: false,
   configuration: <IConfiguration>{
-    identityUrl: 'http://localhost:5105'
+    identityUrl: 'http://localhost:5105',
+    signalrUrl: 'http://localhost:5112'
   }
 };

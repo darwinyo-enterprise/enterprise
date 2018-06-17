@@ -6,6 +6,8 @@ import { FetchProductDetailInfo, ProductState } from '@enterprise/commerce/produ
 import { ProductDetailViewModel } from '@enterprise/commerce/catalog-lib/src';
 import { ReplaySubject, Observable } from 'rxjs';
 import { takeUntil, take, takeLast } from 'rxjs/operators';
+import { BasketItem } from '@enterprise/commerce/basket-lib/src';
+import { AddItemBasket } from '@enterprise/commerce/basket-lib/src/lib/shared/basket.action';
 
 @Component({
   selector: 'eca-detail-catalog',
@@ -16,6 +18,7 @@ export class DetailCatalogComponent implements OnInit, OnDestroy {
   images: ImageModel[];
   productDetail: ProductDetailViewModel;
   quantity = 1;
+
   @Select(ProductState.getSelectedProductDetailInfo)
   selectedProductDetailInfo: Observable<ProductDetailViewModel>;
 
@@ -53,5 +56,15 @@ export class DetailCatalogComponent implements OnInit, OnDestroy {
 
   onCounterChanged(qty: number) {
     this.quantity = qty;
+  }
+  onAddBtnClicked() {
+    const basketItem: BasketItem = <BasketItem>{
+      productId: this.productDetail.id,
+      pictureUrl: this.productDetail.productImages[0].imageUrl,
+      productName: this.productDetail.name,
+      quantity: this.quantity,
+      unitPrice: this.productDetail.price
+    };
+    this.store.dispatch(new AddItemBasket(basketItem));
   }
 }

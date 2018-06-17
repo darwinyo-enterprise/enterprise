@@ -74,7 +74,7 @@ namespace Order.BackgroundTasks.Tasks
                 {
                     conn.Open();
                     orderIds = conn.Query<int>(
-                        @"SELECT Id FROM [ordering].[orders] 
+                        @"SELECT Id FROM [Ordering].[Orders] 
                             WHERE DATEDIFF(minute, [OrderDate], GETDATE()) >= @GracePeriodTime
                             AND [OrderStatusId] = 1",
                         new { GracePeriodTime = _settings.GracePeriodTime });

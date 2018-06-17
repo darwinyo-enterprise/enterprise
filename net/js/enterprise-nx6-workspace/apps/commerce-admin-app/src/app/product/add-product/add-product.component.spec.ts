@@ -35,6 +35,9 @@ describe('AddProductComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [{
           provide: ProductService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1ProductPost(): Observable<any> {
 
               return of();

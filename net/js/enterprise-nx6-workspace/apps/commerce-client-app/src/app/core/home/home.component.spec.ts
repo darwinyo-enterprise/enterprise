@@ -11,7 +11,7 @@ import { CategoryState, CategoriesMock, FetchPaginatedCategories } from '@enterp
 import { ManufacturerState, ManufacturersMock, FetchPaginatedManufacturers } from '@enterprise/commerce/manufacturer-lib/src';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Navigate } from '@enterprise/core/src';
+import { Navigate, StorageService } from '@enterprise/core/src';
 
 export class HomeComponentPage extends BaseTestPage<
   HomeComponent
@@ -28,7 +28,7 @@ export class HomeComponentPage extends BaseTestPage<
   get manufacturerCards() {
     return this.queryAll<HTMLElement>('eca-manufacturer-card');
   }
-  get seeMoreButton(){
+  get seeMoreButton() {
     return this.queryAll<HTMLElement>('.card-container__title__more-links');
   }
 }
@@ -47,6 +47,9 @@ describe('HomeComponent', () => {
         {
           provide: ProductService,
           useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1ProductHotGet(): Observable<PaginatedCatalogViewModelCatalogItemViewModel> {
               return of(PaginatedCatalogItemViewModelMock);
             },
@@ -57,6 +60,10 @@ describe('HomeComponent', () => {
         },
         {
           provide: CategoryService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
+
             apiV1CategoryPaginatedGet(): Observable<Category[]> {
 
               return of(CategoriesMock);
@@ -65,9 +72,20 @@ describe('HomeComponent', () => {
         },
         {
           provide: ManufacturerService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1ManufacturerPaginatedGet(): Observable<Category[]> {
 
               return of(ManufacturersMock);
+            }
+          }
+        },
+        {
+          provide: StorageService, useValue: {
+            retrieve(key: string): any {
+
+              return 'test';
             }
           }
         },

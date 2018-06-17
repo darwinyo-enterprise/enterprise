@@ -2,7 +2,7 @@ import { BasketItem } from "../../api/model/basketItem";
 import { State, Selector, Action, StateContext } from "@ngxs/store";
 import { BasketService } from "./../../api/api/basket.service";
 import { StorageService, RegisterLoadingOverlay, ErrorOccured, ResolveLoadingOverlay, Navigate, Alert } from "@enterprise/core/src";
-import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded } from "./basket.action";
+import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded, ClearBasket, ClearBasketOldPrice } from "./basket.action";
 import { tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CustomerBasket } from "@enterprise/commerce/basket-lib/src";
@@ -31,6 +31,11 @@ export class BasketState {
         return state.basketItems;
     }
 
+    @Selector()
+    static getCustomerId(state: BasketStateModel) {
+        return state.customerId;
+    }
+
     //#endregion
 
     setAccessToken() {
@@ -43,7 +48,7 @@ export class BasketState {
     /** Command Fetch Basket API */
     @Action(FetchBasket, { cancelUncompleted: true })
     fetchBasket(
-        { patchState, dispatch }: StateContext<BasketStateModel>,
+        { setState, dispatch }: StateContext<BasketStateModel>,
         { payload }: FetchBasket
     ) {
         // Register Loading Overlay
@@ -54,11 +59,21 @@ export class BasketState {
             .apiV1BasketByIdGet(payload)
             .pipe(
                 tap(
-                    (basket) => patchState({
-                        basketItems: basket.items,
-                        customerId: basket.buyerId
-                    }),
-                    (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay, new Navigate({ commands: ['/basket/list'] })]),
+                    (basket) => {
+                        if (basket !== null) {
+                            setState({
+                                basketItems: basket.items,
+                                customerId: basket.buyerId
+                            })
+                        }
+                        else {
+                            setState({
+                                basketItems: [],
+                                customerId: this.storageService.retrieve('userData').profile.sub
+                            })
+                        }
+                    },
+                    (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
                     () => { dispatch(BasketFetched) }
                 )
             );
@@ -109,7 +124,7 @@ export class BasketState {
     /** Update Basket Command */
     @Action(UpdateBasket)
     updateBasket(
-        { dispatch, getState }: StateContext<BasketStateModel>
+        { dispatch, getState, patchState }: StateContext<BasketStateModel>
     ) {
         const state = getState();
         const customerBasket: CustomerBasket = {
@@ -124,7 +139,12 @@ export class BasketState {
             .apiV1BasketPost(customerBasket)
             .pipe(
                 tap(
-                    () => { },
+                    (basket) => {
+                        patchState({
+                            basketItems: basket.items,
+                            customerId: basket.buyerId
+                        })
+                    },
                     (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
                     () => dispatch(BasketUpdated))
             );
@@ -134,14 +154,14 @@ export class BasketState {
     /** Basket Updated Event */
     @Action(BasketUpdated)
     basketUpdated({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([ResolveLoadingOverlay, new Navigate({ commands: ['/basket/list'] }), new Alert("Basket Updated")])
+        dispatch([ResolveLoadingOverlay, new Alert("Basket Updated")])
     }
 
     // Done
     /** Basket check out Event */
     @Action(BasketCheckedOut)
     basketCheckedOut({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([ResolveLoadingOverlay, new Navigate({ commands: ['/basket/list'] }), new Alert("Basket Updated")])
+        dispatch([ResolveLoadingOverlay, new Alert("Order Created")])
     }
 
     /** Check out Basket */
@@ -151,18 +171,22 @@ export class BasketState {
         { payload }: CheckOutBasket) {
         this.basketService.apiV1BasketCheckoutPost(payload).pipe(
             tap(
-                () => { },
+                () => {
+                    patchState({
+                        basketItems: [],
+                        customerId: ''
+                    })
+                },
                 (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
                 () => dispatch(BasketCheckedOut))
         )
-        dispatch(BasketCheckedOut);
     }
 
     // Done
     /** Item Basket Added Event */
     @Action(ItemBasketAdded)
     itemBasketAdded({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([UpdateBasket, ResolveLoadingOverlay, new Navigate({ commands: ['/basket/list'] }), new Alert("Basket Updated")])
+        dispatch([UpdateBasket])
     }
 
     /** Check out Basket */
@@ -171,11 +195,45 @@ export class BasketState {
         { dispatch, patchState, getState }: StateContext<BasketStateModel>,
         { payload }: AddItemBasket) {
         const state = getState();
-        patchState({
-            basketItems: [...state.basketItems, payload]
-        });
+        if (state.basketItems.filter(x => x.productId === payload.productId).length > 0) {
+            state.basketItems = state.basketItems.filter(x => x.productId === payload.productId).map(x => { x.quantity += payload.quantity; return x; });
+            patchState({
+                basketItems: [...state.basketItems]
+            })
+        } else {
+            patchState({
+                basketItems: [...state.basketItems, payload]
+            });
+        }
+
         dispatch(ItemBasketAdded);
     }
 
     //#endregion
+
+
+    // Done
+    /** Clear basket for testing */
+    @Action(ClearBasket)
+    clearBasket(
+        { setState }: StateContext<BasketStateModel>) {
+        setState({
+            customerId: '',
+            basketItems: []
+        })
+    }
+    // Done
+    /** Clear Old Price basket for testing */
+    @Action(ClearBasketOldPrice)
+    clearBasketOldPrice(
+        { getState, patchState }: StateContext<BasketStateModel>) {
+        const state = getState();
+        const items = state.basketItems.map((v, i) => {
+            v.oldUnitPrice = null;
+            return v;
+        });
+        patchState({
+            basketItems: items
+        });
+    }
 }

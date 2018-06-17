@@ -6,7 +6,6 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
-import { CartModel } from './cart/models/cart.model';
 
 @Component({
   selector: 'eca-root',
@@ -26,7 +25,6 @@ export class AppComponent implements OnInit {
   configuration: IConfiguration;
   settings: Oidc.UserManagerSettings;
 
-  cartItem: CartModel[] = [];
   name = 'Enterprise';
   username: string;
   userEmail: string;
@@ -92,7 +90,7 @@ export class AppComponent implements OnInit {
       client_id: 'js_commerce_client',
       redirect_uri: location.origin + '/',
       response_type: 'id_token token',
-      scope: 'openid profile orders basket catalog',
+      scope: 'openid profile orders basket catalog orders.signalrhub',
       post_logout_redirect_uri: location.origin + '/',
     }
     this.store.dispatch([new LoadAuthSettings(this.settings), SubscribeUser]);
@@ -118,5 +116,10 @@ export class AppComponent implements OnInit {
   }
   onRegisterBtnClicked() {
     window.location.href = this.configuration.identityUrl + '/Account/Register';
+  }
+  onViewAllCartClicked() {
+    this.store.dispatch(new Navigate(<RoutingModel>{
+      commands: ['order']
+    }))
   }
 }

@@ -31,6 +31,9 @@ describe('AddCategoryComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [{
           provide: CategoryService, useValue: {
+            configuration: {
+              accessToken: ''
+            },
             apiV1CategoryPost(): Observable<any> {
 
               return of();

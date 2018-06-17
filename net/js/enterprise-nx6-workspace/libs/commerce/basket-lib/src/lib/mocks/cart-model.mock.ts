@@ -1,4 +1,5 @@
 import { BasketItem } from "../../api/model/basketItem";
+import { CustomerBasket } from "@enterprise/commerce/basket-lib/src";
 
 export const CartModelMock: BasketItem[] = [{
     productName: 'Intel 7700K',
@@ -41,3 +42,8 @@ export const CartModelMock: BasketItem[] = [{
     id: '5',
     productId: '5'
 }]
+
+export const CustomerBasketMock: CustomerBasket = {
+    buyerId: '1',
+    items: CartModelMock
+}

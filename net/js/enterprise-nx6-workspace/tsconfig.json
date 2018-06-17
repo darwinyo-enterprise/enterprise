@@ -55,13 +55,13 @@
       "@enterprise/material/gallery": [
         "libs/material/gallery/src/index.ts"
       ],
-      "@enterprise-nx6-workspace/material/counter": [
+      "@enterprise/material/counter": [
         "libs/material/counter/src/index.ts"
       ],
-      "@enterprise-nx6-workspace/commerce/basket-lib": [
+      "@enterprise/commerce/basket-lib": [
         "libs/commerce/basket-lib/src/index.ts"
       ],
-      "@enterprise-nx6-workspace/commerce/order-lib": [
+      "@enterprise/commerce/order-lib": [
         "libs/commerce/order-lib/src/index.ts"
       ]
     }

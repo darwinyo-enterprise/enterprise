@@ -53,7 +53,8 @@ namespace Identity.API.Configuration
                         IdentityServerConstants.StandardScopes.Profile,
                         "orders",
                         "basket",
-                        "catalog"
+                        "catalog",
+                        "orders.signalrhub"
                     }
                 },
                 new Client
@@ -107,7 +108,7 @@ namespace Identity.API.Configuration
                 },
                 new Client
                 {
-                    ClientId = "Orderingswaggerui",
+                    ClientId = "orderingswaggerui",
                     ClientName = "Ordering Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,

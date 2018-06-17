@@ -43,6 +43,9 @@ describe('EditProductComponent', () => {
         providers: [
           {
             provide: ProductService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1ProductByIdPut(): Observable<any> {
                 return of();
               },

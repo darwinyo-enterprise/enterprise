@@ -226,7 +226,7 @@ namespace Order.API
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Ordering.API V1");
-                   c.OAuthClientId("Orderingswaggerui");
+                   c.OAuthClientId("orderingswaggerui");
                    c.OAuthAppName("Ordering Swagger UI");
                });
 

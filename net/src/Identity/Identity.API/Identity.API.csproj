@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.6.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta6" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.1.1-beta1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.4.0" />

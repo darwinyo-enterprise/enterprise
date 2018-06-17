@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Commerce\Basket\Basket.API\Basket.API.csproj" />
     <ProjectReference Include="..\..\src\Commerce\Catalog\Catalog.API\Catalog.API.csproj" />
     <ProjectReference Include="..\..\src\Commerce\Order\Order.API\Order.API.csproj" />
     <ProjectReference Include="..\..\src\Commerce\Order\Order.Domain\Order.Domain.csproj" />
@@ -25,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Basket.API\" />
     <Folder Include="Order.API\" />
   </ItemGroup>
 

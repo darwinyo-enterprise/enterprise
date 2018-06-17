@@ -87,3 +87,9 @@ services:
     build:
       context: .
       dockerfile: src/HealthCheck/WebStatus/Dockerfile
+
+  order.signalrhub:
+    image: darwinyo/ordering.signalrhub:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Commerce/Order/Order.SignalRHub/Dockerfile

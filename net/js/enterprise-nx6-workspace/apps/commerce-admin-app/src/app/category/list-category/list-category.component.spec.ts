@@ -47,6 +47,9 @@ describe('ListCategoryComponent', () => {
         providers: [
           {
             provide: CategoryService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1CategoryListGet(): Observable<PaginatedListViewModelItemViewModel> {
 
                 return of(PaginatedCategoriesMock);

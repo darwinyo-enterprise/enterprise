@@ -44,6 +44,9 @@ describe('EditManufacturerComponent', () => {
         providers: [
           {
             provide: ManufacturerService, useValue: {
+              configuration: {
+                accessToken: ''
+              },
               apiV1ManufacturerByIdPut(): Observable<any> {
                 return of();
               },

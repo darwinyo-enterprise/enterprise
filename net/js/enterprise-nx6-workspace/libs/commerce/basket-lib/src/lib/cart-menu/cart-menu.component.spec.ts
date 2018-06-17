@@ -3,9 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CartMenuComponent } from './cart-menu.component';
 import { BaseTestPage } from '@enterprise/core/testing/src';
 import { Store, NgxsModule } from '@ngxs/store';
-import { RouterState, Navigate } from '@enterprise/core/src';
+import { RouterState, Navigate, AppState, Logged } from '@enterprise/core/src';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CartModelMock } from '../mocks/cart-model.mock';
+import { CartModelMock, CustomerBasketMock } from '../mocks/cart-model.mock';
+import { BasketService, ClearBasket, ClearBasketOldPrice, BasketState, FetchBasket } from '@enterprise/commerce/basket-lib/src';
+import { TdLoadingService, TdMediaService, TdDialogService } from '@covalent/core';
+import { noop, of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 export class CartMenuPage extends BaseTestPage<CartMenuComponent> {
   constructor(public fixture: ComponentFixture<CartMenuComponent>) {
     super(fixture);
@@ -25,6 +30,9 @@ export class CartMenuPage extends BaseTestPage<CartMenuComponent> {
   get cartItemPrice() {
     return this.queryAll<HTMLElement>(".cart-menu__item__total-price");
   }
+  get cartItemOldPrice() {
+    return this.queryAll<HTMLElement>(".cart-menu__item__old-price");
+  }
   get cartMenuEmpty() {
     return this.query<HTMLElement>(".cart-menu-empty");
   }
@@ -43,7 +51,59 @@ describe('CartMenuComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CartMenuComponent],
       imports: [
-        NgxsModule.forRoot([])],
+        RouterTestingModule,
+        HttpClientModule,
+        NgxsModule.forRoot([AppState, BasketState])],
+      providers: [
+        {
+          provide: TdMediaService,
+          useValue: {
+            registerQuery: noop,
+            query: noop,
+            broadcast: noop,
+            createComponent: noop,
+            createReplaceComponent: noop,
+            register: noop,
+            resolve: noop
+          }
+        },
+        {
+          provide: TdLoadingService,
+          useValue: {
+            registerQuery: noop,
+            query: noop,
+            broadcast: noop,
+            create: noop,
+            createComponent: noop,
+            createReplaceComponent: noop,
+            register: noop,
+            resolve: noop
+          }
+        },
+        {
+          provide: TdDialogService,
+          useValue: {
+            registerQuery: noop,
+            query: noop,
+            broadcast: noop,
+            createComponent: noop,
+            createReplaceComponent: noop,
+            register: noop,
+            resolve: noop
+          }
+        },
+        {
+          provide: BasketService,
+          useValue: {
+            configuration: {
+              accessToken: ''
+            },
+            apiV1BasketByIdGet(id: string) {
+              return of(CustomerBasketMock);
+            }
+          }
+        }
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();
@@ -54,34 +114,52 @@ describe('CartMenuComponent', () => {
     component = fixture.componentInstance;
     page = new CartMenuPage(fixture);
     store = TestBed.get(Store);
-    component.cartItems = CartModelMock;
-    storeSpy = spyOn(store, 'dispatch');
+    storeSpy = spyOn(store, 'dispatch').and.callThrough();
+    store.dispatch(new Logged(userData));
+    component.ngOnInit();
     fixture.detectChanges();
   });
-
+  const userData = {
+    profile: {
+      name: 'firstname',
+      last_name: 'lastname',
+      email: 'test@enterprise.com',
+      sub: '1231'
+    }
+  }
   describe('UI Tests', () => {
     it('should populate items in cart when defined', () => {
+      let componens: any;
+      component.cartItems$.subscribe(x => componens = x);
       expect(page.cartItem.length).toBe(CartModelMock.length);
     })
     it('should render title correctly', () => {
-      expect(page.cartItemTitle[0].innerText).toContain(CartModelMock[0].title);
+      expect(page.cartItemTitle[0].innerText).toContain(CartModelMock[0].productName);
     })
     it('should render quantity', () => {
       expect(page.cartItemQuantity[0].innerText).toContain(CartModelMock[0].quantity + ' pcs');
     })
     it('should render image', () => {
-      expect(page.cartItemImage[0].attributes.getNamedItem("src").textContent).toContain(CartModelMock[0].image);
+      expect(page.cartItemImage[0].attributes.getNamedItem("src").textContent).toContain(CartModelMock[0].pictureUrl);
     })
     it('should render total price multiply by quantity', () => {
-      expect(page.cartItemPrice[0].innerText).toContain('$ ' + (CartModelMock[0].quantity * CartModelMock[0].price));
+      expect(page.cartItemPrice[0].innerText).toContain('$ ' + (CartModelMock[0].quantity * CartModelMock[0].unitPrice));
+    })
+    it('should render old price when basket item has old price', () => {
+      expect(page.cartItemOldPrice[0].innerHTML).toContain('$ ' + CartModelMock[0].oldUnitPrice);
+    })
+    it('should hide old price when cart doesnt have old price', () => {
+      store.dispatch(ClearBasketOldPrice);
+      fixture.detectChanges();
+      expect(page.cartItemOldPrice.length).toBe(0);
     })
     it('should render cart empty when cart is empty', () => {
-      component.cartItems = [];
+      store.dispatch(ClearBasket);
       fixture.detectChanges();
       expect(page.cartMenuList).toBeNull();
     })
     it('should render cart list when cart is not empty', () => {
-      component.cartItems = [];
+      store.dispatch(ClearBasket);
       fixture.detectChanges();
       expect(page.cartMenuEmpty).not.toBeNull();
     })
@@ -93,5 +171,11 @@ describe('CartMenuComponent', () => {
         commands: ['order']
       }))
     })
+    it('should dispatch FetchBasket on init when user Authenticated', () => {
+      let data: any;
+      component.customerData$.subscribe((user) => data = user);
+      expect(store.dispatch).toHaveBeenCalledWith(new FetchBasket(data.profile.sub))
+    })
+
   })
 });
