@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { FetchBasket, DeleteItemBasket, DeleteAllItemBasket, UpdateBasket } from '../shared/basket.action';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,7 @@ import { BasketItem } from '../../api/model/basketItem';
   templateUrl: './list-cart.component.html',
   styleUrls: ['./list-cart.component.scss']
 })
-export class ListCartComponent implements OnInit {
+export class ListCartComponent implements OnInit, OnDestroy {
   @Select(BasketState.getBasketItems)
   cartItems$: Observable<BasketItem[]>;
 
@@ -41,6 +41,10 @@ export class ListCartComponent implements OnInit {
           this.cartItems = data;
         }
       })
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(false);
   }
   calculateTotalPrice() {
     if (this.cartItems.length > 0) {

@@ -22,6 +22,9 @@
   &__card-expiry {
     @extend %payment-info-font;
   }
+  &__card-security {
+    @extend %payment-info-font;
+  }
   &__actions {
     display: grid;
     grid-template-columns: 8fr 1fr 1fr;

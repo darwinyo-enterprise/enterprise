@@ -3,13 +3,16 @@
     Payment Detail
   </div>
   <div class="payment-detail__card-number">
-    Card Number: 5379 2013 5712 1381
+    Card Number: {{userData.profile.card_number}}
   </div>
   <div class="payment-detail__card-holder">
-    Card Holder: Darwin Yo
+    Card Holder: {{userData.profile.card_holder}}
   </div>
   <div class="payment-detail__card-expiry">
-    Card Expiry: 20/99
+    Card Expiry: {{userData.profile.card_expiration}}
+  </div>
+  <div class="payment-detail__card-security">
+    Card Security: {{userData.profile.card_security_number}}
   </div>
   <div class="payment-detail__actions">
     <span></span>

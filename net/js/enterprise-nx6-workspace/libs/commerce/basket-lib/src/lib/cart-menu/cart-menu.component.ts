@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { Navigate, AppState } from '@enterprise/core/src';
 import { BasketItem } from '../../api/model/basketItem';
@@ -13,7 +13,8 @@ import { BasketState } from '@enterprise/commerce/basket-lib/src/lib/shared/bask
   templateUrl: './cart-menu.component.html',
   styleUrls: ['./cart-menu.component.scss']
 })
-export class CartMenuComponent implements OnInit {
+export class CartMenuComponent implements OnInit, OnDestroy {
+
   @Select(BasketState.getBasketItems)
   cartItems$: Observable<BasketItem[]>;
 
@@ -33,7 +34,9 @@ export class CartMenuComponent implements OnInit {
       }
     })
   }
-
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(false);
+  }
   onCartItemClicked() {
     this.store.dispatch(new Navigate({
       commands: ['order']
