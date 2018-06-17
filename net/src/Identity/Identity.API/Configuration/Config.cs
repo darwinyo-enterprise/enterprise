@@ -43,7 +43,10 @@ namespace Identity.API.Configuration
                     ClientName = "Enterprise Commerce Client App SPA OpenId Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = {$"{clientsUrl["CommerceClientSpa"]}/"},
+                    RedirectUris = {
+                        $"{clientsUrl["CommerceClientSpa"]}/",
+                        $"{clientsUrl["CommerceClientSpa"]}/silent-renew.html"
+                    },
                     RequireConsent = false,
                     PostLogoutRedirectUris = {$"{clientsUrl["CommerceClientSpa"]}/"},
                     AllowedCorsOrigins = {$"{clientsUrl["CommerceClientSpa"]}"},

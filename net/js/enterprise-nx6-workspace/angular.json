@@ -36,12 +36,10 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/commerce-admin-app/src/environments/environment.ts",
-                  "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "apps/commerce-admin-app/src/environments/environment.ts",
+                "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -154,6 +152,8 @@
             "polyfills": "apps/commerce-client-app/src/polyfills.ts",
             "tsConfig": "apps/commerce-client-app/tsconfig.app.json",
             "assets": [
+              "apps/commerce-client-app/src/silent-renew.html",
+              "apps/commerce-client-app/src/oidc-client.min.js",
               "apps/commerce-client-app/src/favicon.ico",
               "apps/commerce-client-app/src/assets",
               "apps/commerce-client-app/src/manifest.json"
@@ -167,12 +167,10 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/commerce-client-app/src/environments/environment.ts",
-                  "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
-                }
-              ],
+              "fileReplacements": [{
+                "replace": "apps/commerce-client-app/src/environments/environment.ts",
+                "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
+              }],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

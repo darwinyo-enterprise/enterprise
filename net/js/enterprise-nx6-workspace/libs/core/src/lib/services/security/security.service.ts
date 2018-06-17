@@ -76,6 +76,9 @@ export class SecurityService {
       }
     });
   }
+  public SilentRenew() {
+    this.userManager.signinSilentCallback();
+  }
 
   public Logoff() {
     this.userManager.signoutRedirect();

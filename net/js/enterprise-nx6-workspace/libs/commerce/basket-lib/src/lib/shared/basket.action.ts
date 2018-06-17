@@ -29,6 +29,19 @@ export class ItemBasketDeleted {
     constructor() { }
 }
 
+/** Delete Item Basket Command */
+export class DeleteAllItemBasket {
+    static readonly type = '[COMMERCE] DELETE ALL ITEM BASKET';
+    /** customer id */
+    constructor(public payload: string) { }
+}
+
+/** Item Basket Deleted Event */
+export class AllItemBasketDeleted {
+    static readonly type = '[COMMERCE] ALL ITEM BASKET DELETED';
+    constructor() { }
+}
+
 /** Check out basket Command */
 export class CheckOutBasket {
     static readonly type = '[COMMERCE] CHECK OUT BASKET';

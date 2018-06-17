@@ -2,7 +2,7 @@ import { BasketItem } from "../../api/model/basketItem";
 import { State, Selector, Action, StateContext } from "@ngxs/store";
 import { BasketService } from "./../../api/api/basket.service";
 import { StorageService, RegisterLoadingOverlay, ErrorOccured, ResolveLoadingOverlay, Navigate, Alert } from "@enterprise/core/src";
-import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded, ClearBasket, ClearBasketOldPrice } from "./basket.action";
+import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded, ClearBasket, ClearBasketOldPrice, AllItemBasketDeleted, DeleteAllItemBasket } from "./basket.action";
 import { tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CustomerBasket } from "@enterprise/commerce/basket-lib/src";
@@ -92,8 +92,35 @@ export class BasketState {
     /** Delete Basket Item Command */
     @Action(DeleteItemBasket)
     deleteBasketItem(
-        { dispatch }: StateContext<BasketStateModel>,
+        { getState, dispatch }: StateContext<BasketStateModel>,
         { payload }: DeleteItemBasket
+    ) {
+        // Register Loading Overlay
+        dispatch(new RegisterLoadingOverlay());
+
+        const state = getState();
+        const index = state.basketItems.findIndex(x => x.productId === payload);
+
+        state.basketItems.splice(index, 1);
+        dispatch(ItemBasketDeleted);
+    }
+
+    // Done
+    /** Basket Deleted Event */
+    @Action(ItemBasketDeleted)
+    basketItemDeleted(
+        { dispatch, getState }: StateContext<BasketStateModel>) {
+        const state = getState();
+        dispatch([UpdateBasket,
+            ResolveLoadingOverlay, new Alert("Basket Item Deleted")])
+    }
+
+    //Done
+    /** Delete Basket Item Command */
+    @Action(DeleteAllItemBasket)
+    deleteAllBasketItem(
+        { dispatch }: StateContext<BasketStateModel>,
+        { payload }: DeleteAllItemBasket
     ) {
         // Register Loading Overlay
         dispatch(new RegisterLoadingOverlay());
@@ -111,13 +138,13 @@ export class BasketState {
 
     // Done
     /** Basket Deleted Event */
-    @Action(ItemBasketDeleted)
-    basketItemDeleted(
+    @Action(AllItemBasketDeleted)
+    allBasketItemDeleted(
         { dispatch, getState }: StateContext<BasketStateModel>) {
         const state = getState();
         dispatch([
             new FetchBasket(state.customerId),
-            ResolveLoadingOverlay, new Alert("Basket Item Deleted")]);
+            ResolveLoadingOverlay, new Alert("All Basket Item Deleted")]);
     }
 
     // DONE

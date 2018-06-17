@@ -92,6 +92,8 @@ export class AppComponent implements OnInit {
       response_type: 'id_token token',
       scope: 'openid profile orders basket catalog orders.signalrhub',
       post_logout_redirect_uri: location.origin + '/',
+      automaticSilentRenew: true,
+      silent_redirect_uri: location.origin + '/silent-renew.html'
     }
     this.store.dispatch([new LoadAuthSettings(this.settings), SubscribeUser]);
     this.securityService.Initialize(this.configuration.identityUrl, this.settings);

@@ -129,8 +129,6 @@ describe('CartMenuComponent', () => {
   }
   describe('UI Tests', () => {
     it('should populate items in cart when defined', () => {
-      let componens: any;
-      component.cartItems$.subscribe(x => componens = x);
       expect(page.cartItem.length).toBe(CartModelMock.length);
     })
     it('should render title correctly', () => {
