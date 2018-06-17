@@ -63,6 +63,9 @@
       ],
       "@enterprise/commerce/order-lib": [
         "libs/commerce/order-lib/src/index.ts"
+      ],
+      "@enterprise-nx6-workspace/commerce/payment-lib": [
+        "libs/commerce/payment-lib/src/index.ts"
       ]
     }
   },

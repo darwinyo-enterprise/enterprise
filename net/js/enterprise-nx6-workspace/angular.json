@@ -36,10 +36,12 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "apps/commerce-admin-app/src/environments/environment.ts",
-                "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-admin-app/src/environments/environment.ts",
+                  "with": "apps/commerce-admin-app/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -167,10 +169,12 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "apps/commerce-client-app/src/environments/environment.ts",
-                "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "apps/commerce-client-app/src/environments/environment.ts",
+                  "with": "apps/commerce-client-app/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -643,7 +647,7 @@
       "root": "libs/commerce/basket-lib",
       "sourceRoot": "libs/commerce/basket-lib/src",
       "projectType": "library",
-      "prefix": "em",
+      "prefix": "eca",
       "architect": {
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -671,7 +675,7 @@
       "root": "libs/commerce/order-lib",
       "sourceRoot": "libs/commerce/order-lib/src",
       "projectType": "library",
-      "prefix": "em",
+      "prefix": "eca",
       "architect": {
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -687,6 +691,34 @@
             "tsConfig": [
               "libs/commerce/order-lib/tsconfig.lib.json",
               "libs/commerce/order-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-payment-lib": {
+      "root": "libs/commerce/payment-lib",
+      "sourceRoot": "libs/commerce/payment-lib/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/payment-lib/src/test.ts",
+            "tsConfig": "libs/commerce/payment-lib/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/payment-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/payment-lib/tsconfig.lib.json",
+              "libs/commerce/payment-lib/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

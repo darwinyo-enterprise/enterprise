@@ -6,10 +6,12 @@ import { ListCartComponent } from './list-cart/list-cart.component';
 import { BasketState } from './shared/basket.state';
 import { NgxsModule } from '@ngxs/store';
 import { ApiModule } from '../api/api.module';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [CommonModule, SharedModule,
     NgxsModule.forFeature([BasketState]),
-    ApiModule],
+    ApiModule, FormsModule, RouterModule],
   declarations: [CartMenuComponent, ListCartComponent],
   exports: [CartMenuComponent, ListCartComponent, ApiModule]
 })

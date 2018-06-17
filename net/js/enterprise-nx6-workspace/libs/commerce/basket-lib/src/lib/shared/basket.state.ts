@@ -112,28 +112,20 @@ export class BasketState {
         { dispatch, getState }: StateContext<BasketStateModel>) {
         const state = getState();
         dispatch([UpdateBasket,
-            ResolveLoadingOverlay, new Alert("Basket Item Deleted")])
+            ResolveLoadingOverlay,new Alert("Item Deleted")])
     }
 
     //Done
     /** Delete Basket Item Command */
     @Action(DeleteAllItemBasket)
     deleteAllBasketItem(
-        { dispatch }: StateContext<BasketStateModel>,
-        { payload }: DeleteAllItemBasket
+        { dispatch, patchState }: StateContext<BasketStateModel>
     ) {
-        // Register Loading Overlay
-        dispatch(new RegisterLoadingOverlay());
+        patchState({
+            basketItems: []
+        });
+        dispatch(AllItemBasketDeleted);
 
-        return this.basketService
-            .apiV1BasketByIdDelete(payload)
-            .pipe(
-                tap(
-                    () => { },
-                    (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-                    () => dispatch(ItemBasketDeleted)
-                )
-            );
     }
 
     // Done
@@ -143,7 +135,7 @@ export class BasketState {
         { dispatch, getState }: StateContext<BasketStateModel>) {
         const state = getState();
         dispatch([
-            new FetchBasket(state.customerId),
+            UpdateBasket,
             ResolveLoadingOverlay, new Alert("All Basket Item Deleted")]);
     }
 
@@ -181,7 +173,7 @@ export class BasketState {
     /** Basket Updated Event */
     @Action(BasketUpdated)
     basketUpdated({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([ResolveLoadingOverlay, new Alert("Basket Updated")])
+        dispatch([ResolveLoadingOverlay])
     }
 
     // Done
@@ -213,7 +205,7 @@ export class BasketState {
     /** Item Basket Added Event */
     @Action(ItemBasketAdded)
     itemBasketAdded({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([UpdateBasket])
+        dispatch([UpdateBasket,new Alert("Item Added")])
     }
 
     /** Check out Basket */

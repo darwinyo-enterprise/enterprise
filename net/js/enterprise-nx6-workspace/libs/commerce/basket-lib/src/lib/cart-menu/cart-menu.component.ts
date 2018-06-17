@@ -9,7 +9,7 @@ import { BasketState } from '@enterprise/commerce/basket-lib/src/lib/shared/bask
 
 
 @Component({
-  selector: 'em-cart-menu',
+  selector: 'eca-cart-menu',
   templateUrl: './cart-menu.component.html',
   styleUrls: ['./cart-menu.component.scss']
 })

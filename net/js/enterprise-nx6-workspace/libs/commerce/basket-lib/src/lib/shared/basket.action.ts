@@ -32,8 +32,8 @@ export class ItemBasketDeleted {
 /** Delete Item Basket Command */
 export class DeleteAllItemBasket {
     static readonly type = '[COMMERCE] DELETE ALL ITEM BASKET';
-    /** customer id */
-    constructor(public payload: string) { }
+
+    constructor() { }
 }
 
 /** Item Basket Deleted Event */

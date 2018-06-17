@@ -116,7 +116,7 @@ describe('ListProductComponent', () => {
         });
 
         it('should dispatch fetch paginated products when pagination changed', () => {
-            var pageInfo: IPageChangeEvent = { page: 1, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 };
+            const pageInfo: IPageChangeEvent = { page: 1, pageSize: 10, maxPage: 0, toRow: 0, total: 0, fromRow: 0 };
 
             component.onPaginationChanged();
             component.pageInfo$.pipe(take(1)).subscribe(x => {

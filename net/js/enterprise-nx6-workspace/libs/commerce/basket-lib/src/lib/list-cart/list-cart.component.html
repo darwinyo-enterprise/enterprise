@@ -1,27 +1,27 @@
 <div class="cart-item__container">
-  <div class="cart-item__container__child">
+  <div class="cart-item__container__child" *ngFor="let item of cartItems">
     <mat-card class="cart-item">
       <div class="cart-item__image">
-        <img src="assets/test-product.png" alt="" srcset="">
+        <img src="{{item.pictureUrl}}" alt="" srcset="">
       </div>
       <div class="cart-item__info">
         <div class="cart-item__info__title">
-          <a href="#">
-            Intel i5 7790K
+          <a [routerLink]="['/product-detail',item.productId]">
+            {{item.productName}}
           </a>
-          <span class="cart-item__info__title__info"> Price has Changed</span>
+          <span class="cart-item__info__title__info" *ngIf="item.oldUnitPrice"> Price has Changed</span>
         </div>
         <div class="cart-item__info__quantity">
-          <input type="number" name="" id="" class="cart-item__info__quantity__input" value="1">
+          <input type="number" name="" id="" class="cart-item__info__quantity__input" [value]="item.quantity" [(ngModel)]="item.quantity">
           <span>pcs x </span>
-          <span class="cart-item__info__quantity__price"> $ 1200</span>
-          <span class="cart-item__info__quantity__old-price"> $ 1200</span>
+          <span class="cart-item__info__quantity__price"> $ {{item.unitPrice}}</span>
+          <span class="cart-item__info__quantity__old-price" *ngIf="item.oldUnitPrice">$ {{item.oldUnitPrice}}</span>
         </div>
       </div>
       <div class="cart-item__total-price">
-        Total: $ 1200
+        Total: $ {{item.quantity * item.unitPrice}}
       </div>
-      <div class="cart-item__delete-btn" (click)="onDelete()">
+      <div class="cart-item__delete-btn" (click)="onDelete(item.productId)">
         <mat-icon class="td-chip-removal mat-icon material-icons" role="img" aria-hidden="true">
           cancel
         </mat-icon>
@@ -32,13 +32,13 @@
     <mat-card class="cart-item--action">
 
       <div class="cart-item__total-price">
-        Total Order: $ 1200
+        Total Order: $ {{calculateTotalPrice()}}
       </div>
       <div class="cart-item-action">
-        <button mat-button matStepperNext class="cart-item-action__purchase-btn">
+        <button mat-button matStepperNext class="cart-item-action__purchase-btn" (click)="onPurchaseBtnClicked()">
           Check out
         </button>
-        <button mat-button class="cart-item-action__clear-btn">
+        <button mat-button class="cart-item-action__clear-btn" (click)="onClearBasketClicked()">
           Clear
         </button>
       </div>
