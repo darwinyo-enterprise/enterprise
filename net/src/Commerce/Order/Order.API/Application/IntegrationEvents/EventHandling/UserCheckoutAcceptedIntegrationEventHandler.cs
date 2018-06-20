@@ -39,7 +39,7 @@ namespace Order.API.Application.IntegrationEvents.EventHandling
 
             // Send Integration event to clean basket once basket is converted to Order and before starting with the order creation process
             var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(eventMsg.UserId);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStartedIntegrationEvent);
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(0,"Order Started",orderStartedIntegrationEvent);
 
             if (eventMsg.RequestId != Guid.Empty)
             {

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListCartComponent } from './list-cart.component';
 import { BaseTestPage } from '@enterprise/core/testing/src';
 import { Store, NgxsModule } from '@ngxs/store';
-import { CartModelMock, ClearBasketOldPrice, ClearBasket, FetchBasket, BasketService, CustomerBasketMock, BasketState, DeleteItemBasket, DeleteAllItemBasket, UpdateBasket } from '@enterprise/commerce/basket-lib/src';
+
 import { Navigate, AppState, Logged } from '@enterprise/core/src';
 import { of, noop } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -11,6 +11,10 @@ import { TdDialogService, TdLoadingService, TdMediaService } from '@covalent/cor
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { BasketState } from '../shared/basket.state';
+import { BasketService } from '../../api/api/basket.service';
+import { CustomerBasketMock, CartModelMock } from '../mocks/cart-model.mock';
+import { ClearBasketOldPrice, FetchBasket, DeleteItemBasket, DeleteAllItemBasket, UpdateBasket } from '../shared/basket.action';
 
 export class ListCartPage extends BaseTestPage<ListCartComponent> {
   constructor(public fixture: ComponentFixture<ListCartComponent>) {

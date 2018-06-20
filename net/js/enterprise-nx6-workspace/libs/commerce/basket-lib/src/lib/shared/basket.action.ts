@@ -1,6 +1,6 @@
 import { CustomerBasket } from "../../api/model/customerBasket";
 import { BasketCheckout } from "../../api/model/basketCheckout";
-import { BasketItem } from "@enterprise/commerce/basket-lib/src";
+import { BasketItem } from "../../api/model/basketItem";
 
 /** Fetch Basket Command */
 export class FetchBasket {

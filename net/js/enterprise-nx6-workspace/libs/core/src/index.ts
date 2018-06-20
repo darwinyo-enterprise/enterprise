@@ -11,3 +11,4 @@ export * from './lib/services/storage/storage.service';
 export * from './lib/models/configuration.model'
 export * from './lib/services/auth/auth-guard.service';
 export * from './lib/services/auth/admin-auth-guard.service';
+export * from './lib/silent-renew/silent-renew.component';

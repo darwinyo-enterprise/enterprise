@@ -1,5 +1,6 @@
 export * from './catalogItemViewModel';
 export * from './category';
+export * from './integrationEventLogEntry';
 export * from './itemViewModel';
 export * from './manufacturer';
 export * from './modelFile';

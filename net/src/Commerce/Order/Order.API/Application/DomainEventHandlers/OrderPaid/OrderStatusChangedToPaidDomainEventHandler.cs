@@ -54,7 +54,7 @@ namespace Order.API.Application.DomainEventHandlers.OrderPaid
                 buyer.Name,
                 orderStockList);
 
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToPaidIntegrationEvent.OrderId,orderStatusChangedToPaidIntegrationEvent.OrderStatus,
                 orderStatusChangedToPaidIntegrationEvent);
         }
     }

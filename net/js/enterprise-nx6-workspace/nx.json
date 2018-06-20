@@ -60,6 +60,9 @@
     },
     "commerce-payment-lib": {
       "tags": []
+    },
+    "commerce-order-signal-r": {
+      "tags": []
     }
   }
 }

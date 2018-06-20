@@ -40,6 +40,13 @@ namespace Enterprise.Library.IntegrationEventLog
 
             builder.Property(e => e.EventTypeName)
                 .IsRequired();
+
+
+            builder.Property(e => e.OrderId)
+                .IsRequired();
+
+            builder.Property(e => e.OrderStatus)
+                .IsRequired();
         }
     }
 
@@ -52,7 +59,7 @@ namespace Enterprise.Library.IntegrationEventLog
                     "Server=.;Initial Catalog=Enterprise.Commerce.Services.IntegrationEventLog;Integrated Security=true", b =>
                      {
                          //b.MigrationsAssembly("Catalog.API");
-                         //b.MigrationsAssembly("Order.API");
+                         b.MigrationsAssembly("Order.API");
                      });
 
             return new IntegrationEventLogContext(optionsBuilder.Options);

@@ -23,14 +23,15 @@ namespace Enterprise.Library.IntegrationEventLog.Services
                     .Options);
         }
 
-        public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
+        public Task SaveEventAsync(int orderId, string orderStatus, IntegrationEvent @event, DbTransaction transaction)
         {
             if (transaction == null)
                 throw new ArgumentNullException(nameof(transaction),
                     $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
 
             var eventLogEntry = new IntegrationEventLogEntry(@event);
-
+            eventLogEntry.OrderId = orderId;
+            eventLogEntry.OrderStatus = orderStatus;
             _integrationEventLogContext.Database.UseTransaction(transaction);
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
 

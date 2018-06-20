@@ -36,6 +36,9 @@
     "webpack:server:commerce-client": "webpack --config ./apps/commerce-client-app/webpack.server.config.js --progress --colors",
     "test:category-lib": "ng test commerce-category-lib --watch false --browsers PhantomJS",
     "test:manufacturer-lib": "ng test commerce-manufacturer-lib --watch false --browsers PhantomJS",
+    "test:order-lib": "ng test commerce-order-lib --watch false --browsers PhantomJS",
+    "test:payment-lib": "ng test commerce-payment-lib --watch false --browsers PhantomJS",
+    "test:basket-lib": "ng test commerce-basket-lib --watch false --browsers PhantomJS",
     "test:product-lib": "ng test commerce-product-lib --watch false --browsers PhantomJS",
     "test:core": "ng test core --watch false --browsers PhantomJS",
     "test:material-counter": "ng test material-counter --watch false --browsers PhantomJS",
@@ -45,7 +48,7 @@
     "test:material-stars": "ng test material-stars --watch false --browsers PhantomJS",
     "test:commerce-client-app": "ng test commerce-client-app --watch false --browsers PhantomJS",
     "test:commerce-admin-app": "ng test commerce-admin-app --watch false --browsers PhantomJS",
-    "test:all": "npm run test:category-lib && npm run test:manufacturer-lib && npm run test:product-lib && npm run test:core && npm run test:material-counter && npm run test:material-file-upload && npm run test:material-gallery && npm run test:material-list-item-actions && npm run test:material-stars && npm run test:commerce-client-app && npm run test:commerce-admin-app",
+    "test:all": "npm run test:category-lib && npm run test:order-lib && npm run test:payment-lib && npm run test:basket-lib && npm run test:manufacturer-lib && npm run test:product-lib && npm run test:core && npm run test:material-counter && npm run test:material-file-upload && npm run test:material-gallery && npm run test:material-list-item-actions && npm run test:material-stars && npm run test:commerce-client-app && npm run test:commerce-admin-app",
     "e2e:commerce-admin": "ng e2e commerce-admin-app-e2e --port 2000",
     "e2e:commerce-client": "ng e2e commerce-admin-app-e2e --port 2001",
     "e2e:all": "npm run e2e:commerce-admin && npm run e2e:commerce-client"

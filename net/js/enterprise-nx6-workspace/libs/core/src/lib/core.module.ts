@@ -20,6 +20,7 @@ import {
 } from '@covalent/core';
 import { SecurityService } from './services/security/security.service';
 import { StorageService } from './services/storage/storage.service';
+import { SilentRenewComponent } from './silent-renew/silent-renew.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,10 +36,11 @@ import { StorageService } from './services/storage/storage.service';
   exports: [SharedModule,
     PageNotFoundComponent,
     NotAuthorizedComponent,
+    SilentRenewComponent,
     CovalentCommonModule, CovalentLayoutModule, CovalentMediaModule, CovalentExpansionPanelModule,
     CovalentStepsModule, CovalentLoadingModule, CovalentDialogsModule, CovalentSearchModule, CovalentPagingModule,
     CovalentNotificationsModule, CovalentMenuModule, CovalentDataTableModule, CovalentMessageModule],
-  declarations: [PageNotFoundComponent, NotAuthorizedComponent],
+  declarations: [PageNotFoundComponent, NotAuthorizedComponent, SilentRenewComponent],
   providers: [
     SecurityService,
     StorageService

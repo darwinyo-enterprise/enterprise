@@ -11,7 +11,7 @@ namespace Enterprise.Library.IntegrationEventLog
     {
         public IntegrationEventLogEntry()
         {
-            
+
         }
         public IntegrationEventLogEntry(IntegrationEvent @event)
         {
@@ -29,5 +29,7 @@ namespace Enterprise.Library.IntegrationEventLog
         public int TimesSent { get; set; }
         public DateTime CreationTime { get; set; }
         public string Content { get; set; }
+        public int OrderId { get; set; }
+        public string OrderStatus { get; set; }
     }
 }

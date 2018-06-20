@@ -1,3 +1,3 @@
 CardHolderName,CardNumber,CardType,City,Country,Email,Expiration,LastName,Name,PhoneNumber,UserName,ZipCode,State,Street,SecurityNumber,NormalizedEmail,NormalizedUserName,Password
-DarwinYo,4.01E+15,1,Redmond,U.S.,darwinyo@enterprise.com,20-Dec,Yo,Darwin,1234567890,darwinyo@enterprise.com,98052,WA,15703 NE 61st Ct,535,DARWINYO@ENTERPRISE.COM,DARWINYO@ENTERPRISE.COM,P@ssw0rd
-Demo,4.01E+15,1,Redmond,U.S.,demo@enterprise.com,20-Dec,User,Demo,1234567890,demo@enterprise.com,98052,WA,15703 NE 61st Ct,535,DEMO@ENTERPRISE.COM,DEMO@ENTERPRISE.COM,P@ssw0rd
+DarwinYo,4012888888881881,1,Redmond,U.S.,darwinyo@enterprise.com,20/34,Yo,Darwin,1234567890,darwinyo@enterprise.com,98052,WA,15703 NE 61st Ct,535,DARWINYO@ENTERPRISE.COM,DARWINYO@ENTERPRISE.COM,P@ssw0rd
+Demo,4012888888881882,1,Redmond,U.S.,demo@enterprise.com,20/34,User,Demo,1234567890,demo@enterprise.com,98052,WA,15703 NE 61st Ct,535,DEMO@ENTERPRISE.COM,DEMO@ENTERPRISE.COM,P@ssw0rd

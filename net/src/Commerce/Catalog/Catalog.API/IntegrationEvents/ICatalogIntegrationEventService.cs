@@ -5,7 +5,7 @@ namespace Catalog.API.IntegrationEvents
 {
     public interface ICatalogIntegrationEventService
     {
-        Task SaveEventAndCatalogContextChangesAsync(IntegrationEvent evt);
+        Task SaveEventAndCatalogContextChangesAsync(int orderId,string orderStatus, IntegrationEvent evt);
         Task PublishThroughEventBusAsync(IntegrationEvent evt);
     }
 }

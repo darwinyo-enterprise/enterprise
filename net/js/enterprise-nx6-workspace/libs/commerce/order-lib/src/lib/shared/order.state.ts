@@ -3,20 +3,26 @@ import { OrdersService } from "../../api/api/orders.service";
 import { StorageService, ErrorOccured, RegisterLoadingOverlay, ResolveLoadingOverlay } from "@enterprise/core/src";
 import { UpdateOrderStatus, OrderStatusUpdated, CancelOrder, OrderCancelled, ShipOrder, OrderShipped, FetchSingleOrder, SingleOrderFetched } from "./order.action";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { tap } from "rxjs/operators";
+import { tap, take, mergeMap, merge, takeLast } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Order } from "../../api/model/order";
+import * as cl from "@enterprise/commerce/catalog-lib/src";
+import { IntegrationEventLogEntry } from "../../api/model/integrationEventLogEntry";
+import { IntegrationEventService } from "../../api/api/integrationEvent.service";
+
 
 export interface OrderStateModel {
     orderId: number;
     orderStatus: string;
     selectedOrder: Order;
+    orderTracks: IntegrationEventLogEntry[];
 }
 
 const defaults: OrderStateModel = {
     orderId: 0,
     orderStatus: '',
-    selectedOrder: null
+    selectedOrder: null,
+    orderTracks: []
 };
 
 @State({
@@ -24,7 +30,7 @@ const defaults: OrderStateModel = {
     defaults: defaults
 })
 export class OrderState {
-    constructor(private orderService: OrdersService, private storageService: StorageService, public snackBar: MatSnackBar) {
+    constructor(private orderService: OrdersService, private catalogIntegrationService: cl.IntegrationEventService, private orderIntegrationService: IntegrationEventService, private storageService: StorageService, public snackBar: MatSnackBar) {
         this.setAccessToken();
     }
     //#region Selectors
@@ -38,10 +44,17 @@ export class OrderState {
         return state.orderId;
     }
 
+    @Selector()
+    static getOrderTracks(state: OrderStateModel) {
+        return state.orderTracks;
+    }
+
     //#endregion
 
     setAccessToken() {
         this.orderService.configuration.accessToken = this.storageService.retrieve('authorizationData');
+        this.orderIntegrationService.configuration.accessToken = this.storageService.retrieve('authorizationData');
+        this.catalogIntegrationService.configuration.accessToken = this.storageService.retrieve('authorizationData');
     }
     openSnackbar(message: string) {
         this.snackBar.open(message, '', {
@@ -54,14 +67,38 @@ export class OrderState {
     /** Command Update Order Status */
     @Action(UpdateOrderStatus, { cancelUncompleted: true })
     updateOrderStatus(
-        { patchState, dispatch }: StateContext<OrderStateModel>,
+        { getState, patchState, dispatch }: StateContext<OrderStateModel>,
         { payload, status }: UpdateOrderStatus
     ) {
-        patchState({
-            orderId: payload,
-            orderStatus: status
-        })
-        dispatch(OrderStatusUpdated);
+        const state = getState();
+        let tracks: IntegrationEventLogEntry[] = [];
+
+        const orderInteg = this.orderIntegrationService.byIdGet(payload);
+        const catalogInteg = this.catalogIntegrationService.byIdGet(payload);
+
+        const mergeInteg = orderInteg.pipe(merge(
+            orderInteg.pipe(take(1)),
+            catalogInteg.pipe(take(1))
+        ));
+        mergeInteg.pipe(takeLast(1)).subscribe(x => {
+            if (x.length > 0) {
+                tracks = tracks.concat(x);
+                tracks = tracks.sort((a, b) => {
+                    if (a.creationTime > b.creationTime) return 1;
+                    if (a.creationTime < b.creationTime) return -1;
+                    return 0;
+                })
+            }
+        },
+            err => console.log(err),
+            () => {
+                patchState({
+                    orderId: payload,
+                    orderStatus: status,
+                    orderTracks: tracks
+                })
+                dispatch(OrderStatusUpdated);
+            })
     }
 
     // Done

@@ -5,6 +5,6 @@ namespace Order.API.Application.IntegrationEvents
 {
     public interface IOrderingIntegrationEventService
     {
-        Task PublishThroughEventBusAsync(IntegrationEvent evt);
+        Task PublishThroughEventBusAsync(int orderId, string orderStatus, IntegrationEvent evt);
     }
 }

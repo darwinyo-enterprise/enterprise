@@ -43,7 +43,7 @@ namespace Order.API.Application.DomainEventHandlers.OrderCancelled
 
             var orderStatusChangedToCancelledIntegrationEvent =
                 new OrderStatusChangedToCancelledIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToCancelledIntegrationEvent.OrderId, orderStatusChangedToCancelledIntegrationEvent.OrderStatus,
                 orderStatusChangedToCancelledIntegrationEvent);
         }
     }

@@ -1,40 +1,40 @@
 <mat-card class="order-detail-page">
-  <mat-card class="purchase-detail-container">
+  <mat-card class="purchase-detail-container" *ngIf="userData">
     <div class="purchase-detail-container__title">
       Buyer Contact Details
     </div>
     <div class="purchase-detail-container__info-container">
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">Buyer: </span>
-        <span class="purchase-detail-container__info-container__item__value">Darwin Yo</span>
+        <span id="buyer-name" class="purchase-detail-container__info-container__item__value">{{userData.profile.name}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">Country: </span>
-        <span class="purchase-detail-container__info-container__item__value">U.S</span>
+        <span id="buyer-country" class="purchase-detail-container__info-container__item__value">{{userData.profile.address_country}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">City: </span>
-        <span class="purchase-detail-container__info-container__item__value">Redmond</span>
+        <span id="buyer-city" class="purchase-detail-container__info-container__item__value">{{userData.profile.address_city}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">State: </span>
-        <span class="purchase-detail-container__info-container__item__value">WA</span>
+        <span id="buyer-state" class="purchase-detail-container__info-container__item__value">{{userData.profile.address_state}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">ZipCode: </span>
-        <span class="purchase-detail-container__info-container__item__value">98052</span>
+        <span id="buyer-zip" class="purchase-detail-container__info-container__item__value">{{userData.profile.address_zip_code}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">Street: </span>
-        <span class="purchase-detail-container__info-container__item__value">15703 NE 61st Ct</span>
+        <span id="buyer-street" class="purchase-detail-container__info-container__item__value">{{userData.profile.address_street}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">Phone: </span>
-        <span class="purchase-detail-container__info-container__item__value">1234567890</span>
+        <span id="buyer-phone" class="purchase-detail-container__info-container__item__value">{{userData.profile.phone_number}}</span>
       </div>
       <div class="purchase-detail-container__info-container__item">
         <span class="purchase-detail-container__info-container__item__key">Email: </span>
-        <span class="purchase-detail-container__info-container__item__value">darwinyo@enterprise.com</span>
+        <span id="buyer-email" class="purchase-detail-container__info-container__item__value">{{userData.profile.email}}</span>
       </div>
     </div>
   </mat-card>
@@ -44,48 +44,15 @@
       Order Details
     </div>
     <div class="order-detail-container__order-list">
-      <div class="order-detail-container__order-list__item">
+      <div class="order-detail-container__order-list__item" *ngFor="let item of orderList">
         <div class="order-detail-container__order-list__item__name">
-          Intel i5 8870K
+          {{item.productName}}
         </div>
         <div class="order-detail-container__order-list__item__quantity">
-          2 pcs
+          {{item.quantity}} pcs
         </div>
         <div class="order-detail-container__order-list__item__total-price">
-          $ 2013
-        </div>
-      </div>
-      <div class="order-detail-container__order-list__item">
-        <div class="order-detail-container__order-list__item__name">
-          Intel i5 8870K
-        </div>
-        <div class="order-detail-container__order-list__item__quantity">
-          2 pcs
-        </div>
-        <div class="order-detail-container__order-list__item__total-price">
-          $ 2013
-        </div>
-      </div>
-      <div class="order-detail-container__order-list__item">
-        <div class="order-detail-container__order-list__item__name">
-          Intel i5 8870K
-        </div>
-        <div class="order-detail-container__order-list__item__quantity">
-          2 pcs
-        </div>
-        <div class="order-detail-container__order-list__item__total-price">
-          $ 2013
-        </div>
-      </div>
-      <div class="order-detail-container__order-list__item">
-        <div class="order-detail-container__order-list__item__name">
-          Intel i5 8870K
-        </div>
-        <div class="order-detail-container__order-list__item__quantity">
-          2 pcs
-        </div>
-        <div class="order-detail-container__order-list__item__total-price">
-          $ 2013
+          $ {{item.unitPrice * item.quantity}}
         </div>
       </div>
     </div>
@@ -98,13 +65,13 @@
       </div>
       <div class="order-detail-container__order-list__item__total-price">
 
-        $ 12122
+        $ {{calculateTotalPrice()}}
       </div>
     </div>
 
     <div class="order-detail-container__actions">
       <span></span>
-      <button mat-button matStepperNext class="order-detail-container__actions__purchase">Purchase</button>
+      <button mat-button matStepperNext class="order-detail-container__actions__purchase" (click)="onPurchaseClicked()">Purchase</button>
       <button mat-button matStepperPrevious class="order-detail-container__actions__back">Back</button>
     </div>
   </mat-card>

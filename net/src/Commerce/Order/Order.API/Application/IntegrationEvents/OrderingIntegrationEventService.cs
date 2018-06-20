@@ -29,14 +29,14 @@ namespace Order.API.Application.IntegrationEvents
             _eventLogService = _integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
         }
 
-        public async Task PublishThroughEventBusAsync(IntegrationEvent evt)
+        public async Task PublishThroughEventBusAsync(int orderId, string orderStatus, IntegrationEvent evt)
         {
-            await SaveEventAndOrderingContextChangesAsync(evt);
+            await SaveEventAndOrderingContextChangesAsync(orderId, orderStatus, evt);
             _eventBus.Publish(evt);
             await _eventLogService.MarkEventAsPublishedAsync(evt);
         }
 
-        private async Task SaveEventAndOrderingContextChangesAsync(IntegrationEvent evt)
+        private async Task SaveEventAndOrderingContextChangesAsync(int orderId, string orderStatus, IntegrationEvent evt)
         {
             //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
             //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency            
@@ -45,7 +45,7 @@ namespace Order.API.Application.IntegrationEvents
                 {
                     // Achieving atomicity between original Ordering database operation and the IntegrationEventLog thanks to a local transaction
                     await _orderingContext.SaveChangesAsync();
-                    await _eventLogService.SaveEventAsync(evt,
+                    await _eventLogService.SaveEventAsync(orderId,orderStatus, evt,
                         _orderingContext.Database.CurrentTransaction.GetDbTransaction());
                 });
         }

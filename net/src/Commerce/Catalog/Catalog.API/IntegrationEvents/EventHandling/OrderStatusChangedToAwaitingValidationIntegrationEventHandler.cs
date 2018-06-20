@@ -35,10 +35,10 @@ namespace Catalog.API.IntegrationEvents.EventHandling
             }
 
             var confirmedIntegrationEvent = confirmedOrderStockItems.Any(c => !c.HasStock)
-                ? (IntegrationEvent) new OrderStockRejectedIntegrationEvent(command.OrderId, confirmedOrderStockItems)
+                ? (IntegrationEvent)new OrderStockRejectedIntegrationEvent(command.OrderId, confirmedOrderStockItems)
                 : new OrderStockConfirmedIntegrationEvent(command.OrderId);
-
-            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(confirmedIntegrationEvent);
+            var status= confirmedOrderStockItems.Any(c => !c.HasStock)?"Order Stock Confirmed":"Order Stock Rejected";
+            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(command.OrderId, status, confirmedIntegrationEvent);
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(confirmedIntegrationEvent);
         }
     }

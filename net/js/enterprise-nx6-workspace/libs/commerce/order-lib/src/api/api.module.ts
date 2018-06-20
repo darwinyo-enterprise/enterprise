@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './configuration';
 
+import { IntegrationEventService } from './api/integrationEvent.service';
 import { OrdersService } from './api/orders.service';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { OrdersService } from './api/orders.service';
   declarations: [],
   exports:      [],
   providers: [
+    IntegrationEventService,
     OrdersService ]
 })
 export class ApiModule {

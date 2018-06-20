@@ -6,6 +6,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
+import { OrderSignalRService } from '@enterprise/commerce/order-signal-r/src';
 
 @Component({
   selector: 'eca-root',
@@ -57,7 +58,8 @@ export class AppComponent implements OnInit {
     public media: TdMediaService,
     private _iconRegistry: MatIconRegistry,
     private _domSanitizer: DomSanitizer,
-    private securityService: SecurityService) {
+    private securityService: SecurityService,
+    private orderSignalRService: OrderSignalRService) {
     this.loadingService.create({
       name: 'loading-facade',
       type: LoadingType.Circular,
@@ -80,6 +82,7 @@ export class AppComponent implements OnInit {
         this.userEmail = 'guest@enterprise.com';
       }
     })
+    this.orderSignalRService.init();
   }
   /** configure settings application */
   configureSettings() {
@@ -93,7 +96,7 @@ export class AppComponent implements OnInit {
       scope: 'openid profile orders basket catalog orders.signalrhub',
       post_logout_redirect_uri: location.origin + '/',
       automaticSilentRenew: true,
-      silent_redirect_uri: location.origin + '/silent-renew.html'
+      silent_redirect_uri: location.origin + '/silent-renew'
     }
     this.store.dispatch([new LoadAuthSettings(this.settings), SubscribeUser]);
     this.securityService.Initialize(this.configuration.identityUrl, this.settings);

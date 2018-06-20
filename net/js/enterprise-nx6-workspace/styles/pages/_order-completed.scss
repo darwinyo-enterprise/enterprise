@@ -14,6 +14,17 @@
   }
   &__content {
     font-size: $font-size-sm;
+    padding-left: 2rem;
+    &__item {
+      width: 46%;
+      padding-bottom: 1rem;
+      font-family: 'Mina';
+      display: grid;
+      grid-template-columns: 0.2fr 1fr;
+      &__status {
+        text-align: left;
+      }
+    }
   }
   &__actions {
     display: grid;

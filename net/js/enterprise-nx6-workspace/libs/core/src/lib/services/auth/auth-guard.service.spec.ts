@@ -39,7 +39,7 @@ describe('AuthGuardService', () => {
           resolve: noop
         }
       }],
-    imports: [NgxsModule.forRoot([AppState]), HttpClientModule, RouterTestingModule]]
+    imports: [NgxsModule.forRoot([AppState]), HttpClientModule, RouterTestingModule]
     });
     store = TestBed.get(Store);
     service = TestBed.get(AuthGuardService);

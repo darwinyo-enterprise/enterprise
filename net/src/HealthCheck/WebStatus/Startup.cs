@@ -34,12 +34,13 @@ namespace WebStatus
                 if (int.TryParse(Configuration["HealthCheck:Timeout"], out var minutesParsed)) minutes = minutesParsed;
 
                 checks.AddUrlCheckIfNotNull(Configuration["OrderingUrl"], TimeSpan.FromMinutes(minutes));
+                checks.AddUrlCheckIfNotNull(Configuration["OrderingBackgroundTasksUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["BasketUrl"],
                     TimeSpan.Zero); //No cache for this HealthCheck, better just for demos                  
                 checks.AddUrlCheckIfNotNull(Configuration["CatalogUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["IdentityUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["LocationsUrl"], TimeSpan.FromMinutes(minutes));
-                checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes));
+                //checks.AddUrlCheckIfNotNull(Configuration["LocationsUrl"], TimeSpan.FromMinutes(minutes));
+                //checks.AddUrlCheckIfNotNull(Configuration["MarketingUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["PaymentUrl"], TimeSpan.FromMinutes(minutes));
                 checks.AddUrlCheckIfNotNull(Configuration["spa"],
                     TimeSpan.Zero); //No cache for this HealthCheck, better just for demos 

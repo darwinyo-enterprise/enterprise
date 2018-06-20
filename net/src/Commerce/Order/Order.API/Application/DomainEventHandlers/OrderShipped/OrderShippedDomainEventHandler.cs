@@ -42,7 +42,7 @@ namespace Order.API.Application.DomainEventHandlers.OrderShipped
 
             var orderStatusChangedToShippedIntegrationEvent =
                 new OrderStatusChangedToShippedIntegrationEvent(order.Id, order.OrderStatus.Name, buyer.Name);
-            await _orderingIntegrationEventService.PublishThroughEventBusAsync(
+            await _orderingIntegrationEventService.PublishThroughEventBusAsync(orderStatusChangedToShippedIntegrationEvent.OrderId, orderStatusChangedToShippedIntegrationEvent.OrderStatus,
                 orderStatusChangedToShippedIntegrationEvent);
         }
     }

@@ -654,7 +654,8 @@
           "options": {
             "main": "libs/commerce/basket-lib/src/test.ts",
             "tsConfig": "libs/commerce/basket-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/basket-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/basket-lib/karma.conf.js",
+            "polyfills": "libs/commerce/basket-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -682,7 +683,8 @@
           "options": {
             "main": "libs/commerce/order-lib/src/test.ts",
             "tsConfig": "libs/commerce/order-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/order-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/order-lib/karma.conf.js",
+            "polyfills": "libs/commerce/order-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -710,7 +712,8 @@
           "options": {
             "main": "libs/commerce/payment-lib/src/test.ts",
             "tsConfig": "libs/commerce/payment-lib/tsconfig.spec.json",
-            "karmaConfig": "libs/commerce/payment-lib/karma.conf.js"
+            "karmaConfig": "libs/commerce/payment-lib/karma.conf.js",
+            "polyfills": "libs/commerce/payment-lib/src/polyfills.ts"
           }
         },
         "lint": {
@@ -719,6 +722,34 @@
             "tsConfig": [
               "libs/commerce/payment-lib/tsconfig.lib.json",
               "libs/commerce/payment-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "commerce-order-signal-r": {
+      "root": "libs/commerce/order-signal-r",
+      "sourceRoot": "libs/commerce/order-signal-r/src",
+      "projectType": "library",
+      "prefix": "eca",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/commerce/order-signal-r/src/test.ts",
+            "tsConfig": "libs/commerce/order-signal-r/tsconfig.spec.json",
+            "karmaConfig": "libs/commerce/order-signal-r/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/commerce/order-signal-r/tsconfig.lib.json",
+              "libs/commerce/order-signal-r/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

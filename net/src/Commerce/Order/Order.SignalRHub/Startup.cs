@@ -132,7 +132,7 @@ namespace Order.SignalRHub
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<NotificationsHub>("/notificationhub", options =>
+                routes.MapHub<NotificationsHub>("/hub/notificationhub", options =>
                     options.Transports = Microsoft.AspNetCore.Http.Connections.TransportType.All);
             });
 

@@ -67,7 +67,7 @@ namespace Enterprise.Commerce.Tests.Basket.API.Application
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)System.Net.HttpStatusCode.OK);
             Assert.Equal(((CustomerBasket)actionResult.Value).BuyerId, fakeCustomerId);
-        }        
+        }
 
         [Fact]
         public async Task Doing_Checkout_Without_Basket_Should_Return_Bad_Request()
@@ -80,7 +80,7 @@ namespace Enterprise.Commerce.Tests.Basket.API.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as BadRequestResult;
+            var result = await basketController.Checkout(new BasketCheckout()) as BadRequestResult;
             Assert.NotNull(result);
         }
 
@@ -96,13 +96,13 @@ namespace Enterprise.Commerce.Tests.Basket.API.Application
             var basketController = new BasketController(
                 _basketRepositoryMock.Object, _identityServiceMock.Object, _serviceBusMock.Object);
 
-            var result = await basketController.Checkout(new BasketCheckout(), Guid.NewGuid().ToString()) as AcceptedResult;
+            var result = await basketController.Checkout(new BasketCheckout()) as AcceptedResult;
             _serviceBusMock.Verify(mock => mock.Publish(It.IsAny<UserCheckoutAcceptedIntegrationEvent>()), Times.Once);
             Assert.NotNull(result);
         }
 
         private CustomerBasket GetCustomerBasketFake(string fakeCustomerId)
-        {            
+        {
             return new CustomerBasket(fakeCustomerId)
             {
                 Items = new List<BasketItem>()

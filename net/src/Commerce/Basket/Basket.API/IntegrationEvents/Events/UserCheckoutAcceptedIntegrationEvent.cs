@@ -9,7 +9,7 @@ namespace Basket.API.IntegrationEvents.Events
     /// </summary>
     public class UserCheckoutAcceptedIntegrationEvent : IntegrationEvent
     {
-        public UserCheckoutAcceptedIntegrationEvent(string userId, string city, string street,
+        public UserCheckoutAcceptedIntegrationEvent(string userId, string userName, string city, string street,
             string state, string country, string zipCode, string cardNumber, string cardHolderName,
             DateTime cardExpiration, string cardSecurityNumber, int cardTypeId, string buyer, Guid requestId,
             CustomerBasket basket)
@@ -28,11 +28,12 @@ namespace Basket.API.IntegrationEvents.Events
             Buyer = buyer;
             Basket = basket;
             RequestId = requestId;
+            UserName = userName;
         }
 
         public string UserId { get; }
 
-        public int OrderNumber { get; set; }
+        public string UserName { get; }
 
         public string City { get; set; }
 

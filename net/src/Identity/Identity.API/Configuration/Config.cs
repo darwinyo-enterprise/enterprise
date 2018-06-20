@@ -45,7 +45,7 @@ namespace Identity.API.Configuration
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = {
                         $"{clientsUrl["CommerceClientSpa"]}/",
-                        $"{clientsUrl["CommerceClientSpa"]}/silent-renew.html"
+                        $"{clientsUrl["CommerceClientSpa"]}/silent-renew"
                     },
                     RequireConsent = false,
                     PostLogoutRedirectUris = {$"{clientsUrl["CommerceClientSpa"]}/"},

@@ -5,7 +5,7 @@ import { StorageService, RegisterLoadingOverlay, ErrorOccured, ResolveLoadingOve
 import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded, ClearBasket, ClearBasketOldPrice, AllItemBasketDeleted, DeleteAllItemBasket } from "./basket.action";
 import { tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { CustomerBasket } from "@enterprise/commerce/basket-lib/src";
+import { CustomerBasket } from "../../api/model/customerBasket";
 
 export interface BasketStateModel {
     basketItems: BasketItem[];
@@ -112,7 +112,7 @@ export class BasketState {
         { dispatch, getState }: StateContext<BasketStateModel>) {
         const state = getState();
         dispatch([UpdateBasket,
-            ResolveLoadingOverlay,new Alert("Item Deleted")])
+            ResolveLoadingOverlay, new Alert("Item Deleted")])
     }
 
     //Done
@@ -188,24 +188,26 @@ export class BasketState {
     checkOutBasket(
         { dispatch, patchState }: StateContext<BasketStateModel>,
         { payload }: CheckOutBasket) {
-        this.basketService.apiV1BasketCheckoutPost(payload).pipe(
-            tap(
-                () => {
-                    patchState({
-                        basketItems: [],
-                        customerId: ''
-                    })
-                },
-                (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
-                () => dispatch(BasketCheckedOut))
-        )
+        return this.basketService.apiV1BasketCheckoutPost(payload)
+            .pipe(
+                tap(
+                    () => {
+                        patchState({
+                            basketItems: [],
+                            customerId: ''
+                        })
+                    },
+                    (err: HttpErrorResponse) => dispatch([new ErrorOccured(err.error['message']), ResolveLoadingOverlay]),
+                    () => dispatch(BasketCheckedOut)
+                )
+            );
     }
 
     // Done
     /** Item Basket Added Event */
     @Action(ItemBasketAdded)
     itemBasketAdded({ dispatch }: StateContext<BasketStateModel>) {
-        dispatch([UpdateBasket,new Alert("Item Added")])
+        dispatch([UpdateBasket, new Alert("Item Added")])
     }
 
     /** Check out Basket */

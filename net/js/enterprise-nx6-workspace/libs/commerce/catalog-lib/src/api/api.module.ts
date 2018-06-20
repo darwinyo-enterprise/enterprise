@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './configuration';
 
 import { CategoryService } from './api/category.service';
+import { IntegrationEventService } from './api/integrationEvent.service';
 import { ManufacturerService } from './api/manufacturer.service';
 import { ProductService } from './api/product.service';
 
@@ -13,6 +14,7 @@ import { ProductService } from './api/product.service';
   exports:      [],
   providers: [
     CategoryService,
+    IntegrationEventService,
     ManufacturerService,
     ProductService ]
 })

@@ -6,7 +6,7 @@ namespace Enterprise.Library.IntegrationEventLog.Services
 {
     public interface IIntegrationEventLogService
     {
-        Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction);
+        Task SaveEventAsync(int orderId, string orderStatus, IntegrationEvent @event, DbTransaction transaction);
         Task MarkEventAsPublishedAsync(IntegrationEvent @event);
     }
 }

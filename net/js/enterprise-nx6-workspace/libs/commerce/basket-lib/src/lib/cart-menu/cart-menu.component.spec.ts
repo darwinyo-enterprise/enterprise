@@ -6,11 +6,13 @@ import { Store, NgxsModule } from '@ngxs/store';
 import { RouterState, Navigate, AppState, Logged } from '@enterprise/core/src';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartModelMock, CustomerBasketMock } from '../mocks/cart-model.mock';
-import { BasketService, ClearBasket, ClearBasketOldPrice, BasketState, FetchBasket } from '@enterprise/commerce/basket-lib/src';
 import { TdLoadingService, TdMediaService, TdDialogService } from '@covalent/core';
 import { noop, of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
+import { BasketState } from '../shared/basket.state';
+import { ClearBasketOldPrice, ClearBasket, FetchBasket } from '../shared/basket.action';
+import { BasketService } from '../../api/api/basket.service';
 export class CartMenuPage extends BaseTestPage<CartMenuComponent> {
   constructor(public fixture: ComponentFixture<CartMenuComponent>) {
     super(fixture);

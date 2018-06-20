@@ -156,19 +156,15 @@ export class BasketService {
      * 
      * 
      * @param basketCheckout 
-     * @param xRequestid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, xRequestid?: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, xRequestid?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, xRequestid?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, xRequestid?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public apiV1BasketCheckoutPost(basketCheckout?: BasketCheckout, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
-        if (xRequestid !== undefined && xRequestid !== null) {
-            headers = headers.set('x-requestid', String(xRequestid));
-        }
 
         // authentication (oauth2) required
         if (this.configuration.accessToken) {

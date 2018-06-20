@@ -1,0 +1,16 @@
+<mat-card class="order-completed-container">
+  <h4 class="order-completed-container__title">
+    Your Order Tracker
+  </h4>
+  <div class="order-completed-container__content">
+    <div class="order-completed-container__content__item" *ngFor="let item of (orderTracks$ | async)">
+      <div class="order-completed-container__content__item__status">
+        {{item.orderStatus}}
+      </div>
+      <div class="order-completed-container__content__item__date">
+        {{convertToLocaleFormat(item.creationTime)}}
+      </div>
+    </div>
+  </div>
+  <button mat-button class="order-completed-container__actions__back" (click)="onBackToHomeClicked()">Return to Home</button>
+</mat-card>

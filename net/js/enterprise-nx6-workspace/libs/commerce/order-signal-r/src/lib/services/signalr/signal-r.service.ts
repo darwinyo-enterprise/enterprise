@@ -4,8 +4,8 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Select, Store } from '@ngxs/store';
 import { take } from 'rxjs/operators';
-import { UpdateOrderStatus } from '../../shared/order.action';
 import { IConfiguration, AppState, SecurityService } from '@enterprise/core/src';
+import { UpdateOrderStatus } from '@enterprise/commerce/order-lib/src';
 
 @Injectable({
   providedIn: 'root'
@@ -22,22 +22,24 @@ export class OrderSignalRService {
     private securityService: SecurityService,
     private store: Store
   ) {
-    this.configurations$.pipe(take(1)).subscribe(config => {
-      this.SignalrHubUrl = config.signalrUrl;
-      this.init();
-    })
+
   }
 
   public stop() {
     this._hubConnection.stop();
   }
 
-  private init() {
-    if (this.securityService.IsAuthorized === true) {
-      this.register();
-      this.stablishConnection();
-      this.registerHandlers();
-    }
+  public init() {
+    this.configurations$.pipe(take(1)).subscribe(config => {
+      if (config !== null) {
+        this.SignalrHubUrl = config.signalrUrl;
+        if (this.securityService.IsAuthorized === true) {
+          this.register();
+          this.stablishConnection();
+          this.registerHandlers();
+        }
+      }
+    })
   }
 
   private register() {

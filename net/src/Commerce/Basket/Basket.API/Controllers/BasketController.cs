@@ -37,7 +37,7 @@ namespace Basket.API.Controllers
         /// </returns>
         // GET /id
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(CustomerBasket), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(string id)
         {
             var basket = await _repository.GetBasketAsync(id);
@@ -56,7 +56,7 @@ namespace Basket.API.Controllers
         /// </returns>
         // POST /value
         [HttpPost]
-        [ProducesResponseType(typeof(CustomerBasket), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerBasket), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post([FromBody] CustomerBasket value)
         {
             var basket = await _repository.UpdateBasketAsync(value);
@@ -69,25 +69,22 @@ namespace Basket.API.Controllers
         ///     by emit integration event checkout accepted to order api.
         /// </summary>
         /// <param name="basketCheckout">check out informations</param>
-        /// <param name="requestId">generated request id</param>
         /// <returns></returns>
-        [Route("checkout")]
-        [HttpPost]
-        [ProducesResponseType((int) HttpStatusCode.Accepted)]
-        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout,
-            [FromHeader(Name = "x-requestid")] string requestId)
+        [HttpPost("checkout")]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
         {
             var userId = _identitySvc.GetUserIdentity();
-            basketCheckout.RequestId = Guid.TryParse(requestId, out var guid) && guid != Guid.Empty
-                ? guid
-                : basketCheckout.RequestId;
+            var userName = User.FindFirst(x => x.Type == "unique_name").Value;
+
+            basketCheckout.RequestId = Guid.NewGuid();
 
             var basket = await _repository.GetBasketAsync(userId);
 
             if (basket == null) return BadRequest();
 
-            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, basketCheckout.City,
+            var eventMessage = new UserCheckoutAcceptedIntegrationEvent(userId, userName, basketCheckout.City,
                 basketCheckout.Street,
                 basketCheckout.State, basketCheckout.Country, basketCheckout.ZipCode, basketCheckout.CardNumber,
                 basketCheckout.CardHolderName,
