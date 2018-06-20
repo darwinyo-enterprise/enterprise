@@ -13,7 +13,7 @@ spec:
       containers:
       - name: basket
         image: darwinyo/basket.api
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /basket-api
@@ -70,7 +70,7 @@ spec:
       containers:
       - name: catalog
         image: darwinyo/catalog.api
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /catalog-api
@@ -122,7 +122,7 @@ spec:
       containers:
       - name: identity
         image: darwinyo/identity.api
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /identity
@@ -210,8 +210,8 @@ spec:
     spec:
       containers:
       - name: ordering
-        image: darwinyo/ordering.api
-        imagePullPolicy: Always
+        image: darwinyo/order.api
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /ordering-api
@@ -277,8 +277,8 @@ spec:
     spec:
       containers:
       - name: ordering-backgroundtasks
-        image: darwinyo/ordering.backgroundtasks
-        imagePullPolicy: Always
+        image: darwinyo/order.backgroundtasks
+        imagePullPolicy: IfNotPresent
         env:        
         - name: ConnectionString
           valueFrom:
@@ -336,8 +336,8 @@ spec:
     spec:
       containers:
       - name: ordering-signalrhub
-        image: enterprise/ordering.signalrhub
-        imagePullPolicy: Always
+        image: darwinyo/order.signalrhub
+        imagePullPolicy: IfNotPresent
         env:                
         - name: EventBusConnection
           valueFrom:
@@ -387,8 +387,8 @@ spec:
     spec:
       containers:
       - name: locations
-        image: enterprise/locations.api
-        imagePullPolicy: Always
+        image: darwinyo/locations.api
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /locations-api
@@ -454,8 +454,8 @@ spec:
     spec:
       containers:
       - name: marketing
-        image: enterprise/marketing.api
-        imagePullPolicy: Always
+        image: darwinyo/marketing.api
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /marketing-api
@@ -531,8 +531,8 @@ spec:
     spec:
       containers:
       - name: payment
-        image: enterprise/payment.api
-        imagePullPolicy: Always
+        image: darwinyo/payment.api
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /payment-api
@@ -573,8 +573,8 @@ spec:
     spec:
       containers:
       - name: webmvc
-        image: enterprise/webmvc
-        imagePullPolicy: Always
+        image: darwinyo/webmvc
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /webmvc
@@ -677,8 +677,8 @@ spec:
     spec:
       containers:
       - name: webstatus
-        image: enterprise/webstatus
-        imagePullPolicy: Always
+        image: darwinyo/webstatus
+        imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
           value: /webstatus
@@ -758,8 +758,8 @@ spec:
     spec:
       containers:
       - name: webspa
-        image: enterprise/webspa
-        imagePullPolicy: Always
+        image: darwinyo/webspa
+        imagePullPolicy: IfNotPresent
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
@@ -852,8 +852,8 @@ spec:
     spec:
       containers:
       - name: webshoppingagg
-        image: enterprise/webshoppingagg
-        imagePullPolicy: Always
+        image: darwinyo/webshoppingagg
+        imagePullPolicy: IfNotPresent
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
@@ -896,8 +896,8 @@ spec:
     spec:
       containers:
       - name: mobilenterprisepingagg
-        image: enterprise/mobilenterprisepingagg
-        imagePullPolicy: Always
+        image: darwinyo/mobilenterprisepingagg
+        imagePullPolicy: IfNotPresent
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80

@@ -7,12 +7,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: apigwmm
     spec:
       containers:
       - name: apigwmm
-        image: eshop/ocelotapigw
+        image: enterprise/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -46,16 +46,16 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: apigwms
     spec:
       containers:
       - name: apigwms
-        image: eshop/ocelotapigw
+        image: enterprise/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
-          value: /mobileshoppingapigw        
+          value: /mobilenterprisepingapigw        
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
@@ -85,12 +85,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: apigwwm
     spec:
       containers:
       - name: apigwwm
-        image: eshop/ocelotapigw
+        image: enterprise/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -124,12 +124,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: apigwws
     spec:
       containers:
       - name: apigwws
-        image: eshop/ocelotapigw
+        image: enterprise/ocelotapigw
         imagePullPolicy: Always
         env:
         - name: PATH_BASE

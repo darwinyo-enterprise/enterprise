@@ -8,8 +8,8 @@ variables:
   DOCKER_DRIVER: overlay
 
 before_script:
- # - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
-#  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+ - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
+ - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 # enterprise_global_sass_unit_test:
 #   stage: test
@@ -76,7 +76,10 @@ commerce_frontend_build:
   stage: build
   script:
     - cd ./net
-    - docker-compose build
+    - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
+    - docker images
+    
+
 
 
 # commerce_build_ci_images:

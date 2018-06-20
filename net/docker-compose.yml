@@ -42,17 +42,17 @@ services:
       - sql.data
       - rabbitmq
 
-  # commerce.admin:
-  #   image: darwinyo/commerce.admin:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
+  commerce.admin:
+    image: darwinyo/commerce.admin:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
   
-  # commerce.client:
-  #   image: darwinyo/commerce.client:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
+  commerce.client:
+    image: darwinyo/commerce.client:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
       
   order.api:
     image: darwinyo/order.api:${TAG:-latest}
@@ -89,7 +89,7 @@ services:
       dockerfile: src/HealthCheck/WebStatus/Dockerfile
 
   order.signalrhub:
-    image: darwinyo/ordering.signalrhub:${TAG:-latest}
+    image: darwinyo/order.signalrhub:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Commerce/Order/Order.SignalRHub/Dockerfile

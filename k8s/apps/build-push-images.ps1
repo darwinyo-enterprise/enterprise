@@ -5,7 +5,7 @@ Param(
     [parameter(Mandatory=$false)][string]$imageTag,
     [parameter(Mandatory=$false)][bool]$buildImages=$true,
     [parameter(Mandatory=$false)][bool]$pushImages=$true,
-    [parameter(Mandatory=$false)][string]$dockerOrg="eshop"
+    [parameter(Mandatory=$false)][string]$dockerOrg="enterprise"
 )
 
 # Initialization
@@ -57,11 +57,11 @@ if (-not [string]::IsNullOrEmpty($dockerUser)) {
 # Push images to Docker registry
 if ($pushImages) {
     Write-Host "Pushing images to $registry/$dockerOrg..." -ForegroundColor Yellow
-    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobileshoppingagg", "webshoppingagg", "ordering.signalrhub")
+    $services = ("basket.api", "catalog.api", "identity.api", "ordering.api", "ordering.backgroundtasks", "marketing.api","payment.api","locations.api", "webmvc", "webspa", "webstatus", "ocelotapigw", "mobilenterprisepingagg", "webshoppingagg", "ordering.signalrhub")
 
     foreach ($service in $services) {
         $imageFqdn = if ($useDockerHub)  {"$dockerOrg/${service}"} else {"$registry/$dockerOrg/${service}"}
-        docker tag eshop/${service}:$imageTag ${imageFqdn}:$imageTag
+        docker tag enterprise/${service}:$imageTag ${imageFqdn}:$imageTag
         docker push ${imageFqdn}:$imageTag            
     }
 }

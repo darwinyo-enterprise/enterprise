@@ -2,9 +2,9 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   labels:
-    app: eshop
+    app: enterprise
     component: frontend
-  name: eshop-ingress
+  name: enterprise-ingress
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"  
 spec:
@@ -35,7 +35,7 @@ spec:
         backend:
           serviceName: ocelotapigw-mm
           servicePort: 80                    
-      - path: /mobileshoppingapigw
+      - path: /mobilenterprisepingapigw
         backend:
           serviceName: ocelotapigw-ms
           servicePort: 80          
@@ -43,9 +43,9 @@ spec:
         backend:
           serviceName: webshoppingagg
           servicePort: 80
-      - path: /mobileshoppingagg
+      - path: /mobilenterprisepingagg
         backend:
-          serviceName: mobileshoppingagg
+          serviceName: mobilenterprisepingagg
           servicePort: 80
       - path: /payment-api
         backend:
