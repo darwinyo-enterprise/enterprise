@@ -7,12 +7,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: basket
     spec:
       containers:
       - name: basket
-        image: eshop/basket.api
+        image: darwinyo/basket.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -64,12 +64,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: catalog
     spec:
       containers:
       - name: catalog
-        image: eshop/catalog.api
+        image: darwinyo/catalog.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -116,12 +116,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: identity
     spec:
       containers:
       - name: identity
-        image: eshop/identity.api
+        image: darwinyo/identity.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -168,11 +168,11 @@ spec:
            configMapKeyRef:
              name: urls
              key: ordering_e  
-        - name: MobileShoppingAggClient
+        - name: MobilenterprisepingAggClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: mobileshoppingagg_e       
+             key: mobilenterprisepingagg_e       
         - name: WebShoppingAggClient
           valueFrom:
            configMapKeyRef:
@@ -205,12 +205,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: ordering
     spec:
       containers:
       - name: ordering
-        image: eshop/ordering.api
+        image: darwinyo/ordering.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -272,12 +272,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: ordering-backgroundtasks
     spec:
       containers:
       - name: ordering-backgroundtasks
-        image: eshop/ordering.backgroundtasks
+        image: darwinyo/ordering.backgroundtasks
         imagePullPolicy: Always
         env:        
         - name: ConnectionString
@@ -331,12 +331,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: ordering-signalrhub
     spec:
       containers:
       - name: ordering-signalrhub
-        image: eshop/ordering.signalrhub
+        image: enterprise/ordering.signalrhub
         imagePullPolicy: Always
         env:                
         - name: EventBusConnection
@@ -382,12 +382,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: locations
     spec:
       containers:
       - name: locations
-        image: eshop/locations.api
+        image: enterprise/locations.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -449,12 +449,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: marketing
     spec:
       containers:
       - name: marketing
-        image: eshop/marketing.api
+        image: enterprise/marketing.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -526,12 +526,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: payment
     spec:
       containers:
       - name: payment
-        image: eshop/payment.api
+        image: enterprise/payment.api
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -568,12 +568,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: webmvc
     spec:
       containers:
       - name: webmvc
-        image: eshop/webmvc
+        image: enterprise/webmvc
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -672,12 +672,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: webstatus
     spec:
       containers:
       - name: webstatus
-        image: eshop/webstatus
+        image: enterprise/webstatus
         imagePullPolicy: Always
         env:
         - name: PATH_BASE
@@ -753,12 +753,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: webspa
     spec:
       containers:
       - name: webspa
-        image: eshop/webspa
+        image: enterprise/webspa
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_URLS
@@ -847,12 +847,12 @@ spec:
   template:
     metadata:
       labels:
-        app: eshop
+        app: enterprise
         component: webshoppingagg
     spec:
       containers:
       - name: webshoppingagg
-        image: eshop/webshoppingagg
+        image: enterprise/webshoppingagg
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_URLS
@@ -885,18 +885,18 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mobileshoppingagg
+  name: mobilenterprisepingagg
 spec:
   paused: true
   template:
     metadata:
       labels:
-        app: eshop
-        component: mobileshoppingagg
+        app: enterprise
+        component: mobilenterprisepingagg
     spec:
       containers:
-      - name: mobileshoppingagg
-        image: eshop/mobileshoppingagg
+      - name: mobilenterprisepingagg
+        image: enterprise/mobilenterprisepingagg
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_URLS

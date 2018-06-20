@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: externalcfg
   labels:
-    app: eshop
+    app: enterprise
 data:
 # Basket.API entries
   basket__ConnectionString: REDIS CONNECTION STRING FOR BASKET
