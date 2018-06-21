@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: urls
+  namespace: enterprise
+  labels:
+    app: enterprise  
+data:
+  basket_e: http://basket
+  basket__hc: http://basket/hc
+  catalog_e: http://catalog
+  catalog__hc: http://catalog/hc
+  identity_e: http://identity
+  identity__hc: http://identity/hc
+  order_e: http://order
+  order__hc: http://order/hc
+  order-background: http://order-background
+  order-background__hc: http://order-background/hc
+  payment__hc: http://payment/hc
+  commerce-client_e: http://commerce-client
+  commerce-admin_e: http://commerce-admin
+  
+  order-signalrhub: http://order-signalrhub
+  ProductImageBaseUrl: http://catalog-api/api/v1/product/image/
+  CategoryImageBaseUrl: http://catalog-api/api/v1/category/image/
+  ManufacturerImageBaseUrl: http://catalog-api/api/v1/manufacturer/image/

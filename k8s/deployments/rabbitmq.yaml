@@ -5,6 +5,7 @@ metadata:
     app: enterprise
     component: rabbitmq
   name: rabbitmq
+  namespace: enterprise
 spec:
   ports:
   - port: 5672
@@ -16,6 +17,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: rabbitmq
+  namespace: enterprise
 spec:
   template:
     metadata:

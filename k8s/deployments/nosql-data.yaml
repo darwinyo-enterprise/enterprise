@@ -5,6 +5,7 @@ metadata:
     app: enterprise
     component: nosql-data
   name: nosql-data
+  namespace: enterprise
 spec:
   ports:
   - port: 27017
@@ -16,6 +17,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: nosql-data
+  namespace: enterprise
 spec:
   template:
     metadata:

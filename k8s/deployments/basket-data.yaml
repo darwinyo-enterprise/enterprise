@@ -5,6 +5,7 @@ metadata:
     app: enterprise
     component: basket-data
   name: basket-data
+  namespace: enterprise
 spec:
   ports:
   - port: 6379
@@ -16,6 +17,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: basket-data
+  namespace: enterprise
 spec:
   template:
     metadata:

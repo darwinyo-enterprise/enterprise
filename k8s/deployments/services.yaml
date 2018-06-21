@@ -5,6 +5,7 @@ metadata:
     app: enterprise
     component: basket
   name: basket
+  namespace: enterprise
 spec:
   ports:
   - port: 80
@@ -19,6 +20,7 @@ metadata:
     app: enterprise
     component: catalog
   name: catalog
+  namespace: enterprise
 spec:
   ports:
   - port: 80
@@ -33,6 +35,7 @@ metadata:
     app: enterprise
     component: identity
   name: identity
+  namespace: enterprise
 spec:
   ports:
   - port: 80
@@ -45,56 +48,45 @@ kind: Service
 metadata:
   labels:
     app: enterprise
-    component: ordering
-  name: ordering
+    component: order
+  name: order
+  namespace: enterprise
 spec:
   ports:
   - port: 80
   selector:
     app: enterprise
-    component: ordering
+    component: order
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: enterprise
-    component: ordering-backgroundtasks
-  name: ordering-background
+    component: order-backgroundtasks
+  name: order-background
+  namespace: enterprise
 spec:
   ports:
   - port: 80
   selector:
     app: enterprise
-    component: ordering-backgroundtasks
+    component: order-backgroundtasks
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: enterprise
-    component: ordering-signalrhub
-  name: ordering-signalrhub
+    component: order-signalrhub
+  name: order-signalrhub
+  namespace: enterprise
 spec:
   ports:
   - port: 80
   selector:
     app: enterprise
-    component: ordering-signalrhub
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: enterprise
-    component: locations
-  name: locations
-spec:
-  ports:
-  - port: 80
-  selector:
-    app: enterprise
-    component: locations
+    component: order-signalrhub
 ---
 apiVersion: v1
 kind: Service
@@ -103,6 +95,7 @@ metadata:
     app: enterprise
     component: payment
   name: payment
+  namespace: enterprise
 spec:
   ports:
   - port: 80
@@ -115,64 +108,9 @@ kind: Service
 metadata:
   labels:
     app: enterprise
-    component: marketing
-  name: marketing
-spec:
-  ports:
-  - port: 80
-  selector:
-    app: enterprise
-    component: marketing
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: enterprise
-    component: webshoppingagg
-  name: webshoppingagg
-spec:
-  ports:
-  - port: 80
-  selector:
-    app: enterprise
-    component: webshoppingagg
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: enterprise
-    component: mobilenterprisepingagg
-  name: mobilenterprisepingagg
-spec:
-  ports:
-  - port: 80
-  selector:
-    app: enterprise
-    component: mobilenterprisepingagg
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: enterprise
-    component: webmvc
-  name: webmvc
-spec:
-  ports:
-  - port: 80
-  selector:
-    app: enterprise
-    component: webmvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: enterprise
     component: webstatus
   name: webstatus
+  namespace: enterprise
 spec:
   ports:
   - port: 80
@@ -185,11 +123,27 @@ kind: Service
 metadata:
   labels:
     app: enterprise
-    component: webspa
-  name: webspa
+    component: commerce-admin
+  name: commerce-admin
+  namespace: enterprise
 spec:
   ports:
   - port: 80
   selector:
     app: enterprise
-    component: webspa
+    component: commerce-admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: enterprise
+    component: commerce-client
+  name: commerce-client
+  namespace: enterprise
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: enterprise
+    component: commerce-client

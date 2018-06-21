@@ -5,6 +5,7 @@ metadata:
     app: enterprise
     component: sql-data
   name: sql-data
+  namespace: enterprise
 spec:
   ports:
   - port: 1433
@@ -16,6 +17,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: sql-data
+  namespace: enterprise
 spec:
   template:
     metadata:

@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: basket
+  namespace: enterprise
 spec:
   paused: true
   template:
@@ -32,23 +33,23 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: all__UseAzureServiceBus
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
              key: identity_e
-        - name: UseLoadTest
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'
+        # - name: UseLoadTest
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__EnableLoadTest
+        # - name: OrchestratorType
+        #   value: 'K8S'
         ports:
         - containerPort: 80
         
@@ -59,6 +60,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: catalog
+  namespace: enterprise
 spec:
   paused: true
   template:
@@ -79,11 +81,21 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: catalog__ConnectionString
-        - name: PicBaseUrl
+        - name: CategoryImageBaseUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: PicBaseUrl
+             key: CategoryImageBaseUrl
+        - name: ProductImageBaseUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: ProductImageBaseUrl
+        - name: ManufacturerImageBaseUrl
+          valueFrom:
+           configMapKeyRef:
+             name: urls
+             key: ManufacturerImageBaseUrl
         - name: AzureStorageEnabled
           valueFrom:
            configMapKeyRef:
@@ -94,13 +106,13 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: all__EventBusConnection
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: OrchestratorType
-          value: 'K8S' 
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey
+        # - name: OrchestratorType
+        #   value: 'K8S' 
         ports:
         - containerPort: 80
         
@@ -111,6 +123,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: identity
+  namespace: enterprise
 spec:
   paused: true
   template:
@@ -138,26 +151,6 @@ spec:
              key: keystore
         - name: IsClusterEnv
           value: 'True'
-        - name: MvcClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: mvc_e
-        - name: SpaClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: spa_e
-        - name: LocationApiClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: locations_e
-        - name: MarketingApiClient
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: marketing_e
         - name: BasketApiClient
           valueFrom:
            configMapKeyRef:
@@ -167,29 +160,30 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: ordering_e  
-        - name: MobilenterprisepingAggClient
+             key: order_e
+        - name: CatalogApiClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: mobilenterprisepingagg_e       
-        - name: WebShoppingAggClient
+             key: catalog_e  
+        - name: CommerceClientSpaClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: webshoppingagg_e      
-        - name: XamarinCallback
+             key: commerce-client_e  
+        - name: CommerceAdminSpaClient
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: xamarin_callback_e                                        
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey 
-        - name: OrchestratorType
-          value: 'K8S'                            
+             key: commerce-admin_e 
+                                             
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey 
+        # - name: OrchestratorType
+        #   value: 'K8S'                            
         ports:
         - containerPort: 80
         
@@ -199,27 +193,28 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ordering
+  name: order
+  namespace: enterprise
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: enterprise
-        component: ordering
+        component: order
     spec:
       containers:
-      - name: ordering
+      - name: order
         image: darwinyo/order.api
         imagePullPolicy: IfNotPresent
         env:
         - name: PATH_BASE
-          value: /ordering-api
+          value: /order-api
         - name: ConnectionString
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: ordering__ConnectionString
+             key: order__ConnectionString
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -245,18 +240,18 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: GracePeriodManager__GracePeriodTime  
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
              key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'           
+        # - name: OrchestratorType
+        #   value: 'K8S'           
         ports:
         - containerPort: 80
         
@@ -266,17 +261,18 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ordering-backgroundtasks
+  name: order-backgroundtasks
+  namespace: enterprise
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: enterprise
-        component: ordering-backgroundtasks
+        component: order-backgroundtasks
     spec:
       containers:
-      - name: ordering-backgroundtasks
+      - name: order-backgroundtasks
         image: darwinyo/order.backgroundtasks
         imagePullPolicy: IfNotPresent
         env:        
@@ -284,7 +280,7 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: externalcfg
-             key: ordering__ConnectionString
+             key: order__ConnectionString
         - name: EventBusConnection
           valueFrom:
            configMapKeyRef:
@@ -305,18 +301,18 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: GracePeriodManager__GracePeriodTime  
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey
         - name: UseLoadTest
           valueFrom:
            configMapKeyRef:
              name: externalcfg
              key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'     
+        # - name: OrchestratorType
+        #   value: 'K8S'     
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -325,17 +321,18 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ordering-signalrhub
+  name: order-signalrhub
+  namespace: enterprise
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: enterprise
-        component: ordering-signalrhub
+        component: order-signalrhub
     spec:
       containers:
-      - name: ordering-signalrhub
+      - name: order-signalrhub
         image: darwinyo/order.signalrhub
         imagePullPolicy: IfNotPresent
         env:                
@@ -354,13 +351,13 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: all__UseAzureServiceBus                
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey        
-        - name: OrchestratorType
-          value: 'K8S'  
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey        
+        # - name: OrchestratorType
+        #   value: 'K8S'  
         - name: IsClusterEnv
           value: 'True'  
         - name: SignalrStoreConnectionString
@@ -376,151 +373,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: locations
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: enterprise
-        component: locations
-    spec:
-      containers:
-      - name: locations
-        image: darwinyo/locations.api
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: PATH_BASE
-          value: /locations-api
-        - name: ConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: locations__ConnectionString
-        - name: Database
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: locations__Database
-        - name: AzureServiceBusEnabled
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__UseAzureServiceBus
-        - name: EventBusConnection
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EventBusConnection
-        - name: IdentityUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity
-        - name: IdentityUrlExternal
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: identity_e
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: UseLoadTest
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'          
-        ports:
-        - containerPort: 80
-        
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: marketing
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: enterprise
-        component: marketing
-    spec:
-      containers:
-      - name: marketing
-        image: darwinyo/marketing.api
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: PATH_BASE
-          value: /marketing-api
-        - name: ConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: marketing__ConnectionString
-        - name: MongoConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: marketing__MongoConnectionString
-        - name: MongoDatabase
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: marketing__MongoDatabase 
-        - name: AzureServiceBusEnabled
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__UseAzureServiceBus
-        - name: EventBusConnection
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EventBusConnection
-        - name: IdentityUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity
-        - name: IdentityUrlExternal
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: identity_e             
-        - name: PicBaseUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: Marketing_PicBaseUrl 
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: UseLoadTest
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'            
-        ports:
-        - containerPort: 80
-        
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: payment
+  namespace: enterprise
 spec:
   paused: true
   template:
@@ -546,13 +400,13 @@ spec:
            configMapKeyRef:
              name: externalcfg
              key: all__EventBusConnection
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: OrchestratorType
-          value: 'K8S'
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey
+        # - name: OrchestratorType
+        #   value: 'K8S'
         ports:
         - containerPort: 80
         
@@ -562,111 +416,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: webmvc
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: enterprise
-        component: webmvc
-    spec:
-      containers:
-      - name: webmvc
-        image: darwinyo/webmvc
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: PATH_BASE
-          value: /webmvc
-        - name: DPConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: keystore
-        - name: IsClusterEnv
-          value: 'True'
-        - name: PurchaseUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: apigwws   
-        - name: ExternalPurchaseUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: webshoppingapigw_e       
-        - name: CallBackUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: mvc_e
-        - name: IdentityUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: identity_e
-        - name: MarketingUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: apigwwm 
-        - name: BasketUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: basket__hc        
-        - name: CatalogUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: catalog__hc
-        - name: IdentityUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity__hc
-        - name: OrderingUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering__hc
-        - name: MarketingUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: marketing__hc  
-        - name: PaymentUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: payment__hc  
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: UseLoadTest
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__EnableLoadTest
-        - name: OrchestratorType
-          value: 'K8S'    
-        - name: SignalrHubUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: webshoppingapigw_e    
-        ports:
-        - containerPort: 80
-        
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: webstatus
+  namespace: enterprise
 spec:
   paused: true
   template:
@@ -701,44 +452,24 @@ spec:
           valueFrom:
            configMapKeyRef:
              name: internalurls
-             key: ordering__hc
+             key: order__hc
         - name: OrderingBackgroundTasksUrl
           valueFrom:
            configMapKeyRef:
              name: internalurls
-             key: ordering-background__hc
-        - name: LocationsUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: locations__hc
-        - name: MarketingUrl
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: marketing__hc
-        - name: mvc
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: mvc__hc
-        - name: spa
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: spa__hc
+             key: order-background__hc
         - name: PaymentUrl
           valueFrom:
            configMapKeyRef:
              name: internalurls
              key: payment__hc 
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey  
-        - name: OrchestratorType
-          value: 'K8S'       
+        # - name: ApplicationInsights__InstrumentationKey
+        #   valueFrom:
+        #    configMapKeyRef:
+        #      name: externalcfg
+        #      key: all__InstrumentationKey  
+        # - name: OrchestratorType
+        #   value: 'K8S'       
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -747,91 +478,31 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: webspa
+  name: commerce-admin
+  namespace: enterprise
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: enterprise
-        component: webspa
+        component: commerce-admin
     spec:
       containers:
-      - name: webspa
-        image: darwinyo/webspa
+      - name: commerce-admin
+        image: darwinyo/commerce.admin
         imagePullPolicy: IfNotPresent
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80
-        - name: DPConnectionString
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: keystore
-        - name: IsClusterEnv
-          value: 'True'
-        - name: PurchaseUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: webshoppingapigw_e
-        - name: CallBackUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: spa_e
         - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
              name: urls
              key: identity_e
-        - name: MarketingUrl
+        - name: SignalrUrl
           valueFrom:
            configMapKeyRef:
              name: urls
-             key: marketingapigw_e
-        - name: BasketUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: basket__hc        
-        - name: CatalogUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: catalog__hc
-        - name: IdentityUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity__hc
-        - name: OrderingUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering__hc
-        - name: MarketingUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: marketing__hc
-        - name: PaymentUrlHC
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: payment__hc
-        - name: ApplicationInsights__InstrumentationKey
-          valueFrom:
-           configMapKeyRef:
-             name: externalcfg
-             key: all__InstrumentationKey
-        - name: OrchestratorType
-          value: 'K8S'
-        - name: SignalrHubUrl
-          valueFrom:
-           configMapKeyRef:
-             name: urls
-             key: webshoppingapigw_e
+             key: order-signalrhub
         ports:
         - containerPort: 80
         
@@ -841,88 +512,35 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: webshoppingagg
+  name: commerce-client
+  namespace: enterprise
 spec:
   paused: true
   template:
     metadata:
       labels:
         app: enterprise
-        component: webshoppingagg
+        component: commerce-client
     spec:
       containers:
-      - name: webshoppingagg
-        image: darwinyo/webshoppingagg
+      - name: commerce-client
+        image: darwinyo/commerce.client
         imagePullPolicy: IfNotPresent
         env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80
-        - name: urls__basket
+        - name: IdentityUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: basket
-        - name: urls__catalog
+             name: urls
+             key: identity_e
+        - name: SignalrUrl
           valueFrom:
            configMapKeyRef:
-             name: internalurls
-             key: catalog
-        - name: urls__orders
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering             
-        - name: urls__identity
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity        
+             name: urls
+             key: order-signalrhub
+
         ports:
         - containerPort: 80
-      imagePullSecrets:
-      - name: registry-key
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: mobilenterprisepingagg
-spec:
-  paused: true
-  template:
-    metadata:
-      labels:
-        app: enterprise
-        component: mobilenterprisepingagg
-    spec:
-      containers:
-      - name: mobilenterprisepingagg
-        image: darwinyo/mobilenterprisepingagg
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: ASPNETCORE_URLS
-          value: http://0.0.0.0:80
-        - name: urls__basket
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: basket
-        - name: urls__catalog
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: catalog
-        - name: urls__orders
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: ordering             
-        - name: urls__identity
-          valueFrom:
-           configMapKeyRef:
-             name: internalurls
-             key: identity        
-        ports:
-        - containerPort: 80
+        
       imagePullSecrets:
       - name: registry-key
 ---

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: externalcfg
+  namespace: enterprise
   labels:
     app: enterprise  
 data:
@@ -9,7 +10,7 @@ data:
   catalog__ConnectionString: Server=sql-data;Initial Catalog=Enterprise.Commerce.Services.CatalogDb;User Id=sa;Password=P@ssw0rd;
   catalog__AzureStorageEnabled: "False"
   identity__ConnectionString: Server=sql-data;Initial Catalog=Enterprise.Commerce.Services.IdentityDb;User Id=sa;Password=P@ssw0rd;
-  ordering__ConnectionString: Server=sql-data;Initial Catalog=Enterprise.Commerce.Services.OrderingDb;User Id=sa;Password=P@ssw0rd;
+  order__ConnectionString: Server=sql-data;Initial Catalog=Enterprise.Commerce.Services.OrderingDb;User Id=sa;Password=P@ssw0rd;
   keystore: keystore-data
   GracePeriodManager__GracePeriodTime: "1"
   GracePeriodManager__CheckUpdateTime: "15000"
