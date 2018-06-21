@@ -9,7 +9,7 @@ variables:
 
 before_script:
  - apk add --update python py-pip python-dev && pip install docker-compose # install docker-compose
- - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+ - docker login -u "darwinyo" -p "science0ismypass"
 
 # enterprise_global_sass_unit_test:
 #   stage: test
@@ -78,27 +78,39 @@ commerce_frontend_build:
     - cd ./net
     - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
     - docker images
-    - docker image tag darwinyo/order.api "$CI_REGISTRY_IMAGE/order.api"
-    - docker image tag darwinyo/catalog.api "$CI_REGISTRY_IMAGE/catalog.api"
-    - docker image tag darwinyo/basket.api "$CI_REGISTRY_IMAGE/basket.api"
-    - docker image tag darwinyo/identity.api "$CI_REGISTRY_IMAGE/identity.api"
-    - docker image tag darwinyo/order.backgroundtasks "$CI_REGISTRY_IMAGE/order.backgroundtasks"
-    - docker image tag darwinyo/order.signalrhub "$CI_REGISTRY_IMAGE/order.signalrhub"
-    - docker image tag darwinyo/commerce.client "$CI_REGISTRY_IMAGE/commerce.client"
-    - docker image tag darwinyo/payment.api "$CI_REGISTRY_IMAGE/payment.api"
-    - docker image tag darwinyo/commerce.admin "$CI_REGISTRY_IMAGE/commerce.admin"
-    - docker image tag darwinyo/webstatus "$CI_REGISTRY_IMAGE/webstatus"
 
-    - docker push "$CI_REGISTRY_IMAGE/order.api"
-    - docker push "$CI_REGISTRY_IMAGE/catalog.api"
-    - docker push "$CI_REGISTRY_IMAGE/basket.api"
-    - docker push "$CI_REGISTRY_IMAGE/identity.api"
-    - docker push "$CI_REGISTRY_IMAGE/order.backgroundtasks"
-    - docker push "$CI_REGISTRY_IMAGE/order.signalrhub"
-    - docker push "$CI_REGISTRY_IMAGE/commerce.client"
-    - docker push "$CI_REGISTRY_IMAGE/payment.api"
-    - docker push "$CI_REGISTRY_IMAGE/commerce.admin"
-    - docker push "$CI_REGISTRY_IMAGE/webstatus"
+    - docker push "darwinyo/order.api"
+    - docker push "darwinyo/catalog.api"
+    - docker push "darwinyo/basket.api"
+    - docker push "darwinyo/identity.api"
+    - docker push "darwinyo/order.backgroundtasks"
+    - docker push "darwinyo/order.signalrhub"
+    - docker push "darwinyo/commerce.client"
+    - docker push "darwinyo/payment.api"
+    - docker push "darwinyo/commerce.admin"
+    - docker push "darwinyo/webstatus"
+
+    # - docker image tag darwinyo/order.api "$CI_REGISTRY_IMAGE/order.api"
+    # - docker image tag darwinyo/catalog.api "$CI_REGISTRY_IMAGE/catalog.api"
+    # - docker image tag darwinyo/basket.api "$CI_REGISTRY_IMAGE/basket.api"
+    # - docker image tag darwinyo/identity.api "$CI_REGISTRY_IMAGE/identity.api"
+    # - docker image tag darwinyo/order.backgroundtasks "$CI_REGISTRY_IMAGE/order.backgroundtasks"
+    # - docker image tag darwinyo/order.signalrhub "$CI_REGISTRY_IMAGE/order.signalrhub"
+    # - docker image tag darwinyo/commerce.client "$CI_REGISTRY_IMAGE/commerce.client"
+    # - docker image tag darwinyo/payment.api "$CI_REGISTRY_IMAGE/payment.api"
+    # - docker image tag darwinyo/commerce.admin "$CI_REGISTRY_IMAGE/commerce.admin"
+    # - docker image tag darwinyo/webstatus "$CI_REGISTRY_IMAGE/webstatus"
+
+    # - docker push "$CI_REGISTRY_IMAGE/order.api"
+    # - docker push "$CI_REGISTRY_IMAGE/catalog.api"
+    # - docker push "$CI_REGISTRY_IMAGE/basket.api"
+    # - docker push "$CI_REGISTRY_IMAGE/identity.api"
+    # - docker push "$CI_REGISTRY_IMAGE/order.backgroundtasks"
+    # - docker push "$CI_REGISTRY_IMAGE/order.signalrhub"
+    # - docker push "$CI_REGISTRY_IMAGE/commerce.client"
+    # - docker push "$CI_REGISTRY_IMAGE/payment.api"
+    # - docker push "$CI_REGISTRY_IMAGE/commerce.admin"
+    # - docker push "$CI_REGISTRY_IMAGE/webstatus"
     
 
 
