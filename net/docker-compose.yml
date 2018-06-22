@@ -20,8 +20,8 @@ services:
       dockerfile: src/Commerce/Basket/Basket.API/Dockerfile
     depends_on:
       - basket.data
-      - identity.api
       - rabbitmq
+      - identity.api
 
   catalog.api:
     image: darwinyo/catalog.api:${TAG:-latest}
@@ -42,17 +42,17 @@ services:
       - sql.data
       - rabbitmq
 
-  commerce.admin:
-    image: darwinyo/commerce.admin:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
+  # commerce.admin:
+  #   image: darwinyo/commerce.admin:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
   
-  commerce.client:
-    image: darwinyo/commerce.client:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
+  # commerce.client:
+  #   image: darwinyo/commerce.client:${TAG:-latest}
+  #   build:
+  #     context: .
+  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
       
   order.api:
     image: darwinyo/order.api:${TAG:-latest}
@@ -62,8 +62,9 @@ services:
     depends_on:
       - sql.data
       - rabbitmq
-      - catalog.api
+      - identity.api
       - basket.api
+      - catalog.api
 
   order.backgroundtasks:
     image: darwinyo/order.backgroundtasks:${TAG:-latest}

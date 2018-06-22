@@ -9,6 +9,5 @@ RUN npm install
 EXPOSE 4000
 
 RUN npm run build:ssr:commerce-admin
-
-CMD ["npm", "serve:ssr:commerce-admin"]
+CMD ["npm", "run serve:ssr:commerce-admin"]
 
