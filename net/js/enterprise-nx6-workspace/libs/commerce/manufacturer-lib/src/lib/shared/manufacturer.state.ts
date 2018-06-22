@@ -8,7 +8,8 @@ import {
   RegisterLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
   Alert,
-  StorageService
+  StorageService,
+  IConfiguration
 } from '@enterprise/core';
 
 import {
@@ -38,7 +39,7 @@ import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
 
 export interface ManufacturerStateModel {
   manufacturers: Manufacturer[];
@@ -57,9 +58,12 @@ const defaults: ManufacturerStateModel = {
   defaults: defaults
 })
 export class ManufacturerState {
-  constructor(private manufacturerService: ManufacturerService,private storageService:StorageService) {
+  @Select(AppState.configuration)
+  configurations$: Observable<IConfiguration>;
+
+  constructor(private manufacturerService: ManufacturerService, private storageService: StorageService) {
     this.setAccessToken();
-   }
+  }
   //#region Selectors
   @Selector()
   static getManufacturers(state: ManufacturerStateModel) {
@@ -78,6 +82,11 @@ export class ManufacturerState {
   //#endregion
 
   setAccessToken() {
+    this.configurations$.pipe(take(1)).subscribe(x => {
+      if (x !== null) {
+        this.manufacturerService.configuration.basePath = x.catalogUrl;
+      }
+    });
     this.manufacturerService.configuration.accessToken = this.storageService.retrieve('authorizationData');
   }
   //#region Commands and Event
@@ -272,7 +281,7 @@ export class ManufacturerState {
     dispatch(RegisterLoadingOverlay);
 
     return this.manufacturerService
-      .apiV1ManufacturerPaginatedGet(4,0)
+      .apiV1ManufacturerPaginatedGet(4, 0)
       .pipe(
         tap(
           (x) => {

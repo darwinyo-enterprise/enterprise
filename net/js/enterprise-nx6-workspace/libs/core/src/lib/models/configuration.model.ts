@@ -1,4 +1,7 @@
 export interface IConfiguration {
     identityUrl: string,
-    signalrUrl: string
+    catalogUrl: string,
+    basketUrl: string,
+    orderUrl: string,
+    orderSignalR: string
 }

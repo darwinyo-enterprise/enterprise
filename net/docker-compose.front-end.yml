@@ -48,11 +48,11 @@ services:
       context: .
       dockerfile: js/enterprise-nx6-workspace/apps/commerce-admin-app/Dockerfile
   
-  # commerce.client:
-  #   image: darwinyo/commerce.client:${TAG:-latest}
-  #   build:
-  #     context: .
-  #     dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
+  commerce.client:
+    image: darwinyo/commerce.client:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: js/enterprise-nx6-workspace/apps/commerce-client-app/Dockerfile
       
   # order.api:
   #   image: darwinyo/order.api:${TAG:-latest}

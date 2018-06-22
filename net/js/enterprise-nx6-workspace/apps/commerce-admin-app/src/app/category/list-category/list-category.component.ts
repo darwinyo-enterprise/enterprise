@@ -2,7 +2,7 @@ import { CategoryState, FetchCategories, DeleteCategory, FetchPaginatedCategorie
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
-import { Category, CategoryService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
+import { Category, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -39,8 +39,7 @@ export class ListCategoryComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private store: Store,
-    private categoryService: CategoryService
+    private store: Store
   ) {
     this.title = 'Category List';
     this.deleteSubject$ = new Subject();

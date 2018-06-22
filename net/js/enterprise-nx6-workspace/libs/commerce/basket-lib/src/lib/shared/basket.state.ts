@@ -1,11 +1,12 @@
 import { BasketItem } from "../../api/model/basketItem";
-import { State, Selector, Action, StateContext } from "@ngxs/store";
+import { State, Selector, Action, StateContext, Select } from "@ngxs/store";
 import { BasketService } from "./../../api/api/basket.service";
-import { StorageService, RegisterLoadingOverlay, ErrorOccured, ResolveLoadingOverlay, Navigate, Alert } from "@enterprise/core/src";
+import { StorageService, RegisterLoadingOverlay, ErrorOccured, ResolveLoadingOverlay, Navigate, Alert, AppState, IConfiguration } from "@enterprise/core/src";
 import { FetchBasket, BasketFetched, UpdateBasket, BasketUpdated, ItemBasketDeleted, DeleteItemBasket, AddItemBasket, CheckOutBasket, BasketCheckedOut, ItemBasketAdded, ClearBasket, ClearBasketOldPrice, AllItemBasketDeleted, DeleteAllItemBasket } from "./basket.action";
-import { tap } from "rxjs/operators";
+import { tap, take } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CustomerBasket } from "../../api/model/customerBasket";
+import { Observable } from "rxjs/Observable";
 
 export interface BasketStateModel {
     basketItems: BasketItem[];
@@ -22,6 +23,9 @@ const defaults: BasketStateModel = {
     defaults: defaults
 })
 export class BasketState {
+    @Select(AppState.configuration)
+    configurations$: Observable<IConfiguration>;
+
     constructor(private basketService: BasketService, private storageService: StorageService) {
         this.setAccessToken();
     }
@@ -39,6 +43,11 @@ export class BasketState {
     //#endregion
 
     setAccessToken() {
+        this.configurations$.pipe(take(1)).subscribe(x => {
+            if (x !== null) {
+                this.basketService.configuration.basePath = x.basketUrl;
+            }
+        });
         this.basketService.configuration.accessToken = this.storageService.retrieve('authorizationData');
     }
 

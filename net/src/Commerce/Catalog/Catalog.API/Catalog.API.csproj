@@ -10,19 +10,9 @@
     <Content Remove="%2a%2a\**" />
     <EmbeddedResource Remove="%2a%2a\**" />
     <None Remove="%2a%2a\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Setup\Category.csv" />
-    <None Remove="Setup\Category.zip" />
-    <None Remove="Setup\Manufacturer.csv" />
-    <None Remove="Setup\Manufacturer.zip" />
-    <None Remove="Setup\Product.csv" />
-    <None Remove="Setup\ProductColor.csv" />
-    <None Remove="Setup\ProductImage.csv" />
-    <None Remove="Setup\ProductImage.zip" />
-    <None Remove="Setup\ProductRating.csv" />
-    <None Remove="Setup\User.csv" />
+    <None Update="Setup\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

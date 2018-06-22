@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -6,20 +7,25 @@ import { Injectable } from '@angular/core';
 export class StorageService {
   private storage: Storage;
 
-  constructor() {
-    this.storage = sessionStorage;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(platformId)) {
+      this.storage = sessionStorage;
+    }
   }
   public retrieve(key: string): any {
-    const item = this.storage.getItem(key);
+    if (isPlatformBrowser(this.platformId)) {
+      const item = this.storage.getItem(key);
 
-    if (item && item !== 'undefined') {
-      return JSON.parse(this.storage.getItem(key));
+      if (item && item !== 'undefined') {
+        return JSON.parse(this.storage.getItem(key));
+      }
     }
-
     return;
   }
 
   public store(key: string, value: any) {
-    this.storage.setItem(key, JSON.stringify(value));
+    if (isPlatformBrowser(this.platformId)) {
+      this.storage.setItem(key, JSON.stringify(value));
+    }
   }
 }

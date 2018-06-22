@@ -1,7 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import {
-  Manufacturer,
-  ManufacturerService
+  Manufacturer
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
 import { AddManufacturer, ManufacturersMock, ClearSelectedManufacturer } from '@enterprise/commerce/manufacturer-lib';
@@ -20,7 +19,6 @@ export class AddManufacturerComponent implements OnInit {
   nameSaveButton: string;
 
   constructor(
-    private manufacturerService: ManufacturerService,
     private store: Store
   ) {
     this.title = 'Add New Manufacturer';

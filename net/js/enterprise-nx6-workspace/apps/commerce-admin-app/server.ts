@@ -13,6 +13,7 @@ import fetch from 'node-fetch';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
+
 // Express server
 const app = express();
 
@@ -50,6 +51,9 @@ import { ngExpressEngine } from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
+
+
+
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
   providers: [
@@ -58,7 +62,25 @@ app.engine('html', ngExpressEngine({
 }));
 
 app.set('view engine', 'html');
+
 app.set('views', join(DIST_FOLDER, 'apps'));
+
+interface IConfiguration {
+  identityUrl: string,
+  catalogUrl: string,
+  basketUrl: string,
+  orderUrl: string,
+  orderSignalR: string
+}
+app.get('/api/configuration', (req, res) => {
+  res.status(200).send(<IConfiguration>{
+    identityUrl: process.env.identityUrl || 'http://localhost:5105',
+    catalogUrl: process.env.catalogUrl || 'http://localhost:5101',
+    basketUrl: process.env.basketUrl || 'http://localhost:5103',
+    orderUrl: process.env.basketUrl || 'http://localhost:5102',
+    orderSignalR: process.env.orderSignalR || 'http://localhost:5112'
+  });
+});
 
 // TODO: implement data requests securely
 app.get('/api/*', (req, res) => {

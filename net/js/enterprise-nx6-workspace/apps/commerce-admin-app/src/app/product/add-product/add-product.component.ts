@@ -1,6 +1,5 @@
 import { OnInit, Component } from '@angular/core';
 import {
-  ProductService,
   ProductViewModel
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
@@ -20,7 +19,6 @@ export class AddProductComponent implements OnInit {
   nameSaveButton: string;
 
   constructor(
-    private productService: ProductService,
     private store: Store
   ) {
     this.title = 'Add New Product';

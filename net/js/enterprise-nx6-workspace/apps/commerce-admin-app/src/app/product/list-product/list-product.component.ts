@@ -3,7 +3,7 @@ import { ProductState, FetchProducts, DeleteProduct, FetchPaginatedProductsList 
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
-import { ProductService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
+import { PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -40,7 +40,6 @@ export class ListProductComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private productService: ProductService
   ) {
     this.title = 'Product List';
     this.deleteSubject$ = new Subject();

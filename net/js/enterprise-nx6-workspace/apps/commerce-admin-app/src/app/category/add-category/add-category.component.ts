@@ -1,7 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import {
-  Category,
-  CategoryService
+  Category
 } from '@enterprise/commerce/catalog-lib';
 import { Store } from '@ngxs/store';
 import { AddCategory, CategoriesMock, ClearSelectedCategory } from '@enterprise/commerce/category-lib';
@@ -20,7 +19,6 @@ export class AddCategoryComponent implements OnInit {
   nameSaveButton: string;
 
   constructor(
-    private categoryService: CategoryService,
     private store: Store
   ) {
     this.title = 'Add New Category';

@@ -9,10 +9,11 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.189919d1422cc095b718.js",
-        "/polyfills.d2d49cd6e39e6e19c1fe.js",
+        "/main.0c3a11dd9fef9800412a.js",
+        "/oidc-client.min.js",
+        "/polyfills.eecfb47a7b2198b24ad9.js",
         "/runtime.a66f828dca56eeb90e02.js",
-        "/styles.0b538da98c85c66b8f9b.css"
+        "/styles.968f568e378439489090.css"
       ],
       "patterns": []
     },
@@ -50,11 +51,12 @@
     "/assets/icons/icon-96x96.png": "09778ca2234ea305c6855821c874613c0b4bd76d",
     "/assets/nx-logo.png": "5900ee9d2359704cd39b0433d062b834c3ea8f91",
     "/favicon.ico": "47ed9b9fc0f27415878a41e260f3144185b16038",
-    "/index.html": "cf56da06843254300bdbba1f2661bad30bf98c6d",
-    "/main.189919d1422cc095b718.js": "cc5d0babc92a878a3e8ec22880e960111f16f38e",
-    "/polyfills.d2d49cd6e39e6e19c1fe.js": "ff5822c5de68a3291d9cb728e44d1a3c05ffad5e",
+    "/index.html": "9b0b3454d306ddd2e205855683725ac7300e37a2",
+    "/main.0c3a11dd9fef9800412a.js": "dd25ab00c9c6986c24e04a7b37cc7d60feda0ba3",
+    "/oidc-client.min.js": "ff51e3f2023d213cf60de6969f8446dc5c7d2c56",
+    "/polyfills.eecfb47a7b2198b24ad9.js": "3c17af712bb185a9f35275095be53f96d5519abc",
     "/runtime.a66f828dca56eeb90e02.js": "078e320cc6fdaf355836c3b1c52b059cdd33fc7e",
-    "/styles.0b538da98c85c66b8f9b.css": "1cf328eab0480082e9f87e73060835b578c7e0b8"
+    "/styles.968f568e378439489090.css": "cd5209d1b9acaad58b814984e56204fff25e4612"
   },
   "navigationUrls": [
     {

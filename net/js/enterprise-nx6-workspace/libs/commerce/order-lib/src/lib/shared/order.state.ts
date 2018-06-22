@@ -1,6 +1,6 @@
-import { State, Selector, Action, StateContext } from "@ngxs/store";
+import { State, Selector, Action, StateContext, Select } from "@ngxs/store";
 import { OrdersService } from "../../api/api/orders.service";
-import { StorageService, ErrorOccured, RegisterLoadingOverlay, ResolveLoadingOverlay } from "@enterprise/core/src";
+import { StorageService, ErrorOccured, RegisterLoadingOverlay, ResolveLoadingOverlay, AppState, IConfiguration } from "@enterprise/core/src";
 import { UpdateOrderStatus, OrderStatusUpdated, CancelOrder, OrderCancelled, ShipOrder, OrderShipped, FetchSingleOrder, SingleOrderFetched } from "./order.action";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { tap, take, mergeMap, merge, takeLast } from "rxjs/operators";
@@ -9,6 +9,7 @@ import { Order } from "../../api/model/order";
 import * as cl from "@enterprise/commerce/catalog-lib/src";
 import { IntegrationEventLogEntry } from "../../api/model/integrationEventLogEntry";
 import { IntegrationEventService } from "../../api/api/integrationEvent.service";
+import { Observable } from "rxjs/Observable";
 
 
 export interface OrderStateModel {
@@ -30,6 +31,9 @@ const defaults: OrderStateModel = {
     defaults: defaults
 })
 export class OrderState {
+    @Select(AppState.configuration)
+    configurations$: Observable<IConfiguration>;
+
     constructor(private orderService: OrdersService, private catalogIntegrationService: cl.IntegrationEventService, private orderIntegrationService: IntegrationEventService, private storageService: StorageService, public snackBar: MatSnackBar) {
         this.setAccessToken();
     }
@@ -52,6 +56,13 @@ export class OrderState {
     //#endregion
 
     setAccessToken() {
+        this.configurations$.pipe(take(1)).subscribe(x => {
+            if (x !== null) {
+                this.catalogIntegrationService.configuration.basePath = x.catalogUrl;
+                this.orderIntegrationService.configuration.basePath = x.orderUrl;
+                this.orderService.configuration.basePath = x.orderUrl;
+            }
+        });
         this.orderService.configuration.accessToken = this.storageService.retrieve('authorizationData');
         this.orderIntegrationService.configuration.accessToken = this.storageService.retrieve('authorizationData');
         this.catalogIntegrationService.configuration.accessToken = this.storageService.retrieve('authorizationData');

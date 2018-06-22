@@ -32,7 +32,7 @@ export class OrderSignalRService {
   public init() {
     this.configurations$.pipe(take(1)).subscribe(config => {
       if (config !== null) {
-        this.SignalrHubUrl = config.signalrUrl;
+        this.SignalrHubUrl = config.orderSignalR;
         if (this.securityService.IsAuthorized === true) {
           this.register();
           this.stablishConnection();

@@ -8,7 +8,8 @@ import {
   RegisterLinearLoadingOverlay,
   ProgressLinearLoadingOverlay,
   Alert,
-  StorageService
+  StorageService,
+  IConfiguration
 } from '@enterprise/core';
 
 import {
@@ -37,7 +38,7 @@ import {
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators/takeUntil';
 import { OnDestroy } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
 import { ListItemActionState, ListItemActionStateModel, ChangePagination, ResetPagination } from '@enterprise/material/list-item-actions';
 import { Observable } from 'rxjs';
 
@@ -58,6 +59,9 @@ const defaults: CategoryStateModel = {
   defaults: defaults
 })
 export class CategoryState {
+  @Select(AppState.configuration)
+  configurations$: Observable<IConfiguration>;
+
   constructor(private categoryService: CategoryService, private storageService: StorageService) {
     this.setAccessToken();
   }
@@ -79,6 +83,12 @@ export class CategoryState {
   //#endregion
 
   setAccessToken() {
+    this.configurations$.pipe(take(1)).subscribe(x => {
+      if(x!==null){
+        this.categoryService.configuration.basePath = x.catalogUrl;
+      }
+    });
+
     this.categoryService.configuration.accessToken = this.storageService.retrieve('authorizationData');
   }
 

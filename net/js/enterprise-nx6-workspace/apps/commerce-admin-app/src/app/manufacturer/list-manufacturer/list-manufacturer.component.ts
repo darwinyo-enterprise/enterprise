@@ -3,7 +3,7 @@ import { ManufacturerState, FetchManufacturers, DeleteManufacturer, FetchPaginat
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { RegisterLoadingOverlay, Navigate, AppState, RoutingModel, Confirm } from '@enterprise/core';
-import { Manufacturer, ManufacturerService, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
+import { Manufacturer, PaginatedListViewModelItemViewModel } from '@enterprise/commerce/catalog-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -40,8 +40,7 @@ export class ListManufacturerComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private store: Store,
-    private manufacturerService: ManufacturerService
+    private store: Store
   ) {
     this.title = 'Manufacturer List';
     this.deleteSubject$ = new Subject();
