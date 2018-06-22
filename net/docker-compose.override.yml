@@ -61,19 +61,25 @@ services:
     ports:
       - "5105:80"
 
-  # commerce.admin:
-  #   ports:
-  #     - "4000:4000"
-  #   environment:
-  #     - identityUrl=http://identity.api
-  #     - signalrUrl=http://order.signalrhub
+  commerce.admin:
+    ports:
+      - "4000:4000"
+    environment:
+      - identityUrl=http://identity.api
+      - catalogUrl=http://catalog.api
+      - basketUrl=http://basket.api
+      - orderUrl=http://order.api
+      - orderSignalR=http://order.signalrhub
       
-  # commerce.client:
-  #   ports:
-  #     - "4001:4000"
-  #   environment:
-  #     - identityUrl=http://identity.api
-  #     - signalrUrl=http://order.signalrhub
+  commerce.client:
+    ports:
+      - "4001:4000"
+    environment:
+      - identityUrl=http://identity.api
+      - catalogUrl=http://catalog.api
+      - basketUrl=http://basket.api
+      - orderUrl=http://order.api
+      - orderSignalR=http://order.signalrhub
 
   order.api:
     environment:

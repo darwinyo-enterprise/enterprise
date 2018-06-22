@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 
-import { CatalogModule } from './catalog/catalog.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '@enterprise/shared';
@@ -19,7 +18,6 @@ import { environment } from '../environments/environment';
     }),
     CoreModule,
     SharedModule,
-    CatalogModule,
     NxModule.forRoot(),
     AppRoutingModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
