@@ -76,6 +76,15 @@ commerce_frontend_build:
   stage: build
   script:
     - cd ./net
+    - docker-compose -f docker-compose.front-end.yml -f docker-compose.front-end.override.yml build
+    - docker images
+    # - docker push "darwinyo/commerce.client"
+    - docker push "darwinyo/commerce.admin"
+
+commerce_backend_build:
+  stage: build
+  script:
+    - cd ./net
     - docker-compose -f docker-compose.yml -f docker-compose.override.yml build
     - docker images
 
